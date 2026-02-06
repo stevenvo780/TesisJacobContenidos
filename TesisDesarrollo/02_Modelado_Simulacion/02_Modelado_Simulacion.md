@@ -39,7 +39,7 @@ La auditoria de modelado exigio criterios de paro y comparacion con modelos alte
 | 18_caso_wikipedia | 1.000 | 5.302 | True | `18_caso_wikipedia/report.md` |
 
 Para recalcular este reporte de forma automatica, usar:
-`python3 scripts/evaluar_simulaciones.py --write`
+`python3 scripts/actualizar_tablas_002.py`
 ## Evidencia Empirica (LoE 4-5)
 - **Clima:** el parametro macro de balance energetico esclaviza fluctuaciones locales.
 - **Energia:** la estabilidad de red impone restricciones macro sobre agentes de consumo.

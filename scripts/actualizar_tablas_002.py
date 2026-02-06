@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+"""Actualiza tablas de 02_Modelado_Simulacion usando metrics.json.
+
+- Genera Reporte_General_Simulaciones.md
+- Reemplaza la tabla en 02_Modelado_Simulacion.md
+"""
+from pathlib import Path
+import json
+import re
+
+ROOT = Path(__file__).resolve().parents[1]
+CASES_ROOT = ROOT / 'TesisDesarrollo' / '02_Modelado_Simulacion'
+MAIN_DOC = CASES_ROOT / '02_Modelado_Simulacion.md'
+REPORT_DOC = CASES_ROOT / 'Reporte_General_Simulaciones.md'
+
+
+def read_metrics(case_dir: Path):
+    p = case_dir / 'metrics.json'
+    if not p.exists():
+        return None
+    return json.loads(p.read_text())
+
+
+def compute_metrics(metrics_obj):
+    if not metrics_obj:
+        return None
+    ph = metrics_obj.get('phases', {}).get('real') or metrics_obj.get('phases', {}).get('synthetic')
+    if not ph:
+        return None
+    errors = ph.get('errors', {})
+    symploke = ph.get('symploke', {})
+    rmse_reduced = errors.get('rmse_reduced')
+    rmse_abm = errors.get('rmse_abm')
+    edi = None
+    if rmse_reduced and rmse_abm is not None and rmse_reduced != 0:
+        edi = (rmse_reduced - rmse_abm) / rmse_reduced
+    internal = symploke.get('internal')
+    external = symploke.get('external')
+    cr = None
+    if internal is not None and external not in (None, 0):
+        cr = internal / external
+    return {
+        'edi': edi,
+        'cr': cr,
+        'overall_pass': ph.get('overall_pass')
+    }
+
+
+def fmt(x):
+    if x is None:
+        return 'n/a'
+    return f"{x:.3f}"
+
+
+def build_rows():
+    rows = []
+    for case_dir in sorted(CASES_ROOT.glob('*_caso_*')):
+        metrics_obj = read_metrics(case_dir)
+        m = compute_metrics(metrics_obj)
+        case = case_dir.name
+        report_link = f"`{case_dir.name}/report.md`"
+        rows.append((case, m, report_link))
+    return rows
+
+
+def build_table(rows):
+    lines = []
+    lines.append("| Caso | EDI | CR | Estado | Reporte |")
+    lines.append("| :--- | ---: | ---: | :--- | :--- |")
+    for case, m, report_link in rows:
+        edi = fmt(m['edi']) if m else 'n/a'
+        cr = fmt(m['cr']) if m else 'n/a'
+        state = str(m['overall_pass']) if m else 'n/a'
+        lines.append(f"| {case} | {edi} | {cr} | {state} | {report_link} |")
+    return "\n".join(lines)
+
+
+def update_report(rows):
+    table = build_table(rows)
+    content = "# Reporte General de Simulaciones\n\n" + table + "\n"
+    REPORT_DOC.write_text(content, encoding='utf-8')
+
+
+def update_main(rows):
+    table = build_table(rows)
+    block = "\n".join([
+        "## Resultados (Matriz de Validacion Tecnica)",
+        "",
+        table,
+        "",
+        "Para recalcular este reporte de forma automatica, usar:",
+        "`python3 scripts/actualizar_tablas_002.py`",
+        "",
+    ])
+    text = MAIN_DOC.read_text(encoding='utf-8', errors='ignore')
+    text = re.sub(r"## Resultados \(Matriz de Validacion Tecnica\)[\s\S]*?(?=\n## |\Z)", block.rstrip(), text)
+    MAIN_DOC.write_text(text.strip() + "\n", encoding='utf-8')
+
+
+def main():
+    rows = build_rows()
+    update_report(rows)
+    update_main(rows)
+
+
+if __name__ == '__main__':
+    main()
