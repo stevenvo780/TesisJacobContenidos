@@ -23,3 +23,4 @@
 
 ## Síntesis
 - [02_SINTESIS Sintesis Integral](./02_SINTESIS.md)
+- [02_6 Glosario Matemático](./02_6_Glosario_Matematico.md)
