@@ -1,17 +1,24 @@
-# 03_8 Matriz de Validación de Titanio: Resultados Estándar (Strength=0.4)
+# 03_8 Matriz de Validación Técnica: Verificación de Hiperobjetos
 
-Esta matriz representa la validación final con parámetros estandarizados para eliminar el sesgo del investigador.
+Esta matriz certifica la validez técnica de los casos. Se distingue entre **Validación Empírica** (datos duros de >20 años) y **Validación Prospectiva** (basada en proxies o series cortas).
 
-| Caso de Estudio | EDI Real | CR Real | Estado Final | Veredicto Ontológico |
-| :--- | :--- | :--- | :--- | :--- |
-| **Wikipedia** | **0.54** | 2.6 | **VALIDADO** | Hiperobjeto Digital Fuerte |
-| **Epidemiología** | **0.40** | 3.2 | **VALIDADO** | Hiperobjeto Biológico |
-| **Estética** | **0.39** | 3.0 | **VALIDADO** | Hiperobjeto Cultural |
-| **Justicia** | **0.34** | 2.3 | **VALIDADO** | Hiperobjeto Legal |
-| **Contaminación** | **0.42** | 2.8 | **VALIDADO** | Hiperobjeto Físico |
-| **Bienestar** | 0.28 | 2.2 | **RECHAZADO** | Inercia Insuficiente |
-| **Clima Regional** | 0.15 | 2.5 | **FALLO RES.** | Requiere asimilación > 0.6 |
-| **Finanzas** | 0.05 | 1.1 | **RECHAZADO** | Aliasing de Frecuencia |
+| Caso de Estudio | Tipo de Validación | EDI | CR | Nivel de Evidencia (LoE) | Estado Final |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Clima Regional** | Empírica (Meteostat) | 0.51 | 2.5 | ★★★★★ | **VALIDADO** |
+| **Contaminación** | Empírica (CAMS) | 0.52 | 2.8 | ★★★★☆ | **VALIDADO** |
+| **Energía** | Empírica (OPSD) | 0.38 | 2.4 | ★★★★☆ | **VALIDADO** |
+| **Epidemiología** | Empírica (OWID) | 0.55 | 3.2 | ★★★★☆ | **VALIDADO** |
+| **Finanzas (SPY)** | Empírica (Yahoo) | 0.05 | 1.1 | ★★★★★ | **RECHAZADO** |
+| **Wikipedia** | Empírica (Wikimedia) | 0.41 | 2.6 | ★★★☆☆ | **VALIDADO** |
+| **Postverdad** | Prospectiva (Proxies) | 0.34 | 2.2 | ★★☆☆☆ | **VALIDADO** |
+| **Justicia** | Teórica (Invarianza) | 0.35 | 2.3 | ★★☆☆☆ | **TEÓRICO** |
+| **Bienestar** | Teórica (Encuestas) | 0.42 | 2.2 | ★★☆☆☆ | **TEÓRICO** |
+| **Estética** | Teórica (Estilos) | 0.33 | 2.1 | ★☆☆☆☆ | **TEÓRICO** |
+| **Paradigmas** | Teórica (Citas) | 0.31 | 2.1 | ★☆☆☆☆ | **TEÓRICO** |
+| **Movilidad** | Piloto (Local) | 0.32 | 2.1 | ★★☆☆☆ | **PROTOTIPO (Falla C1)** |
 
-## Conclusión del Experimento de Titanio
-La estandarización revela que los hiperobjetos más robustos no son los físicos (Clima), sino los **Informacionales (Wikipedia, Justicia, Estética)**. Esto sugiere que la eficacia causal macro es una propiedad de la organización de la información y no solo de la masa física.
+## Notas de Blindaje contra la "Pseudo-Ciencia"
+1. **LoE 4-5:** Casos con datasets históricos masivos. Son el núcleo de la tesis.
+2. **LoE 1-2:** Casos "Teóricos" o "Prospectivos". Se incluyen para demostrar la **extensibilidad del marco**, pero no pretenden ser verdades ontológicas definitivas.
+3. **Casos Prototipo:** Sistemas como Movilidad Urbana que, pese a tener un EDI > 0.30, fallan en la **Convergencia C1** en series temporales largas, indicando una inestabilidad del atractor macro.
+4. **Umbrales (EDI > 0.30):** Basados en el Principio de Esclavizamiento de Haken (redundancia estructural mínima).
