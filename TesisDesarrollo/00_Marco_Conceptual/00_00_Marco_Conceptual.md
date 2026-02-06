@@ -10,6 +10,15 @@ El debate **emergencia vs reduccionismo** queda resuelto en favor de un **emerge
 
 La **causalidad descendente** se formula en version debil: lo macro restringe, no introduce fuerzas nuevas. Esto evita contradicciones con el cierre causal y permite formalizar el efecto macro como restricciones y nudging computacional.
 
+## Hipótesis Central (H1)
+Un **Hiperobjeto** es ontológicamente real si y solo si su modelo macroscópico (ODE) demuestra una **Eficacia Causal Metaestable** sobre sus componentes microscópicos (ABM). 
+
+Esta eficacia se formaliza mediante dos condiciones necesarias y suficientes:
+1.  **Condición de Emergencia Informacional:** El sistema acoplado debe poseer una **Información Efectiva (EI)** positiva ($EI_{macro} > EI_{micro\_agg}$), demostrando que el nivel macro es causalmente más informativo que la suma de sus partes.
+2.  **Condición de Autonomía de Atractor:** El sistema debe mantener una reducción de incertidumbre microscópica significativa (**EDI > 0.15**) incluso bajo condiciones de **Acoplamiento Mínimo** (Zero-Nudging), probando la existencia de un atractor estructural independiente de la observación algorítmica.
+
+---
+
 ## Presupuestos Filosoficos
 - **P1 Realismo de Sistemas (Bunge):** los sistemas macro son reales, no meros agregados descriptivos.
 - **P2 Symploke (Bueno):** no todo esta conectado con todo, pero nada esta aislado; la realidad es una red con limites funcionales.
@@ -22,8 +31,20 @@ La **causalidad descendente** se formula en version debil: lo macro restringe, n
 - **A4 Falsabilidad por satura:** si EDI < 0.30, la capa macro se descarta.
 - **A5 Clausura computacional:** solo afirmaciones expresables como reglas algoritmicas son validas.
 
-## Delimitacion del Objeto
-La delimitacion del hiperobjeto es un problema central. No hay fronteras fisicas claras, por eso se usa un criterio funcional: **cohesion interna mayor que la externa** (CR > 2.0). Este criterio evita dos errores: el holismo total (todo conectado) y el atomismo (nada conectado). La symploke se convierte asi en una regla operativa de frontera.
+## Interpretacion de Resultados (No Forzar el Marco)
+Este marco no fuerza validaciones. Un caso puede **fallar** como hiperobjeto y aun asi aportar conocimiento: señala limites de escala, problemas de datos o dominios con reflexividad alta. En lugar de ajustar resultados para que “encajen”, se reportan las fallas como parte del criterio de demarcacion. La mejora del marco se interpreta asi:
+- Si EDI/CR no aparecen o son inestables, se revisa el pipeline de medicion y la calidad de datos.
+- Si hay alta variabilidad entre fases (sintetica vs real), se examinan supuestos de modelado.
+- Si el dominio es reflexivo, se acepta que la validacion puede ser prospectiva y no empirica.
+
+## Delimitacion del Objeto: Viscosidad y No-localidad
+Siguiendo a Timothy Morton, los hiperobjetos poseen propiedades que desafían el modelado clásico:
+1. **Viscosidad:** El hiperobjeto "se pega" a cualquier agente que intente medirlo. En nuestra tesis, esto se traduce en el **Acoplamiento Activo (Nudging)**: no podemos simular el clima sin ser parte de su flujo de información.
+2. **No-localidad:** El objeto está aquí y allá simultáneamente. El ABM captura esta dispersión en la grilla, mientras que la ODE captura la unidad no-local que los organiza.
+3. **Fase-temporal:** El objeto existe en escalas de tiempo que hacen que cualquier observación humana sea solo una "sección transversal". Nuestro modelo híbrido intenta resolver esto mediante la integración de series históricas de larga duración.
+
+Esta base conceptual justifica por qué un modelo puramente local (ABM) siempre fallará ante un hiperobjeto: le falta la **"viscosidad macro"** que solo una ecuación diferencial puede aportar.
+
 
 ## Glosario Operativo (Reducido)
 - **Hiperobjeto:** entidad distribuida con no-localidad y viscosidad, validada por C1-C5.

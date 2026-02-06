@@ -1,7 +1,32 @@
 # 02 Modelado y Simulacion — Narrativa Unificada
 
-## Arquitectura Hibrida
-El motor integra un modelo micro (ABM) y un modelo macro (ODE). El acople se realiza mediante **nudging** para asimilacion de datos y para imponer restricciones macro sobre los agentes. Esta decision responde al axioma de incompletitud del nivel unico: cada capa corrige las limitaciones de la otra.
+## Arquitectura Detallada del Motor Híbrido
+El corazón de esta investigación es la clase `HybridModel`. Su función no es solo predecir, sino mediar entre dos ontologías: el individuo (Agente) y la estructura (Ecuación).
+
+### Pseudocódigo de la Lógica de Acoplamiento:
+```python
+class HybridModel:
+    def step(self, t):
+        # 1. El nivel Macro evoluciona según la ODE
+        # dX/dt = alpha(F(t) - beta*X)
+        self.macro_state = self.ode.integrate(t)
+        
+        # 2. El nivel Micro evoluciona con Nudging (Causalidad Descendente)
+        # Cada agente i ajusta su estado x_i hacia el macro_state X
+        for agent in self.agents:
+            drift = self.macro_coupling * (self.macro_state - agent.x)
+            noise = self.stochastic_noise()
+            agent.update(drift + noise + agent.local_interaction())
+            
+        # 3. Asimilación de Datos (Retroalimentación)
+        # El macro se corrige si la realidad observada se desvía
+        if self.obs[t]:
+            self.ode.adjust(self.obs[t], self.assimilation_strength)
+```
+
+### La Transición de Fase Metaestable
+Durante la simulación, observamos un punto crítico donde el parámetro de acoplamiento macro-micro permite que el sistema pase de un estado de **Agregación Desordenada** a uno de **Coherencia Hiperobjetual**. Este punto se mide mediante el EDI. Si el acoplamiento es demasiado débil, el hiperobjeto se disuelve (Caso Finanzas); si es demasiado fuerte, se vuelve una tautología (Caso Justicia/Sobreajuste). El éxito reside en la **Metaestabilidad** (Caso Clima).
+
 
 ## Protocolo de Simulacion
 - Fase sintetica: calibracion interna y verificacion logica.
@@ -58,3 +83,7 @@ Para recalcular este reporte de forma automatica, usar:
 
 ## Sintesis y Limitaciones Epistemicas
 El motor hibrido sugiere que sistemas con alta inercia estructural (Clima, Epidemiología) responden eficazmente a un modelado macroscópico. Sin embargo, en dominios de alta frecuencia o baja materialidad (Finanzas, Estética), los resultados deben interpretarse con cautela: un EDI alto podría reflejar inercia histórica más que causalidad ontológica fuerte. La "validación" aquí presentada es estadística y no clausura el debate filosófico sobre la existencia real de estos objetos.
+
+## Auditoria de Consistencia
+
+Ver `Auditoria_Simulaciones.md` para hallazgos y recomendaciones sobre calidad documental y metricas.
