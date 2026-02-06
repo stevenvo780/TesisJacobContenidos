@@ -24,7 +24,6 @@ El sistema de clasificación LoE (1-5) indica la robustez de los datos (5 = Dato
     - Postverdad (LoE 2): Proxies indirectos, EDI 0.34.
 
 - **Teoricos (Baja Certeza):**
-    - Justicia, Bienestar, Estetica, Paradigmas (LoE 1-2): Datos anuales o encuestas. Resultados indicativos, no concluyentes.
 
 - **Rechazado:**
     - Finanzas (LoE 5): Falla técnica por alta frecuencia. EDI espurio < 0.10 real.

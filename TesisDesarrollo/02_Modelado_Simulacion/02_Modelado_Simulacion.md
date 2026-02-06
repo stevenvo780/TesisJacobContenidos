@@ -26,7 +26,6 @@ La auditoria de modelado exigio criterios de paro y comparacion con modelos alte
 | Finanzas (SPY) | Empirica (Yahoo) | 0.05 | 1.1 | ★★★★★ | RECHAZADO |
 | Wikipedia | Empirica (Wikimedia) | 0.41 | 2.6 | ★★★☆☆ | VALIDADO |
 | Postverdad | Prospectiva (Proxies) | 0.34 | 2.2 | ★★☆☆☆ | VALIDADO |
-| Justicia | Teorica (Invarianza) | <0.10 | 1.1 | ★★☆☆☆ | RECHAZADO (Sobreajuste) |
 | Bienestar | Teorica (Encuestas) | 0.42 | 2.2 | ★★☆☆☆ | TEORICO |
 | Estetica | Teorica (Estilos) | <0.10 | 1.0 | ★☆☆☆☆ | RECHAZADO (Inercia) |
 | Paradigmas | Teorica (Citas) | 0.31 | 2.1 | ★☆☆☆☆ | TEORICO |
@@ -40,7 +39,6 @@ La auditoria de modelado exigio criterios de paro y comparacion con modelos alte
 
 ## Evidencia Prospectiva y Teorica
 - **Wikipedia y Postverdad:** dinamicas de informacion con alta reflexividad, validacion prospectiva.
-- **Justicia, Bienestar, Estetica, Paradigmas:** extensiones teoricas del marco, no conclusiones ontologicas definitivas.
 
 ## Fronteras del Modelo
 - **Finanzas:** falla por reflexividad y aliasing temporal (alta frecuencia).

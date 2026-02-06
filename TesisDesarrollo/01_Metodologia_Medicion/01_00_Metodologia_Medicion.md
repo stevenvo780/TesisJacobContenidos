@@ -14,9 +14,8 @@ Observacion → Simulacion → Validacion. El modelo se mantiene solo si supera 
 
 ## Metricas y Justificación Teórica
 - **EDI (Effective Dependence Index):** Mide la reducción de entropía del sistema micro gracias a la estructura macro.
-    - **Umbral > 0.30 (Derivación):** Basado en el **Teorema de Codificación de Canal de Shannon**, el 30% marca el punto donde la "Capacidad del Canal Macro" supera el ruido estocástico del micro. Si la estructura macro no reduce al menos un 30% de la incertidumbre microscópica, no hay transmisión de orden causal efectiva; el sistema es dominado por fluctuaciones locales.
-- **Requisito de Acoplamiento Macro-Micro (Downward Causation):** Un EDI alto es condición necesaria pero NO suficiente. Se exige un parámetro de acoplamiento ($\lambda > 0.1$) en el modelo ABM. Si el modelo micro es independiente del macro (acoplamiento nulo), un EDI alto se descarta como **Inercia de Datos** o **Aliasing Temporal** (caso Finanzas/Estética).
-- **CR (Cohesion Ratio):** Relación de cohesión interna/externa (umbral 2.0).
+- **Información Efectiva (EI):** Basado en el marco de **Causal Emergence (Hoel, 2017)**, la EI cuantifica si el nivel macro es causalmente más informativo que el nivel micro. Un hiperobjeto se valida solo si $EI_{macro} > EI_{micro\_agg}$, lo que garantiza que la estructura macro no es una mera descripción estadística, sino una capa con mayor poder predictivo y causal.
+- **Prueba de Control de Honestidad:** El EDI debe ser $> 0.15$ incluso cuando la fuerza de asimilación (nudging) es cero. Esto previene la circularidad lógica donde el modelo macro "valida" una estructura que él mismo ha impuesto artificialmente.
 
 ## Reglas de Rechazo Hard-Coded
 1. **EDI < 0.30:** Inexistencia de estructura macro.
