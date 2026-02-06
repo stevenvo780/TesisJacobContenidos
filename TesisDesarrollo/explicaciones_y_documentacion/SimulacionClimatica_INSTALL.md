@@ -15,11 +15,11 @@ Para replicar los resultados:
 
 *   **Caso Clima (Éxito):** Valida la inercia macro del clima regional.
     ```bash
-    python3 02_Modelado_Simulacion/caso_clima/src/validate.py
+    python3 02_Modelado_Simulacion/01_caso_clima/src/validate.py
     ```
 *   **Caso Finanzas (Fallo):** Demuestra el límite del modelo ante la reflexividad.
     ```bash
-    python3 02_Modelado_Simulacion/caso_finanzas/src/validate.py
+    python3 02_Modelado_Simulacion/10_caso_finanzas/src/validate.py
     ```
 
 ## 3. Resultados

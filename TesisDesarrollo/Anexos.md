@@ -3135,8 +3135,8 @@ Validar la existencia de **Hiperobjetos** (entidades masivamente distribuidas) m
 *   `02_01_Arquitectura_Hibrida.md`: Implementación de la clase `HybridModel`.
 *   `02_02_Protocolo_y_Dialectica.md`: Navaja de Ockham (Híbrido vs Reducido).
 *   `02_03_Glosario_Matematico.md`: Fórmulas específicas de simulación.
-*   `caso_clima/`: Código fuente Python (Caso Exitoso).
-*   `caso_finanzas/`: Código fuente Python (Caso Fallido/Reflexivo).
+*   `01_caso_clima/`: Código fuente Python (Caso Exitoso).
+*   `10_caso_finanzas/`: Código fuente Python (Caso Fallido/Reflexivo).
 
 ### 03_Validacion_Praxis (Resultados)
 *   `03_01_Evidencia_Empirica.md`: Clima, Energía, Epidemiología (LoE 4-5).
@@ -3176,11 +3176,11 @@ Para replicar los resultados:
 
 *   **Caso Clima (Éxito):** Valida la inercia macro del clima regional.
     ```bash
-    python3 02_Modelado_Simulacion/caso_clima/src/validate.py
+    python3 02_Modelado_Simulacion/01_caso_clima/src/validate.py
     ```
 *   **Caso Finanzas (Fallo):** Demuestra el límite del modelo ante la reflexividad.
     ```bash
-    python3 02_Modelado_Simulacion/caso_finanzas/src/validate.py
+    python3 02_Modelado_Simulacion/10_caso_finanzas/src/validate.py
     ```
 
 ## 3. Resultados
@@ -3208,12 +3208,12 @@ pip install -r requirements.txt
 
 ### 1. Caso Clima (El Éxito)
 Modelo validado que demuestra cómo la inercia térmica global "esclaviza" las fluctuaciones locales.
-*   **Ejecución:** `python3 02_Modelado_Simulacion/caso_clima/src/validate.py`
+*   **Ejecución:** `python3 02_Modelado_Simulacion/01_caso_clima/src/validate.py`
 *   **Resultado:** EDI 0.45 (Emergencia Fuerte).
 
 ### 2. Caso Finanzas (El Rechazo)
 Modelo que falla intencionalmente para demostrar los límites de la predicción en sistemas reflexivos (Soros).
-*   **Ejecución:** `python3 02_Modelado_Simulacion/caso_finanzas/src/validate.py`
+*   **Ejecución:** `python3 02_Modelado_Simulacion/10_caso_finanzas/src/validate.py`
 *   **Resultado:** EDI 0.05 (Ruido/Aliasing).
 
 ## 📚 Estructura de la Tesis (Versión Consolidada)

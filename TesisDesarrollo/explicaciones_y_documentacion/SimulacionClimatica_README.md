@@ -16,12 +16,12 @@ pip install -r requirements.txt
 
 ### 1. Caso Clima (El Éxito)
 Modelo validado que demuestra cómo la inercia térmica global "esclaviza" las fluctuaciones locales.
-*   **Ejecución:** `python3 02_Modelado_Simulacion/caso_clima/src/validate.py`
+*   **Ejecución:** `python3 02_Modelado_Simulacion/01_caso_clima/src/validate.py`
 *   **Resultado:** EDI 0.45 (Emergencia Fuerte).
 
 ### 2. Caso Finanzas (El Rechazo)
 Modelo que falla intencionalmente para demostrar los límites de la predicción en sistemas reflexivos (Soros).
-*   **Ejecución:** `python3 02_Modelado_Simulacion/caso_finanzas/src/validate.py`
+*   **Ejecución:** `python3 02_Modelado_Simulacion/10_caso_finanzas/src/validate.py`
 *   **Resultado:** EDI 0.05 (Ruido/Aliasing).
 
 ## 📚 Estructura de la Tesis (Versión Consolidada)

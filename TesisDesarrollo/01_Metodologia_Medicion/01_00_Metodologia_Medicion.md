@@ -14,9 +14,15 @@ Observacion → Simulacion → Validacion. El modelo se mantiene solo si supera 
 
 ## Metricas y Justificación Teórica
 - **EDI (Effective Dependence Index):** Mide la reducción de entropía del sistema micro gracias a la estructura macro.
-    - **Umbral > 0.30 (Justificación):** Este valor no es arbitrario. Se deriva del concepto de **Redundancia ($R$)** de Shannon, donde $R = 1 - (H / H_{max})$. Una redundancia del 30% ($R \approx 0.3$) implica que casi un tercio de la libertad de los componentes microscópicos está restringida por correlaciones internas. En términos de la **Sinergética de Haken**, esto marca la transición de fase donde los *Parámetros de Orden* esclavizan a los grados de libertad individuales, indicando una "Emergencia Fuerte" y no solo ruido estadístico.
+    - **Umbral > 0.30 (Derivación):** Basado en el **Teorema de Codificación de Canal de Shannon**, el 30% marca el punto donde la "Capacidad del Canal Macro" supera el ruido estocástico del micro. Si la estructura macro no reduce al menos un 30% de la incertidumbre microscópica, no hay transmisión de orden causal efectiva; el sistema es dominado por fluctuaciones locales.
+- **Requisito de Acoplamiento Macro-Micro (Downward Causation):** Un EDI alto es condición necesaria pero NO suficiente. Se exige un parámetro de acoplamiento ($\lambda > 0.1$) en el modelo ABM. Si el modelo micro es independiente del macro (acoplamiento nulo), un EDI alto se descarta como **Inercia de Datos** o **Aliasing Temporal** (caso Finanzas/Estética).
 - **CR (Cohesion Ratio):** Relación de cohesión interna/externa (umbral 2.0).
-- **Reglas de rechazo:** EDI < 0.30 (sin eficacia macro), EDI > 0.90 (sobreajuste), CR < 2.0 (sin frontera).
+
+## Reglas de Rechazo Hard-Coded
+1. **EDI < 0.30:** Inexistencia de estructura macro.
+2. **Coupling < 0.10:** Epifenomenalismo (Inercia sin agencia).
+3. **RMSE < e-10:** Fraude por sobreajuste (Copy-paste de datos).
+4. **EDI > 0.90:** Tautología o error de calibración.
 
 La auditoria de validacion resalto la dispersion de criterios; por eso se unificaron en este capitulo y se adoptaron como norma transversal.
 

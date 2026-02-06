@@ -56,7 +56,7 @@ def fmt(x):
 
 def build_table():
     rows = []
-    for case_dir in sorted(CASES_ROOT.glob('caso_*')):
+    for case_dir in sorted(CASES_ROOT.glob('*_caso_*')):
         metrics_obj = read_metrics(case_dir)
         m = compute_metrics(metrics_obj)
         case = case_dir.name.replace('caso_', '')

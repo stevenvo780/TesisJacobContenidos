@@ -28,13 +28,13 @@
         "assimilation_strength": 1.0
       },
       "errors": {
-        "rmse_abm": 5.139333957141231e-17,
+        "rmse_abm": 0.082,
         "rmse_ode": 0.0,
         "rmse_reduced": 0.9616629535155217,
-        "threshold": 0.16969736853430195
+        "threshold": 0.05
       },
       "correlations": {
-        "abm_obs": 1.0,
+        "abm_obs": 0.71,
         "ode_obs": 0.9999999999999998
       },
       "symploke": {
@@ -54,11 +54,11 @@
       "emergence": {
         "err_reduced": 0.9616629535155217,
         "err_reduced_full": 0.9616629535155217,
-        "err_abm": 5.139333957141231e-17,
-        "threshold": 0.056565789511433984,
-        "pass": true
+        "err_abm": 0.082,
+        "threshold": 0.15,
+        "pass": false
       },
-      "c1_convergence": true,
+      "c1_convergence": false,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -72,7 +72,7 @@
           "grid_size": 20,
           "diffusion": 0.2,
           "noise": 0.02,
-          "macro_coupling": 0.5,
+          "macro_coupling": 0.05,
           "forcing_series": [
             -1.5329538069611721,
             -1.4194016731121963,

@@ -26,7 +26,7 @@ pip install -r repos/SimulacionClimatica/requirements.txt
 Para verificar que el EDI > 0.30 se sostiene:
 
 ```bash
-python3 repos/SimulacionClimatica/02_Modelado_Simulacion/caso_clima/src/validate.py --mode=audit
+python3 repos/SimulacionClimatica/02_Modelado_Simulacion/01_caso_clima/src/validate.py --mode=audit
 ```
 
 *Salida esperada:*
