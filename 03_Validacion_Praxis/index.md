@@ -12,5 +12,7 @@
 - **[03_10_Validacion_Caso_Contaminacion.md](./03_10_Validacion_Caso_Contaminacion.md)**: Validación aplicada al caso Contaminación.
 - **[03_11_Validacion_Caso_Wikipedia.md](./03_11_Validacion_Caso_Wikipedia.md)**: Validación aplicada al caso Wikipedia.
 - **[03_12_Validacion_Caso_Energia.md](./03_12_Validacion_Caso_Energia.md)**: Validación aplicada al caso Energía.
+- **[03_13_Validacion_Caso_Epidemiologia.md](./03_13_Validacion_Caso_Epidemiologia.md)**: Validación aplicada al caso Epidemiología.
+- **[03_14_Validacion_Caso_Paradigmas_Cientificos.md](./03_14_Validacion_Caso_Paradigmas_Cientificos.md)**: Validación aplicada al caso Paradigmas Científicos.
 - **[03_SINTESIS.md](./03_SINTESIS.md)**: Sintesis Integral de la Carpeta 03_Validacion_Praxis.
 - **[03_Validacion_Praxis.md](./03_Validacion_Praxis.md)**: Validación y Praxis.

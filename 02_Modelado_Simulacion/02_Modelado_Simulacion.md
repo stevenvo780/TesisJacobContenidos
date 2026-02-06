@@ -1,11 +1,36 @@
-# 02 Modelado y Simulación: El Motor del Proyecto
+# 02 Modelado y Simulación: La Clase HybridModel
 
-Este capítulo describe cómo construimos los laboratorios virtuales para estudiar los Hiperobjetos.
+Para validar la Hipótesis H1, hemos implementado un framework de simulación basado en el acoplamiento de escalas. Aquí está la arquitectura lógica del motor:
 
-## ¿Qué estamos simulando?
-No simulamos "cosas", simulamos **relaciones**. 
-*   En el **Clima**, simulamos cómo el calor fluye entre parcelas de aire (Micro) y cómo el sol dicta las estaciones (Macro).
-*   En las **Finanzas**, simulamos cómo los inversores se copian entre ellos (Micro) y cómo las tasas de interés mueven el mercado (Macro).
+## 1. Arquitectura de Clases (Pseudocódigo)
 
-## El Estándar de Construcción
-Todos nuestros modelos siguen el patrón **Híbrido de Dos Niveles**. Si no tienen esta estructura, no pueden participar en la validación de la Hipótesis H1.
+```python
+class HybridModel:
+    def __init__(self, micro_params, macro_params):
+        self.micro = AgentBasedModel(micro_params)  # El "Suelo" (Píxeles)
+        self.macro = DifferentialEquation(macro_params) # El "Satélite" (Tendencia)
+        self.edi = 0.0  # Índice de Emergencia
+
+    def step(self, t, real_data=None):
+        # PASO 1: El Macro dicta la tendencia teórica
+        macro_target = self.macro.predict(t)
+        
+        # PASO 2: El Micro simula interacciones locales
+        self.micro.diffuse()
+        
+        # PASO 3: NUDGING (La eficacia causal de H1)
+        # Aplicamos la "fuerza macro" sobre cada agente local
+        self.micro.apply_nudging(macro_target, strength=0.4)
+        
+        # PASO 4: ASIMILACIÓN (Opcional)
+        if real_data:
+            self.micro.assimilate(real_data[t])
+
+    def evaluate_emergency(self, results_full, results_reduced):
+        # Cálculo del EDI para blindar la tesis
+        self.edi = (rmse(results_reduced) - rmse(results_full)) / rmse(results_reduced)
+        return self.edi
+```
+
+## 2. El Proceso de "Nudging"
+No es un simple ajuste estadístico; es la representación computacional de la **Causalidad Descendente**. El sistema global (Macro) restringe los grados de libertad de los agentes locales (Micro), forzando la emergencia de patrones que el azar no explicaría.

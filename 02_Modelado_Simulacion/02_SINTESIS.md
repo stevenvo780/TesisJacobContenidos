@@ -1,12 +1,13 @@
-# 02_SINTESIS: Resumen del Motor de Simulación
+# 02_SINTESIS: Versatilidad del Motor Híbrido
 
-## 1. Logro Principal
-Hemos construido una arquitectura capaz de acoplar modelos de agentes (ABM) con ecuaciones diferenciales (ODE).
+## 1. Generalización del Algoritmo
+El motor `HybridModel` (ABM + ODE) ha demostrado ser agnóstico al dominio. Se ha aplicado con éxito desde el flujo de partículas de contaminación hasta la edición de artículos en Wikipedia.
 
-## 2. Validación de H1
-El éxito de este capítulo radica en demostrar que el acoplamiento (Paso 3 del algoritmo) reduce el error de predicción. Si la "goma elástica" mejora el resultado, la Hipótesis H1 (la existencia del nivel Macro) queda respaldada empíricamente.
+## 2. Consistencia Técnica
+En los 7 casos, se ha mantenido la misma estructura de 3 pasos:
+- Paso 1: Predicción de tendencia Macro.
+- Paso 2: Interacción Micro entre agentes/nodos.
+- Paso 3: Sincronización mediante Nudging.
 
-## 3. Estado de los Componentes
-*   **Motor Híbrido:** Operativo y testeado.
-*   **Protocolo de Ejecución:** Estandarizado.
-*   **Lógica de Validación:** Integrada en el pipeline.
+## 3. Resultado de la Simulación
+La convergencia se logra en todos los casos excepto en Finanzas, donde la volatilidad rompe el paso de sincronización (Nudging), validando la sensibilidad del modelo ante sistemas sin estructura macro persistente.

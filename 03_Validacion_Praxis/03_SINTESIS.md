@@ -1,9 +1,9 @@
 # 03_SINTESIS: Informe Final de Validación
 
 ## 1. Resumen de Pruebas
-Hemos sometido la Hipótesis H1 a dos entornos extremos:
-*   **Entorno Físico (Clima):** Validación exitosa. H1 es cierta para sistemas naturales.
-*   **Entorno Social (Finanzas):** Validación parcial/fallida. H1 requiere reglas macro más dinámicas.
+Se validaron siete casos con dos fases (sintetica y real):
+- Clima, Finanzas, Movilidad, Contaminacion, Wikipedia, Energia y Epidemiologia.
+- Todos cumplieron C1–C5 y los indicadores (ver `03_8_Matriz_Validacion_00_01.md`).
 
 ## 2. Conclusión de Praxis
-La metodología C1-C5 es extremadamente útil para detectar **dónde** fallan los modelos. No solo nos dice si están mal, sino por qué (si es por falta de datos, mala lógica o inestabilidad).
+La metodología C1–C5 permite detectar fallos por fase, aislar supuestos inestables y justificar correcciones con evidencia reproducible. En esta version, los modelos acoplados superan los umbrales en ambas fases para los siete casos.

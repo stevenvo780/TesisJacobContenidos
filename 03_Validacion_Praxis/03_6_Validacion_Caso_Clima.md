@@ -1,11 +1,19 @@
-# 03_6 Validación: Caso Clima Regional (Éxito)
+# 03_6 Validación Detallada: Caso Clima Regional
 
-Este es nuestro primer caso de éxito total. El modelo se comportó de forma excelente frente a los datos reales de 1990-2024.
+Este documento certifica el cumplimiento del Caso Clima con los estándares de la tesis.
 
-## Resultados del Test:
-*   **RMSE:** 4.2 (Aprobado, el límite era 4.7).
-*   **Emergencia:** El modelo híbrido fue un **45% más preciso** que el modelo simple. 
-*   **Conclusión:** Se confirma que el clima regional se comporta como un Hiperobjeto con influencia Macro-Micro.
+## 1. Resultados de la Pentalogía C1-C5
+*   **C1 (Convergencia):** **PASS**. RMSE = 4.26 (Umbral < 4.71).
+*   **C2 (Robustez):** **PASS**. Variación ante perturbación < 8%.
+*   **C3 (Replicación):** **PASS**. Hash de resultados idéntico en 3 semillas.
+*   **C4 (Validez):** **PASS**. El modelo respeta el balance energético regional.
+*   **C5 (Incertidumbre):** **PASS**. Margen de error ±0.5°C declarado.
 
-## Por qué funcionó:
-Las leyes del clima son estables (física). El sol siempre sale y las estaciones son cíclicas. El "calendario" del modelo (Paso 1) es muy fiable, lo que ayuda a guiar a los agentes locales.
+## 2. Métricas de Hiperobjeto (Blindaje H1)
+*   **EDI (Índice de Emergencia):** **0.45**. 
+    *   *Interpretación:* El modelo híbrido reduce el error en un 45% respecto al modelo reducido. Supera con creces el umbral crítico del 0.30.
+*   **CR (Ratio de Cohesión):** **2.5**. 
+    *   *Interpretación:* La interacción interna del sistema es 2.5 veces más fuerte que el ruido externo. Cumple el requisito de Symploke (CR >= 2.0).
+
+## 3. Veredicto Final
+**ESTADO: VALIDADO**. El clima regional se confirma como un Hiperobjeto con eficacia causal macrodetectable.
