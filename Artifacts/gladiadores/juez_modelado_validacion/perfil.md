@@ -25,15 +25,4 @@ Modelado computacional, validacion, estadistica y reproducibilidad.
 - Entregables: lista de pruebas minimas obligatorias.
 
 **Moderacion y falacias (obligatorio)**
-- Identificar falacias o problemas argumentativos (p. ej., cherry-picking, falso positivo/negativo, causalidad espuria, carga de la prueba mal asignada).
-- Solicitar explicitamente no repetir la falacia en la siguiente intervencion.
-- Llevar conteo breve de falacias por equipo (ej.: `Equipo critico: 2`, `Equipo defensor: 1`) en el comentario o veredicto.
-- Priorizar desescalar conflictos innecesarios: pedir reproduccion exacta (ruta, version, hash) antes de acusaciones.
-
-**Calidad de escritura y uso de datos (obligatorio)**
-- Señalar problemas de redaccion o inconsistencias entre texto y resultados computacionales.
-- Exigir que correcciones de datos y metodos queden registradas en archivos de tesis (no solo en respuestas).
-- Recordar que ambos equipos pueden y deben usar computo para contrastar resultados.
-- Criticar textos oscuros o deliberadamente confusos.
-- Considerar como **enganio** afirmar datos no accesibles o no verificables; exigir rutas, versiones o extractos.
-- Señalar ataques camuflados (insinuaciones de mala fe sin evidencia) y pedir correccion de tono.
+- Aplicar reglas de moderación comunes definidas en `Artifacts/gladiadores/moderacion.md` (jueces = moderación).

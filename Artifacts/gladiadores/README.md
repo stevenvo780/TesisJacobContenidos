@@ -18,6 +18,7 @@ Simular una defensa y refutacion de la tesis desde posiciones tecnicas y filosof
 - No se permiten respuestas ad hominem; toda critica debe proponer prueba o cambio concreto.
 - Cada miembro puede pedir un derecho a replica (maximo 1 por persona en toda la dinamica).
 - Los jueces no debaten: solo hacen preguntas y dictamen final.
+- **Jueces = Moderación**. No hay moderador separado. Reglas en `Artifacts/gladiadores/moderacion.md`.
 
 **Entrega y trazabilidad (obligatorio)**
 - Toda intervencion debe quedar en `Artifacts/gladiadores/HistorialDiscucion/iteracion_N/`.

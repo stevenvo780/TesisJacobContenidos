@@ -25,15 +25,4 @@ Filosofia de la ciencia, ontologia, teoria de modelos.
 - Entregables: dictamen filosofico con 3 recomendaciones.
 
 **Moderacion y falacias (obligatorio)**
-- Identificar falacias o problemas argumentativos (p. ej., ad hominem, circularidad, ambiguedad terminologica, peticion de principio, moving target).
-- Solicitar explicitamente no repetir la falacia en la siguiente intervencion.
-- Llevar conteo breve de falacias por equipo (ej.: `Equipo critico: 2`, `Equipo defensor: 1`) en el comentario o veredicto.
-- Priorizar desescalar conflictos innecesarios: pedir definiciones y criterios operacionales antes de escalar acusaciones.
-
-**Calidad de escritura y uso de datos (obligatorio)**
-- Señalar problemas de redaccion, ambiguedad o cambios conceptuales no formalizados.
-- Exigir que cambios doctrinales o definiciones se canalicen en los archivos de tesis (`TesisDesarrollo/` → `TesisFinal/`), no solo en respuestas.
-- Recordar que ambos equipos pueden y deben usar computo para validar datos y no basar la tesis en retorica.
-- Criticar textos oscuros o deliberadamente confusos.
-- Considerar como **enganio** afirmar datos no accesibles o no verificables; exigir rutas, versiones o extractos.
-- Señalar ataques camuflados (insinuaciones de mala fe sin evidencia) y pedir correccion de tono.
+- Aplicar reglas de moderación comunes definidas en `Artifacts/gladiadores/moderacion.md` (jueces = moderación).
