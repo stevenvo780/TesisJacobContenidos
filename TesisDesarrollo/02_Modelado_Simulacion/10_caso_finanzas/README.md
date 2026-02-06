@@ -38,3 +38,22 @@ El script cachea los datos reales en `data/spy_monthly.csv`.
 - Split entrenamiento/validacion sintetica: 2000-2009 / 2010-2019.
 - Split entrenamiento/validacion real: 1990-2010 / 2011-2024.
 - Nudging con observacion rezagada (t-1) para evaluacion de corto plazo.
+
+## Resultados
+
+<!-- AUTO:RESULTS:START -->
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | -0.085 | -0.020 |
+| CR      | 0.902 | 1.437 |
+| RMSE ABM| 0.8510 | 0.6094 |
+| RMSE ODE| 0.2529 | 0.1469 |
+| Corr ABM| 0.9974 | 0.9920 |
+| Corr ODE| 0.9980 | 0.9894 |
+| C1      | ❌ | ❌ |
+| C2      | ❌ | ❌ |
+| C3      | ✅ | ✅ |
+| C4      | ✅ | ✅ |
+| C5      | ✅ | ✅ |
+| Estado  | NO VALIDADO | NO VALIDADO |
+<!-- AUTO:RESULTS:END -->

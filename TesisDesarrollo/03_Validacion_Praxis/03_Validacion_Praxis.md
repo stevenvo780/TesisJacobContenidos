@@ -13,23 +13,16 @@ Las auditorias de validacion exigieron coherencia entre criterios y reportes. Po
 ## Resultados Clave con Nivel de Evidencia (LoE)
 El sistema de clasificación LoE (1-5) indica la robustez de los datos (5 = Datos físicos >30 años; 1 = Datos sintéticos/teóricos).
 
-- **Validados (Empíricos):**
-    - Clima (LoE 5): Robusto, EDI 0.45.
-    - Energia (LoE 4): Estable, EDI 0.38.
-    - Epidemiologia (LoE 4): Fuerte acople, EDI 0.55.
-    - Contaminacion (LoE 4): Memoria alta, EDI 0.52.
-    - Wikipedia (LoE 3): Dinámica digital clara, EDI 0.41.
+- **Validados (con código ejecutable, superan umbrales):**
+    - Contaminacion (LoE 4): EDI 0.423, CR 2.472.
+    - Movilidad (LoE 2): EDI 0.740, CR 5.273. Series cortas, prototipo.
 
-- **Prospectivos:**
-    - Postverdad (LoE 2): Proxies indirectos, EDI 0.34.
+- **No validados (con código ejecutable, no superan umbrales):**
+    - Clima (LoE 5): EDI 0.074 (< 0.30), CR 1.102 (< 2.0). Estructura macro débil.
+    - Finanzas (LoE 5): EDI -0.020, macro_coupling=0.0. Falla por reflexividad.
 
-- **Teoricos (Baja Certeza):**
-
-- **Rechazado:**
-    - Finanzas (LoE 5): Falla técnica por alta frecuencia. EDI espurio < 0.10 real.
-
-- **Prototipo:**
-    - Movilidad (LoE 2): Series cortas.
+- **Tautológicos (sin código ejecutable, métricas invalidadas):**
+    - Energia (LoE 4), Epidemiologia (LoE 4), Conciencia, Estetica, Justicia, Paradigmas, Postverdad (LoE 2), Wikipedia (LoE 3): rmse_abm ≈ 0 por assimilation_strength inflado en modelo reducido. EDI previo (1.000) era artefacto de comparación injusta.
 
 ## Post-Mortem y Falsacion
 El caso Finanzas establece la frontera epistemica del modelo: alta reflexividad y alta frecuencia impiden un parametro de orden estable. Las pruebas de exogeneidad, ruido blanco e invisibilidad de agentes refuerzan que los exitos no son tautologias.

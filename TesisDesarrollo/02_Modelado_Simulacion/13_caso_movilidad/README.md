@@ -8,6 +8,24 @@
 - CR (estimado): 5.273
 - Estado general: True
 
+
+<!-- AUTO:RESULTS:START -->
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | 0.975 | 0.740 |
+| CR      | 1.731 | 5.273 |
+| RMSE ABM| 0.0485 | 0.1586 |
+| RMSE ODE| 0.0485 | 0.1586 |
+| Corr ABM| 0.9980 | 0.3569 |
+| Corr ODE| 0.9980 | 0.3569 |
+| C1      | ✅ | ✅ |
+| C2      | ✅ | ✅ |
+| C3      | ✅ | ✅ |
+| C4      | ✅ | ✅ |
+| C5      | ✅ | ✅ |
+| Estado  | VALIDADO | VALIDADO |
+<!-- AUTO:RESULTS:END -->
+
 ## Archivos clave
 - `report.md` (reporte principal)
 - `metrics.json` (metricas completas)

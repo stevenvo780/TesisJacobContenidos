@@ -1,8 +1,8 @@
 # Reporte de Validacion - Caso Finanzas Globales
 
 ## Metadata
-- generated_at: 2026-02-06T19:50:26.434611Z
-- git_commit: bf2755bb29ef7953a185458eaa750196dc546f90
+- generated_at: 2026-02-06T20:27:29.177049Z
+- git_commit: c4a76ca48302c8b6035bba80b71cdda042cbbb48
 - git_dirty: True
 
 ## Fase synthetic
@@ -53,13 +53,13 @@
 - persistence_pass: True
 - persistence_window_variance: 0.098
 - obs_window_variance: 0.200
-- emergence_pass: True
+- emergence_pass: False
 
 ### Errores
 - rmse_abm: 0.851
 - rmse_ode: 0.253
-- rmse_reduced: 2.155
-- rmse_reduced_full: 1.310
+- rmse_reduced: 0.784
+- rmse_reduced_full: 0.083
 - threshold: 0.505
 
 ## Fase real
@@ -100,13 +100,13 @@
 - persistence_pass: True
 - persistence_window_variance: 0.014
 - obs_window_variance: 0.022
-- emergence_pass: True
+- emergence_pass: False
 
 ### Errores
 - rmse_abm: 0.609
 - rmse_ode: 0.147
-- rmse_reduced: 1.754
-- rmse_reduced_full: 1.151
+- rmse_reduced: 0.598
+- rmse_reduced_full: 0.049
 - threshold: 0.305
 
 ## Notas

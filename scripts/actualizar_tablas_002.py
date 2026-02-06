@@ -31,8 +31,13 @@ def compute_metrics(metrics_obj):
     symploke = ph.get('symploke', {})
     rmse_reduced = errors.get('rmse_reduced')
     rmse_abm = errors.get('rmse_abm')
+
+    # Detectar caso tautológico: rmse_abm ≈ 0 indica que assimilation
+    # domina completamente y el EDI no mide acoplamiento real
+    tautological = (rmse_abm is not None and rmse_abm < 1e-6)
+
     edi = None
-    if rmse_reduced and rmse_abm is not None and rmse_reduced != 0:
+    if not tautological and rmse_reduced and rmse_abm is not None and rmse_reduced != 0:
         edi = (rmse_reduced - rmse_abm) / rmse_reduced
     internal = symploke.get('internal')
     external = symploke.get('external')
@@ -42,7 +47,8 @@ def compute_metrics(metrics_obj):
     return {
         'edi': edi,
         'cr': cr,
-        'overall_pass': ph.get('overall_pass')
+        'overall_pass': False if tautological else ph.get('overall_pass'),
+        'tautological': tautological,
     }
 
 
@@ -68,9 +74,16 @@ def build_table(rows):
     lines.append("| Caso | EDI | CR | Estado | Reporte |")
     lines.append("| :--- | ---: | ---: | :--- | :--- |")
     for case, m, report_link in rows:
-        edi = fmt(m['edi']) if m else 'n/a'
+        if m and m.get('tautological'):
+            edi = 'TAUT'
+            state = 'False'
+        elif m:
+            edi = fmt(m['edi'])
+            state = str(m['overall_pass'])
+        else:
+            edi = 'n/a'
+            state = 'n/a'
         cr = fmt(m['cr']) if m else 'n/a'
-        state = str(m['overall_pass']) if m else 'n/a'
         lines.append(f"| {case} | {edi} | {cr} | {state} | {report_link} |")
     return "\n".join(lines)
 

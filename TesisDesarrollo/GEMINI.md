@@ -39,8 +39,8 @@ Validar la existencia de **Hiperobjetos** (entidades masivamente distribuidas) m
 *   `04_03_Fronteras_y_Aliasing.md`: Límites técnicos del modelo.
 
 ## 3. Estado de los Modelos
-*   **Caso Clima:** VALIDADO (EDI 0.45). Demuestra inercia macro.
-*   **Caso Finanzas:** RECHAZADO (EDI 0.05). Demuestra reflexividad y aliasing temporal.
+*   **Caso Clima:** CONVERGENTE (EDI 0.45). Sugiere inercia macro.
+*   **Caso Finanzas:** LIMITADO (EDI 0.05). Evidencia reflexividad y aliasing temporal.
 
 ## 4. Instrucciones para la IA
 *   Priorizar la **Navaja de Ockham**: Si algo se puede explicar sin la capa macro, se descarta el hiperobjeto.

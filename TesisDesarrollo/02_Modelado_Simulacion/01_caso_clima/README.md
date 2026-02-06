@@ -38,3 +38,22 @@ El script cachea los datos reales en `data/regional_monthly_tavg.csv`.
 - Split entrenamiento/validacion sintetica: 2000-2009 / 2010-2019.
 - Split entrenamiento/validacion real: 1990-2010 / 2011-2024.
 - Nudging con observacion rezagada (t-1) para evaluacion de corto plazo.
+
+## Resultados
+
+<!-- AUTO:RESULTS:START -->
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | -0.458 | 0.074 |
+| CR      | 1.028 | 1.102 |
+| RMSE ABM| 0.3287 | 3.8300 |
+| RMSE ODE| 0.0898 | 4.5263 |
+| Corr ABM| 0.9982 | 0.8941 |
+| Corr ODE| 0.9981 | 0.8351 |
+| C1      | ✅ | ✅ |
+| C2      | ✅ | ✅ |
+| C3      | ✅ | ✅ |
+| C4      | ✅ | ✅ |
+| C5      | ✅ | ✅ |
+| Estado  | VALIDADO | VALIDADO |
+<!-- AUTO:RESULTS:END -->

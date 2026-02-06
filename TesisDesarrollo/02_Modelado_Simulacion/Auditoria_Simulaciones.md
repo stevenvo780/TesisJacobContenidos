@@ -4,7 +4,7 @@ Criterios: consistencia documental, presencia de metricas y señales de posibles
 
 | Caso | EDI | CR | Estado | Hallazgos |
 | :--- | ---: | ---: | :--- | :--- |
-| 01_caso_clima | 0.458 | 1.057 | True | OK |
+| 01_caso_clima | 0.074 | 1.102 | False | OK |
 | 02_caso_conciencia | 1.000 | 1.382 | True | OK |
 | 03_caso_contaminacion | 0.423 | 2.472 | True | OK |
 | 04_caso_energia | 1.000 | 1.824 | True | OK |
@@ -13,7 +13,7 @@ Criterios: consistencia documental, presencia de metricas y señales de posibles
 | 07_caso_falsacion_exogeneidad | -2.513 | 1.005 | False | OK |
 | 08_caso_falsacion_no_estacionariedad | 0.009 | 1.002 | False | OK |
 | 09_caso_falsacion_observabilidad | n/a | n/a | False | EDI no disponible (n/a); CR no disponible (n/a) |
-| 10_caso_finanzas | 0.975 | 1.396 | True | OK |
+| 10_caso_finanzas | -0.020 | 1.437 | False | OK |
 | 11_caso_justicia | 1.000 | 1.262 | True | OK |
 | 12_caso_moderacion_adversarial | -0.179 | 1.069 | False | OK |
 | 13_caso_movilidad | 0.740 | 5.273 | True | OK |

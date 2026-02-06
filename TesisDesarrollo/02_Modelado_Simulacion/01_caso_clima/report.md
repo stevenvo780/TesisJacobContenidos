@@ -1,8 +1,8 @@
 # Reporte de Validacion - Caso Clima Regional
 
 ## Metadata
-- generated_at: 2026-02-06T19:50:22.053675Z
-- git_commit: bf2755bb29ef7953a185458eaa750196dc546f90
+- generated_at: 2026-02-06T20:27:20.829541Z
+- git_commit: c4a76ca48302c8b6035bba80b71cdda042cbbb48
 - git_dirty: True
 
 ## Fase synthetic
@@ -55,17 +55,17 @@
 - obs_window_variance: 0.456
 - emergence_pass: False
 - effective_information: 0.0000
-- edi_control: -0.6109
+- edi_control: -13.5972
 
 ### Errores
 - rmse_abm: 0.329
 - rmse_ode: 0.090
-- rmse_reduced: 2.043
-- rmse_reduced_full: 1.762
+- rmse_reduced: 0.225
+- rmse_reduced_full: 0.143
 - threshold: 0.791
 
 ## Fase real
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
 - start: 1990-01-01
@@ -102,15 +102,15 @@
 - persistence_pass: True
 - persistence_window_variance: 68.196
 - obs_window_variance: 59.561
-- emergence_pass: True
+- emergence_pass: False
 - effective_information: 0.0000
-- edi_control: 0.0896
+- edi_control: -0.7322
 
 ### Errores
 - rmse_abm: 3.830
 - rmse_ode: 4.526
-- rmse_reduced: 7.872
-- rmse_reduced_full: 8.534
+- rmse_reduced: 4.137
+- rmse_reduced_full: 1.439
 - threshold: 4.717
 
 ## Notas

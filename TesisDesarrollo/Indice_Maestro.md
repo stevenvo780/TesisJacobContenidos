@@ -12,7 +12,7 @@ Lectura recomendada en orden:
 Documentos de referencia:
 
 - Resumen general del repositorio: `README.md`
-- Tesis final (placeholder): `../Tesis.md`
+- Tesis final: `../TesisFinal/Tesis.md`
 
 Casos enumerados (02_Modelado_Simulacion):
 

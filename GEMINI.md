@@ -44,8 +44,8 @@ Al interactuar con este proyecto, se deben seguir estas reglas:
 1.  **Navaja de Ockham:** No postular una capa macro (Hiperobjeto) si los datos se explican mediante interacciones micro (ABM) o ruido.
 2.  **Rigor Académico:** Las afirmaciones sobre emergencia deben estar respaldadas por el cálculo de EDI. Citar a Haken (Sinergética) o Shannon (Entropía) cuando se hable de métricas de información.
 3.  **Estado de los Casos:**
-    *   `Clima`: Éxito (Emergencia Fuerte).
-    *   `Finanzas`: Fracaso (Aliasing Temporal/Reflexividad).
+    *   `Clima`: Convergente (Emergencia Fuerte).
+    *   `Finanzas`: Divergente (Límite por Reflexividad).
 4.  **Terminología:** Consultar `TesisDesarrollo/00_Marco_Conceptual/00_02_Glosario_Maestro.md` para términos como "Symploké", "Causalidad Descendente" o "Nudging".
 
 ## 5. Documentos de Referencia Rápida

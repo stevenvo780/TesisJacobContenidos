@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-02-06T19:50:22.053675Z",
+  "generated_at": "2026-02-06T20:27:20.829541Z",
   "git": {
     "root": "/workspace/repos/SimulacionClimatica",
-    "commit": "bf2755bb29ef7953a185458eaa750196dc546f90",
+    "commit": "c4a76ca48302c8b6035bba80b71cdda042cbbb48",
     "dirty": true
   },
   "phases": {
@@ -31,9 +31,9 @@
       "errors": {
         "rmse_abm": 0.3286847190207166,
         "rmse_ode": 0.08979186384687265,
-        "rmse_reduced": 2.0428602110854124,
+        "rmse_reduced": 0.22544648671393672,
         "threshold": 0.7907355709125322,
-        "edi_control": -0.6109247980420477
+        "edi_control": -13.597229737096457
       },
       "correlations": {
         "abm_obs": 0.9981846699342884,
@@ -54,13 +54,13 @@
         "pass": true
       },
       "emergence": {
-        "err_reduced": 2.0428602110854124,
-        "err_reduced_full": 1.7615035574358167,
+        "err_reduced": 0.22544648671393672,
+        "err_reduced_full": 0.14285426190094336,
         "err_abm": 0.3286847190207166,
         "threshold": 0.2635785236375107,
         "pass": false,
         "effective_information": 0.0,
-        "edi_control": -0.6109247980420477
+        "edi_control": -13.597229737096457
       },
       "c1_convergence": true,
       "c2_robustness": true,
@@ -389,9 +389,9 @@
       "errors": {
         "rmse_abm": 3.830046321763408,
         "rmse_ode": 4.526349416015212,
-        "rmse_reduced": 7.871655196020476,
+        "rmse_reduced": 4.136998241913613,
         "threshold": 4.716849155457634,
-        "edi_control": 0.08964686807620431
+        "edi_control": -0.7321704146978171
       },
       "correlations": {
         "abm_obs": 0.8940782589739383,
@@ -412,13 +412,13 @@
         "pass": true
       },
       "emergence": {
-        "err_reduced": 7.871655196020476,
-        "err_reduced_full": 8.533725559966639,
+        "err_reduced": 4.136998241913613,
+        "err_reduced_full": 1.4393180733758006,
         "err_abm": 3.830046321763408,
         "threshold": 1.5722830518192117,
-        "pass": true,
+        "pass": false,
         "effective_information": 0.0,
-        "edi_control": 0.08964686807620431
+        "edi_control": -0.7321704146978171
       },
       "c1_convergence": true,
       "c2_robustness": true,
@@ -888,7 +888,7 @@
           34
         ]
       },
-      "overall_pass": true
+      "overall_pass": false
     }
   }
 }
