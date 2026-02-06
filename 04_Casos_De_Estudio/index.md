@@ -24,4 +24,5 @@ La biblioteca de experimentos reales de la tesis.
 20. **[04_21_Caso_Justicia_Normatividad.md](./04_21_Caso_Justicia_Normatividad.md)**: Caso Justicia y Normatividad.
 21. **[04_22_Caso_Conciencia_Fenomenica.md](./04_22_Caso_Conciencia_Fenomenica.md)**: Caso Conciencia Fenomenica.
 22. **[04_23_Caso_Postverdad_Redes.md](./04_23_Caso_Postverdad_Redes.md)**: Caso Postverdad en Redes.
-23. **[04_SINTESIS.md](./04_SINTESIS.md)**: Conclusiones comparativas.
+23. **[04_24_Falsacion_Protocolo.md](./04_24_Falsacion_Protocolo.md)**: Protocolo de falsación.
+24. **[04_SINTESIS.md](./04_SINTESIS.md)**: Conclusiones comparativas.

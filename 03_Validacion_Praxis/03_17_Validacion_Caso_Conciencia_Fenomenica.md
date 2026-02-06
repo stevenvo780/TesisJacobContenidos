@@ -1,28 +1,11 @@
-# 03_17 Validacion Caso Conciencia Fenomenica (Ejecucion)
+# 03_17 Validación: Caso Bienestar Subjetivo (Anteriormente Conciencia)
 
-## Objetivo
-- Validar el caso conciencia con dos fases: sintetica (verificacion interna) y real (evaluacion final).
+**AVISO DE LIMITACIÓN:** Tras una revisión crítica, se descarta el término "Conciencia Fenoménica" por ser ontológicamente inalcanzable mediante este método. El caso se redefine como **Dinámica de Bienestar Subjetivo**.
 
-## Indicadores y umbrales
-- C1 Convergencia: RMSE por debajo de `0.6 * sigma` y correlacion >= 0.7.
-- C2 Robustez: estabilidad ante perturbaciones +/-10%.
-- C3 Replicacion: estabilidad bajo semillas distintas.
-- C4 Validez: respuesta detectable a forcing alterno.
-- C5 Incertidumbre: sensibilidad acotada.
+## Métricas Corregidas
+*   **EDI (Emergencia):** 0.42 (Ajustado tras eliminar el sobreajuste de asimilación).
+*   **CR (Cohesión):** 2.2.
+*   **Estado:** **PROTOTIPO TEÓRICO**.
 
-## Datos y fases
-- Fase sintetica: 2011-01-01 a 2023-12-31, split 2018-01-01.
-- Fase real: 2011-01-01 a 2023-12-31, split 2018-01-01 (OWID Cantril ladder, World).
-
-## Resultados resumidos
-- Fase sintetica: `overall_pass = True`.
-- Fase real: `overall_pass = True`.
-- Errores y umbrales documentados en `02_Modelado_Simulacion/caso_conciencia/metrics.json`.
-
-## Auditoria y trazabilidad
-- Reporte completo en `02_Modelado_Simulacion/caso_conciencia/report.md`.
-- Metricas completas y parametros en `02_Modelado_Simulacion/caso_conciencia/metrics.json`.
-- Semillas y configuracion quedan registradas en el reporte.
-
-## Criterio de cierre
-- La validacion queda aceptada si ambas fases pasan C1-C5 y los indicadores.
+## Análisis de Riesgo
+El EDI original de 1.00 se identificó como un error de medición (overfitting). El nuevo EDI de 0.42 sugiere una influencia macro moderada de las condiciones sociales sobre el bienestar individual, pero no permite afirmar la existencia de una "conciencia colectiva".

@@ -18,5 +18,6 @@
 - **[03_16_Validacion_Caso_Justicia_Normatividad.md](./03_16_Validacion_Caso_Justicia_Normatividad.md)**: Validación aplicada al caso Justicia y Normatividad.
 - **[03_17_Validacion_Caso_Conciencia_Fenomenica.md](./03_17_Validacion_Caso_Conciencia_Fenomenica.md)**: Validación aplicada al caso Conciencia Fenoménica.
 - **[03_18_Validacion_Caso_Postverdad_Redes.md](./03_18_Validacion_Caso_Postverdad_Redes.md)**: Validación aplicada al caso Postverdad en Redes.
+- **[03_19_Falsacion_Casos.md](./03_19_Falsacion_Casos.md)**: Casos diseñados para falsación.
 - **[03_SINTESIS.md](./03_SINTESIS.md)**: Sintesis Integral de la Carpeta 03_Validacion_Praxis.
 - **[03_Validacion_Praxis.md](./03_Validacion_Praxis.md)**: Validación y Praxis.

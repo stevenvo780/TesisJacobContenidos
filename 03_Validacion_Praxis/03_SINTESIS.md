@@ -1,9 +1,10 @@
-# 03_SINTESIS: Informe Final de Validación
+# 03_SINTESIS: Informe de Integridad de Resultados
 
-## 1. Resumen de Pruebas
-Se evaluaron once casos con dos fases (sintetica y real):
-- Clima, Finanzas, Movilidad, Contaminacion, Wikipedia, Energia, Epidemiologia, Paradigmas Cientificos, Estetica y Estilos, Justicia y Normatividad, Conciencia Fenomenica.
-- Se validaron 9/11 casos. Movilidad queda como prototipo y Finanzas como rechazado (ver `03_8_Matriz_Validacion_00_01.md`).
+## 1. Balance del Portafolio
+De los 12 hiperobjetos propuestos:
+*   **5 Confirmados:** Estructuras robustas con datos reales.
+*   **3 Sobreajustados:** Resultados sospechosos que requieren precaución.
+*   **4 Rechazados:** Sistemas donde la hipótesis H1 ha fallado.
 
-## 2. Conclusión de Praxis
-La metodología C1–C5 permite detectar fallos por fase, aislar supuestos inestables y justificar correcciones con evidencia reproducible. En esta version, los modelos acoplados superan los umbrales en ambas fases para nueve casos y dejan dos como referencia falsable.
+## 2. Conclusión Académica
+La tesis cumple su objetivo no al "validar todo", sino al establecer una **frontera clara** entre lo que es un hiperobjeto con eficacia causal y lo que es simplemente un sistema complejo desorganizado.
