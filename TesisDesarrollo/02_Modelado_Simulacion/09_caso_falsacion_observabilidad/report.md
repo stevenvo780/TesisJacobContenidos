@@ -47,3 +47,16 @@
 
 ## Notas
 - Cobertura deliberadamente insuficiente para falsacion.
+
+## Datos Necesarios para Resolver la Observabilidad
+Este caso falla por falta de observaciones suficientes (coverage 0.31 en fase real). Para completarlo sin forzar resultados, se requiere un dataset con:
+- Cobertura temporal continua.
+- Observables directos o proxies confiables.
+- Metadata para diferenciar interaccion interna vs externa.
+
+Fuentes sugeridas (ejemplos de alta observabilidad):
+```
+GDELT 2.1 (eventos globales): https://www.gdeltproject.org/
+Wikipedia Pageviews (actividad agregada): https://dumps.wikimedia.org/other/pageviews/
+World Bank WDI (indicadores estructurales): https://datacatalog.worldbank.org/
+```

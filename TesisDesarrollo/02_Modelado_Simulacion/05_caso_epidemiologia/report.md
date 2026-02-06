@@ -109,3 +109,15 @@
 - Fase sintetica: verificacion interna con serie controlada.
 - Fase real: evaluacion final con datos OWID (World).
 - Sensibilidad reportada en metrics.json.
+
+## Datos Adicionales para Completar CR (Cohesion)
+En la fase real, la cohesion (CR) no puede calcularse con precision porque la variable `external` aparece como 0. Para completar este indicador sin forzar resultados, se requiere una medida de interaccion externa (movilidad y conectividad). Recomendaciones:
+- Movilidad agregada por pais y categoria (poblacion en transito).
+- Flujo de transporte internacional como proxy de acoplamiento externo.
+
+Fuentes sugeridas (para integrar en la fase real):
+```
+OWID COVID-19 data (casos/defunciones): https://covid.ourworldindata.org/data/owid-covid-data.csv
+Google Community Mobility Reports (CSV historico): https://www.google.com/covid19/mobility/
+World Bank - Air transport passengers (IS.AIR.PSGR): https://data.worldbank.org/indicator/IS.AIR.PSGR
+```
