@@ -23,5 +23,8 @@
 - **[03_21_Validacion_Falsacion_Observabilidad.md](./03_21_Validacion_Falsacion_Observabilidad.md)**: Falsación por observabilidad.
 - **[03_22_Validacion_Falsacion_No_Estacionariedad.md](./03_22_Validacion_Falsacion_No_Estacionariedad.md)**: Falsación por no‑estacionariedad.
 - **[03_23_Analisis_Fallos.md](./03_23_Analisis_Fallos.md)**: Análisis interpretativo de fallos.
+- **[03_24_Validacion_Moderacion_Adversarial.md](./03_24_Validacion_Moderacion_Adversarial.md)**: Validación moderación adversarial.
+- **[03_25_Validacion_RTB_Publicidad.md](./03_25_Validacion_RTB_Publicidad.md)**: Validación RTB publicidad.
+- **[03_26_Validacion_Politicas_Estrategicas.md](./03_26_Validacion_Politicas_Estrategicas.md)**: Validación políticas estratégicas.
 - **[03_SINTESIS.md](./03_SINTESIS.md)**: Sintesis Integral de la Carpeta 03_Validacion_Praxis.
 - **[03_Validacion_Praxis.md](./03_Validacion_Praxis.md)**: Validación y Praxis.

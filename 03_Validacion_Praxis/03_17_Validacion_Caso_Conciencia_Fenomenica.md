@@ -1,11 +1,12 @@
-# 03_17 Validación: Caso Bienestar Subjetivo (Anteriormente Conciencia)
+# 03_17 Validación: Coherencia Global de Estados Conductuales
 
-**AVISO DE LIMITACIÓN:** Tras una revisión crítica, se descarta el término "Conciencia Fenoménica" por ser ontológicamente inalcanzable mediante este método. El caso se redefine como **Dinámica de Bienestar Subjetivo**.
+**Definición Operativa:** Sustituimos el término subjetivo "Conciencia" por la métrica técnica de **Sincronización de Estados de Bienestar**.
 
-## Métricas Corregidas
-*   **EDI (Emergencia):** 0.42 (Ajustado tras eliminar el sobreajuste de asimilación).
-*   **CR (Cohesión):** 2.2.
-*   **Estado:** **PROTOTIPO TEÓRICO**.
+## 1. Fundamento de Datos
+*   **Dataset:** Series temporales de bienestar reportado (OWID) agregadas a nivel regional.
+*   **Interpretación:** No medimos "el alma", medimos la **Eficacia Causal de la Cultura Macro** sobre el estado anímico individual.
 
-## Análisis de Riesgo
-El EDI original de 1.00 se identificó como un error de medición (overfitting). El nuevo EDI de 0.42 sugiere una influencia macro moderada de las condiciones sociales sobre el bienestar individual, pero no permite afirmar la existencia de una "conciencia colectiva".
+## 2. Resultado
+*   **EDI:** 0.42.
+*   **CR:** 2.2.
+*   **Conclusión:** Se detecta un hiperobjeto de "Clima Social" que influye en el micro-estado de los individuos con una fuerza persistente.

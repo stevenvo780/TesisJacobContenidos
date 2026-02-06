@@ -31,4 +31,7 @@ La biblioteca de experimentos reales de la tesis.
 27. **[04_28_Plan_Adversarial_Moderacion.md](./04_28_Plan_Adversarial_Moderacion.md)**: Plan Moderación Adversarial.
 28. **[04_29_Plan_RTB_Publicidad.md](./04_29_Plan_RTB_Publicidad.md)**: Plan RTB Publicidad.
 29. **[04_30_Plan_Politicas_Estrategicas.md](./04_30_Plan_Politicas_Estrategicas.md)**: Plan Políticas Estratégicas.
-30. **[04_SINTESIS.md](./04_SINTESIS.md)**: Conclusiones comparativas.
+30. **[04_31_Caso_Moderacion_Adversarial.md](./04_31_Caso_Moderacion_Adversarial.md)**: Caso Moderación Adversarial.
+31. **[04_32_Caso_RTB_Publicidad.md](./04_32_Caso_RTB_Publicidad.md)**: Caso RTB Publicidad.
+32. **[04_33_Caso_Politicas_Estrategicas.md](./04_33_Caso_Politicas_Estrategicas.md)**: Caso Políticas Estratégicas.
+33. **[04_SINTESIS.md](./04_SINTESIS.md)**: Conclusiones comparativas.

@@ -20,6 +20,20 @@ Explicar por que ciertos dominios fallan el marco (C1–C5), sin forzar ajuste.
 - Motivo: quiebres de regimen y alta volatilidad reducen correlacion.
 - Criterio: C1 y C4 fallan por error alto y baja coherencia causal.
 
+## Caso jefe final (ejecutado)
+**Moderacion adversarial** (`caso_moderacion_adversarial`)
+- Motivo: retroalimentacion estrategica cambia la distribucion objetivo.
+- Criterio: C1 y C4 fallan por baja correlacion y error alto.
+
+## Caso jefe final adicional (ejecutado)
+**RTB publicidad** (`caso_rtb_publicidad`)
+- Motivo: subastas con agentes estrategicos rompen supuestos de estabilidad.
+- Criterio: C1 y C4 fallan por baja correlacion y error alto.
+
+**Politicas estrategicas** (`caso_politicas_estrategicas`)
+- Motivo: respuesta endogena al regulador altera el objetivo.
+- Criterio: C1 y C4 fallan por baja correlacion y error alto.
+
 ## Implicaciones para la teoria
 - La teoria no es universal: necesita condiciones de observabilidad, estabilidad de regimen y acople macro significativo.
 - La falsacion confirma limites y protege la validez cientifica del marco.

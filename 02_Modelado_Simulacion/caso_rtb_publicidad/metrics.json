@@ -1,0 +1,133 @@
+{
+  "generated_at": "2026-02-06T02:23:14.875633Z",
+  "git": {
+    "root": "/home/estudiante/repos/SimulacionClimatica",
+    "commit": "ac8904357c19923aa16c6831aef69864f6fac68c",
+    "dirty": true
+  },
+  "phases": {
+    "synthetic": {
+      "phase": "synthetic",
+      "data": {
+        "start": "2012-01-01",
+        "end": "2024-12-01",
+        "split": "2018-01-01",
+        "obs_mean": 0.44363501794330146,
+        "obs_std_raw": 0.3569718582465416,
+        "steps": 156,
+        "val_steps": 84,
+        "expected_months": 156,
+        "observed_months": 156,
+        "coverage": 1.0,
+        "outlier_share": 0.0
+      },
+      "calibration": {
+        "alpha": 0.36039343082379505,
+        "beta": 0.001,
+        "macro_coupling": 0.1,
+        "assimilation_strength": 0.0
+      },
+      "errors": {
+        "rmse_abm": 0.5059771636485264,
+        "rmse_ode": 0.7762233890294111,
+        "rmse_reduced": 0.9928552431328809,
+        "threshold": 0.32618874705979156
+      },
+      "correlations": {
+        "abm_obs": 0.8624855262651169,
+        "ode_obs": 0.8057300618188389
+      },
+      "symploke": {
+        "internal": 0.9997397890829173,
+        "external": 0.8803446293863003,
+        "pass": true
+      },
+      "non_locality": {
+        "dominance_share": 0.0025003742745252737,
+        "pass": true
+      },
+      "persistence": {
+        "window_variance": 0.003752249833851478,
+        "obs_window_variance": 0.012775795959750603,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 0.9928552431328809,
+        "err_reduced_full": 0.6340671426170235,
+        "err_abm": 0.5059771636485264,
+        "threshold": 0.10872958235326387,
+        "pass": true
+      },
+      "c1_convergence": false,
+      "c2_robustness": false,
+      "c3_replication": false,
+      "c4_validity": false,
+      "c5_uncertainty": true,
+      "overall_pass": false,
+      "synthetic_meta": {
+        "k": 0.05,
+        "mid": 85,
+        "measurement_noise": 0.05
+      }
+    },
+    "real": {
+      "phase": "real",
+      "data": {
+        "start": "2015-07-01",
+        "end": "2024-12-01",
+        "split": "2018-01-01",
+        "obs_mean": 9.666844033896403,
+        "obs_std_raw": 0.713441243095769,
+        "steps": 114,
+        "val_steps": 84,
+        "expected_months": 114,
+        "observed_months": 114,
+        "coverage": 1.0,
+        "outlier_share": 0.0
+      },
+      "calibration": {
+        "alpha": 1.0,
+        "beta": 0.001,
+        "macro_coupling": 0.5,
+        "assimilation_strength": 0.0
+      },
+      "errors": {
+        "rmse_abm": 0.9834955893037661,
+        "rmse_ode": 1.239959292571038,
+        "rmse_reduced": 1.0779316055426151,
+        "threshold": 0.6274881258677559
+      },
+      "correlations": {
+        "abm_obs": 0.4010000932515747,
+        "ode_obs": -0.8533493409556039
+      },
+      "symploke": {
+        "internal": 0.9987284234718552,
+        "external": 0.14397423313239593,
+        "pass": true
+      },
+      "non_locality": {
+        "dominance_share": 0.0025009006895120723,
+        "pass": true
+      },
+      "persistence": {
+        "window_variance": 0.013696830374110595,
+        "obs_window_variance": 4.216082592957763,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 1.0779316055426151,
+        "err_reduced_full": 0.2799062827476858,
+        "err_abm": 0.9834955893037661,
+        "threshold": 0.20916270862258532,
+        "pass": false
+      },
+      "c1_convergence": false,
+      "c2_robustness": false,
+      "c3_replication": false,
+      "c4_validity": false,
+      "c5_uncertainty": true,
+      "overall_pass": false
+    }
+  }
+}
