@@ -18,6 +18,9 @@ Modelo con cohesión interna adecuada pero estructura macro débil en zero-nudgi
 *   **Ejecución:** `python3 repos/Simulaciones/caso_clima/src/validate.py`
 *   **Resultado:** EDI 0.103 (< 0.30), CR 2.355 (> 2.0).
 
+**Actualizacion (Iteracion 2 - Debate):**
+Se reportaron tests adversariales adicionales en el caso Clima (autonomia a 1000 pasos sin nudging, causalidad inversa y barrido de `forcing_scale`). Ver `repos/Simulaciones/caso_clima/docs/tests_adversariales_iteracion_2.md`.
+
 ### 2. Caso Finanzas (No Validado)
 Modelo con EDI alto pero sin frontera sistémica.
 *   **Ejecución:** `python3 repos/Simulaciones/caso_finanzas/src/validate.py`

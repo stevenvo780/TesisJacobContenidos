@@ -24,3 +24,14 @@
 - Fase sintetica: verificacion interna y calibracion base.
 - Fase real: evaluacion final con datos reales regionales.
 - C1-C5 obligatorios.
+
+## 6. Tests Adversariales (Iteracion 2)
+
+Resultados reportados en debate para responder criticas de nudging y causalidad:
+
+- Autonomia a largo plazo: 1000 pasos con `assimilation_strength=0.0` y `assimilation_series=None`.
+- Causalidad inversa: ODE forzada con `grid_means_ABM` como input.
+- Gradiente de acoplamiento: barrido de `forcing_scale` para observar respuesta no monotona del ABM.
+- Hallazgo C5: `macro_coupling` inactivo en Clima por baja varianza espacial; acoplamiento efectivo via `forcing_scale`.
+
+Detalle y parametros: `repos/Simulaciones/caso_clima/docs/tests_adversariales_iteracion_2.md`.

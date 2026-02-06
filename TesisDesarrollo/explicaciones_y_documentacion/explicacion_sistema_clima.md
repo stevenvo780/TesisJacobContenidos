@@ -59,5 +59,18 @@ ajuste = fuerza_goma * (temp_global_macro - temp_pixel)
 
 ## 4. Conclusiones del Estado de la Tesis
 
-1.  **Caso Clima:** Totalmente validado. Pasa los criterios C1-C5. El "baile" del modelo (varianza 60.8) coincide con el de la naturaleza (59.5).
+1.  **Caso Clima:** Cohesión interna adecuada pero **no validado en zero-nudging** (EDI 0.103 < 0.30). La fase sintetica valida la estructura, pero la fase real reporta debilidad macro bajo autonomia pura.
 2.  **Caso Finanzas:** En desarrollo. El modelo falla en el criterio C4 (Validez), indicando que las reglas del mercado financiero no son tan predecibles como las estaciones climáticas.
+
+---
+
+## 5. Actualizacion Iteracion 2 (Debate)
+
+Resultados reportados para responder criticas de nudging y causalidad:
+
+- **Autonomia a largo plazo (1000 pasos, zero-nudging):** la correlacion ABM-ODE crece y se estabiliza (~0.8172 global).
+- **Causalidad inversa:** la ODE puede reconstruirse desde el micro (correlacion ~0.9969) usando `forcing = grid_means_ABM`.
+- **Gradiente de acoplamiento:** respuesta no monotona en `forcing_scale`, con optimo alrededor de 0.10; sugiere dinamica propia micro.
+- **Hallazgo C5:** en Clima, `macro_coupling` es operativamente inactivo por baja varianza espacial; el acoplamiento efectivo ocurre via `forcing_scale`.
+
+Detalles: `repos/Simulaciones/caso_clima/docs/tests_adversariales_iteracion_2.md`.

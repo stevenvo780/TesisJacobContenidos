@@ -11,7 +11,7 @@ Simular una defensa y refutacion de la tesis desde posiciones tecnicas y filosof
 - Casos: validados (Contaminacion, Movilidad), fallidos o parciales (Finanzas, Justicia, Estetica, etc.).
 
 **Reglas de juego (por turnos)**
-- Se juega en rondas por equipos: `equipo_defensor`, `equipo_critico`, `equipo_jueces`.
+- Se juega en rondas por equipos: `equipo_defensor` (2 defensores), `equipo_critico` (2 atacantes) y `equipo_jueces` (3 jueces).
 - Cada equipo tiene su turno y dentro de ese turno, cada miembro tiene su subturno para responder.
 - Cada intervencion dura 3 minutos o 300 palabras (lo que ocurra primero).
 - En cada intervencion se debe citar al menos 1 elemento de H1, C1-C5, EDI/CR o un caso.
@@ -24,9 +24,9 @@ Simular una defensa y refutacion de la tesis desde posiciones tecnicas y filosof
 - Se avanza manualmente reemplazando la linea `Turno actual:`.
 
 **Orden recomendado**
-1. Equipo defensor (cientifico y filosofico) expone tesis y fundamentos.
-2. Equipo critico (cientifico y filosofico) ataca supuestos y evidencia.
-3. Equipo jueces emite veredicto con puntaje y recomendaciones.
+1. Equipo defensor (2 defensores) expone tesis y fundamentos.
+2. Equipo critico (2 atacantes) ataca supuestos y evidencia.
+3. Equipo jueces (3 jueces) emite veredicto con puntaje y recomendaciones.
 
 **Perfiles**
 - `Artifacts/gladiadores/defensor_cientifico/perfil.md`
