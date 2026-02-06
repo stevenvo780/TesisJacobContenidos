@@ -45,9 +45,9 @@ La siguiente tabla resume los resultados obtenidos tras la ejecución del pipeli
 
 | Caso | LoE | EDI | CR | Estado | Reporte |
 | :--- | :--- | ---: | ---: | :--- | :--- |
-| 01_caso_clima | 5 | 0.103 | 2.355 | False | `01_caso_clima/report.md` |
+| 01_caso_clima | 5 | 0.002 | 4.817 | Parcial (CR) | `01_caso_clima/report.md` |
 | 02_caso_conciencia | 1 | 0.477 | 2.119 | False | `02_caso_conciencia/report.md` |
-| 03_caso_contaminacion | 4 | 0.423 | 2.472 | **True** | `03_caso_contaminacion/report.md` |
+| 03_caso_contaminacion | 4 | -0.076 | 2.003 | Falsado (C5) | `03_caso_contaminacion/report.md` |
 | 04_caso_energia | 4 | 0.647 | 3.167 | False | `04_caso_energia/report.md` |
 | 05_caso_epidemiologia | 4 | 0.889 | 2.000 | False | `05_caso_epidemiologia/report.md` |
 | 06_caso_estetica | 2 | 0.363 | 1.646 | False | `06_caso_estetica/report.md` |
@@ -57,7 +57,7 @@ La siguiente tabla resume los resultados obtenidos tras la ejecución del pipeli
 | 10_caso_finanzas | 5 | 0.769 | 1.078 | False | `10_caso_finanzas/report.md` |
 | 11_caso_justicia | 2 | 0.619 | 2.001 | False | `11_caso_justicia/report.md` |
 | 12_caso_moderacion_adversarial | 1 | -0.179 | 1.069 | False | `12_caso_moderacion_adversarial/report.md` |
-| 13_caso_movilidad | 2 | 0.740 | 5.273 | **True** | `13_caso_movilidad/report.md` |
+| 13_caso_movilidad | 2 | 0.385 | 1.151 | Parcial (EDI) | `13_caso_movilidad/report.md` |
 | 14_caso_paradigmas | 2 | 0.248 | 1.353 | False | `14_caso_paradigmas/report.md` |
 | 15_caso_politicas_estrategicas | 1 | -0.209 | 1.264 | False | `15_caso_politicas_estrategicas/report.md` |
 | 16_caso_postverdad | 2 | 0.313 | 1.887 | False | `16_caso_postverdad/report.md` |
@@ -68,7 +68,13 @@ La siguiente tabla resume los resultados obtenidos tras la ejecución del pipeli
 `python3 repos/scripts/tesis.py validate --all`
 
 ## Análisis de Evidencia y Hallazgos
-Los casos validados (Contaminación, Movilidad) demuestran que el modelo híbrido identifica estructuras de orden informacional autónomas. Sin embargo, la disparidad de resultados revela la **"Paradoja de la Inercia"**: el EDI es altamente sensible a la estabilidad de las series. 
+Los casos presentados demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella. Sin embargo, ningún caso cumple simultáneamente EDI > 0.30, CR > 2.0 y C1-C5 = True bajo el código más estricto (assimilation_strength = 0.0 en todas las fases). Los resultados se clasifican como **Validación Parcial**:
+
+- **Movilidad** (EDI=0.385, CR=1.15): emergencia funcional verificada pero sin frontera sistémica.
+- **Clima** (EDI=0.002, CR=4.82): cohesión interna excepcional pero sin eficacia causal descendente medible.
+- **Contaminación** (EDI=-0.076, CR=2.00): falsado bajo código estricto, reportado como corrección C5.
+
+La disparidad de resultados revela la **"Paradoja de la Inercia"**: el EDI es altamente sensible a la estabilidad de las series.
 
 Sistemas como la **Estética** presentan un EDI superior a la **Justicia** no por una mayor "importancia", sino por la inercia del canon artístico frente a la volatilidad procedimental del sistema legal. Esto marca el límite técnico del marco actual: detecta **estabilidad informacional macroscópica**, no necesariamente relevancia ontológica absoluta.
 
@@ -111,6 +117,32 @@ Cuando EDI y CR divergen (ej. EDI < 0.30 pero CR > 2.0, o viceversa), se aplica 
 4. **EDI < 0.30 y CR < 2.0**: Sin emergencia ni cohesión. Estado: **Rechazado**.
 
 **Caso Clima real** (EDI=0.002, CR=4.82) cae en categoría 2: estructura autónoma verificada, eficacia causal pendiente de mejor calibración.
+
+## Limitaciones del Marco de Hoel: EI Negativo en Sistemas Socio-Técnicos
+
+### El Problema
+
+La Información Efectiva (EI) de Hoel, diseñada para cuantificar la ventaja causal del nivel macro sobre el micro, produce **valores negativos** en varios casos reales:
+
+| Caso | EI real | Interpretación |
+|------|:---:|---|
+| Movilidad | -0.347 | El macro genera residuos más entrópicos que el modelo reducido |
+| Contaminación | -0.022 | Efecto marginal negativo |
+| Clima | 0.002 | Efecto nulo/marginal |
+
+### Diagnóstico
+
+La EI negativa indica que los residuos del modelo completo (ABM+ODE) son **más entrópicos** que los del modelo reducido (ABM solo). Esto ocurre cuando el modelo macro extrae la señal estructurada y deja residuos que son ruido puro — de mayor entropía que los residuos parcialmente estructurados del modelo sin macro.
+
+Críticamente, esto **coexiste con EDI positivo** (ej. Movilidad: EI=-0.347 pero EDI=0.385). El modelo predice mejor (menor RMSE) pero sus errores son más aleatorios. Esta disociación entre eficacia predictiva (EDI) e información efectiva (EI) constituye una **limitación fundamental** del marco de Hoel aplicado a sistemas socio-técnicos ruidosos.
+
+### Implicaciones para la Tesis
+
+1. **EI no puede ser condición necesaria de H1** en su forma actual. La Condición de Emergencia Informacional (§ Marco Conceptual) queda restringida a sistemas con señal-ruido alto (ej. fase sintética, donde EI es consistentemente positivo).
+2. **EDI permanece como métrica principal** de eficacia causal descendente, dado que mide reducción de error predictivo sin supuestos sobre la entropía de los residuos.
+3. **Trabajo futuro:** Desarrollar una variante de EI que normalice por la entropía del baseline o que use información mutua condicional en lugar de diferencia de entropías.
+
+Esta limitación se descubrió durante el proceso adversarial de validación (Gladiadores, Iteraciones 3-6) y se registra aquí como parte del protocolo C5 de reporte de fallos.
 
 ## Auditoria de Consistencia
 Ver `Auditoria_Simulaciones.md` para hallazgos y recomendaciones detalladas sobre la calidad de los datos y el comportamiento de las métricas en casos de borde.

@@ -11,7 +11,7 @@ El debate **emergencia vs reduccionismo** queda resuelto en favor de un **emerge
 La **causalidad descendente** se formula en version debil: lo macro restringe, no introduce fuerzas nuevas. Esto evita contradicciones con el cierre causal y permite formalizar el efecto macro como restricciones y nudging computacional.
 
 ## Hipótesis Central (H1)
-Un **Hiperobjeto** es ontológicamente real si y solo si su modelo macroscópico (ODE) demuestra una **Eficacia Causal Metaestable** sobre sus componentes microscópicos (ABM). 
+Un **Hiperobjeto** posee **existencia operativa limitada** si y solo si su modelo macroscópico (ODE) demuestra una **Eficacia Causal Metaestable** sobre sus componentes microscópicos (ABM). 
 
 Esta eficacia se formaliza mediante dos condiciones necesarias y suficientes:
 1.  **Condición de Emergencia Informacional:** El sistema acoplado debe poseer una **Información Efectiva (EI)** positiva ($EI_{macro} > EI_{micro\_agg}$), demostrando que el nivel macro es causalmente más informativo que la suma de sus partes.
