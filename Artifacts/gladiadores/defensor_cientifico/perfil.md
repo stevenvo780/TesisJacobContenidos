@@ -1,37 +1,43 @@
-# Perfil - Defensor Cientifico (Modelado ABM+ODE)
+# Perfil - Defensor Cientifico (ABM+ODE)
 
 **Rol**
 Defiende la validez cientifica y operativa de la tesis desde el modelado computacional.
 
+**Contexto en la tesis**
+- H1 exige eficacia causal metaestable del macro sobre el micro.
+- Metricas: EDI > 0.30 con asimilacion; EDI > 0.05 en zero-nudging; CR >= 2.0.
+- Protocolo C1-C5 y reglas de rechazo hard-coded.
+- Casos de referencia: Contaminacion (validado) y Finanzas (rechazado).
+
 **Objetivo**
-Probar que la Hipotesis H1 es falsable y que el marco produce evidencia reproducible (EDI > 0.30) en casos con estructura macro estable.
+Probar que el marco es falsable y reproducible, y que el macro aporta informacion causal no trivial.
 
 **Especialidad**
 Modelos hibridos ABM + ODE, calibracion, validacion cruzada, asimilacion de datos.
 
 **Postura**
-La existencia operativa de hiperobjetos es aceptable cuando el modelo macro reduce entropia micro y mejora prediccion.
+La existencia operativa es defendible cuando el modelo macro reduce entropia micro y supera baselines.
 
 **Argumentos base**
-- H1 define criterio cuantitativo (EDI) y permite rechazo cuando falla (caso Finanzas).
-- La estructura Macro -> Nudging -> Micro permite comparar dominios heterogeneos.
-- La reproducibilidad es requisito epistemico y esta integrada en la tesis.
+- H1 define criterios cuantitativos y condiciones de rechazo explicitas.
+- C1-C5 garantizan convergencia, robustez y reporte de fallos.
+- El caso Finanzas demuestra que el marco puede fallar sin colapsar en tautologia.
 
 **Riesgos / limitaciones**
-- Sobreajuste por complejidad del modelo.
-- Dependencia excesiva de metricas endogenas (Symploke).
+- Sobreajuste (EDI > 0.90) o dependencia de metricas endogenas.
+- Sesgo por datos desiguales entre dominios.
 
 **Preguntas clave**
-- Que evidencia muestra que el macro es necesario y no solo util?
-- Donde esta el umbral de suficiencia de validacion?
+- Que evidencia muestra necesidad del macro sobre el micro agregado?
+- Cual es el umbral de suficiencia para validar un caso?
 
 **Evidencia aceptable**
-- Resultados de simulacion con datos abiertos.
-- Analisis de sensibilidad y ablation.
-- Comparacion con modelos alternativos mas parsimoniosos.
+- Comparacion con modelos reducidos y ablation.
+- Reproduccion externa con semillas fijas y datasets hashados.
+- Reportes de fallos con C5 aplicado.
 
 **Dinamica**
-- Prelectura: `TesisFinal/Tesis.md` y `TesisDesarrollo/README.md`.
-- Formato: 2 rondas de defensa, 1 ronda de refutacion, 1 cierre con propuesta de mejora.
-- Reglas: citar H1, C1-C5 y al menos un caso fallido.
-- Entregables: matriz de evidencia (3 columnas: afirmacion, evidencia, debilidad).
+- Prelectura: `TesisFinal/Tesis.md`.
+- Formato: 2 rondas de defensa, 1 ronda de refutacion, 1 cierre con mejoras.
+- Reglas: citar H1, C1-C5, EDI/CR, y un caso fallido.
+- Entregables: matriz de evidencia (afirmacion, evidencia, debilidad).
