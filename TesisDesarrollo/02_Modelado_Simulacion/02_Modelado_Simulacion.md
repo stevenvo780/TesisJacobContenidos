@@ -66,7 +66,7 @@ La auditoria de modelado exigio criterios de paro y comparacion con modelos alte
 | 18_caso_wikipedia | 3 | 0.562 | 2.888 | False | `18_caso_wikipedia/report.md` |
 
 Para recalcular este reporte de forma automatica, usar:
-`python3 repos/scripts/actualizar_tablas_002.py`
+`python3 scripts/actualizar_tablas_002.py`
 ## Evidencia Empirica (casos con validación ejecutable)
 - **Contaminacion:** la memoria atmosferica y el transporte macro ordenan emisiones locales. EDI 0.423, CR 2.472.
 - **Movilidad:** EDI 0.740, CR 5.273. Series cortas, prototipo.

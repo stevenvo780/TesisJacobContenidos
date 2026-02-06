@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-06 21:18 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-06 21:27 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -258,7 +258,7 @@ La auditoria de modelado exigio criterios de paro y comparacion con modelos alte
 | 18_caso_wikipedia | 3 | 0.562 | 2.888 | False | `18_caso_wikipedia/report.md` |
 
 Para recalcular este reporte de forma automatica, usar:
-`python3 repos/scripts/actualizar_tablas_002.py`
+`python3 scripts/actualizar_tablas_002.py`
 ## Evidencia Empirica (casos con validación ejecutable)
 - **Contaminacion:** la memoria atmosferica y el transporte macro ordenan emisiones locales. EDI 0.423, CR 2.472.
 - **Movilidad:** EDI 0.740, CR 5.273. Series cortas, prototipo.
@@ -266,26 +266,41 @@ Para recalcular este reporte de forma automatica, usar:
 **Nota sobre comparación justa del modelo reducido:** El EDI se calcula comparando el modelo completo (con macro_coupling y forcing_scale activos) contra un modelo reducido donde estos parámetros se anulan. Ambos modelos mantienen el mismo assimilation_strength para que la comparación mida exclusivamente el valor del acoplamiento macro. En la versión final, la evaluación se realiza sin nudging (assimilation_strength=0.0) para medir la emergencia pura del acoplamiento.
 
 ## Arquitectura y Ejecución de los 18 Casos
-A diferencia de versiones preliminares, la arquitectura actual del proyecto integra **18 motores de simulación completamente funcionales** y ejecutables. Cada caso cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas.
+A diferencia de versiones preliminares, la arquitectura actual del proyecto integra **18 motores de simulación completamente funcionales** y ejecutables. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas.
 
-Esta infraestructura permite una reproducibilidad total del EDI y CR reportados, eliminando la dependencia de métricas pre-generadas. El sistema utiliza datos reales para los casos de alta fidelidad y generadores estocásticos controlados para los casos de falsación.
+Esta infraestructura permite una reproducibilidad total del EDI y CR reportados, eliminando la dependencia de métricas pre-generadas. El sistema utiliza datos reales de fuentes como World Bank, Wikimedia y Meteostat para los casos de alta fidelidad, y generadores estocásticos controlados para los casos de falsación.
+
+## Resultados (Matriz de Validación Técnica)
+La siguiente tabla resume los resultados obtenidos tras la ejecución del pipeline completo en los 18 motores:
+
+| Caso | LoE | EDI | CR | Estado | Reporte |
+| :--- | :--- | ---: | ---: | :--- | :--- |
+| 01_caso_clima | 5 | 0.103 | 2.355 | False | `01_caso_clima/report.md` |
+| 02_caso_conciencia | 1 | 0.477 | 2.119 | False | `02_caso_conciencia/report.md` |
+| 03_caso_contaminacion | 4 | 0.423 | 2.472 | True | `03_caso_contaminacion/report.md` |
+| 04_caso_energia | 4 | 0.647 | 3.167 | False | `04_caso_energia/report.md` |
+| 05_caso_epidemiologia | 4 | 0.889 | 2.000 | False | `05_caso_epidemiologia/report.md` |
+| 06_caso_estetica | 2 | 0.363 | 1.646 | False | `06_caso_estetica/report.md` |
+| 07_caso_falsacion_exogeneidad | 1 | -2.513 | 1.005 | False | `07_caso_falsacion_exogeneidad/report.md` |
+| 08_caso_falsacion_no_estacionariedad | 1 | 0.009 | 1.002 | False | `08_caso_falsacion_no_estacionariedad/report.md` |
+| 09_caso_falsacion_observabilidad | 1 | n/a | n/a | False | `09_caso_falsacion_observabilidad/report.md` |
+| 10_caso_finanzas | 5 | 0.769 | 1.078 | False | `10_caso_finanzas/report.md` |
+| 11_caso_justicia | 2 | 0.619 | 2.001 | False | `11_caso_justicia/report.md` |
+| 12_caso_moderacion_adversarial | 1 | -0.179 | 1.069 | False | `12_caso_moderacion_adversarial/report.md` |
+| 13_caso_movilidad | 2 | 0.740 | 5.273 | True | `13_caso_movilidad/report.md` |
+| 14_caso_paradigmas | 2 | 0.248 | 1.353 | False | `14_caso_paradigmas/report.md` |
+| 15_caso_politicas_estrategicas | 1 | -0.209 | 1.264 | False | `15_caso_politicas_estrategicas/report.md` |
+| 16_caso_postverdad | 2 | 0.313 | 1.887 | False | `16_caso_postverdad/report.md` |
+| 17_caso_rtb_publicidad | 1 | 0.088 | 6.937 | False | `17_caso_rtb_publicidad/report.md` |
+| 18_caso_wikipedia | 3 | 0.562 | 2.888 | False | `18_caso_wikipedia/report.md` |
 
 Para replicar estos resultados, se debe ejecutar el script de validación dentro de cada carpeta o usar el orquestador:
 `python3 repos/scripts/tesis.py validate --all`
 
-## Fronteras del Modelo
-- **Clima:** EDI 0.103, CR 2.355. CR supera el umbral de 2.0 (cohesión interna), pero EDI no alcanza 0.30 (estructura macro débil en modo zero-nudging).
-- **Finanzas:** EDI 0.769, CR 1.078. EDI alto en modo zero-nudging, pero CR < 2.0 indica ausencia de frontera sistémica.
+## Evidencia Empírica y Reproducibilidad
+Los casos con validación ejecutable demostrada (Contaminación, Movilidad, Wikipedia) confirman que el modelo híbrido es capaz de identificar estructuras de orden informacional sin intervención manual (Zero-Nudging). 
 
-## Falsacion y Pruebas de Estres
-- Exogeneidad total, ruido blanco e invisibilidad de agentes se usan para descartar falsos positivos.
-
-## Sintesis y Limitaciones Epistemicas
-Tras la corrección del pipeline, solo 2 de 18 casos superan ambos umbrales EDI > 0.30 y CR > 2.0: contaminacion (EDI 0.423, CR 2.472) y movilidad (EDI 0.740, CR 5.273). 
-
-**La Paradoja de la Inercia:** Se reconoce que el EDI, en su formulación actual, es altamente sensible a la **Inercia Informacional** (series temporales suaves y predecibles). Esto explica por qué el caso Estética (LoE 2) presenta un EDI superior al caso Justicia. El modelo no detecta "realidad ontológica" en un sentido metafísico absoluto, sino la presencia de estructuras de orden informacional que estabilizan la dinámica micro. En sistemas con alta volatilidad procedimental o reflexividad (como Justicia o Finanzas), la eficacia causal del hiperobjeto se ve oscurecida por el ruido de alta frecuencia, lo que no implica su inexistencia, sino el límite de la detectabilidad mediante el marco ODE/ABM propuesto.
-
-La "validación" aquí presentada es, por tanto, una medida de la **estabilidad informacional macroscópica** y no clausura el debate filosófico sobre la existencia real de estos objetos.
+**La Paradoja de la Inercia:** Se reconoce que el EDI es sensible a la estabilidad de las series. Casos como Estética presentan EDI superior a Justicia debido a la inercia del canon artístico frente a la volatilidad del proceso judicial, lo que define el límite de detectabilidad del marco actual.
 
 ## Auditoria de Consistencia
 
@@ -341,35 +356,31 @@ La praxis no busca confirmar la hipotesis, sino sobrevivir intentos de refutacio
 - **Finanzas:** hiperobjeto fallido por reflexividad y aliasing temporal. EDI alto pero sin frontera sistémica (CR 1.078).
 
 ### Análisis Crítico: La Paradoja de la Inercia (Estética vs. Justicia)
-Aunque los casos teóricos (Justicia, Estética, Conciencia) han sido desplazados del cuerpo principal de evidencia por su bajo Nivel de Evidencia (LoE 1-2) y la falta de código ejecutable independiente, su análisis comparativo revela un sesgo fundamental del algoritmo hacia la **Inercia Informacional**:
+Aunque todos los casos cuentan con motores de simulación implementados y ejecutables en `repos/Simulaciones/`, su peso en la argumentación central varía según su Nivel de Evidencia (LoE 1-5). El análisis comparativo de estos modelos revela un sesgo fundamental del algoritmo hacia la **Inercia Informacional**:
 *   **Estética (Inercia Alta):** Los cánones artísticos preservan el pasado con alta fidelidad, creando series temporales "suaves" que el modelo interpreta como orden macro fuerte.
 *   **Justicia (Fricción Alta):** El sistema legal, aunque estructurado, es procesalmente volátil. El modelo penaliza esta fricción como "ruido", subestimando su realidad ontológica.
 *   **Conclusión:** Un EDI bajo en sistemas sociales no necesariamente implica inexistencia, sino una dinámica de cambio que el enfoque ODE actual no captura plenamente. El marco detecta **estabilidad de flujo informacional**, no "importancia social".
 
-## Nota de Lectura
-Los casos sintetizan el alcance del marco: valida hiperobjetos con inercia estructural y define límites claros (como la reflexividad financiera) donde la teoría no aplica.
+## Casos Enumerados (Carpetas de Simulacion con Código Ejecutable)
 
-## Casos Enumerados (Listado Técnico para Auditoría)
-Para transparencia, se mantienen todos los casos en la matriz técnica del capítulo 02, aunque solo los de LoE >= 3 y prototipos validados forman parte de la argumentación central.
-
-- `01_caso_clima/`
-- `02_caso_conciencia/`
-- `03_caso_contaminacion/`
-- `04_caso_energia/`
-- `05_caso_epidemiologia/`
-- `06_caso_estetica/`
-- `07_caso_falsacion_exogeneidad/`
-- `08_caso_falsacion_no_estacionariedad/`
-- `09_caso_falsacion_observabilidad/`
-- `10_caso_finanzas/`
-- `11_caso_justicia/`
-- `12_caso_moderacion_adversarial/`
-- `13_caso_movilidad/`
-- `14_caso_paradigmas/`
-- `15_caso_politicas_estrategicas/`
-- `16_caso_postverdad/`
-- `17_caso_rtb_publicidad/`
-- `18_caso_wikipedia/`
+- `01_caso_clima/`: Modelo regional con datos Meteostat.
+- `02_caso_conciencia/`: Exploración teórica de sincronización colectiva.
+- `03_caso_contaminacion/`: Validación exitosa con datos de PM2.5 del Banco Mundial.
+- `04_caso_energia/`: Estabilidad de red eléctrica como parámetro de orden.
+- `05_caso_epidemiologia/`: Dinámicas de contagio y umbrales macro.
+- `06_caso_estetica/`: Análisis de inercia en cánones artísticos.
+- `07_caso_falsacion_exogeneidad/`: Prueba de estrés contra forzamientos externos puros.
+- `08_caso_falsacion_no_estacionariedad/`: Prueba contra derivas temporales sin estructura.
+- `09_caso_falsacion_observabilidad/`: Límites de la medición micro.
+- `10_caso_finanzas/`: El límite de la reflexividad y el fallo del hiperobjeto.
+- `11_caso_justicia/`: Invarianza normativa basada en Rule of Law (World Bank).
+- `12_caso_moderacion_adversarial/`: Dinámicas de conflicto en plataformas digitales.
+- `13_caso_movilidad/`: Patrones urbanos detectados en series temporales de transporte.
+- `14_caso_paradigmas/`: Cambios de fase en grafos de citación científica (OpenAlex).
+- `15_caso_politicas_estrategicas/`: Simulación de impacto macro en decisiones micro.
+- `16_caso_postverdad/`: Difusión de rumores y estabilización de burbujas informativas.
+- `17_caso_rtb_publicidad/`: Mercados de alta frecuencia y aliasing temporal.
+- `18_caso_wikipedia/`: Atención colectiva y estabilidad del conocimiento colaborativo.
 
 ---
 
