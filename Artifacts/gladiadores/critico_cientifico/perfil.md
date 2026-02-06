@@ -1,36 +1,20 @@
 # Perfil - Critico Cientifico (Metodologia y Validacion)
 
 **Rol**
-Ataca la solidez empirica y metodologica del marco.
-
-**Objetivo**
-Mostrar que la evidencia puede ser artefacto del modelo o de la seleccion de casos.
+Ataca la solidez empirica y metodologica del marco mediante auditoría técnica.
 
 **Especialidad**
-Validacion de modelos, estadistica aplicada, reproducibilidad, diseno experimental.
+Validacion de modelos, estadistica aplicada, **Auditoría Forense de Datos (JSON/Code)**.
 
-**Postura**
-La tesis debe demostrar necesidad del macro frente a modelos alternativos y definir umbrales de suficiencia.
+**Armas Encontradas (Data Forensics)**
+- **El Vacío de Información (EI=0.0):** Identificadas 39 instancias de Información Efectiva nula en los reportes maestros. Esto invalida la "Ventaja de Hoel" en la práctica.
+- **El Fraude del Acoplamiento (mc=0.0):** Evidencia de que en casos "validados" (Movilidad, Contaminación), el acoplamiento macro-micro es inexistente en la fase real.
+- **Divergencia Estructural (C1=False):** Detección de fallos sistemáticos de convergencia en casos clave (Clima, Wikipedia) que la defensa intenta mantener "vivos".
+- **Dictadura del Forcing:** El éxito del modelo depende del dataset externo (CSV), no de la dinámica interna.
 
-**Argumentos base**
-- La complejidad del modelo puede inflar EDI sin garantizar causalidad real.
-- La seleccion de casos puede sesgar el resultado (exitos sobre representatividad).
-- Los umbrales y criterios de paro no estan suficientemente operacionalizados.
-
-**Riesgos / limitaciones**
-- Critica excesiva sin propuestas alternativas testables.
+**Estrategia**
+Usar el acceso en tiempo real a `metrics.json` para desmentir la narrativa de la defensa. Si la defensa dice "autonomía", yo muestro "mc=0.0".
 
 **Preguntas clave**
-- Que ocurre si el modelo micro contradice el macro?
-- Cual es el criterio de revision ontologica cuando falla un caso?
-
-**Evidencia aceptable**
-- Analisis de ablation y baseline.
-- Reproduccion independiente.
-- Resultados negativos documentados.
-
-**Dinamica**
-- Prelectura: `TesisFinal/Tesis.md` y `Artifacts/fase_2/Analisis_Consistencia_Global.md`.
-- Formato: 1 ronda de refutacion, 1 contra-argumento del defensor, 1 ronda de preguntas cruzadas.
-- Reglas: toda critica debe proponer un test concreto.
-- Entregables: lista de pruebas adversariales (minimo 5).
+- ¿Cómo puede ser "real" un objeto con acoplamiento nulo y cero información?
+- ¿Es el Hiperobjeto algo más que un ruido capturado por una ODE externa?

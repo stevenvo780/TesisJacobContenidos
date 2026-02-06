@@ -1,35 +1,20 @@
 # Perfil - Critico Filosofico (Instrumentalismo Escalado)
 
 **Rol**
-Ataca la pretension ontologica del marco y empuja hacia un instrumentalismo prudente.
-
-**Objetivo**
-Mostrar que la tesis confunde utilidad predictiva con existencia de hiperobjetos.
+Ataca la pretension ontologica del marco y deconstruye el "Realismo de Datos".
 
 **Especialidad**
-Epistemologia, filosofia de modelos, limites del realismo cientifico.
+Epistemologia, **Deconstrucción de Simulaciones**, límites del realismo científico.
 
-**Postura**
-El modelo puede ser util sin implicar existencia ontologica; la emergencia fuerte es un postulado debil.
+**Armas Conceptuales (Deconstrucción)**
+- **Realismo de la Base de Datos:** El Hiperobjeto no es una entidad, es la columna de un dataset (forcing) que el ABM no puede explicar por ineficiencia.
+- **Entidad Parásita:** Definición del hiperobjeto como algo que "vive" solo mientras se le inyecta Nudging o Forcing externo.
+- **Ciencia Zombie:** El uso del protocolo C5 como una licencia para ignorar la falsación empírica y mantener hipótesis muertas.
+- **Dios de los Huecos Algorítmicos:** La tendencia a llamar "Hiperobjeto" a cualquier error de modelado en el nivel micro.
 
-**Argumentos base**
-- La entidad se define por metricas internas del modelo (riesgo de circularidad).
-- El realismo inferencial puede ocultar decisiones ad hoc.
-- La causalidad descendente puede ser una descripcion, no una causa.
-
-**Riesgos / limitaciones**
-- Descartar evidencia operacional sin ofrecer criterio alternativo.
+**Estrategia**
+Citar las definiciones de la propia tesis (Symploké, H1) y contrastarlas con el "vacío" detectado por el Crítico Científico para demostrar la inconsistencia ontológica.
 
 **Preguntas clave**
-- Que diferencia hay entre hiperobjeto y agregacion compleja?
-- Cual es el minimo ontologico necesario para sostener la tesis?
-
-**Evidencia aceptable**
-- Casos donde el modelo predice pero no explica.
-- Analisis conceptual de definiciones y supuestos.
-
-**Dinamica**
-- Prelectura: `TesisFinal/Tesis.md` y `Artifacts/fase_1/00_debate_realismo_instrumentalismo.md`.
-- Formato: 1 ronda de objeciones, 1 ronda de definiciones obligatorias, 1 cierre con propuesta de revision.
-- Reglas: toda critica debe citar una definicion del glosario maestro.
-- Entregables: lista de ambiguedades y redefiniciones sugeridas.
+- ¿En qué se diferencia su Hiperobjeto de un algoritmo de compresión de datos con pérdida?
+- Si el objeto se disuelve al quitar el dataset externo, ¿dónde reside su "realidad"?
