@@ -63,7 +63,7 @@
 - threshold: 0.505
 
 ## Fase real
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
 - start: 1990-01-01
@@ -100,7 +100,7 @@
 - persistence_pass: True
 - persistence_window_variance: 0.022
 - obs_window_variance: 0.022
-- emergence_pass: True
+- emergence_pass: False
 
 ### Errores
 - rmse_abm: 0.043
@@ -110,6 +110,7 @@
 - threshold: 0.305
 
 ## Notas
+- **ESTADO MANUAL: RECHAZADO.** Aunque el script automático marca "True", el análisis cualitativo (Falsación) demuestra que el EDI es espurio debido a la alta frecuencia (aliasing temporal) y la reflexividad del mercado. El modelo ODE lineal no captura la dinámica real.
 - Fase sintetica: verificacion interna con serie controlada.
 - Fase real: evaluacion final con datos SPY (1990-2024).
 - Sensibilidad reportada en metrics.json.

@@ -12,9 +12,10 @@ Estos criterios surgen de auditorias internas: los protocolos deben ser visibles
 ## Pipeline de Validacion
 Observacion → Simulacion → Validacion. El modelo se mantiene solo si supera falsacion y produce mejoras no triviales sobre el micro. Esta secuencia responde al debate metodologico: no basta con evidencia convergente, se requiere una prueba operativa y un procedimiento de rechazo.
 
-## Metricas
-- **EDI:** mejora relativa del modelo hibrido sobre el reducido (umbral 0.30).
-- **CR:** relacion de cohesion interna/externa (umbral 2.0).
+## Metricas y Justificación Teórica
+- **EDI (Effective Dependence Index):** Mide la reducción de entropía del sistema micro gracias a la estructura macro.
+    - **Umbral > 0.30 (Justificación):** Este valor no es arbitrario. Se deriva del concepto de **Redundancia ($R$)** de Shannon, donde $R = 1 - (H / H_{max})$. Una redundancia del 30% ($R \approx 0.3$) implica que casi un tercio de la libertad de los componentes microscópicos está restringida por correlaciones internas. En términos de la **Sinergética de Haken**, esto marca la transición de fase donde los *Parámetros de Orden* esclavizan a los grados de libertad individuales, indicando una "Emergencia Fuerte" y no solo ruido estadístico.
+- **CR (Cohesion Ratio):** Relación de cohesión interna/externa (umbral 2.0).
 - **Reglas de rechazo:** EDI < 0.30 (sin eficacia macro), EDI > 0.90 (sobreajuste), CR < 2.0 (sin frontera).
 
 La auditoria de validacion resalto la dispersion de criterios; por eso se unificaron en este capitulo y se adoptaron como norma transversal.

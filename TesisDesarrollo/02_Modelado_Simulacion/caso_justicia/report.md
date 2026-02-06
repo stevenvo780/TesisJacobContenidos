@@ -119,6 +119,7 @@
 - threshold: 0.706
 
 ## Notas
+- **ESTADO MANUAL: TEÓRICO (DUDOSO).** Nivel de Evidencia (LoE) bajo (2/5). El éxito del modelo se debe a la baja volatilidad de los datos anuales (WGI), lo que favorece el ajuste ODE. No confundir con validación ontológica fuerte.
 - Fase sintetica: verificacion interna con serie controlada.
 - Fase real: evaluacion final con datos WGI (Rule of Law).
 - Sensibilidad reportada en metrics.json.
