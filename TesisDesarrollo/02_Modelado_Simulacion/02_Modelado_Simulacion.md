@@ -1,12 +1,14 @@
 # 02 Modelado y Simulacion — Narrativa Unificada
 
 ## Arquitectura Hibrida
-El motor integra un modelo micro (ABM) y un modelo macro (ODE). El acople se realiza mediante **nudging** para asimilacion de datos y para imponer restricciones macro sobre los agentes.
+El motor integra un modelo micro (ABM) y un modelo macro (ODE). El acople se realiza mediante **nudging** para asimilacion de datos y para imponer restricciones macro sobre los agentes. Esta decision responde al axioma de incompletitud del nivel unico: cada capa corrige las limitaciones de la otra.
 
 ## Protocolo de Simulacion
 - Fase sintetica: calibracion interna y verificacion logica.
 - Fase real: validacion con datos historicos.
 - Splits de entrenamiento/validacion documentados por caso.
+
+La auditoria de modelado exigio criterios de paro y comparacion con modelos alternativos. Aunque no todos los casos usan modelos rivales, la regla se mantiene: si el modelo no mejora sobre un baseline coherente, se rechaza.
 
 ## Criterios Tecnicos
 - **EDI > 0.30** indica eficacia causal macro.

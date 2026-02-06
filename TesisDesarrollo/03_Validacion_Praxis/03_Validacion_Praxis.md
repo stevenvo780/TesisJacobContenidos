@@ -3,6 +3,8 @@
 ## Enfoque de Validacion
 La validacion distingue entre evidencia empirica (datasets largos y duros) y evidencia prospectiva (proxies o series cortas). Se aplica C1-C5 como filtro tecnico.
 
+Las auditorias de validacion exigieron coherencia entre criterios y reportes. Por eso esta seccion sintetiza resultados y limites en un solo hilo.
+
 ## Estados de Fallo
 - **EDI < 0.30:** no hay eficacia macro.
 - **EDI > 0.90:** sobreajuste.
