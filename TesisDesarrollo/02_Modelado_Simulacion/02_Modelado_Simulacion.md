@@ -16,6 +16,7 @@ La auditoria de modelado exigio criterios de paro y comparacion con modelos alte
 - Validacion C1-C5 aplicada a cada caso.
 
 ## Resultados (Matriz de Validacion Tecnica)
+
 | Caso de Estudio | Tipo de Validacion | EDI | CR | Nivel de Evidencia (LoE) | Estado Final |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | Clima Regional | Empirica (Meteostat) | 0.51 | 2.5 | ★★★★★ | VALIDADO |
@@ -50,3 +51,29 @@ La auditoria de modelado exigio criterios de paro y comparacion con modelos alte
 
 ## Sintesis
 El motor hibrido es competente en sistemas con inercia estructural y limites claros. Su valor esta en demarcar dominios donde el macro es causalmente necesario.
+
+## Reporte General de Simulaciones (18 casos)
+
+| Caso | EDI | CR | Estado | Reporte |
+| :--- | ---: | ---: | :--- | :--- |
+| clima | 0.458 | 1.057 | True | `caso_clima/report.md` |
+| conciencia | 1.000 | 1.382 | True | `caso_conciencia/report.md` |
+| contaminacion | 0.423 | 2.472 | True | `caso_contaminacion/report.md` |
+| energia | 1.000 | 1.824 | True | `caso_energia/report.md` |
+| epidemiologia | 1.000 | n/a | True | `caso_epidemiologia/report.md` |
+| estetica | 1.000 | 1.073 | True | `caso_estetica/report.md` |
+| falsacion_exogeneidad | -2.513 | 1.005 | False | `caso_falsacion_exogeneidad/report.md` |
+| falsacion_no_estacionariedad | 0.009 | 1.002 | False | `caso_falsacion_no_estacionariedad/report.md` |
+| falsacion_observabilidad | n/a | n/a | False | `caso_falsacion_observabilidad/report.md` |
+| finanzas | 0.975 | 1.396 | True | `caso_finanzas/report.md` |
+| justicia | 1.000 | 1.262 | True | `caso_justicia/report.md` |
+| moderacion_adversarial | -0.179 | 1.069 | False | `caso_moderacion_adversarial/report.md` |
+| movilidad | 0.740 | 5.273 | True | `caso_movilidad/report.md` |
+| paradigmas | 1.000 | 2.283 | True | `caso_paradigmas/report.md` |
+| politicas_estrategicas | -0.209 | 1.264 | False | `caso_politicas_estrategicas/report.md` |
+| postverdad | 1.000 | 1.061 | True | `caso_postverdad/report.md` |
+| rtb_publicidad | 0.088 | 6.937 | False | `caso_rtb_publicidad/report.md` |
+| wikipedia | 1.000 | 5.302 | True | `caso_wikipedia/report.md` |
+
+Para recalcular este reporte de forma automatica, usar:
+`python3 scripts/evaluar_simulaciones.py --write`
