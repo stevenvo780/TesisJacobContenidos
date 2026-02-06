@@ -23,3 +23,9 @@ Ciencias de la complejidad, dinamica de sistemas, emergencias.
 - Formato: 1 ronda de evaluacion, 1 ronda de preguntas, 1 veredicto con puntaje.
 - Reglas: el veredicto debe incluir al menos un riesgo no resuelto.
 - Entregables: hoja de puntuacion (0-10) por criterio.
+
+**Moderacion y falacias (obligatorio)**
+- Identificar falacias o problemas argumentativos (p. ej., ad hominem, moving target, non sequitur, cherry-picking, falsa dicotomia, apelacion a autoridad).
+- Solicitar explicitamente no repetir la falacia en la siguiente intervencion.
+- Llevar conteo breve de falacias por equipo (ej.: `Equipo critico: 2`, `Equipo defensor: 1`) en el comentario o veredicto.
+- Priorizar desescalar conflictos innecesarios: pedir evidencia, rutas y trazabilidad antes de imputar mala fe.

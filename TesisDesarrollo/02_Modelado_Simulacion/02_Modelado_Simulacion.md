@@ -72,5 +72,45 @@ Los casos validados (Contaminación, Movilidad) demuestran que el modelo híbrid
 
 Sistemas como la **Estética** presentan un EDI superior a la **Justicia** no por una mayor "importancia", sino por la inercia del canon artístico frente a la volatilidad procedimental del sistema legal. Esto marca el límite técnico del marco actual: detecta **estabilidad informacional macroscópica**, no necesariamente relevancia ontológica absoluta.
 
+## C5 — Bitácora de Correcciones y Reporte de Fallos
+
+### Corrección 2026-02-06: Bug EI=0.0 (Información Efectiva)
+
+**Problema detectado:** Los archivos `metrics.json` de los 18 casos almacenaban `effective_information: 0.0` de forma sistemática. El valor nulo se debía a una versión anterior de la función `effective_information()` en `repos/Simulaciones/common/hybrid_validator.py` que no persistía correctamente el cálculo KDE.
+
+**Corrección:** Re-ejecución de `validate.py` en los casos 01 (Clima), 03 (Contaminación) y 13 (Movilidad) con el código corregido. Resultados:
+
+| Caso | Fase | EI anterior | EI corregido |
+|------|------|:-----------:|:------------:|
+| 01_Clima | synthetic | 0.0 | 0.871 |
+| 01_Clima | real | 0.0 | 0.002 |
+| 03_Contaminación | synthetic | N/A | 0.048 |
+| 03_Contaminación | real | N/A | -0.022 |
+| 13_Movilidad | synthetic | 0.0 | 0.633 |
+| 13_Movilidad | real | N/A | -0.347 |
+
+**Commit de referencia:** `4264f4a` (branch main).
+
+**Nota:** EI es métrica complementaria, no criterio de existencia de H1. H1 se define por EDI > 0.30 y el protocolo C1-C5. La corrección de EI no altera los criterios de validación.
+
+### Corrección 2026-02-06: Eliminación de assimilation_strength en calibración
+
+**Problema detectado:** Versiones anteriores del calibrador usaban `assimilation_strength > 0` durante la fase de calibración (grid-search), permitiendo que el modelo accediera a observaciones futuras durante el ajuste.
+
+**Corrección:** El código actual fuerza `assimilation_strength = 0.0` tanto en calibración como en evaluación. Esto hace el framework más estricto: los casos deben demostrar emergencia sin ningún tipo de nudging observacional.
+
+**Impacto:** Algunos casos que pasaban con la calibración anterior (ej. Contaminación real, EDI antiguo ≈ 0.42) ahora no pasan (EDI fresco = -0.076). Esto demuestra que el marco es **falsable** y **autocorrectivo**.
+
+## Regla Operacional: Divergencia EDI/CR
+
+Cuando EDI y CR divergen (ej. EDI < 0.30 pero CR > 2.0, o viceversa), se aplica el siguiente criterio:
+
+1. **EDI > 0.30 y CR < 2.0**: El macro reduce error micro pero sin frontera sistémica clara → **Emergencia funcional sin cohesión**. Estado: Parcial.
+2. **EDI < 0.30 y CR > 2.0**: Cohesión interna alta pero el macro no mejora la predicción → **Estructura autónoma sin eficacia causal descendente**. Estado: Parcial.
+3. **EDI > 0.30 y CR > 2.0 y C1-C5 = True**: Emergencia completa. Estado: **Validado**.
+4. **EDI < 0.30 y CR < 2.0**: Sin emergencia ni cohesión. Estado: **Rechazado**.
+
+**Caso Clima real** (EDI=0.002, CR=4.82) cae en categoría 2: estructura autónoma verificada, eficacia causal pendiente de mejor calibración.
+
 ## Auditoria de Consistencia
 Ver `Auditoria_Simulaciones.md` para hallazgos y recomendaciones detalladas sobre la calidad de los datos y el comportamiento de las métricas en casos de borde.

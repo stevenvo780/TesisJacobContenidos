@@ -19,6 +19,17 @@ Simular una defensa y refutacion de la tesis desde posiciones tecnicas y filosof
 - Cada miembro puede pedir un derecho a replica (maximo 1 por persona en toda la dinamica).
 - Los jueces no debaten: solo hacen preguntas y dictamen final.
 
+**Entrega y trazabilidad (obligatorio)**
+- Toda intervencion debe quedar en `Artifacts/gladiadores/HistorialDiscucion/iteracion_N/`.
+- Nombre de archivos:
+- `defensor_respuesta_N.md`
+- `critico_respuesta_N.md`
+- `jueces_preguntas_N.md`
+- `jueces_veredicto_N.md`
+- `moderador_comentarios_N.md`
+- El equipo `equipo_jueces` deja **preguntas** en la iteracion actual (ej.: `jueces_preguntas_4.md`) y el siguiente turno es del defensor en **iteracion N+1**.
+- Las cifras y afirmaciones tecnicas deben ser trazables a `metrics.json`, codigo o reportes con ruta exacta.
+
 **Archivo de turnos**
 - Archivo simple para ver y actualizar el turno: `Artifacts/gladiadores/turno.txt`.
 - Se avanza manualmente reemplazando la linea `Turno actual:`.
