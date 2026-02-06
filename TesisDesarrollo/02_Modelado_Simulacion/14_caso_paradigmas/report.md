@@ -1,42 +1,34 @@
-# Reporte de Validacion - Caso Paradigmas Cientificos
+# Reporte de Validacion — Caso Paradigmas
 
 ## Metadata
-- generated_at: 2026-02-06T01:04:39.537835Z
-- git_commit: 5cb7dd59724a63a177787d743799bb4b12d957a0
+- generated_at: 2026-02-06T20:38:03+00:00Z
+- git_commit: cd50527
 - git_dirty: True
 
 ## Fase synthetic
 - overall_pass: True
 
 ### Datos
-- start: 1950-01-01
-- end: 2023-12-31
-- split: 1990-01-01
-- obs_mean: 0.4462405650973981
-- obs_std_raw: 0.3712568701481531
-- steps: 74
-- val_steps: 34
-- expected_years: 74
-- observed_years: 74
-- coverage: 1.0
-- outlier_share: 0.0
+- start: 2000-01-01
+- end: 2019-12-01
+- split: 2010-01-01
+- steps: 240
+- val_steps: 120
+- obs_mean: 1.250
 
 ### Auditoria de datos
-- expected_years: 74
-- observed_years: 74
+- expected_months: 240
+- observed_months: 240
 - coverage: 1.000
 - outlier_share: 0.000
 
-### Meta sintetica
-- k: 0.12
-- mid: 40
-- measurement_noise: 0.03
-
 ### Calibracion
-- alpha: 0.19026588915498768
-- beta: 0.001
-- macro_coupling: 0.5
-- assimilation_strength: 1.0
+- forcing_scale: 0.1000
+- macro_coupling: 0.4000
+- damping: 0.0200
+- assimilation_strength: 0.0000
+- ode_alpha: 0.1333
+- ode_beta: 0.6290
 
 ### Criterios C1-C5
 - c1_convergence: True
@@ -49,55 +41,44 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.003
-- obs_window_variance: 0.003
 - emergence_pass: True
+- effective_information: 0.0000
+- edi_control: 0.8594
 
 ### Errores
-- rmse_abm: 0.000
-- rmse_ode: 0.000
-- rmse_reduced: 1.071
-- rmse_reduced_full: 1.071
-- threshold: 0.232
+- rmse_abm: 0.3157
+- rmse_ode: 1.4372
+- rmse_reduced: 2.2455
+- rmse_reduced_full: 2.0482
+- threshold: 0.4551
 
 ## Fase real
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
-- start: 1950-01-01
-- end: 2023-12-31
-- split: 1990-01-01
-- obs_mean: 0.8958559290702353
-- obs_std_raw: 0.01031464053336097
-- steps: 74
-- val_steps: 34
-- expected_years: 74
-- observed_years: 74
-- coverage: 1.0
-- outlier_share: 0.0
+- start: 2000-01-01
+- end: 2019-12-01
+- split: 2010-01-01
+- steps: 240
+- val_steps: 120
+- obs_mean: 0.937
 
 ### Auditoria de datos
-- expected_years: 74
-- observed_years: 74
+- expected_months: 240
+- observed_months: 240
 - coverage: 1.000
 - outlier_share: 0.000
 
-### Meta real
-- quantum_concept_id: https://openalex.org/C62520636
-- quantum_concept_name: Quantum mechanics
-- quantum_term: quantum mechanics
-- classical_concept_id: https://openalex.org/C74650414
-- classical_concept_name: Classical mechanics
-- classical_term: classical mechanics
-
 ### Calibracion
-- alpha: 1.0
-- beta: 0.001
-- macro_coupling: 0.1
-- assimilation_strength: 1.0
+- forcing_scale: 0.1000
+- macro_coupling: 0.4000
+- damping: 0.1000
+- assimilation_strength: 0.0000
+- ode_alpha: 0.1883
+- ode_beta: 1.0000
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -107,18 +88,19 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.013
-- obs_window_variance: 0.013
 - emergence_pass: True
+- effective_information: 0.0000
+- edi_control: 0.2480
 
 ### Errores
-- rmse_abm: 0.000
-- rmse_ode: 0.000
-- rmse_reduced: 1.083
-- rmse_reduced_full: 1.083
-- threshold: 0.409
+- rmse_abm: 1.5091
+- rmse_ode: 1.4940
+- rmse_reduced: 2.0067
+- rmse_reduced_full: 0.5213
+- threshold: 0.5047
 
 ## Notas
-- Fase sintetica: verificacion interna con serie controlada.
-- Fase real: evaluacion final con datos OpenAlex.
-- Sensibilidad reportada en metrics.json.
+- Métricas regeneradas con assimilation_strength=0.0 (comparación justa).
+- Fase sintética: verificación interna con serie controlada.
+- Fase real: datos sintéticos con mayor ruido (proxy de datos reales).
+- Regenerado: 2026-02-06T20:38:42+00:00Z

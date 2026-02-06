@@ -13,7 +13,7 @@ Este documento centraliza las críticas de alto impacto que aún no han sido res
 
 ## 3. Rigor Expositivo y Técnico
 *   **[RESUELTO] Tono de "Modo Dios":** Corregido el tono triunfalista. Se actualizaron las secciones de resultados para reflejar que solo 2 de 18 casos superan umbrales y se reconocen las limitaciones.
-*   **Reproducibilidad (External Audit):** Falta un archivo `INSTALL.md` simplificado y un entorno que permita a un tercero replicar el EDI 0.074 del clima sin fricciones.
+*   **Reproducibilidad (External Audit):** Falta un archivo `INSTALL.md` simplificado y un entorno que permita a un tercero replicar el EDI 0.103 del clima sin fricciones.
 *   **[RESUELTO] Integridad de Enlaces:** Corregido el enlace `../Tesis.md` → `../TesisFinal/Tesis.md` en Indice_Maestro.md.
 
 ## 4. Reducción de Ambición

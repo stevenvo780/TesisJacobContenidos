@@ -3119,35 +3119,14 @@ Validar la existencia de **Hiperobjetos** (entidades masivamente distribuidas) m
 
 ## 2. Estructura del Repositorio (Consolidada)
 
-### 00_Marco_Conceptual (Fundamentos)
-*   `00_00_Marco_Conceptual.md`: Ontología OOO (Morton) y Causalidad (Bunge).
-*   `00_01_Presupuestos_Axiomas.md`: Lógica formal del sistema.
-*   `00_02_Glosario_Maestro.md`: Definiciones operativas (Aliasing, Nudging).
-*   `00_03_Dialectica_Filosofica.md`: Defensa ante críticas (Reduccionismo, Tautología).
-*   `00_11_Bibliografia.md`: Las 17 fuentes nucleares (Haken, Shannon, Soros).
-
-### 01_Metodologia_Medicion (Rigor)
-*   `01_01_Protocolo_Rigor.md`: Pipeline C1-C5.
-*   `01_02_Indicadores_Metricas.md`: Justificación matemática de EDI y CR.
-*   `01_03_Validez_y_Riesgos.md`: Niveles de Evidencia (LoE) y límites.
-
-### 02_Modelado_Simulacion (Motor)
-*   `02_01_Arquitectura_Hibrida.md`: Implementación de la clase `HybridModel`.
-*   `02_02_Protocolo_y_Dialectica.md`: Navaja de Ockham (Híbrido vs Reducido).
-*   `02_03_Glosario_Matematico.md`: Fórmulas específicas de simulación.
-*   `01_caso_clima/`: Código fuente Python (Caso Exitoso).
-*   `10_caso_finanzas/`: Código fuente Python (Caso Fallido/Reflexivo).
-
-### 03_Validacion_Praxis (Resultados)
-*   `03_01_Evidencia_Empirica.md`: Clima, Energía, Epidemiología (LoE 4-5).
-*   `03_02_Evidencia_Prospectiva.md`: Justicia, Estética (LoE 1-2).
-*   `03_03_Post_Mortem_y_Falsacion.md`: Análisis del fallo en Finanzas.
-*   `03_8_Matriz_Validacion_00_01.md`: Cuadro de mando final.
-
-### 04_Casos_De_Estudio (Detalle)
-*   `04_01_Evidencia_Dura.md`: Mecánica de los sistemas físicos.
-*   `04_02_Exploraciones_Sociales.md`: Mecánica de los sistemas sociales.
-*   `04_03_Fronteras_y_Aliasing.md`: Límites técnicos del modelo.
+Fuente de verdad documental:
+- `Indice_Maestro.md`
+- `00_Marco_Conceptual/00_00_Marco_Conceptual.md`
+- `01_Metodologia_Medicion/01_00_Metodologia_Medicion.md`
+- `02_Modelado_Simulacion/02_Modelado_Simulacion.md`
+- `03_Validacion_Praxis/03_Validacion_Praxis.md`
+- `04_Casos_De_Estudio/04_Casos_De_Estudio.md`
+- `Anexos.md`
 
 ## 3. Estado de los Modelos
 *   **Caso Clima:** VALIDADO (EDI 0.45). Demuestra inercia macro.
@@ -3166,9 +3145,8 @@ Este documento detalla los pasos para replicar las simulaciones y validaciones d
 ## 1. Instalación Rápida
 Requiere Python 3.8+.
 ```bash
-git clone https://github.com/stevenvo780/SimulacionClimatica.git
-cd SimulacionClimatica
-pip install -r requirements.txt
+cd /workspace
+pip install -r repos/Simulaciones/requirements.txt
 ```
 
 ## 2. Ejecución
@@ -3176,11 +3154,11 @@ Para replicar los resultados:
 
 *   **Caso Clima (Éxito):** Valida la inercia macro del clima regional.
     ```bash
-    python3 02_Modelado_Simulacion/01_caso_clima/src/validate.py
+    python3 repos/Simulaciones/caso_clima/src/validate.py
     ```
 *   **Caso Finanzas (Fallo):** Demuestra el límite del modelo ante la reflexividad.
     ```bash
-    python3 02_Modelado_Simulacion/10_caso_finanzas/src/validate.py
+    python3 repos/Simulaciones/caso_finanzas/src/validate.py
     ```
 
 ## 3. Resultados
@@ -3199,21 +3177,20 @@ Este repositorio contiene la implementación técnica y la fundamentación teór
 ## 🚀 Instalación Rápida
 
 ```bash
-git clone https://github.com/stevenvo780/SimulacionClimatica.git
-cd SimulacionClimatica
-pip install -r requirements.txt
+cd /workspace
+pip install -r repos/Simulaciones/requirements.txt
 ```
 
 ## 🧪 Experimentos Principales
 
 ### 1. Caso Clima (El Éxito)
 Modelo validado que demuestra cómo la inercia térmica global "esclaviza" las fluctuaciones locales.
-*   **Ejecución:** `python3 02_Modelado_Simulacion/01_caso_clima/src/validate.py`
+*   **Ejecución:** `python3 repos/Simulaciones/caso_clima/src/validate.py`
 *   **Resultado:** EDI 0.45 (Emergencia Fuerte).
 
 ### 2. Caso Finanzas (El Rechazo)
 Modelo que falla intencionalmente para demostrar los límites de la predicción en sistemas reflexivos (Soros).
-*   **Ejecución:** `python3 02_Modelado_Simulacion/10_caso_finanzas/src/validate.py`
+*   **Ejecución:** `python3 repos/Simulaciones/caso_finanzas/src/validate.py`
 *   **Resultado:** EDI 0.05 (Ruido/Aliasing).
 
 ## 📚 Estructura de la Tesis (Versión Consolidada)

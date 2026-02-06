@@ -14,24 +14,24 @@ Investigación de tesis doctoral ("Ontología Operativa de Hiperobjetos") que va
 
 ### Instalar dependencias
 ```bash
-pip install -r repos/SimulacionClimatica/requirements.txt
+pip install -r repos/Simulaciones/requirements.txt
 ```
 
 ### Ejecutar validaciones de simulación
 ```bash
-python3 repos/SimulacionClimatica/02_Modelado_Simulacion/caso_clima/src/validate.py
-python3 repos/SimulacionClimatica/02_Modelado_Simulacion/caso_finanzas/src/validate.py
+python3 repos/Simulaciones/caso_clima/src/validate.py
+python3 repos/Simulaciones/caso_finanzas/src/validate.py
 ```
 
 ### Auditar todos los casos de simulación
 ```bash
-python3 scripts/auditar_simulaciones.py
+python3 repos/scripts/auditar_simulaciones.py
 ```
 
 ### Evaluar y actualizar tablas de simulación
 ```bash
-python3 scripts/evaluar_simulaciones.py
-python3 scripts/actualizar_tablas_002.py
+python3 repos/scripts/evaluar_simulaciones.py
+python3 repos/scripts/actualizar_tablas_002.py
 ```
 
 ## Arquitectura
@@ -40,14 +40,14 @@ python3 scripts/actualizar_tablas_002.py
 
 - **TesisDesarrollo/** — Contenido de la tesis en 5 módulos (00-04): Marco Conceptual, Metodología, Modelado y Simulación, Validación, Casos de Estudio
 - **TesisFinal/Tesis.md** — Documento final compilado de la tesis
-- **repos/SimulacionClimatica/** — Código fuente Python de las simulaciones (modelos híbridos ABM+ODE)
+- **repos/Simulaciones/** — Código fuente Python de las simulaciones (modelos híbridos ABM+ODE)
 - **Artifacts/** — Documentos de auditoría y artefactos de trabajo (fase 1 y fase 2)
-- **scripts/** — Scripts utilitarios para auditoría, evaluación y actualización de datos de simulación
+- **repos/scripts/** — Scripts utilitarios para auditoría, evaluación y actualización de datos de simulación
 - **GEMINI.md** — Documento maestro de contexto con visión del proyecto y reglas de ejecución
 
 ### Estructura del Código de Simulación (por caso)
 
-Cada caso en `repos/SimulacionClimatica/02_Modelado_Simulacion/caso_*/` sigue:
+Cada caso en `repos/Simulaciones/caso_*/` sigue:
 ```
 src/
   validate.py   # Orquestador: calibración → simulación → métricas → reporte
@@ -87,7 +87,7 @@ docs/           # Documentación específica del caso (arquitectura, protocolos,
 
 ## 18 Casos de Simulación
 
-Ubicados en `TesisDesarrollo/02_Modelado_Simulacion/`. Incluyen casos exitosos (clima, contaminación, movilidad, paradigmas), casos de falsación intencional (exogeneidad, no-estacionariedad, observabilidad) y un caso de fallo deliberado (finanzas, EDI=0.05). Solo `caso_clima` y `caso_finanzas` tienen código Python ejecutable completo en `repos/SimulacionClimatica/`.
+Ubicados en `TesisDesarrollo/02_Modelado_Simulacion/`. Incluyen casos exitosos (clima, contaminación, movilidad, paradigmas), casos de falsación intencional (exogeneidad, no-estacionariedad, observabilidad) y un caso de fallo deliberado (finanzas, EDI=0.05). Solo `caso_clima` y `caso_finanzas` tienen código Python ejecutable completo en `repos/Simulaciones/`.
 
 ## Notas sobre Lenguaje y Contenido
 

@@ -15,27 +15,27 @@ El repositorio se divide en cuatro áreas críticas:
     *   `00_Marco_Conceptual/`: Ontología y Axiomas.
     *   `01_Metodologia_Medicion/`: Protocolo C1-C5 y métricas (EDI, CR).
     *   `02_Modelado_Simulacion/`: Documentación del motor `HybridModel`.
-*   **/repos/SimulacionClimatica/**: Motor de simulación en Python.
+*   **/repos/Simulaciones/**: Motor de simulación en Python.
     *   `caso_clima/`: Modelo validado (EDI 0.45).
     *   `caso_finanzas/`: Modelo rechazado/falsado (EDI 0.05).
 *   **/Artifacts/**: Historial de debates, auditorías y ciclos de validación (C1-C5).
 *   **/TesisFinal/**: El documento de tesis consolidado (`Tesis.md`).
 
 ## 3. Guía de Ejecución (Building & Running)
-El motor de simulación requiere Python 3.10+ y las dependencias listadas en `repos/SimulacionClimatica/requirements.txt`.
+El motor de simulación requiere Python 3.10+ y las dependencias listadas en `repos/Simulaciones/requirements.txt`.
 
 ### Comandos Clave:
 *   **Instalar Dependencias:**
     ```bash
-    pip install -r repos/SimulacionClimatica/requirements.txt
+    pip install -r repos/Simulaciones/requirements.txt
     ```
 *   **Validar Caso Clima:**
     ```bash
-    python3 repos/SimulacionClimatica/02_Modelado_Simulacion/caso_clima/src/validate.py
+    python3 repos/Simulaciones/caso_clima/src/validate.py
     ```
 *   **Validar Caso Finanzas:**
     ```bash
-    python3 repos/SimulacionClimatica/02_Modelado_Simulacion/caso_finanzas/src/validate.py
+    python3 repos/Simulaciones/caso_finanzas/src/validate.py
     ```
 
 ## 4. Convenciones y Rigor
@@ -46,9 +46,9 @@ Al interactuar con este proyecto, se deben seguir estas reglas:
 3.  **Estado de los Casos:**
     *   `Clima`: Convergente (Emergencia Fuerte).
     *   `Finanzas`: Divergente (Límite por Reflexividad).
-4.  **Terminología:** Consultar `TesisDesarrollo/00_Marco_Conceptual/00_02_Glosario_Maestro.md` para términos como "Symploké", "Causalidad Descendente" o "Nudging".
+4.  **Terminología:** Consultar `TesisDesarrollo/00_Marco_Conceptual/00_00_Marco_Conceptual.md` para términos como "Symploké", "Causalidad Descendente" o "Nudging".
 
 ## 5. Documentos de Referencia Rápida
 *   **Indice Maestro:** `TesisDesarrollo/Indice_Maestro.md`
 *   **Resumen Ultra:** `TesisDesarrollo/README.md`
-*   **Métricas Específicas:** `TesisDesarrollo/01_Metodologia_Medicion/01_02_Indicadores_Metricas.md`
+*   **Métricas Específicas:** `TesisDesarrollo/01_Metodologia_Medicion/01_00_Metodologia_Medicion.md`

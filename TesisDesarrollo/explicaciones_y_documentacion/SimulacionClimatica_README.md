@@ -7,22 +7,21 @@ Este repositorio contiene la implementación técnica y la fundamentación teór
 ## 🚀 Instalación Rápida
 
 ```bash
-git clone https://github.com/stevenvo780/SimulacionClimatica.git
-cd SimulacionClimatica
-pip install -r requirements.txt
+cd /workspace
+pip install -r repos/Simulaciones/requirements.txt
 ```
 
 ## 🧪 Experimentos Principales
 
-### 1. Caso Clima (El Éxito)
-Modelo validado que demuestra cómo la inercia térmica global "esclaviza" las fluctuaciones locales.
-*   **Ejecución:** `python3 02_Modelado_Simulacion/01_caso_clima/src/validate.py`
-*   **Resultado:** EDI 0.45 (Emergencia Fuerte).
+### 1. Caso Clima (No Validado)
+Modelo con cohesión interna adecuada pero estructura macro débil en zero-nudging.
+*   **Ejecución:** `python3 repos/Simulaciones/caso_clima/src/validate.py`
+*   **Resultado:** EDI 0.103 (< 0.30), CR 2.355 (> 2.0).
 
-### 2. Caso Finanzas (El Rechazo)
-Modelo que falla intencionalmente para demostrar los límites de la predicción en sistemas reflexivos (Soros).
-*   **Ejecución:** `python3 02_Modelado_Simulacion/10_caso_finanzas/src/validate.py`
-*   **Resultado:** EDI 0.05 (Ruido/Aliasing).
+### 2. Caso Finanzas (No Validado)
+Modelo con EDI alto pero sin frontera sistémica.
+*   **Ejecución:** `python3 repos/Simulaciones/caso_finanzas/src/validate.py`
+*   **Resultado:** EDI 0.769 (> 0.30), CR 1.078 (< 2.0).
 
 ## 📚 Estructura de la Tesis (Versión Consolidada)
 
@@ -32,7 +31,7 @@ La documentación se ha condensado en 5 módulos de alta densidad académica:
 *   **01_Metodologia:** Protocolos de rigor C1-C5.
 *   **02_Modelado:** Arquitectura del motor `HybridModel`.
 *   **03_Validacion:** Matriz de evidencia y análisis de fallos.
-*   **04_Casos:** Catálogo detallado de los 12 experimentos.
+*   **04_Casos:** Catálogo detallado de los 18 experimentos.
 
 ## ⚖️ Licencia
 MIT License. Ver `LICENSE` para más detalles.

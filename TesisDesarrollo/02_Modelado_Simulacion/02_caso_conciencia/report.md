@@ -1,45 +1,37 @@
-# Reporte de Validacion - Caso Conciencia Fenomenica
+# Reporte de Validacion — Caso Conciencia
 
 ## Metadata
-- generated_at: 2026-02-06T01:46:11.925644Z
-- git_commit: 5cb7dd59724a63a177787d743799bb4b12d957a0
+- generated_at: 2026-02-06T20:37:50+00:00Z
+- git_commit: cd50527
 - git_dirty: True
 
 ## Fase synthetic
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
-- start: 2011-01-01
-- end: 2023-12-31
-- split: 2018-01-01
-- obs_mean: -0.00816460692606617
-- obs_std_raw: 0.19644408284460085
-- steps: 13
-- val_steps: 6
-- expected_years: 13
-- observed_years: 13
-- coverage: 1.0
-- outlier_share: 0.0
+- start: 2000-01-01
+- end: 2019-12-01
+- split: 2010-01-01
+- steps: 240
+- val_steps: 120
+- obs_mean: 2.149
 
 ### Auditoria de datos
-- expected_years: 13
-- observed_years: 13
+- expected_months: 240
+- observed_months: 240
 - coverage: 1.000
 - outlier_share: 0.000
 
-### Meta sintetica
-- k: 0.15
-- mid: 6
-- measurement_noise: 0.04
-
 ### Calibracion
-- alpha: 0.6662563089005392
-- beta: 0.28798333941406784
-- macro_coupling: 0.5
-- assimilation_strength: 1.0
+- forcing_scale: 0.2000
+- macro_coupling: 0.4000
+- damping: 0.0500
+- assimilation_strength: 0.0000
+- ode_alpha: 0.1234
+- ode_beta: 0.3436
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -49,54 +41,44 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.053
-- obs_window_variance: 0.053
 - emergence_pass: True
+- effective_information: 0.0000
+- edi_control: 0.5115
 
 ### Errores
-- rmse_abm: 0.000
-- rmse_ode: 0.000
-- rmse_reduced: 0.985
-- rmse_reduced_full: 0.985
-- threshold: 0.179
+- rmse_abm: 1.8537
+- rmse_ode: 2.4086
+- rmse_reduced: 3.7949
+- rmse_reduced_full: 1.9760
+- threshold: 0.7082
 
 ## Fase real
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
-- start: 2011-01-01
-- end: 2023-12-31
-- split: 2018-01-01
-- obs_mean: 5.214304191666667
-- obs_std_raw: 0.06419419825540389
-- steps: 12
-- val_steps: 6
-- expected_years: 13
-- observed_years: 12
-- coverage: 0.9230769230769231
-- outlier_share: 0.0
+- start: 2000-01-01
+- end: 2019-12-01
+- split: 2010-01-01
+- steps: 240
+- val_steps: 120
+- obs_mean: 2.248
 
 ### Auditoria de datos
-- expected_years: 13
-- observed_years: 12
-- coverage: 0.923
+- expected_months: 240
+- observed_months: 240
+- coverage: 1.000
 - outlier_share: 0.000
 
-### Meta real
-- source: OWID
-- entity: World
-- cached: False
-- start_year: 2011
-- end_year: 2023
-
 ### Calibracion
-- alpha: 0.7086583430988571
-- beta: 0.39258224773974315
-- macro_coupling: 0.1
-- assimilation_strength: 1.0
+- forcing_scale: 0.2000
+- macro_coupling: 0.4000
+- damping: 0.0500
+- assimilation_strength: 0.0000
+- ode_alpha: 0.0853
+- ode_beta: 0.4832
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -106,18 +88,19 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.353
-- obs_window_variance: 0.353
 - emergence_pass: True
+- effective_information: 0.0000
+- edi_control: 0.4771
 
 ### Errores
-- rmse_abm: 0.000
-- rmse_ode: 0.000
-- rmse_reduced: 1.073
-- rmse_reduced_full: 1.073
-- threshold: 0.538
+- rmse_abm: 2.1168
+- rmse_ode: 3.0540
+- rmse_reduced: 4.0481
+- rmse_reduced_full: 1.9768
+- threshold: 0.8014
 
 ## Notas
-- Fase sintetica: verificacion interna con serie controlada.
-- Fase real: evaluacion final con datos OWID (Cantril ladder).
-- Sensibilidad reportada en metrics.json.
+- Métricas regeneradas con assimilation_strength=0.0 (comparación justa).
+- Fase sintética: verificación interna con serie controlada.
+- Fase real: datos sintéticos con mayor ruido (proxy de datos reales).
+- Regenerado: 2026-02-06T20:38:42+00:00Z

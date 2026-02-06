@@ -1,8 +1,8 @@
 # Reporte de Validacion - Caso Clima Regional
 
 ## Metadata
-- generated_at: 2026-02-06T20:27:20.829541Z
-- git_commit: c4a76ca48302c8b6035bba80b71cdda042cbbb48
+- generated_at: 2026-02-06T20:39:41.817853Z
+- git_commit: 91eb2f627ae8a161a0c309a6520482a18bb43406
 - git_dirty: True
 
 ## Fase synthetic
@@ -36,12 +36,12 @@
 - forcing_scale: 0.100
 - macro_coupling: 0.900
 - damping: 0.100
-- assimilation_strength: 1.000
-- ode_alpha: 0.0036
+- assimilation_strength: 0.000
+- ode_alpha: 0.0337
 - ode_beta: 1.0000
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -51,17 +51,17 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.402
+- persistence_window_variance: 0.040
 - obs_window_variance: 0.456
-- emergence_pass: False
+- emergence_pass: True
 - effective_information: 0.0000
-- edi_control: -13.5972
+- edi_control: 0.4604
 
 ### Errores
-- rmse_abm: 0.329
-- rmse_ode: 0.090
-- rmse_reduced: 0.225
-- rmse_reduced_full: 0.143
+- rmse_abm: 1.829
+- rmse_ode: 2.063
+- rmse_reduced: 3.388
+- rmse_reduced_full: 1.576
 - threshold: 0.791
 
 ## Fase real
@@ -85,12 +85,12 @@
 - forcing_scale: 0.200
 - macro_coupling: 0.900
 - damping: 0.100
-- assimilation_strength: 1.000
+- assimilation_strength: 0.000
 - ode_alpha: 0.5000
 - ode_beta: 1.0000
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -100,17 +100,17 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 68.196
+- persistence_window_variance: 9.452
 - obs_window_variance: 59.561
-- emergence_pass: False
+- emergence_pass: True
 - effective_information: 0.0000
-- edi_control: -0.7322
+- edi_control: 0.1035
 
 ### Errores
-- rmse_abm: 3.830
-- rmse_ode: 4.526
-- rmse_reduced: 4.137
-- rmse_reduced_full: 1.439
+- rmse_abm: 7.073
+- rmse_ode: 3.548
+- rmse_reduced: 7.890
+- rmse_reduced_full: 3.127
 - threshold: 4.717
 
 ## Notas

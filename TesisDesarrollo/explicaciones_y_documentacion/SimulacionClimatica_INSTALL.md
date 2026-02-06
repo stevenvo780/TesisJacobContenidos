@@ -5,9 +5,8 @@ Este documento detalla los pasos para replicar las simulaciones y validaciones d
 ## 1. Instalación Rápida
 Requiere Python 3.8+.
 ```bash
-git clone https://github.com/stevenvo780/SimulacionClimatica.git
-cd SimulacionClimatica
-pip install -r requirements.txt
+cd /workspace
+pip install -r repos/Simulaciones/requirements.txt
 ```
 
 ## 2. Ejecución
@@ -15,11 +14,11 @@ Para replicar los resultados:
 
 *   **Caso Clima (Éxito):** Valida la inercia macro del clima regional.
     ```bash
-    python3 02_Modelado_Simulacion/01_caso_clima/src/validate.py
+    python3 repos/Simulaciones/caso_clima/src/validate.py
     ```
 *   **Caso Finanzas (Fallo):** Demuestra el límite del modelo ante la reflexividad.
     ```bash
-    python3 02_Modelado_Simulacion/10_caso_finanzas/src/validate.py
+    python3 repos/Simulaciones/caso_finanzas/src/validate.py
     ```
 
 ## 3. Resultados

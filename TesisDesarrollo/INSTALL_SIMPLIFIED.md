@@ -1,6 +1,6 @@
 # Guía Simplificada de Reproducción (Auditoría Externa)
 
-Este documento permite replicar el entorno de simulación para validar el **Caso Clima (EDI 0.074 tras corrección de comparación justa)**.
+Este documento permite replicar el entorno de simulación para validar el **Caso Clima (EDI 0.103, CR 2.355 en modo zero-nudging)**.
 
 ## 1. Requisitos Previos
 *   Python 3.10+
@@ -9,9 +9,8 @@ Este documento permite replicar el entorno de simulación para validar el **Caso
 
 ## 2. Instalación Rápida
 ```bash
-# Clonar repositorio (si tiene acceso)
-git clone <repo_url>
-cd SimulacionClimatica
+# Usar el repositorio local de simulaciones
+cd /workspace
 
 # Crear entorno virtual (Recomendado)
 python3 -m venv venv
@@ -19,18 +18,18 @@ source venv/bin/activate  # Linux/Mac
 # venv\Scripts\activate  # Windows
 
 # Instalar dependencias exactas
-pip install -r repos/SimulacionClimatica/requirements.txt
+pip install -r repos/Simulaciones/requirements.txt
 ```
 
 ## 3. Ejecución del Caso Clima (Prueba de Humo)
 Para ejecutar la validación:
 
 ```bash
-python3 repos/SimulacionClimatica/02_Modelado_Simulacion/01_caso_clima/src/validate.py --mode=audit
+python3 repos/Simulaciones/caso_clima/src/validate.py
 ```
 
 *Salida esperada:*
-> `[PASS] EDI: 0.458 | CR: 1.05`
+> `EDI: 0.103 | CR: 2.355 | overall_pass: False`
 
 ## 4. Notas de Reproducibilidad
 *   **Semillas:** El sistema usa `random.seed(42)` por defecto.

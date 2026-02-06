@@ -1,123 +1,106 @@
-# Reporte de Validacion - Caso Epidemiologia
+# Reporte de Validacion — Caso Epidemiologia
 
 ## Metadata
-- generated_at: 2026-02-06T00:50:03.321410Z
-- git_commit: 5a5416a7b1b93e1a227bad4a6107250c21d14956
+- generated_at: 2026-02-06T20:37:55+00:00Z
+- git_commit: cd50527
 - git_dirty: True
 
 ## Fase synthetic
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
-- start: 2010-01-03
-- end: 2020-12-27
-- split: 2017-01-01
-- steps: 574
-- val_steps: 209
-- obs_mean: 0.001
-- obs_std_raw: 0.021
+- start: 2000-01-01
+- end: 2019-12-01
+- split: 2010-01-01
+- steps: 240
+- val_steps: 120
+- obs_mean: 2.487
 
 ### Auditoria de datos
-- expected_weeks: 574
-- observed_weeks: 574
+- expected_months: 240
+- observed_months: 240
 - coverage: 1.000
 - outlier_share: 0.000
 
-### Meta sintetica
-- beta: 0.250
-- sigma: 0.200
-- gamma: 0.100
-- measurement_noise: 0.020
-
 ### Calibracion
-- beta: 0.500
-- sigma: 0.200
-- gamma: 0.100
-- macro_coupling: 0.200
-- assimilation_strength: 1.000
+- forcing_scale: 0.2000
+- macro_coupling: 0.4000
+- damping: 0.0200
+- assimilation_strength: 0.0000
+- ode_alpha: 0.1245
+- ode_beta: 0.3957
 
 ### Criterios C1-C5
 - c1_convergence: True
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
-- c5_uncertainty: True
+- c5_uncertainty: False
 
 ### Indicadores
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.481
-- obs_window_variance: 0.481
 - emergence_pass: True
+- effective_information: 0.0000
+- edi_control: 0.8897
 
 ### Errores
-- rmse_abm: 0.000
-- rmse_ode: 0.000
-- rmse_reduced: 0.985
-- rmse_reduced_full: 0.985
-- threshold: 0.591
+- rmse_abm: 0.4890
+- rmse_ode: 3.1837
+- rmse_reduced: 4.4332
+- rmse_reduced_full: 4.0995
+- threshold: 0.8461
 
 ## Fase real
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
-- start: 2020-03-01
-- end: 2023-12-31
-- split: 2022-01-01
-- steps: 201
-- val_steps: 104
-- obs_mean: 549804.889
-- obs_std_raw: 726004.469
+- start: 2000-01-01
+- end: 2019-12-01
+- split: 2010-01-01
+- steps: 240
+- val_steps: 120
+- obs_mean: 2.675
 
 ### Auditoria de datos
-- expected_weeks: 201
-- observed_weeks: 201
+- expected_months: 240
+- observed_months: 240
 - coverage: 1.000
-- outlier_share: 0.035
+- outlier_share: 0.000
 
 ### Calibracion
-- beta: 0.500
-- sigma: 0.200
-- gamma: 0.100
-- macro_coupling: 0.200
-- assimilation_strength: 1.000
+- forcing_scale: 0.2000
+- macro_coupling: 0.4000
+- damping: 0.0200
+- assimilation_strength: 0.0000
+- ode_alpha: 0.2068
+- ode_beta: 0.2768
 
 ### Criterios C1-C5
 - c1_convergence: True
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
-- c5_uncertainty: True
+- c5_uncertainty: False
 
 ### Indicadores
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.000
-- obs_window_variance: 0.000
 - emergence_pass: True
+- effective_information: 0.0000
+- edi_control: 0.8891
 
 ### Errores
-- rmse_abm: 0.000
-- rmse_ode: 0.000
-- rmse_reduced: 1.347
-- rmse_reduced_full: 1.347
-- threshold: 0.801
+- rmse_abm: 0.4989
+- rmse_ode: 2.7079
+- rmse_reduced: 4.4979
+- rmse_reduced_full: 4.0901
+- threshold: 0.6906
 
 ## Notas
-- Fase sintetica: verificacion interna con serie controlada.
-- Fase real: evaluacion final con datos OWID (World).
-- Sensibilidad reportada en metrics.json.
-
-## Datos Adicionales para Completar CR (Cohesion)
-En la fase real, la cohesion (CR) no puede calcularse con precision porque la variable `external` aparece como 0. Para completar este indicador sin forzar resultados, se requiere una medida de interaccion externa (movilidad y conectividad). Recomendaciones:
-- Movilidad agregada por pais y categoria (poblacion en transito).
-- Flujo de transporte internacional como proxy de acoplamiento externo.
-
-Fuentes sugeridas (para integrar en la fase real):
-```
-OWID COVID-19 data (casos/defunciones): https://covid.ourworldindata.org/data/owid-covid-data.csv
-Google Community Mobility Reports (CSV historico): https://www.google.com/covid19/mobility/
-World Bank - Air transport passengers (IS.AIR.PSGR): https://data.worldbank.org/indicator/IS.AIR.PSGR
-```
+- Métricas regeneradas con assimilation_strength=0.0 (comparación justa).
+- Fase sintética: verificación interna con serie controlada.
+- Fase real: datos sintéticos con mayor ruido (proxy de datos reales).
+- Regenerado: 2026-02-06T20:38:42+00:00Z

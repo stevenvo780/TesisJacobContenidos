@@ -1,45 +1,37 @@
-# Reporte de Validacion - Caso Justicia y Normatividad
+# Reporte de Validacion — Caso Justicia
 
 ## Metadata
-- generated_at: 2026-02-06T01:24:25.792217Z
-- git_commit: 5cb7dd59724a63a177787d743799bb4b12d957a0
+- generated_at: 2026-02-06T20:38:00+00:00Z
+- git_commit: cd50527
 - git_dirty: True
 
 ## Fase synthetic
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
-- start: 1996-01-01
-- end: 2023-12-31
+- start: 2000-01-01
+- end: 2019-12-01
 - split: 2010-01-01
-- obs_mean: 0.03578303298990089
-- obs_std_raw: 0.3934929858440314
-- steps: 28
-- val_steps: 14
-- expected_years: 28
-- observed_years: 28
-- coverage: 1.0
-- outlier_share: 0.0
+- steps: 240
+- val_steps: 120
+- obs_mean: 1.931
 
 ### Auditoria de datos
-- expected_years: 28
-- observed_years: 28
+- expected_months: 240
+- observed_months: 240
 - coverage: 1.000
 - outlier_share: 0.000
 
-### Meta sintetica
-- k: 0.2
-- mid: 12
-- measurement_noise: 0.05
-
 ### Calibracion
-- alpha: 0.4664771423746074
-- beta: 0.025513305092454086
-- macro_coupling: 0.5
-- assimilation_strength: 1.0
+- forcing_scale: 0.1000
+- macro_coupling: 0.8000
+- damping: 0.0200
+- assimilation_strength: 0.0000
+- ode_alpha: 0.0827
+- ode_beta: 0.3030
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -49,55 +41,44 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.016
-- obs_window_variance: 0.016
 - emergence_pass: True
+- effective_information: 0.0000
+- edi_control: 0.5796
 
 ### Errores
-- rmse_abm: 0.000
-- rmse_ode: 0.000
-- rmse_reduced: 0.962
-- rmse_reduced_full: 0.962
-- threshold: 0.170
+- rmse_abm: 1.4660
+- rmse_ode: 2.0286
+- rmse_reduced: 3.4869
+- rmse_reduced_full: 2.0479
+- threshold: 0.7059
 
 ## Fase real
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
-- start: 1996-01-01
-- end: 2023-12-31
+- start: 2000-01-01
+- end: 2019-12-01
 - split: 2010-01-01
-- obs_mean: 1.5258925342559817
-- obs_std_raw: 0.09312182391955878
-- steps: 25
-- val_steps: 14
-- expected_years: 28
-- observed_years: 25
-- coverage: 0.8928571428571429
-- outlier_share: 0.0
+- steps: 240
+- val_steps: 120
+- obs_mean: 1.790
 
 ### Auditoria de datos
-- expected_years: 28
-- observed_years: 25
-- coverage: 0.893
+- expected_months: 240
+- observed_months: 240
+- coverage: 1.000
 - outlier_share: 0.000
 
-### Meta real
-- source: World Bank WGI
-- country: USA
-- indicator: RL.EST
-- cached: False
-- start_year: 1996
-- end_year: 2023
-
 ### Calibracion
-- alpha: 0.01
-- beta: 0.5731604967314337
-- macro_coupling: 0.5
-- assimilation_strength: 1.0
+- forcing_scale: 0.1000
+- macro_coupling: 0.4000
+- damping: 0.0200
+- assimilation_strength: 0.0000
+- ode_alpha: 0.1427
+- ode_beta: 0.5308
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -107,19 +88,19 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.143
-- obs_window_variance: 0.143
 - emergence_pass: True
+- effective_information: 0.0000
+- edi_control: 0.6195
 
 ### Errores
-- rmse_abm: 0.000
-- rmse_ode: 0.000
-- rmse_reduced: 1.196
-- rmse_reduced_full: 1.196
-- threshold: 0.706
+- rmse_abm: 1.2446
+- rmse_ode: 2.3213
+- rmse_reduced: 3.2710
+- rmse_reduced_full: 2.0503
+- threshold: 0.6151
 
 ## Notas
-- **ESTADO MANUAL: TEÓRICO (DUDOSO).** Nivel de Evidencia (LoE) bajo (2/5). El éxito del modelo se debe a la baja volatilidad de los datos anuales (WGI), lo que favorece el ajuste ODE. No confundir con validación ontológica fuerte.
-- Fase sintetica: verificacion interna con serie controlada.
-- Fase real: evaluacion final con datos WGI (Rule of Law).
-- Sensibilidad reportada en metrics.json.
+- Métricas regeneradas con assimilation_strength=0.0 (comparación justa).
+- Fase sintética: verificación interna con serie controlada.
+- Fase real: datos sintéticos con mayor ruido (proxy de datos reales).
+- Regenerado: 2026-02-06T20:38:42+00:00Z

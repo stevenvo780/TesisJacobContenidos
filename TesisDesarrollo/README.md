@@ -4,25 +4,25 @@
 
 Este repositorio contiene la implementación técnica y la fundamentación teórica para demostrar la **Eficacia Causal** de los hiperobjetos (Morton, 2013).
 
-## 🚀 Instalación Rápida
+## 🚀 Instalación Rápida (Workspace)
 
 ```bash
-git clone https://github.com/stevenvo780/SimulacionClimatica.git
-cd SimulacionClimatica
-pip install -r requirements.txt
+python3 -m venv venv
+source venv/bin/activate  # Linux/Mac
+pip install -r repos/Simulaciones/requirements.txt
 ```
 
 ## 🧪 Experimentos Principales
 
-### 1. Caso Clima (Resultado Débil)
-Modelo que muestra estructura macro débil tras corrección de comparación justa.
-*   **Ejecución:** `python3 repos/SimulacionClimatica/02_Modelado_Simulacion/caso_clima/src/validate.py`
-*   **Resultado:** EDI 0.074 (por debajo del umbral 0.30), CR 1.102 (por debajo de 2.0).
+### 1. Caso Clima (No Validado)
+Modelo con cohesión interna adecuada pero estructura macro débil en zero-nudging.
+*   **Ejecución:** `python3 repos/Simulaciones/caso_clima/src/validate.py`
+*   **Resultado:** EDI 0.103 (< 0.30), CR 2.355 (> 2.0).
 
-### 2. Caso Finanzas (Rechazo)
-Modelo que evidencia las restricciones de la predicción en sistemas reflexivos (Soros).
-*   **Ejecución:** `python3 repos/SimulacionClimatica/02_Modelado_Simulacion/caso_finanzas/src/validate.py`
-*   **Resultado:** EDI -0.020, macro_coupling=0.0.
+### 2. Caso Finanzas (No Validado)
+Modelo con EDI alto pero sin frontera sistémica.
+*   **Ejecución:** `python3 repos/Simulaciones/caso_finanzas/src/validate.py`
+*   **Resultado:** EDI 0.769 (> 0.30), CR 1.078 (< 2.0).
 
 ## 📚 Estructura de la Tesis (Versión Consolidada)
 
@@ -32,7 +32,14 @@ La documentación se ha condensado en 5 módulos de alta densidad académica:
 *   **01_Metodologia:** Protocolos de rigor C1-C5.
 *   **02_Modelado:** Arquitectura del motor `HybridModel`.
 *   **03_Validacion:** Matriz de evidencia y análisis de fallos.
-*   **04_Casos:** Catálogo detallado de los 12 experimentos.
+*   **04_Casos:** Catálogo detallado de los 18 experimentos.
+
+## 🧭 Mapa Doc ↔ Código (Fuente de Verdad)
+
+- La **tesis** vive en `TesisDesarrollo/` y se ensambla en `TesisFinal/Tesis.md`.
+- El **código** vive en `repos/Simulaciones/` (cada caso en `repos/Simulaciones/caso_*`).
+- Los **resultados** de simulación (`outputs/`) se generan en `repos/Simulaciones/caso_*/outputs/`.
+- En `TesisDesarrollo/02_Modelado_Simulacion/*/` se conserva el resumen documental (`metrics.json`, `report.md`, `docs/`).
 
 ## ⚖️ Licencia
 MIT License. Ver `LICENSE` para más detalles.
@@ -61,24 +68,16 @@ Este repositorio construye un aparato filosofico-cientifico para tratar los hipe
 - `03_Validacion_Praxis`: validacion en practica y auditoria empirica.
 - `04_Casos_De_Estudio`: formato y ejemplos de casos de estudio.
 
-## Documentos Unicos de Sintesis
+## Lectura Recomendada
 
-Para compartir con maestros o evaluadores, usar estos documentos unicos por seccion:
-
-- `00_Marco_Conceptual/00_13_SINTESIS.md`
-- `01_Metodologia_Medicion/01_18_SINTESIS.md`
-- `02_Modelado_Simulacion/02_SINTESIS.md`
-- `03_Validacion_Praxis/03_SINTESIS.md`
-- `04_Casos_De_Estudio/04_SINTESIS.md`
-
-## Glosarios
-
-- Glosario maestro: `00_Marco_Conceptual/00_02_Glosario_Maestro.md`
-- Glosario ultra compacto: `GLOSARIO_ULTRA.md`
-
-## Bibliografia
-
-Bibliografia consolidada: `00_Marco_Conceptual/00_11_Bibliografia.md`.
+- Índice maestro: `Indice_Maestro.md`
+- Secciones principales:
+- `00_Marco_Conceptual/00_00_Marco_Conceptual.md`
+- `01_Metodologia_Medicion/01_00_Metodologia_Medicion.md`
+- `02_Modelado_Simulacion/02_Modelado_Simulacion.md`
+- `03_Validacion_Praxis/03_Validacion_Praxis.md`
+- `04_Casos_De_Estudio/04_Casos_De_Estudio.md`
+- `Anexos.md`
 
 ## Uso Recomendado
 
@@ -105,14 +104,7 @@ Un tratado filosofico-cientifico para validar hiperobjetos como sistemas emergen
 - Holismo critico.
 - Causalidad descendente debil.
 
-## Documentos unicos por seccion
+## Documentos Únicos
 
-- `00_Marco_Conceptual/00_13_SINTESIS.md`
-- `01_Metodologia_Medicion/01_18_SINTESIS.md`
-- `02_Modelado_Simulacion/02_SINTESIS.md`
-- `03_Validacion_Praxis/03_SINTESIS.md`
-- `04_Casos_De_Estudio/04_SINTESIS.md`
-
-## Glosario minimo
-
-Ver `GLOSARIO_ULTRA.md`.
+Actualmente la tesis consolida cada sección en un único documento narrativo
+por carpeta (ver la sección de lectura recomendada).
