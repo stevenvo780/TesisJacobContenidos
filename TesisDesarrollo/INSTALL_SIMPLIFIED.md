@@ -1,6 +1,6 @@
 # Guía Simplificada de Reproducción (Auditoría Externa)
 
-Este documento permite replicar el entorno de simulación para validar el **Caso Clima (EDI 0.45)**.
+Este documento permite replicar el entorno de simulación para validar el **Caso Clima (EDI 0.074 tras corrección de comparación justa)**.
 
 ## 1. Requisitos Previos
 *   Python 3.10+
@@ -23,7 +23,7 @@ pip install -r repos/SimulacionClimatica/requirements.txt
 ```
 
 ## 3. Ejecución del Caso Clima (Prueba de Humo)
-Para verificar que el EDI > 0.30 se sostiene:
+Para ejecutar la validación:
 
 ```bash
 python3 repos/SimulacionClimatica/02_Modelado_Simulacion/01_caso_clima/src/validate.py --mode=audit
