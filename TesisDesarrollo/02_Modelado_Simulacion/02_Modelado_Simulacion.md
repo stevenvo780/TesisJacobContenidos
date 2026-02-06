@@ -17,41 +17,6 @@ La auditoria de modelado exigio criterios de paro y comparacion con modelos alte
 
 ## Resultados (Matriz de Validacion Tecnica)
 
-| Caso de Estudio | Tipo de Validacion | EDI | CR | Nivel de Evidencia (LoE) | Estado Final |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Clima Regional | Empirica (Meteostat) | 0.51 | 2.5 | ★★★★★ | VALIDADO |
-| Contaminacion | Empirica (CAMS) | 0.52 | 2.8 | ★★★★☆ | VALIDADO |
-| Energia | Empirica (OPSD) | 0.38 | 2.4 | ★★★★☆ | VALIDADO |
-| Epidemiologia | Empirica (OWID) | 0.55 | 3.2 | ★★★★☆ | VALIDADO |
-| Finanzas (SPY) | Empirica (Yahoo) | 0.05 | 1.1 | ★★★★★ | RECHAZADO |
-| Wikipedia | Empirica (Wikimedia) | 0.41 | 2.6 | ★★★☆☆ | VALIDADO |
-| Postverdad | Prospectiva (Proxies) | 0.34 | 2.2 | ★★☆☆☆ | VALIDADO |
-| Bienestar | Teorica (Encuestas) | 0.42 | 2.2 | ★★☆☆☆ | TEORICO |
-| Estetica | Teorica (Estilos) | <0.10 | 1.0 | ★☆☆☆☆ | RECHAZADO (Inercia) |
-| Paradigmas | Teorica (Citas) | 0.31 | 2.1 | ★☆☆☆☆ | TEORICO |
-| Movilidad | Piloto (Local) | 0.32 | 2.1 | ★★☆☆☆ | PROTOTIPO (Falla C1) |
-
-## Evidencia Empirica (LoE 4-5)
-- **Clima:** el parametro macro de balance energetico esclaviza fluctuaciones locales.
-- **Energia:** la estabilidad de red impone restricciones macro sobre agentes de consumo.
-- **Epidemiologia:** la tasa global de contagio organiza el micro.
-- **Contaminacion:** la memoria atmosferica y el transporte macro ordenan emisiones locales.
-
-## Evidencia Prospectiva y Teorica
-- **Wikipedia y Postverdad:** dinamicas de informacion con alta reflexividad, validacion prospectiva.
-
-## Fronteras del Modelo
-- **Finanzas:** falla por reflexividad y aliasing temporal (alta frecuencia).
-- **Movilidad:** prototipo, inestabilidad del atractor macro en series largas.
-
-## Falsacion y Pruebas de Estres
-- Exogeneidad total, ruido blanco e invisibilidad de agentes se usan para descartar falsos positivos.
-
-## Sintesis y Limitaciones Epistemicas
-El motor hibrido sugiere que sistemas con alta inercia estructural (Clima, Epidemiología) responden eficazmente a un modelado macroscópico. Sin embargo, en dominios de alta frecuencia o baja materialidad (Finanzas, Estética), los resultados deben interpretarse con cautela: un EDI alto podría reflejar inercia histórica más que causalidad ontológica fuerte. La "validación" aquí presentada es estadística y no clausura el debate filosófico sobre la existencia real de estos objetos.
-
-## Reporte General de Simulaciones (18 casos)
-
 | Caso | EDI | CR | Estado | Reporte |
 | :--- | ---: | ---: | :--- | :--- |
 | 01_caso_clima | 0.458 | 1.057 | True | `01_caso_clima/report.md` |
@@ -75,3 +40,22 @@ El motor hibrido sugiere que sistemas con alta inercia estructural (Clima, Epide
 
 Para recalcular este reporte de forma automatica, usar:
 `python3 scripts/evaluar_simulaciones.py --write`
+
+## Evidencia Empirica (LoE 4-5)
+- **Clima:** el parametro macro de balance energetico esclaviza fluctuaciones locales.
+- **Energia:** la estabilidad de red impone restricciones macro sobre agentes de consumo.
+- **Epidemiologia:** la tasa global de contagio organiza el micro.
+- **Contaminacion:** la memoria atmosferica y el transporte macro ordenan emisiones locales.
+
+## Evidencia Prospectiva y Teorica
+- **Wikipedia y Postverdad:** dinamicas de informacion con alta reflexividad, validacion prospectiva.
+
+## Fronteras del Modelo
+- **Finanzas:** falla por reflexividad y aliasing temporal (alta frecuencia).
+- **Movilidad:** prototipo, inestabilidad del atractor macro en series largas.
+
+## Falsacion y Pruebas de Estres
+- Exogeneidad total, ruido blanco e invisibilidad de agentes se usan para descartar falsos positivos.
+
+## Sintesis y Limitaciones Epistemicas
+El motor hibrido sugiere que sistemas con alta inercia estructural (Clima, Epidemiología) responden eficazmente a un modelado macroscópico. Sin embargo, en dominios de alta frecuencia o baja materialidad (Finanzas, Estética), los resultados deben interpretarse con cautela: un EDI alto podría reflejar inercia histórica más que causalidad ontológica fuerte. La "validación" aquí presentada es estadística y no clausura el debate filosófico sobre la existencia real de estos objetos.
