@@ -1,12 +1,12 @@
 # Reporte de Validacion - Caso Clima Regional
 
 ## Metadata
-- generated_at: 2026-02-05T23:42:41.708670Z
-- git_commit: 46666b89c25141028c155db051cb2504ca7d6361
+- generated_at: 2026-02-06T19:50:22.053675Z
+- git_commit: bf2755bb29ef7953a185458eaa750196dc546f90
 - git_dirty: True
 
 ## Fase synthetic
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
 - start: 2000-01-01
@@ -14,7 +14,7 @@
 - split: 2010-01-01
 - steps: 240
 - val_steps: 120
-- obs_mean: 2.230
+- obs_mean: 2.228
 
 ### Auditoria de datos
 - expected_months: 240
@@ -33,11 +33,11 @@
 - measurement_noise: 0.050
 
 ### Calibracion
-- forcing_scale: 0.010
-- macro_coupling: 0.000
-- damping: 0.050
+- forcing_scale: 0.100
+- macro_coupling: 0.900
+- damping: 0.100
 - assimilation_strength: 1.000
-- ode_alpha: 0.0010
+- ode_alpha: 0.0036
 - ode_beta: 1.0000
 
 ### Criterios C1-C5
@@ -51,15 +51,17 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.425
-- obs_window_variance: 0.455
-- emergence_pass: True
+- persistence_window_variance: 0.402
+- obs_window_variance: 0.456
+- emergence_pass: False
+- effective_information: 0.0000
+- edi_control: -0.6109
 
 ### Errores
-- rmse_abm: 0.156
-- rmse_ode: 0.098
+- rmse_abm: 0.329
+- rmse_ode: 0.090
 - rmse_reduced: 2.043
-- rmse_reduced_full: 1.919
+- rmse_reduced_full: 1.762
 - threshold: 0.791
 
 ## Fase real
@@ -80,12 +82,12 @@
 - outlier_share: 0.000
 
 ### Calibracion
-- forcing_scale: 0.050
-- macro_coupling: 0.400
-- damping: 0.050
+- forcing_scale: 0.200
+- macro_coupling: 0.900
+- damping: 0.100
 - assimilation_strength: 1.000
-- ode_alpha: 0.0010
-- ode_beta: 0.0010
+- ode_alpha: 0.5000
+- ode_beta: 1.0000
 
 ### Criterios C1-C5
 - c1_convergence: True
@@ -98,15 +100,17 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 60.861
+- persistence_window_variance: 68.196
 - obs_window_variance: 59.561
 - emergence_pass: True
+- effective_information: 0.0000
+- edi_control: 0.0896
 
 ### Errores
-- rmse_abm: 4.268
+- rmse_abm: 3.830
 - rmse_ode: 4.526
 - rmse_reduced: 7.872
-- rmse_reduced_full: 8.098
+- rmse_reduced_full: 8.534
 - threshold: 4.717
 
 ## Notas

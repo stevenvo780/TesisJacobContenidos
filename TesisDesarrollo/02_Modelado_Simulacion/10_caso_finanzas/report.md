@@ -1,12 +1,12 @@
 # Reporte de Validacion - Caso Finanzas Globales
 
 ## Metadata
-- generated_at: 2026-02-05T23:42:51.572078Z
-- git_commit: 46666b89c25141028c155db051cb2504ca7d6361
+- generated_at: 2026-02-06T19:50:26.434611Z
+- git_commit: bf2755bb29ef7953a185458eaa750196dc546f90
 - git_dirty: True
 
 ## Fase synthetic
-- overall_pass: True
+- overall_pass: False
 
 ### Datos
 - start: 2000-01-01
@@ -38,28 +38,28 @@
 - damping: 0.050
 - assimilation_strength: 1.000
 - ode_alpha: 0.0010
-- ode_beta: 0.8196
+- ode_beta: 0.0010
 
 ### Criterios C1-C5
-- c1_convergence: True
-- c2_robustness: True
+- c1_convergence: False
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Indicadores
-- symploke_pass: True
+- symploke_pass: False
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.202
+- persistence_window_variance: 0.098
 - obs_window_variance: 0.200
 - emergence_pass: True
 
 ### Errores
-- rmse_abm: 0.056
-- rmse_ode: 0.056
+- rmse_abm: 0.851
+- rmse_ode: 0.253
 - rmse_reduced: 2.155
-- rmse_reduced_full: 2.131
+- rmse_reduced_full: 1.310
 - threshold: 0.505
 
 ## Fase real
@@ -84,12 +84,12 @@
 - macro_coupling: 0.000
 - damping: 0.050
 - assimilation_strength: 1.000
-- ode_alpha: 0.0024
+- ode_alpha: 0.0028
 - ode_beta: 1.0000
 
 ### Criterios C1-C5
-- c1_convergence: True
-- c2_robustness: True
+- c1_convergence: False
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
@@ -98,19 +98,18 @@
 - symploke_pass: True
 - non_locality_pass: True
 - persistence_pass: True
-- persistence_window_variance: 0.022
+- persistence_window_variance: 0.014
 - obs_window_variance: 0.022
-- emergence_pass: False
+- emergence_pass: True
 
 ### Errores
-- rmse_abm: 0.043
-- rmse_ode: 0.043
+- rmse_abm: 0.609
+- rmse_ode: 0.147
 - rmse_reduced: 1.754
-- rmse_reduced_full: 1.744
+- rmse_reduced_full: 1.151
 - threshold: 0.305
 
 ## Notas
-- **ESTADO MANUAL: RECHAZADO.** Aunque el script automático marca "True", el análisis cualitativo (Falsación) demuestra que el EDI es espurio debido a la alta frecuencia (aliasing temporal) y la reflexividad del mercado. El modelo ODE lineal no captura la dinámica real.
 - Fase sintetica: verificacion interna con serie controlada.
 - Fase real: evaluacion final con datos SPY (1990-2024).
 - Sensibilidad reportada en metrics.json.

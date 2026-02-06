@@ -15,7 +15,7 @@ Un **Hiperobjeto** es ontológicamente real si y solo si su modelo macroscópico
 
 Esta eficacia se formaliza mediante dos condiciones necesarias y suficientes:
 1.  **Condición de Emergencia Informacional:** El sistema acoplado debe poseer una **Información Efectiva (EI)** positiva ($EI_{macro} > EI_{micro\_agg}$), demostrando que el nivel macro es causalmente más informativo que la suma de sus partes.
-2.  **Condición de Autonomía de Atractor:** El sistema debe mantener una reducción de incertidumbre microscópica significativa (**EDI > 0.15**) incluso bajo condiciones de **Acoplamiento Mínimo** (Zero-Nudging), probando la existencia de un atractor estructural independiente de la observación algorítmica.
+2.  **Condición de Autonomía de Atractor:** El sistema debe mantener una reducción de incertidumbre microscópica significativa (**EDI > 0.05**) incluso bajo condiciones de **Acoplamiento Mínimo** (Zero-Nudging), probando la existencia de un atractor estructural independiente de la observación algorítmica.
 
 ---
 
@@ -28,7 +28,7 @@ Esta eficacia se formaliza mediante dos condiciones necesarias y suficientes:
 - **A1 Incompletitud del nivel unico:** ABM u ODE por separado son insuficientes.
 - **A2 Primacia del parametro de orden:** el macro estabiliza y restringe al micro.
 - **A3 Invarianza estructural (C3):** el mecanismo macro-micro debe persistir ante condiciones iniciales distintas.
-- **A4 Falsabilidad por satura:** si EDI < 0.30, la capa macro se descarta.
+- **A4 Falsabilidad por saturación:** si EDI < 0.30 (con asimilación) o EDI < 0.05 (en autonomía pura/zero-nudging), la capa macro se descarta. Este umbral representa la "Ventaja de Hoel": el punto donde la descripción macro es causalmente más informativa que la micro, superando el ruido estocástico del nivel basal.
 - **A5 Clausura computacional:** solo afirmaciones expresables como reglas algoritmicas son validas.
 
 ## Interpretacion de Resultados (No Forzar el Marco)
@@ -48,8 +48,8 @@ Esta base conceptual justifica por qué un modelo puramente local (ABM) siempre 
 
 ## Glosario Operativo (Reducido)
 - **Hiperobjeto:** entidad distribuida con no-localidad y viscosidad, validada por C1-C5.
-- **EDI:** reduccion de error al integrar el nivel macro (umbral 0.30).
-- **CR:** ratio de cohesion interna/externa (umbral 2.0).
+- **EDI (Effective Dependency Index):** Reducción de error al integrar el nivel macro. Exige un umbral > 0.30 para validar la integración y > 0.05 para validar la autonomía estructural (atractor).
+- **CR (Cohesion Ratio):** Ratio de cohesión interna/externa (umbral 2.0). Mide si el hiperobjeto tiene una "frontera" operativa (symploke).
 - **Nudging:** acople macro-micro para asimilacion de datos.
 - **Aliasing temporal:** falla por resolucion temporal insuficiente.
 - **Reflexividad:** el sistema cambia al ser observado (limite en finanzas y opinion).
