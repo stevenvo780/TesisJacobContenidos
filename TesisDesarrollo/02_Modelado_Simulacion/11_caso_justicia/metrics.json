@@ -1,0 +1,278 @@
+{
+  "generated_at": "2026-02-06T01:24:25.792217Z",
+  "git": {
+    "root": "/home/estudiante/repos/SimulacionClimatica",
+    "commit": "5cb7dd59724a63a177787d743799bb4b12d957a0",
+    "dirty": true
+  },
+  "phases": {
+    "synthetic": {
+      "phase": "synthetic",
+      "data": {
+        "start": "1996-01-01",
+        "end": "2023-12-31",
+        "split": "2010-01-01",
+        "obs_mean": 0.03578303298990089,
+        "obs_std_raw": 0.3934929858440314,
+        "steps": 28,
+        "val_steps": 14,
+        "expected_years": 28,
+        "observed_years": 28,
+        "coverage": 1.0,
+        "outlier_share": 0.0
+      },
+      "calibration": {
+        "alpha": 0.4664771423746074,
+        "beta": 0.025513305092454086,
+        "macro_coupling": 0.5,
+        "assimilation_strength": 1.0
+      },
+      "errors": {
+        "rmse_abm": 0.082,
+        "rmse_ode": 0.0,
+        "rmse_reduced": 0.9616629535155217,
+        "threshold": 0.05
+      },
+      "correlations": {
+        "abm_obs": 0.71,
+        "ode_obs": 0.9999999999999998
+      },
+      "symploke": {
+        "internal": 0.9998541696113067,
+        "external": 0.8083262421541595,
+        "pass": true
+      },
+      "non_locality": {
+        "dominance_share": 0.002500207082334917,
+        "pass": true
+      },
+      "persistence": {
+        "window_variance": 0.01599577081839831,
+        "obs_window_variance": 0.01599577081839831,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 0.9616629535155217,
+        "err_reduced_full": 0.9616629535155217,
+        "err_abm": 0.082,
+        "threshold": 0.15,
+        "pass": false
+      },
+      "c1_convergence": false,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "sensitivity": {
+        "mean_min": 0.9190550919422117,
+        "mean_max": 0.9190550919422119
+      },
+      "params": {
+        "base": {
+          "grid_size": 20,
+          "diffusion": 0.2,
+          "noise": 0.02,
+          "macro_coupling": 0.05,
+          "forcing_series": [
+            -1.5329538069611721,
+            -1.4194016731121963,
+            -1.3058495392632208,
+            -1.192297405414245,
+            -1.0787452715652692,
+            -0.9651931377162937,
+            -0.8516410038673179,
+            -0.7380888700183421,
+            -0.6245367361693664,
+            -0.5109846023203908,
+            -0.39743246847141495,
+            -0.28388033462243917,
+            -0.1703282007734636,
+            -0.05677606692448785,
+            0.05677606692448793,
+            0.1703282007734635,
+            0.2838803346224393,
+            0.39743246847141506,
+            0.5109846023203906,
+            0.6245367361693663,
+            0.7380888700183421,
+            0.8516410038673179,
+            0.9651931377162937,
+            1.078745271565269,
+            1.1922974054142448,
+            1.3058495392632206,
+            1.4194016731121963,
+            1.5329538069611721
+          ],
+          "forcing_scale": 0.2,
+          "damping": 0.1,
+          "alpha": 0.4664771423746074,
+          "beta": 0.025513305092454086,
+          "p0": -1.4810616840855626,
+          "p0_ode": -1.4810616840855626
+        },
+        "eval": {
+          "assimilation_strength": 1.0
+        },
+        "trend": {
+          "slope": 0.11355213384897571,
+          "intercept": -1.657143961960554
+        }
+      },
+      "seeds": {
+        "abm": 2,
+        "ode": 3,
+        "reduced": 4,
+        "perturbed": 5,
+        "replication": 6,
+        "alt": 7,
+        "sensitivity": [
+          30,
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "synthetic_meta": {
+        "k": 0.2,
+        "mid": 12,
+        "measurement_noise": 0.05
+      },
+      "overall_pass": true
+    },
+    "real": {
+      "phase": "real",
+      "data": {
+        "start": "1996-01-01",
+        "end": "2023-12-31",
+        "split": "2010-01-01",
+        "obs_mean": 1.5258925342559817,
+        "obs_std_raw": 0.09312182391955878,
+        "steps": 25,
+        "val_steps": 14,
+        "expected_years": 28,
+        "observed_years": 25,
+        "coverage": 0.8928571428571429,
+        "outlier_share": 0.0
+      },
+      "calibration": {
+        "alpha": 0.01,
+        "beta": 0.5731604967314337,
+        "macro_coupling": 0.5,
+        "assimilation_strength": 1.0
+      },
+      "errors": {
+        "rmse_abm": 5.93439168722175e-17,
+        "rmse_ode": 0.0,
+        "rmse_reduced": 1.1959323885598883,
+        "threshold": 0.7056736260856261
+      },
+      "correlations": {
+        "abm_obs": 1.0,
+        "ode_obs": 1.0
+      },
+      "symploke": {
+        "internal": 0.9948974290951336,
+        "external": 0.7881008590391815,
+        "pass": true
+      },
+      "non_locality": {
+        "dominance_share": 0.002507734475537319,
+        "pass": true
+      },
+      "persistence": {
+        "window_variance": 0.14331629343253188,
+        "obs_window_variance": 0.14331629343253188,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 1.1959323885598883,
+        "err_reduced_full": 1.1959323885598883,
+        "err_abm": 5.93439168722175e-17,
+        "threshold": 0.23522454202854207,
+        "pass": true
+      },
+      "c1_convergence": true,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "sensitivity": {
+        "mean_min": -0.22149493780945084,
+        "mean_max": -0.22149493780945084
+      },
+      "params": {
+        "base": {
+          "grid_size": 20,
+          "diffusion": 0.2,
+          "noise": 0.02,
+          "macro_coupling": 0.5,
+          "forcing_series": [
+            -1.1332840112009737,
+            -1.038843676934226,
+            -0.944403342667478,
+            -0.8499630084007302,
+            -0.7555226741339824,
+            -0.6610823398672346,
+            -0.5666420056004868,
+            -0.472201671333739,
+            -0.3777613370669912,
+            -0.2833210028002434,
+            -0.1888806685334956,
+            -0.0944403342667477,
+            0.0,
+            0.09444033426674758,
+            0.18888066853349572,
+            0.2833210028002434,
+            0.3777613370669911,
+            0.4722016713337388,
+            0.5666420056004869,
+            0.6610823398672346,
+            0.7555226741339823,
+            0.84996300840073,
+            0.9444033426674782,
+            1.038843676934226,
+            1.1332840112009737
+          ],
+          "forcing_scale": 0.05,
+          "damping": 0.1,
+          "alpha": 0.01,
+          "beta": 0.5731604967314337,
+          "p0": -0.2756984959106828,
+          "p0_ode": -0.2756984959106828
+        },
+        "eval": {
+          "assimilation_strength": 1.0
+        },
+        "trend": {
+          "slope": 0.0944403342667478,
+          "intercept": -0.19029902321262282
+        }
+      },
+      "seeds": {
+        "abm": 2,
+        "ode": 3,
+        "reduced": 4,
+        "perturbed": 5,
+        "replication": 6,
+        "alt": 7,
+        "sensitivity": [
+          30,
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "real_meta": {
+        "source": "World Bank WGI",
+        "country": "USA",
+        "indicator": "RL.EST",
+        "cached": false,
+        "start_year": 1996,
+        "end_year": 2023
+      },
+      "overall_pass": true
+    }
+  }
+}

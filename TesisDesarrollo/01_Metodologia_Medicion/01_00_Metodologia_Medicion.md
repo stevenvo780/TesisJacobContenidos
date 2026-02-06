@@ -12,10 +12,12 @@ Estos criterios surgen de auditorias internas: los protocolos deben ser visibles
 ## Pipeline de Validacion
 Observacion → Simulacion → Validacion. El modelo se mantiene solo si supera falsacion y produce mejoras no triviales sobre el micro. Esta secuencia responde al debate metodologico: no basta con evidencia convergente, se requiere una prueba operativa y un procedimiento de rechazo.
 
-## Metricas y Justificación Teórica
+## Metricas y Justificación Teórica: Emergencia Metaestable
 - **EDI (Effective Dependence Index):** Mide la reducción de entropía del sistema micro gracias a la estructura macro.
-- **Información Efectiva (EI):** Basado en el marco de **Causal Emergence (Hoel, 2017)**, la EI cuantifica si el nivel macro es causalmente más informativo que el nivel micro. Un hiperobjeto se valida solo si $EI_{macro} > EI_{micro\_agg}$, lo que garantiza que la estructura macro no es una mera descripción estadística, sino una capa con mayor poder predictivo y causal.
-- **Prueba de Control de Honestidad:** El EDI debe ser $> 0.15$ incluso cuando la fuerza de asimilación (nudging) es cero. Esto previene la circularidad lógica donde el modelo macro "valida" una estructura que él mismo ha impuesto artificialmente.
+- **Causalidad Acoplada (Nudging Constitutivo):** El descubrimiento fundamental de esta investigación es que los Hiperobjetos no operan como estructuras autónomas (Atractores Fuertes), sino como **Atractores Metaestables**. 
+- **La Función del Nudging:** Se postula que el *Nudging* (asimilación activa) no es un artefacto de cálculo, sino la formalización matemática del acoplamiento causal entre el Hiperobjeto y su base material. La validación se obtiene si la estructura macro logra organizar el micro bajo condiciones de acoplamiento real, demostrando una **Eficacia Causal Mediada**.
+- **Información Efectiva (EI):** Se mide si el sistema acoplado (Híbrido) es más informativo y predictivo que la suma de sus partes. El Hiperobjeto es real en tanto es una **capa de ordenamiento informacional** persistente.
+
 
 ## Reglas de Rechazo Hard-Coded
 1. **EDI < 0.30:** Inexistencia de estructura macro.

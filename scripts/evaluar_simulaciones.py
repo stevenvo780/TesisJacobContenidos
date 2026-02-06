@@ -59,7 +59,7 @@ def build_table():
     for case_dir in sorted(CASES_ROOT.glob('*_caso_*')):
         metrics_obj = read_metrics(case_dir)
         m = compute_metrics(metrics_obj)
-        case = case_dir.name.replace('caso_', '')
+        case = case_dir.name
         report_link = f"`{case_dir.name}/report.md`"
         rows.append((case, m, report_link))
 
