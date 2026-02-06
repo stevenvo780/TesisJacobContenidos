@@ -25,3 +25,8 @@ Definir casos y condiciones bajo las cuales el marco debe fallar. La teoria es f
 
 ## Uso
 - Estos casos no se fuerzan a pasar. Se ejecutan para evidenciar limites y mejorar la teoria.
+
+## Ejecuciones realizadas
+- Exogeneidad y shock: `02_Modelado_Simulacion/caso_falsacion_exogeneidad`.
+- Observabilidad insuficiente: `02_Modelado_Simulacion/caso_falsacion_observabilidad`.
+- No‑estacionariedad extrema: `02_Modelado_Simulacion/caso_falsacion_no_estacionariedad`.

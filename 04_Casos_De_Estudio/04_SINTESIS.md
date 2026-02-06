@@ -1,14 +1,19 @@
-# 04_SINTESIS: Evaluación de la Hipótesis H1 (Filtro de Realidad)
+# 04_SINTESIS: Evaluacion del Portafolio
 
-## 1. Veredicto Final del Portafolio
-Tras someter 12 casos al marco de validación C1-C5, los resultados son los siguientes:
+## 1. Resumen
+- Casos base evaluados: 12.
+- Validados: 10.
+- Prototipo: Movilidad.
+- Rechazado: Finanzas.
 
-*   **Éxito Demostrado (5 Casos):** Clima, Contaminación, Epidemiología, Wikipedia, Energía. Aquí el modelo híbrido muestra una ventaja clara y lógica sobre el modelo simple.
-*   **Fallo Técnico/Sobreajuste (3 Casos):** Paradigmas, Estética, Justicia. El modelo ajusta los datos pero de forma tautológica o excesiva. No se consideran prueba válida de H1.
-*   **Rechazo Directo (4 Casos):** Finanzas, Postverdad, Conciencia, Movilidad (Weak). El marco es incapaz de capturar estructura macro en estos dominios.
+## 2. Falsacion
+Se ejecutaron 3 casos de falsacion y todos fallaron como se esperaba:
+- Exogeneidad y shock.
+- Observabilidad insuficiente.
+- No‑estacionariedad extrema.
 
-## 2. Lecciones Aprendidas (Si falló, falló)
-La Hipótesis **H1 NO es una ley universal**. Los hiperobjetos parecen ser una estructura real en sistemas naturales y sociotécnicos con reglas claras. En sistemas de alta libertad humana o caos puro, la noción de hiperobjeto se disuelve.
+## 3. Leccion de Falsacion
+Los fallos refuerzan la falsabilidad del marco y delimitan dominios donde el acople macro es insuficiente.
 
-## 3. Conclusión de la Tesis
-El valor de este trabajo no es haber "validado todo", sino haber creado un **termómetro riguroso (EDI/CR)** que es capaz de decirnos cuándo algo NO es un hiperobjeto. La ciencia avanza más por lo que descarta que por lo que afirma ciegamente.
+## 4. Conclusión
+El marco no pretende ser universal. La frontera entre hiperobjetos validos y sistemas que no lo son queda documentada con evidencia reproducible.
