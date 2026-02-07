@@ -19,3 +19,6 @@
 - Equipo defensor: 0.
 
 **Solicitud explícita:** evidencias verificables y lenguaje técnico; no imputaciones personales.
+
+## Nota del juez (actualización)
+- El código `hybrid_validator.py` confirma que **solo C2–C4** en fase sintética gatean la fase real. C1 puede fallar en sintético sin invalidar el real. Esto apoya el argumento de diseño presentado por la defensa en R11.
