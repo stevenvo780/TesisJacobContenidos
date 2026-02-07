@@ -1,4 +1,4 @@
-# SimulacionClimatica: Ontología Operativa de Hiperobjetos
+# Hiperobjetos: Ontología Operativa de Hiperobjetos
 
 > **Tesis Doctoral:** Validación computacional de la existencia de entidades masivamente distribuidas mediante modelos híbridos (ABM + ODE).
 

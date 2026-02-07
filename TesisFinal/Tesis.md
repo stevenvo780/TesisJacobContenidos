@@ -3775,9 +3775,9 @@ Este documento centraliza todas las críticas realizadas a la tesis y su estado 
 
 ## Documentacion y Notas
 
-### SimulacionClimatica_GEMINI.md
+### Hiperobjetos_GEMINI.md
 
-# GEMINI.md - Contexto del Proyecto: SimulacionClimatica (Versión Titanio)
+# GEMINI.md - Contexto del Proyecto: Hiperobjetos (Versión Titanio)
 
 Este documento sirve como contexto maestro para la IA. Describe la arquitectura consolidada de la tesis tras la "Reingeniería de Alta Densidad".
 
@@ -3804,7 +3804,7 @@ Fuente de verdad documental:
 *   Priorizar la **Navaja de Ockham**: Si algo se puede explicar sin la capa macro, se descarta el hiperobjeto.
 *   Mantener el **Rigor Académico**: Citar siempre a Haken (Sinergética) o Shannon (Entropía) al hablar de métricas.
 
-### SimulacionClimatica_INSTALL.md
+### Hiperobjetos_INSTALL.md
 
 # Guía de Reproducibilidad (INSTALL.md)
 
@@ -3834,9 +3834,9 @@ Los scripts generan:
 - `outputs/metrics.json`: Valores numéricos (EDI, CR, RMSE).
 - `outputs/report.md`: Análisis cualitativo.
 
-### SimulacionClimatica_README.md
+### Hiperobjetos_README.md
 
-# SimulacionClimatica: Ontología Operativa de Hiperobjetos
+# Hiperobjetos: Ontología Operativa de Hiperobjetos
 
 > **Tesis Doctoral:** Validación computacional de la existencia de entidades masivamente distribuidas mediante modelos híbridos (ABM + ODE).
 
@@ -3878,7 +3878,7 @@ MIT License. Ver `LICENSE` para más detalles.
 
 # Explicación Detallada del Sistema de Simulación Climática
 
-Este documento contiene la explicación del modelo híbrido utilizado en el proyecto `SimulacionClimatica`, desglosado desde conceptos básicos hasta detalles técnicos y algoritmos.
+Este documento contiene la explicación del modelo híbrido utilizado en el proyecto `Hiperobjetos`, desglosado desde conceptos básicos hasta detalles técnicos y algoritmos.
 
 ## 1. Resumen para Principiantes (For Dummies)
 

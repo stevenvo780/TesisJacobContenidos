@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 
 API_BASE = "https://api.worldbank.org/v2"
-DEFAULT_UA = "SimulacionClimatica/0.1"
+DEFAULT_UA = "Hiperobjetos/0.1"
 INDICATOR = "SE.ADT.LITR.ZS"
 
 

@@ -1,6 +1,6 @@
 # Explicación Detallada del Sistema de Simulación Climática
 
-Este documento contiene la explicación del modelo híbrido utilizado en el proyecto `SimulacionClimatica`, desglosado desde conceptos básicos hasta detalles técnicos y algoritmos.
+Este documento contiene la explicación del modelo híbrido utilizado en el proyecto `Hiperobjetos`, desglosado desde conceptos básicos hasta detalles técnicos y algoritmos.
 
 ## 1. Resumen para Principiantes (For Dummies)
 

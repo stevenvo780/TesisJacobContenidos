@@ -8,6 +8,9 @@ Lectura recomendada en orden:
 4. 03 Validacion y Praxis — Narrativa Unificada: `03_Validacion_Praxis/03_Validacion_Praxis.md`
 5. 04 Casos de Estudio — Narrativa Unificada: `04_Casos_De_Estudio/04_Casos_De_Estudio.md`
 6. Anexos (auditorias, ejercicios criticos, documentacion): `Anexos.md`
+7. Ejercicios Criticos (Gladiadores, Partida 1):
+   - `EjersiciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`
+   - `EjersiciosCriticos/Trazas_Mejoras_Possibles_Dudas.md`
 
 Documentos de referencia:
 

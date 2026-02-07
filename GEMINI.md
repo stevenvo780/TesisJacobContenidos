@@ -1,4 +1,4 @@
-# GEMINI.md - Contexto Maestro: Proyecto SimulacionClimatica (Titanio)
+# GEMINI.md - Contexto Maestro: Proyecto Hiperobjetos (Titanio)
 
 Este archivo proporciona el contexto necesario para operar en el repositorio de la tesis "Validación de Hiperobjetos mediante Eficacia Causal".
 

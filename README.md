@@ -1,4 +1,4 @@
-# Proyecto SimulacionClimatica (Titanio)
+# Proyecto Hiperobjetos (Titanio)
 
 ## 🌌 Visión General
 Este repositorio alberga la investigación y el motor de simulación de la tesis **"Validación de Hiperobjetos mediante Eficacia Causal"**. El objetivo es demostrar la realidad ontológica de entidades masivamente distribuidas (Hiperobjetos) como el Clima, la Economía o las Pandemias, utilizando modelos computacionales híbridos que integran Modelado Basado en Agentes (ABM) y Ecuaciones Diferenciales Ordinarias (ODE).

@@ -7,7 +7,7 @@ import requests
 
 DATA_URL = "https://raw.githubusercontent.com/MuseumofModernArt/collection/main/Artworks.csv"
 MEDIA_URL = "https://media.githubusercontent.com/media/MuseumofModernArt/collection/main/Artworks.csv"
-DEFAULT_UA = "SimulacionClimatica/0.1"
+DEFAULT_UA = "Hiperobjetos/0.1"
 
 
 def _request(url):

@@ -49,7 +49,7 @@ def fetch_crypto_daily(start_date, end_date, articles=None, cache_path=None):
 
     user_agent = os.environ.get(
         "WIKIMEDIA_USER_AGENT",
-        "SimulacionClimatica/1.0 (contact: local@example.com)",
+        "Hiperobjetos/1.0 (contact: local@example.com)",
     )
 
     all_rows = []

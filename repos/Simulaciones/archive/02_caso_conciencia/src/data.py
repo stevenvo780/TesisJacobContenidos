@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 
 DATA_URL = "https://ourworldindata.org/grapher/happiness-cantril-ladder.csv"
-DEFAULT_UA = "SimulacionClimatica/0.1"
+DEFAULT_UA = "Hiperobjetos/0.1"
 
 
 def _request(url):

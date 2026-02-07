@@ -34,7 +34,7 @@ Genera:
 - Cache: `data/openalex_paradigms.csv`.
 
 Para cambiar el user agent de OpenAlex:
-- `export OPENALEX_USER_AGENT="SimulacionClimatica/0.1 (mailto:correo@ejemplo.com)"`
+- `export OPENALEX_USER_AGENT="Hiperobjetos/0.1 (mailto:correo@ejemplo.com)"`
 
 ## Validacion
 - Fase sintetica: 1950-2023, split 1990.

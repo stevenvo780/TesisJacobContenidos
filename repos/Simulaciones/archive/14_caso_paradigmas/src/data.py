@@ -6,7 +6,7 @@ import pandas as pd
 import requests
 
 API_BASE = "https://api.openalex.org"
-DEFAULT_UA = "SimulacionClimatica/0.1 (mailto:contacto@simulacion.local)"
+DEFAULT_UA = "Hiperobjetos/0.1 (mailto:contacto@simulacion.local)"
 
 
 def _user_agent():
