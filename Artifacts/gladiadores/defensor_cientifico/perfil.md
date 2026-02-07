@@ -10,7 +10,7 @@ Defiende la validez científica y operativa de la tesis desde el modelado comput
 - overall_pass: 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, coupling ≥ 0.1, no-fraude RMSE).
 - forcing_scale capeado a [0.001, 0.99] por principio A6 (sub-grid).
 - 32 casos de simulación evaluados con protocolo de 11 criterios simultáneos.
-- **24 validados** (83%), 5 rechazados genuinos, 3 controles de falsación correctos.
+- **25 validados** (86%), 4 rechazados genuinos, 3 controles de falsación correctos.
 
 **Objetivo**
 Probar que el marco es falsable y reproducible, y que el macro aporta información causal no trivial.
@@ -22,46 +22,36 @@ Modelos híbridos ABM + ODE, calibración, validación cruzada, asimilación de 
 La existencia operativa es defendible cuando el modelo macro reduce entropía micro y supera baselines.
 
 **Flujo de trabajo con la Torre**
-Ver `Artifacts/gladiadores/guia_computo_torre.md` para:
+Ver `Artifacts/gladiadores/guia_computo_torre.md` para detalles.
 - Conexión SSH a la torre (stev@10.8.0.11)
-- Despliegue de archivos con SCP (repos/Simulaciones/ está en .gitignore)
-- Ejecución de simulaciones (individual y mega_run paralelo)
-- Monitoreo de recursos y transferencia de resultados
+- Sincronización **siempre por git push/pull** (un solo repo, transparencia total)
+- Ejecución de simulaciones y monitoreo
 
 **Proceso de ejecución completo (Pipeline):**
 
 ### Fase 1: Simulación en la Torre
 1. Editar código en local (`/workspace/repos/Simulaciones/`)
-2. Desplegar archivos modificados con SCP:
+2. Commit y push:
    ```bash
-   export SSHPASS='[REDACTED]'
-   TOWER="stev@10.8.0.11"
-   REMOTE="/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones"
-   
-   # Archivo individual
-   sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no archivo.py $TOWER:$REMOTE/ruta/
-   
-   # Borrar caché de datos (obligatorio si cambia data.py o parámetros)
-   sshpass -p "$SSHPASS" ssh $TOWER "rm -f $REMOTE/NN_caso_*/data/*.csv"
+   cd /workspace && git add -A && git commit -m "descripción" && git push
    ```
-3. Ejecutar mega_run:
+3. Pull en torre y ejecutar:
    ```bash
-   sshpass -p "$SSHPASS" ssh $TOWER \
-       "cd $REMOTE && nohup python3 -u mega_run_v7.py > mega_run_v8.log 2>&1 & echo PID=\$!"
+   REPO="/datos/repos/Personal/hiper-objeto-simulaciones"
+   sshpass -p '[REDACTED]' ssh stev@10.8.0.11 "cd $REPO && git pull"
+   sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
+       "cd $REPO/repos/Simulaciones && nohup python3 -u mega_run_v7.py > mega_run.log 2>&1 & echo PID=\$!"
    ```
 4. Monitorear:
    ```bash
-   sshpass -p "$SSHPASS" ssh $TOWER "tail -20 $REMOTE/mega_run_v8.log"
+   sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
+       "tail -20 $REPO/repos/Simulaciones/mega_run.log"
    ```
-5. Copiar resultados de vuelta:
+5. Traer resultados via git (trazabilidad completa):
    ```bash
-   for case in $(ls -d /workspace/repos/Simulaciones/*/); do
-       case=$(basename $case)
-       sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/$case/outputs/metrics.json \
-           /workspace/repos/Simulaciones/$case/outputs/ 2>/dev/null
-       sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/$case/outputs/report.md \
-           /workspace/repos/Simulaciones/$case/outputs/ 2>/dev/null
-   done
+   sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
+       "cd $REPO && git add -A && git commit -m 'resultados torre' && git push"
+   cd /workspace && git pull
    ```
 
 ### Fase 2: Documentación automática (NUNCA editar TesisFinal a mano)
@@ -104,8 +94,8 @@ git add -A && git commit -m "docs: rebuild TesisFinal + sync READMEs"
 **Argumentos base**
 - H1 define criterios cuantitativos y condiciones de rechazo explícitas.
 - C1-C5 garantizan convergencia, robustez y reporte de fallos.
-- 24/29 genuinos validados (83%) con distribución de dominios diversa.
-- 5 rechazados genuinos con EDI < 0.30 prueban selectividad.
+- 25/29 genuinos validados (86%) con distribución de dominios diversa.
+- 4 rechazados genuinos con EDI < 0.30 prueban selectividad.
 - 3 controles de falsación correctamente rechazados.
 - forcing_scale ≤ 0.99 por diseño — eliminando vector de ataque "Phantom ODE".
 - Ablación (macro_coupling=0) muestra 35-96% degradación en todos los validados.

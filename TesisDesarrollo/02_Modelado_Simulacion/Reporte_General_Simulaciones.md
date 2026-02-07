@@ -2,14 +2,14 @@
 
 | Caso | LoE | EDI | CR | Estado | Reporte |
 | :--- | :--- | ---: | ---: | :--- | :--- |
-| 01_caso_clima | 5 | 0.434 | 1.000 | True | `01_caso_clima/report.md` |
+| 01_caso_clima | 5 | 0.372 | 1.000 | True | `01_caso_clima/report.md` |
 | 02_caso_conciencia | 1 | 0.936 | 1.000 | True | `02_caso_conciencia/report.md` |
 | 03_caso_contaminacion | 4 | 0.125 | 1.365 | False | `03_caso_contaminacion/report.md` |
-| 04_caso_energia | 4 | 0.351 | 1.116 | True | `04_caso_energia/report.md` |
+| 04_caso_energia | 4 | 0.354 | 1.118 | True | `04_caso_energia/report.md` |
 | 05_caso_epidemiologia | 4 | 0.176 | 1.000 | False | `05_caso_epidemiologia/report.md` |
 | 06_caso_estetica | 2 | 0.949 | 1.000 | True | `06_caso_estetica/report.md` |
-| 07_caso_falsacion_exogeneidad | 1 | -0.731 | -45.308 | False | `07_caso_falsacion_exogeneidad/report.md` |
-| 08_caso_falsacion_no_estacionariedad | 1 | 0.082 | -33.506 | False | `08_caso_falsacion_no_estacionariedad/report.md` |
+| 07_caso_falsacion_exogeneidad | 1 | -0.401 | -49.492 | False | `07_caso_falsacion_exogeneidad/report.md` |
+| 08_caso_falsacion_no_estacionariedad | 1 | 0.090 | -31.846 | False | `08_caso_falsacion_no_estacionariedad/report.md` |
 | 09_caso_falsacion_observabilidad | 1 | n/a | n/a | False | `09_caso_falsacion_observabilidad/report.md` |
 | 10_caso_finanzas | 5 | 0.882 | 1.250 | True | `10_caso_finanzas/report.md` |
 | 11_caso_justicia | 2 | 0.946 | 1.000 | True | `11_caso_justicia/report.md` |

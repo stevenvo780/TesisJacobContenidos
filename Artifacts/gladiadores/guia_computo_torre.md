@@ -7,7 +7,7 @@
 sshpass -p '[REDACTED]' ssh -o StrictHostKeyChecking=no stev@10.8.0.11
 
 # Ruta del repositorio en la torre
-cd /datos/repos/Personal/TesisJacobContenidos
+cd /datos/repos/Personal/hiper-objeto-simulaciones
 ```
 
 **Datos de acceso:**
@@ -26,69 +26,42 @@ cd /datos/repos/Personal/TesisJacobContenidos
 | Disco | 7 TB (3 SSD RAID0) | Datasets y cachés |
 | Refrigeración | Líquida | Procesos sostenidos largo plazo |
 
-## Flujo de Sincronización (SCP — repos/Simulaciones está en .gitignore)
+## Flujo de Sincronización (Git — un solo repositorio)
 
-**IMPORTANTE:** `repos/Simulaciones/` está excluido del git principal. La sincronización se hace con SCP directo.
+**IMPORTANTE:** TODO el proyecto está en un solo repo git. Usar **siempre git push/pull** para garantizar transparencia y trazabilidad completa. Nunca SCP — evita acusaciones de ocultar datos.
 
-### Enviar archivos al torre
+### Enviar cambios a la torre
 
 ```bash
-export SSHPASS='[REDACTED]'
-TOWER="stev@10.8.0.11"
-REMOTE="/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones"
+# 1. Commit y push desde local
+cd /workspace
+git add -A && git commit -m "descripción del cambio"
+git push
 
-# Archivo individual (ej. hybrid_validator.py)
-sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no \
-    /workspace/repos/Simulaciones/common/hybrid_validator.py \
-    $TOWER:$REMOTE/common/
-
-# validate.py de un caso específico
-sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no \
-    /workspace/repos/Simulaciones/01_caso_clima/src/validate.py \
-    $TOWER:$REMOTE/01_caso_clima/src/
-
-# Mega run script
-sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no \
-    /workspace/repos/Simulaciones/mega_run_v7.py \
-    $TOWER:$REMOTE/
+# 2. Pull en la torre
+sshpass -p '[REDACTED]' ssh -o StrictHostKeyChecking=no stev@10.8.0.11 \
+    "cd /datos/repos/Personal/hiper-objeto-simulaciones && git pull"
 ```
 
-### Borrar caché de datos (OBLIGATORIO si cambia data.py o parámetros)
+### Borrar caché de datos (si cambia data.py o parámetros)
 
 ```bash
-# Un caso
-sshpass -p "$SSHPASS" ssh $TOWER "rm -f $REMOTE/NN_caso_X/data/*.csv"
-
-# Todos los casos
-sshpass -p "$SSHPASS" ssh $TOWER 'for d in '$REMOTE'/*/data; do rm -f "$d"/*.csv 2>/dev/null; done'
+REPO="/datos/repos/Personal/hiper-objeto-simulaciones/repos/Simulaciones"
+sshpass -p '[REDACTED]' ssh stev@10.8.0.11 "rm -f $REPO/NN_caso_X/data/*.csv"
 ```
 
 ### Traer resultados de la torre
 
 ```bash
-# Un caso
-sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/01_caso_clima/outputs/metrics.json \
-    /workspace/repos/Simulaciones/01_caso_clima/outputs/
-sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/01_caso_clima/outputs/report.md \
-    /workspace/repos/Simulaciones/01_caso_clima/outputs/
+# 1. Commit y push desde torre (los outputs quedan en el historial git)
+sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
+    "cd /datos/repos/Personal/hiper-objeto-simulaciones && git add -A && git commit -m 'resultados torre vX' && git push"
 
-# Todos los 32 casos (metrics.json + report.md)
-for case in $(ls -d /workspace/repos/Simulaciones/[0-9]*/); do
-    case_name=$(basename "$case")
-    sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/$case_name/outputs/metrics.json \
-        /workspace/repos/Simulaciones/$case_name/outputs/ 2>/dev/null
-    sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/$case_name/outputs/report.md \
-        /workspace/repos/Simulaciones/$case_name/outputs/ 2>/dev/null
-done
+# 2. Pull en local
+cd /workspace && git pull
 
-# Copiar también a TesisDesarrollo
-for case in $(ls -d /workspace/repos/Simulaciones/[0-9]*/); do
-    case_name=$(basename "$case")
-    cp /workspace/repos/Simulaciones/$case_name/outputs/metrics.json \
-       /workspace/TesisDesarrollo/02_Modelado_Simulacion/$case_name/ 2>/dev/null
-    cp /workspace/repos/Simulaciones/$case_name/outputs/report.md \
-       /workspace/TesisDesarrollo/02_Modelado_Simulacion/$case_name/ 2>/dev/null
-done
+# 3. Sincronizar métricas a TesisDesarrollo (automático)
+python3 repos/scripts/tesis.py sync
 ```
 
 ## Ejecución de Simulaciones en la Torre
@@ -97,7 +70,7 @@ done
 
 ```bash
 sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
-  "cd /datos/repos/Personal/TesisJacobContenidos/01_caso_clima/src && python3 validate.py"
+  "cd /datos/repos/Personal/hiper-objeto-simulaciones/01_caso_clima/src && python3 validate.py"
 ```
 
 ### Todos los 32 casos secuencial (mega_run v7)
@@ -135,7 +108,7 @@ sshpass -p '[REDACTED]' ssh stev@10.8.0.11 "free -h && echo '---' && nproc && ec
 ## Estructura del Repo en la Torre
 
 ```
-/datos/repos/Personal/TesisJacobContenidos/
+/datos/repos/Personal/hiper-objeto-simulaciones/
 ├── common/
 │   └── hybrid_validator.py    # Motor de validación (compartido)
 ├── 01_caso_clima/

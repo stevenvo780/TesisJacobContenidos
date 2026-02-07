@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: No-Estacionariedad",
-  "generated_at": "2026-02-07T08:09:55.625544Z",
+  "generated_at": "2026-02-07T14:21:48.393779Z",
   "git": {
     "commit": "7b9c9837f057bb3b5f3082a26dc9472277ae6e93",
     "dirty": true
@@ -124,51 +124,51 @@
         "coverage": 94.2
       },
       "calibration": {
-        "forcing_scale": 1.3996558772650767,
-        "macro_coupling": 0.77320314225803,
-        "damping": 0.8570896836691085,
+        "forcing_scale": 0.99,
+        "macro_coupling": 1.0,
+        "damping": 0.6289389344393502,
         "ode_alpha": 0.03147730832625116,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.4348016752052509
+        "calibration_rmse": 0.4461034844313328
       },
       "errors": {
-        "rmse_abm": 0.6841518464797552,
+        "rmse_abm": 0.6783645669346211,
         "rmse_ode": 0.858237341946088,
-        "rmse_reduced": 0.7455825114308012,
+        "rmse_reduced": 0.7455831520976122,
         "threshold": 0.6415333545003976
       },
       "correlations": {
-        "abm_obs": 0.8326599036916441,
+        "abm_obs": 0.8466176853069749,
         "ode_obs": 0.8928562978012449
       },
       "edi": {
-        "value": 0.08239284587450717,
-        "bootstrap_mean": 0.0825181172531778,
-        "ci_lo": 0.0223169076085264,
-        "ci_hi": 0.14871525437200572,
+        "value": 0.09015571901521557,
+        "bootstrap_mean": 0.0903067065949466,
+        "ci_lo": 0.028025400195688638,
+        "ci_hi": 0.15672393717615274,
         "valid": false
       },
-      "effective_information": 0.27924472740946826,
+      "effective_information": 0.31389634756113616,
       "symploke": {
-        "internal": -0.9963078248632488,
-        "external": 0.029735095980891746,
-        "cr": 33.50612439601649,
+        "internal": -0.995583903342737,
+        "external": 0.03126236139236521,
+        "cr": 31.846087723426905,
         "pass": false,
         "cr_valid": true
       },
       "non_locality": {
-        "dominance_share": 0.015552126110753751,
+        "dominance_share": 0.02029250070061119,
         "pass": true
       },
       "persistence": {
-        "model": 0.0031106510929053512,
+        "model": 0.00198504816965314,
         "obs": 0.07176556569390337,
         "pass": true
       },
       "emergence": {
-        "err_reduced": 0.7455825114308012,
-        "err_abm": 0.6841518464797552,
+        "err_reduced": 0.7455831520976122,
+        "err_abm": 0.6783645669346211,
         "threshold": 0.12830667090007952,
         "pass": false,
         "significance": "computed"
@@ -181,30 +181,30 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 0.6841518464797552,
+        "rmse_abm": 0.6783645669346211,
         "rmse_ode": 0.858237341946088,
-        "corr_abm": 0.8326599036916441,
+        "corr_abm": 0.8466176853069749,
         "corr_ode": 0.8928562978012449,
         "threshold": 0.6415333545003976
       },
       "c2_detail": {
-        "mean_delta": 0.2895426238656211,
-        "var_delta": 0.09117167071813106,
-        "relative_mean": 0.2895426238656211,
-        "relative_var": 0.09117167071813106
+        "mean_delta": 0.36057301398637975,
+        "var_delta": 0.11352466717971968,
+        "relative_mean": 0.36057301398637975,
+        "relative_var": 0.11352466717971968
       },
       "c3_detail": {
-        "persistence_1": 0.0031106510929053512,
-        "persistence_2": 0.0010885409054946814
+        "persistence_1": 0.00198504816965314,
+        "persistence_2": 0.0005126694428069248
       },
       "c4_detail": {
-        "diff": 0.0640913734247567
+        "diff": 0.07489202513786478
       },
       "c5_detail": {
-        "sensitivity_min": 0.007532662492752334,
-        "sensitivity_max": 0.21478004631983286,
-        "range": 0.20724738382708052,
-        "relative_range": 0.20724738382708052
+        "sensitivity_min": 0.007527839123950073,
+        "sensitivity_max": 0.781199002415213,
+        "range": 0.773671163291263,
+        "relative_range": 0.07903433441817355
       }
     }
   }

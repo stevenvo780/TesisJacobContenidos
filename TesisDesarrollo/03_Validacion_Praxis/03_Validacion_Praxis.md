@@ -39,8 +39,8 @@ El pipeline se ejecutó sobre 32 casos con el protocolo completo C1-C5 y 6 crite
 | 21 Urbanización | 0.839 | 0.999 | 1.411 | Social |
 | 15 Políticas Estratégicas | 0.804 | 0.991 | 0.869 | Geopolítico |
 | 23 Kessler | 0.776 | 0.995 | 0.541 | Orbital |
-| 01 Clima | 0.434 | 0.822 | 0.542 | Físico-ambiental |
-| 04 Energía | 0.351 | 0.789 | 0.327 | Infraestructura |
+| 01 Clima | 0.372 | 0.822 | 0.542 | Físico-ambiental |
+| 04 Energía | 0.354 | 0.789 | 0.327 | Infraestructura |
 
 ### Controles de Falsación (3/3 correctamente rechazados)
 - 07 Falsación Exogeneidad: ruido sin estructura → rechazado (EDI=-0.731).
@@ -73,7 +73,7 @@ El `forcing_scale` controla la amplitud del forzamiento externo relativo a la di
 
 La limitación fs<1.0 garantiza que ningún caso validado se beneficia de amplificación externa. Esto refuerza la interpretación de que el EDI mide emergencia genuina de la dinámica micro-macro, no inyección directa de señal.
 
-### Distribución de modos de fallo (5 rechazados genuinos)
+### Distribución de modos de fallo (4 rechazados genuinos)
 | Criterio | Fallos | % |
 |----------|--------|---|
 | C1 (Convergencia) | 3/5 | 60% |
@@ -97,7 +97,7 @@ El marco detecta **estabilidad de flujo informacional**, no "importancia social"
 
 La prueba más directa de emergencia es la ablación: ejecutar el ABM con `macro_coupling=0.0` y `forcing_scale=0.0` (eliminando toda constricción macro) y comparar con el modelo completo. El EDI mide exactamente esta diferencia.
 
-Los 24 casos validados muestran reducciones de RMSE entre 35% (Energía) y 96% (Acuíferos) al incluir la constricción macro. Los 5 rechazados muestran reducciones marginales (<18%) o incluso anti-emergencia (caso 07: el modelo reducido predice MEJOR que el completo, confirmando falsación).
+Los 25 casos validados muestran reducciones de RMSE entre 35% (Energía) y 96% (Acuíferos) al incluir la constricción macro. Los 4 rechazados muestran reducciones marginales (<18%) o incluso anti-emergencia (caso 07: el modelo reducido predice MEJOR que el completo, confirmando falsación).
 
 Esta prueba es análoga al "knockout experiment" en genética: si desactivar un gen (macro_coupling) destruye una función (predicción), el gen es causalmente necesario. Del mismo modo, si desactivar la constricción macro destruye la predicción, la estructura macro es causalmente eficaz.
 

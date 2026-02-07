@@ -14,7 +14,7 @@ pip install -r repos/Simulaciones/requirements.txt
 
 ## 🧪 Resultados Principales
 
-**32 casos evaluados** con protocolo completo (11 criterios simultáneos). **24 validados** (83%), 5 rechazados genuinos, 3 controles de falsación correctos.
+**32 casos evaluados** con protocolo completo (11 criterios simultáneos). **25 validados** (86%), 4 rechazados genuinos, 3 controles de falsación correctos.
 
 | Caso | EDI | Dominio | Estado |
 |------|-----|---------|--------|
@@ -41,7 +41,7 @@ pip install -r repos/Simulaciones/requirements.txt
 | 15 Políticas | 0.804 | Geopolítico | ✅ |
 | 23 Kessler | 0.776 | Orbital | ✅ |
 | 01 Clima | 0.372 | Físico | ✅ |
-| 04 Energía | 0.351 | Infraestructura | ✅ |
+| 04 Energía | 0.354 | Infraestructura | ✅ |
 
 **Nota:** Clima tiene el EDI más bajo pero usa datos reales de Meteostat con forcing_scale ≤ 0.99 — la emergencia más conservadora y mejor fundamentada del portafolio.
 

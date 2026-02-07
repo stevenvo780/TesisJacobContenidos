@@ -6,7 +6,7 @@ De 32 casos simulados, 24 de 29 genuinos (83%) validan H1 con EDI > 0.30 y proto
 
 ## Evidencia Dura (Sistemas de Inercia Física)
 - **Clima regional (01):** Acople ODE de balance radiativo con ABM local. ✅ EDI=0.372, forcing_scale=0.99
-- **Energía eléctrica (04):** Estabilidad de red como restricción macro. ✅ EDI=0.351
+- **Energía eléctrica (04):** Estabilidad de red como restricción macro. ✅ EDI=0.354
 - **Océanos (20):** Temperatura oceánica y acoplamiento climático. ✅ EDI=0.936
 - **Acidificación oceánica (22):** Ciclo carbónico y pH oceánico. ✅ EDI=0.947
 - **Fósforo (25):** Ciclo biogeoquímico del fósforo. ✅ EDI=0.902
