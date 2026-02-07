@@ -86,47 +86,97 @@ La siguiente tabla resume los resultados obtenidos tras la ejecución del pipeli
 | 31_caso_fuga_cerebros | 0.433 | 0.631 | 0.999 | 0.970 | ✅ | **Validado** |
 | 32_caso_iot | 0.477 | 0.916 | 1.000 | 0.995 | ❌ | Parcial (C1✗) |
 
-### Resumen Global
+### Matriz de Protocolo Completa (32 casos × 11 criterios)
 
-**11 validados** (overall_pass=True) de 29 casos genuinos (38%) + **3 controles de falsación** correctamente rechazados.
+Cada celda indica el resultado del criterio en la **Fase Real** (`assimilation_strength = 0.0`). Un caso es **Validado** solo si las 11 condiciones son ✓ simultáneamente.
 
-| Categoría | Cantidad | Casos |
-| :--- | :---: | :--- |
-| **Validados** | 11 | Clima, Energía, Finanzas, Paradigmas, RTB, Deforestación, Urbanización, Fósforo, Acuíferos, Starlink, Fuga Cerebros |
-| **Controles ❌** | 3 | Exogeneidad, No-Estacionariedad, Observabilidad |
-| **Parciales** | 9 | Contaminación, Políticas, Postverdad, Océanos, Acidificación, Kessler, Erosión, Microplásticos, Riesgo Biológico, IoT |
-| **Rechazados** | 9 | Conciencia, Epidemiología, Estética, Justicia, Moderación, Movilidad, Wikipedia, Salinización |
+| # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Result |
+| :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| 01 | Clima | 0.425 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 02 | Conciencia | -0.323 | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 03 | Contaminación | 0.124 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 04 | Energía | 0.351 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 05 | Epidemiología | 0.172 | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 06 | Estética | 0.032 | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 07 | Falsación Exogeneidad | -0.966 | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | Control ❌ |
+| 08 | Falsación No-Estacionariedad | -0.049 | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | Control ❌ |
+| 09 | Falsación Observabilidad | 0.000 | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | Control ❌ |
+| 10 | Finanzas | 0.880 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 11 | Justicia | -0.237 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 12 | Moderación Adversarial | 0.004 | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 13 | Movilidad | 0.070 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 14 | Paradigmas | 0.656 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 15 | Políticas Estratégicas | 0.294 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 16 | Postverdad | 0.310 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 17 | RTB Publicidad | 0.426 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 18 | Wikipedia | 0.017 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 19 | Deforestación | 0.846 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 20 | Océanos | 0.737 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 21 | Urbanización | 0.840 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 22 | Acidificación Oceánica | 0.737 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 23 | Kessler | 0.704 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 24 | Salinización | 0.164 | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✓ | ✓ | Rechazado |
+| 25 | Fósforo | 0.901 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 26 | Erosión Dialéctica | 0.739 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | Rechazado |
+| 27 | Microplásticos | 0.432 | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 28 | Acuíferos | 0.866 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 29 | Starlink | 0.928 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 30 | Riesgo Biológico | 0.917 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✓ | ✓ | Rechazado |
+| 31 | Fuga Cerebros | 0.433 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 32 | IoT | 0.477 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
 
-**Nota sobre la Tabla:** El campo "Estado" es **Validado** solo si `overall_pass = True`, lo cual requiere las 11 condiciones del protocolo: C1-C5, symploké, no-localidad, persistencia, emergencia, coupling ≥ 0.1, no-fraude RMSE. Los controles de falsación (07-09) están diseñados para fallar y lo hacen correctamente. CR con "—" indica cohesión interna negativa (anti-correlación en grid), invalidando la métrica.
+**Nota sobre la Tabla:** C1-C5 = Criterios del protocolo de validación. Sym = Symploké, NL = No-localidad, Per = Persistencia, Emr = Emergencia, Cp = Coupling ≥ 0.1. `overall_pass` = todas las 11 condiciones ✓ simultáneamente. Los 3 controles de falsación (07-09) están diseñados para fallar y lo hacen correctamente.
+
+### Análisis de Selectividad del Protocolo
+
+De los 32 casos evaluados: **11 validados**, **18 rechazados genuinos**, **3 controles de falsación** correctamente rechazados.
+
+**Distribución de modos de fallo** en los 18 rechazados genuinos:
+
+| Criterio | Fallos | % | Rol |
+| :--- | :---: | :---: | :--- |
+| C1 (Convergencia) | 14/18 | 78% | Filtro más selectivo — exige RMSE < obs_std en escala Z |
+| Emergence | 7/18 | 39% | Exige que el modelo acoplado supere al ABM aislado |
+| Symploké | 7/18 | 39% | Cohesión interna ≥ externa (topología) |
+| Persistencia | 3/18 | 17% | Estabilidad temporal de la señal macro |
+| C5 (Incertidumbre) | 2/18 | 11% | Bootstrap del EDI debe mantenerse en [0.30, 0.90] |
+| C2 (Robustez) | 1/18 | 6% | Estabilidad bajo perturbación de parámetros |
+
+**Prueba de no-tautología — 8 casos con EDI > 0.30 rechazados:**
+
+| Caso | EDI | Criterios que fallan | Interpretación |
+| :--- | ---: | :--- | :--- |
+| Riesgo Biológico | 0.917 | Sym, Per | Señal macro fuerte pero sin coherencia topológica ni temporal |
+| Erosión Dialéctica | 0.739 | C1, Per | Tendencia global pero convergencia y persistencia insuficientes |
+| Océanos | 0.737 | C1 | EDI alto pero ABM no converge — señal sin modelo micro adecuado |
+| Acidificación Oceánica | 0.737 | C1 | Estructura macro pero calibración insuficiente |
+| Kessler | 0.704 | C1 | Tráfico aéreo con shock COVID-19 destruye convergencia |
+| IoT | 0.477 | C1 | Tendencia clara pero ABM no alcanza RMSE suficiente |
+| Microplásticos | 0.432 | C5, Sym | Señal detectable pero coherencia topológica insuficiente |
+| Postverdad | 0.310 | C1 | EDI marginal y C1 falla — señal macro débil |
+
+Este resultado es **central para la tesis**: un EDI alto no garantiza validación. El protocolo C1-C5 actúa como filtro multi-criterio que elimina falsos positivos. Si la metodología fuera un *rubber stamp*, estos 8 casos pasarían. No pasan.
 
 ## Análisis de Evidencia y Hallazgos
-Los 32 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella. De los 32 casos evaluados, 11 pasan el protocolo completo (overall_pass=True) bajo las condiciones más estrictas (assimilation_strength = 0.0):
 
-**Emergencia Muy Fuerte (EDI > 0.80):**
-- **Starlink** (EDI=0.928, corr=0.994, EI=1.984): Emergencia excepcional. La conectividad digital global como hiperobjeto — el patrón macro de adopción de internet constrinye completamente la dinámica local.
-- **Fósforo** (EDI=0.901, corr=0.881, EI=0.711): Emergencia excepcional. El ciclo global de fósforo como hiperobjeto agrícola-ambiental.
-- **Finanzas** (EDI=0.880, corr=0.996, EI=1.218): Emergencia muy fuerte. Los mercados financieros globales como estructura macro dominante.
-- **Acuíferos** (EDI=0.866, corr=1.000, EI=0.815): Emergencia muy fuerte. El acceso global a agua potable como hiperobjeto hídrico.
-- **Deforestación** (EDI=0.846, corr=0.919, EI=0.850): Emergencia muy fuerte. Las políticas globales como hiperobjeto reducen la entropía local en un 85%.
-- **Urbanización** (EDI=0.840, corr=0.999, EI=1.411): Emergencia muy fuerte. La tendencia macro de urbanización global constrinye completamente los patrones micro.
+Los 32 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella.
 
-**Emergencia Fuerte (0.30 < EDI < 0.80):**
-- **Paradigmas** (EDI=0.657, corr=0.953, EI=0.882): Emergencia fuerte. Estructuras culturales capturadas con alta fidelidad.
-- **Fuga de Cerebros** (EDI=0.433, corr=0.970, EI=0.631): Emergencia fuerte. La inversión global en I+D como proxy de dinámica de capital intelectual.
-- **Clima** (EDI=0.425, corr=0.822, EI=0.542): Emergencia moderada-fuerte. El modelo macro reduce el RMSE en 42% respecto al ABM aislado.
-- **RTB Publicidad** (EDI=0.426, corr=0.755, EI=0.464): Emergencia moderada. Dinámica de mercado publicitario detectable.
-- **Energía** (EDI=0.351, corr=0.789, EI=0.327): Emergencia moderada. Señal macro robusta en consumo energético.
+**Emergencia Muy Fuerte (EDI > 0.80) — 6 casos validados:**
+- **Starlink** (EDI=0.928): Conectividad digital global como hiperobjeto.
+- **Fósforo** (EDI=0.901): Ciclo global de fósforo como hiperobjeto agrícola-ambiental.
+- **Finanzas** (EDI=0.880): Mercados financieros globales como estructura macro dominante.
+- **Acuíferos** (EDI=0.866): Acceso global a agua potable como hiperobjeto hídrico.
+- **Deforestación** (EDI=0.846): Políticas globales reducen la entropía local en un 85%.
+- **Urbanización** (EDI=0.840): Tendencia macro de urbanización constrinye los patrones micro.
 
-Los 3 controles de falsación (exogeneidad, no-estacionariedad, observabilidad) fallan correctamente, confirmando que el marco **no es tautológico**. El ratio es 11/29 validados de casos genuinos (38%), lo cual demuestra selectividad: el marco rechaza sistemas sin estructura macro detectable (conciencia, estética, justicia, moderación) y valida solo aquellos donde la causalidad descendente es computacionalmente medible.
+**Emergencia Fuerte (0.30 < EDI < 0.80) — 5 casos validados:**
+- **Paradigmas** (EDI=0.656): Estructuras culturales capturadas con alta fidelidad.
+- **Fuga de Cerebros** (EDI=0.433): Inversión global en I+D como proxy de capital intelectual.
+- **Clima** (EDI=0.425): El modelo macro reduce el RMSE en 42% respecto al ABM aislado.
+- **RTB Publicidad** (EDI=0.426): Dinámica de mercado publicitario detectable.
+- **Energía** (EDI=0.351): Señal macro robusta en consumo energético.
 
-**Casos Parciales de alto interés:** Varios casos presentan EDI alto pero fallan en una o dos condiciones del protocolo C1-C5:
-- **Riesgo Biológico** (EDI=0.917, corr=0.988): Solo falla symploké y persistencia. La mortalidad infantil global muestra señal macro fuerte.
-- **IoT** (EDI=0.477, corr=0.995): Solo falla C1 (convergencia). Las suscripciones móviles globales muestran estructura macro clara pero el ABM no logra RMSE suficiente.
-- **Erosión Dialéctica** (EDI=0.739, corr=0.992): Solo falla C1 y persistencia. La tasa de alfabetización global muestra señal macro.
-- **Kessler** (EDI=0.704, corr=0.499): Solo falla C1. Los datos de tráfico aéreo global tienen señal de hiperobjeto pero el shock COVID-19 destruye la correlación.
-- **Acidificación** (EDI=0.737): Solo falla C1. El consumo energético per cápita muestra estructura macro pero calibración insuficiente.
-
-Estos casos parciales refuerzan la **sensibilidad del marco** — incluso con EDI > 0.30, si algún criterio C1-C5 falla, el caso es rechazado. Esto elimina falsos positivos.
+Los 3 controles de falsación (exogeneidad, no-estacionariedad, observabilidad) fallan correctamente, confirmando que el marco **no es tautológico**.
 
 ## C5 — Bitácora de Correcciones y Reporte de Fallos
 

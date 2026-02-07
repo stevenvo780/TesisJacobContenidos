@@ -14,21 +14,26 @@ pip install -r repos/Simulaciones/requirements.txt
 
 ## 🧪 Resultados Principales
 
-**11 de 29 casos genuinos validados (38%)** + 3 controles de falsación correctamente rechazados.
+**32 casos evaluados** con protocolo completo (11 criterios simultáneos). **11 validados**, 8 rechazados con EDI alto (prueba de selectividad), 3 controles de falsación correctos.
 
 | Caso | EDI | corr | Estado |
 |------|-----|------|--------|
 | Starlink | 0.928 | 0.994 | ✅ Validado |
 | Fósforo | 0.901 | 0.881 | ✅ Validado |
+| **Riesgo Biológico** | **0.917** | **0.988** | **❌ Rechazado (Sym, Per)** |
 | Finanzas | 0.880 | 0.996 | ✅ Validado |
 | Acuíferos | 0.866 | 1.000 | ✅ Validado |
 | Deforestación | 0.846 | 0.919 | ✅ Validado |
 | Urbanización | 0.840 | 0.999 | ✅ Validado |
-| Paradigmas | 0.657 | 0.953 | ✅ Validado |
+| **Océanos** | **0.737** | **0.361** | **❌ Rechazado (C1)** |
+| **Kessler** | **0.704** | **0.499** | **❌ Rechazado (C1)** |
+| Paradigmas | 0.656 | 0.953 | ✅ Validado |
 | Fuga Cerebros | 0.433 | 0.970 | ✅ Validado |
 | RTB Publicidad | 0.426 | 0.755 | ✅ Validado |
 | Clima | 0.425 | 0.822 | ✅ Validado |
 | Energía | 0.351 | 0.789 | ✅ Validado |
+
+**Nota:** Los casos en negrita tienen EDI > 0.30 pero son rechazados por fallar criterios C1-C5. Esto demuestra que el protocolo no es un *rubber stamp*.
 
 Ejecución: `repos/Simulaciones/{NN}_caso_*/src/validate.py`
 

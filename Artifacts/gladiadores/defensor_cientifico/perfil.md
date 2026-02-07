@@ -8,7 +8,8 @@ Defiende la validez cientifica y operativa de la tesis desde el modelado computa
 - **Condición necesaria y suficiente de H1:** EDI > 0.30 + protocolo C1-C5.
 - CR es indicador complementario de frontera (no condición de H1).
 - overall_pass: 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, coupling ≥ 0.1, no-fraude RMSE).
-- 32 casos de simulación, 11 validados, 3 controles de falsación correctos.
+- 32 casos de simulación evaluados con protocolo de 11 criterios simultáneos.
+- 11 validados, 8 rechazados con EDI alto (prueba de selectividad), 3 controles de falsación correctos, 10 rechazados por EDI bajo.
 
 **Objetivo**
 Probar que el marco es falsable y reproducible, y que el macro aporta informacion causal no trivial.
@@ -39,8 +40,9 @@ Ver `Artifacts/gladiadores/guia_computo_torre.md` para:
 - H1 define criterios cuantitativos y condiciones de rechazo explicitas.
 - C1-C5 garantizan convergencia, robustez y reporte de fallos.
 - 11/29 genuinos validados (38%) demuestra selectividad, no debilidad.
+- 8 casos con EDI > 0.30 rechazados prueban que el protocolo no es rubber stamp.
 - 3 controles de falsación correctamente rechazados.
-- El caso Finanzas y 9 rechazados demuestran capacidad de fallo.
+- Riesgo Biológico (EDI=0.917) rechazado por Sym+Per: prueba máxima de rigor.
 
 **Riesgos / limitaciones**
 - CR ≈ 1.0 en todos los casos (explicado: retícula homogénea con difusión isotrópica).

@@ -17,10 +17,11 @@ Fuente de verdad documental:
 - `04_Casos_De_Estudio/04_Casos_De_Estudio.md`
 - `Anexos.md`
 
-## 3. Estado de los Modelos (Actualizado — 32 casos, 11 validados)
-*   **11 Validados:** Clima (EDI=0.425), Energía (0.351), Finanzas (0.880), Paradigmas (0.657), RTB (0.426), Deforestación (0.846), Urbanización (0.840), Fósforo (0.901), Acuíferos (0.866), Starlink (0.928), Fuga Cerebros (0.433).
+## 3. Estado de los Modelos (Actualizado — 32 casos)
+*   **11 Validados** (11/11 criterios ✓): Clima (0.425), Energía (0.351), Finanzas (0.880), Paradigmas (0.656), RTB (0.426), Deforestación (0.846), Urbanización (0.840), Fósforo (0.901), Acuíferos (0.866), Starlink (0.928), Fuga Cerebros (0.433).
+*   **8 Rechazados con EDI alto** (prueba de selectividad): Riesgo Biológico (0.917), Erosión (0.739), Océanos (0.737), Acidificación (0.737), Kessler (0.704), IoT (0.477), Microplásticos (0.432), Postverdad (0.310).
 *   **3 Controles de Falsación:** Correctamente rechazados.
-*   **9 Parciales + 9 Rechazados:** Confirman capacidad discriminante del marco.
+*   **10 Rechazados con EDI bajo:** Conciencia, Contaminación, Epidemiología, Estética, Justicia, Moderación, Movilidad, Wikipedia, Salinización, Políticas.
 
 ## 4. Instrucciones para la IA
 *   Priorizar la **Navaja de Ockham**: Si algo se puede explicar sin la capa macro, se descarta el hiperobjeto.
