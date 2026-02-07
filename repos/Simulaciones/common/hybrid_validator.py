@@ -689,7 +689,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     cr_valid = cr > 2.0
 
     overall = all([c1, c2, c3, c4, c5, sym_ok, non_local_ok, persist_ok,
-                   emergence_ok, coupling_ok, not rmse_fraud])
+                   emergence_ok, coupling_ok, not rmse_fraud, edi_valid, cr_valid])
 
     results = {
         "phase": phase_name,
