@@ -44,9 +44,9 @@ El script cachea los datos reales en `data/spy_monthly.csv`.
 <!-- AUTO:RESULTS:START -->
 | Métrica | Sintético | Real |
 |---------|-----------|------|
-| EDI     | 0.640 | 0.880 |
-| CR      | 1.335 | 1.248 |
-| RMSE ABM| 2.3997 | 0.3789 |
+| EDI     | 0.639 | 0.882 |
+| CR      | 1.336 | 1.250 |
+| RMSE ABM| 2.4123 | 0.3749 |
 | RMSE ODE| 1.8845 | 3.9623 |
 | Corr ABM| 0.9994 | 0.9956 |
 | Corr ODE| 0.9997 | 0.9859 |

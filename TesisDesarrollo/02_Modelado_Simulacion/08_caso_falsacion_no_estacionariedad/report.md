@@ -1,49 +1,78 @@
-# Reporte de Falsacion - No-Estacionariedad
+# Reporte de Validación — Falsación: No-Estacionariedad
 
-## Metadata
-- generated_at: 2026-02-06T02:04:25.448547Z
-- git_commit: 59e0ac2d28887926e1af89161073daf99653a607
-- git_dirty: True
+- generated_at: 2026-02-07T08:09:55.625544Z
 
 ## Fase synthetic
-- overall_pass: False
+- **overall_pass**: True
 
-### Datos
-- start: 2016-01-01
-- end: 2024-12-31
-- split: 2020-01-01
-- obs_mean: 0.011978869792360168
-- obs_std_raw: 0.7949961685790895
-- steps: 3288
-- val_steps: 1827
-- expected_days: 3288
-- observed_days: 3288
-- coverage: 1.0
-- outlier_share: 0.0
+### EDI
+- valor: 0.7041
+- bootstrap_mean: 0.7074
+- CI 95%: [0.6355, 0.7754]
+- válido (0.30-0.90): True
 
-### Criterios
-- c1_convergence: False
-- c4_validity: False
+### Symploké y CR
+- internal: 1.0000
+- external: 0.9999
+- CR: 1.0001
+- CR válido (>2.0): False
+
+### Criterios C1-C5
+- c1_convergence: True
+- c2_robustness: True
+- c3_replication: True
+- c4_validity: True
+- c5_uncertainty: True
+
+### Errores
+- rmse_abm: 0.8958
+- rmse_ode: 0.8802
+- rmse_reduced: 3.0272
+- threshold: 1.1951
+
+### Calibración
+- forcing_scale: 0.5916
+- macro_coupling: 0.1000
+- damping: 0.9500
+- ode_alpha: 0.3976
+- ode_beta: 1.0000
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.6965
 
 ## Fase real
-- overall_pass: False
+- **overall_pass**: False
 
-### Datos
-- start: 2016-01-01
-- end: 2024-12-31
-- split: 2020-01-01
-- obs_mean: 9.790333974206957
-- obs_std_raw: 0.6730724978598385
-- steps: 3288
-- val_steps: 1827
-- expected_days: 3288
-- observed_days: 3288
-- coverage: 1.0
-- outlier_share: 0.008211678832116789
+### EDI
+- valor: 0.0824
+- bootstrap_mean: 0.0825
+- CI 95%: [0.0223, 0.1487]
+- válido (0.30-0.90): False
 
-### Criterios
+### Symploké y CR
+- internal: -0.9963
+- external: 0.0297
+- CR: 33.5061
+- CR válido (>2.0): True
+
+### Criterios C1-C5
 - c1_convergence: False
-- c4_validity: False
+- c2_robustness: True
+- c3_replication: True
+- c4_validity: True
+- c5_uncertainty: True
 
-## Notas
-- Caso diseñado para fallar por quiebres de regimen.
+### Errores
+- rmse_abm: 0.6842
+- rmse_ode: 0.8582
+- rmse_reduced: 0.7456
+- threshold: 0.6415
+
+### Calibración
+- forcing_scale: 1.3997
+- macro_coupling: 0.7732
+- damping: 0.8571
+- ode_alpha: 0.0315
+- ode_beta: 1.0000
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.4348
+

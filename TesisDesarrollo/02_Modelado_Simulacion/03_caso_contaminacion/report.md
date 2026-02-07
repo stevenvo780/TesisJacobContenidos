@@ -1,93 +1,58 @@
-# Reporte de Validacion - Caso Contaminacion PM2.5
+# Reporte de Validación — Contaminación PM2.5
 
-## Metadata
-- generated_at: 2026-02-06T00:14:11.292352Z
-- git_commit: 46666b89c25141028c155db051cb2504ca7d6361
-- git_dirty: True
+- generated_at: 2026-02-07T07:34:01.678490Z
 
 ## Fase synthetic
-- overall_pass: True
+- **overall_pass**: False
 
-### Datos
-- start: 1980-01-01
-- end: 2019-01-01
-- split: 2000-01-01
-- steps: 40
-- val_steps: 20
-- obs_mean: 0.192
-- obs_std_raw: 0.188
+### EDI
+- valor: 0.4616
+- bootstrap_mean: 0.4632
+- CI 95%: [0.4435, 0.4871]
+- válido (0.30-0.90): True
 
-### Auditoria de datos
-- expected_years: 40
-- observed_years: 40
-- coverage: 1.000
-- outlier_share: 0.000
-
-### Meta sintetica
-- forcing_base: 0.000
-- forcing_trend: 0.0100
-- forcing_seasonal_amp: 0.000
-- forcing_seasonal_period: 1
-- ode_true_alpha: 0.080
-- ode_true_beta: 0.030
-- ode_true_noise: 0.020
-- measurement_noise: 0.050
-
-### Calibracion
-- forcing_scale: 0.010
-- macro_coupling: 0.400
-- damping: 0.050
-- assimilation_strength: 1.000
-- ode_alpha: 0.5000
-- ode_beta: 1.0000
+### Symploké y CR
+- internal: 1.0000
+- external: 0.8376
+- CR: 1.1939
+- CR válido (>2.0): False
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
-### Indicadores
-- symploke_pass: True
-- non_locality_pass: True
-- persistence_pass: True
-- persistence_window_variance: 0.100
-- obs_window_variance: 0.022
-- emergence_pass: True
-
 ### Errores
-- rmse_abm: 0.334
-- rmse_ode: 0.334
-- rmse_reduced: 1.428
-- rmse_reduced_full: 1.311
-- threshold: 0.439
+- rmse_abm: 2.8226
+- rmse_ode: 1.1754
+- rmse_reduced: 5.2422
+- threshold: 2.1312
+
+### Calibración
+- forcing_scale: 0.3226
+- macro_coupling: 0.1119
+- damping: 0.6076
+- ode_alpha: 0.3767
+- ode_beta: 1.0000
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.7709
 
 ## Fase real
-- overall_pass: True
+- **overall_pass**: False
 
-### Datos
-- start: 1990-01-01
-- end: 2022-01-01
-- split: 2006-01-01
-- steps: 31
-- val_steps: 15
-- obs_mean: 38.857
-- obs_std_raw: 2.319
+### EDI
+- valor: 0.1248
+- bootstrap_mean: 0.1263
+- CI 95%: [0.0014, 0.2495]
+- válido (0.30-0.90): False
 
-### Auditoria de datos
-- expected_years: 33
-- observed_years: 31
-- coverage: 0.939
-- outlier_share: 0.032
-
-### Calibracion
-- forcing_scale: 0.030
-- macro_coupling: 0.000
-- damping: 0.050
-- assimilation_strength: 1.000
-- ode_alpha: 0.1153
-- ode_beta: 1.0000
+### Symploké y CR
+- internal: 1.0000
+- external: 0.7327
+- CR: 1.3647
+- CR válido (>2.0): False
 
 ### Criterios C1-C5
 - c1_convergence: True
@@ -96,22 +61,18 @@
 - c4_validity: True
 - c5_uncertainty: True
 
-### Indicadores
-- symploke_pass: True
-- non_locality_pass: True
-- persistence_pass: True
-- persistence_window_variance: 1.340
-- obs_window_variance: 2.069
-- emergence_pass: True
-
 ### Errores
-- rmse_abm: 0.830
-- rmse_ode: 0.830
-- rmse_reduced: 1.440
-- rmse_reduced_full: 1.146
-- threshold: 0.831
+- rmse_abm: 7.5123
+- rmse_ode: 8.9437
+- rmse_reduced: 8.5833
+- threshold: 8.1069
 
-## Notas
-- Fase sintetica: verificacion interna con serie controlada.
-- Fase real: evaluacion final con datos World Bank PM2.5 (WLD).
-- Sensibilidad reportada en metrics.json.
+### Calibración
+- forcing_scale: 0.7579
+- macro_coupling: 1.0000
+- damping: 0.8285
+- ode_alpha: 0.0716
+- ode_beta: 1.0000
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.5181
+

@@ -87,7 +87,7 @@ docs/           # Documentación específica del caso (arquitectura, protocolos,
 
 ## 18 Casos de Simulación
 
-Ubicados en `TesisDesarrollo/02_Modelado_Simulacion/`. Incluyen casos exitosos (clima, contaminación, movilidad, paradigmas), casos de falsación intencional (exogeneidad, no-estacionariedad, observabilidad) y un caso de fallo deliberado (finanzas, EDI=0.05). Solo `caso_clima` y `caso_finanzas` tienen código Python ejecutable completo en `repos/Simulaciones/`.
+Ubicados en `TesisDesarrollo/02_Modelado_Simulacion/`. Los 32 casos tienen código Python ejecutable completo en `repos/Simulaciones/`. **24 validados** (EDI > 0.30 + C1-C5 completo), 3 controles de falsación correctos, 5 rechazados genuinos. Los casos cubren dominios físicos (clima, energía, océanos, acidificación), biológicos (deforestación, fósforo, riesgo biológico), económicos (finanzas), tecnológicos (starlink, RTB, moderación adversarial, IoT), culturales (paradigmas, estética, conciencia, erosión dialéctica), sociales (urbanización, fuga de cerebros, movilidad, justicia), geopolíticos (políticas estratégicas), hídricos (acuíferos), materiales (microplásticos) y orbitales (Kessler).
 
 ## Notas sobre Lenguaje y Contenido
 

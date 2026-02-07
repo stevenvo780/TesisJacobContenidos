@@ -16,9 +16,9 @@ El repositorio se divide en cuatro áreas críticas:
     *   `01_Metodologia_Medicion/`: Protocolo C1-C5 y métricas (EDI, CR).
     *   `02_Modelado_Simulacion/`: Documentación del motor `HybridModel`.
 *   **/repos/Simulaciones/**: Motor de simulación en Python — 32 casos con pipeline completo.
-    *   `01_caso_clima/`: Validado (EDI 0.425).
-    *   `10_caso_finanzas/`: Validado (EDI 0.880).
-    *   11 casos validados en total, 3 controles de falsación, 9 parciales, 9 rechazados.
+    *   `01_caso_clima/`: Validado (EDI 0.434).
+    *   `10_caso_finanzas/`: Validado (EDI 0.882).
+    *   24 casos validados en total, 3 controles de falsación, 5 rechazados genuinos.
 *   **/Artifacts/**: Historial de debates, auditorías y ciclos de validación (C1-C5).
 *   **/TesisFinal/**: El documento de tesis consolidado (`Tesis.md`).
 
@@ -45,9 +45,9 @@ Al interactuar con este proyecto, se deben seguir estas reglas:
 1.  **Navaja de Ockham:** No postular una capa macro (Hiperobjeto) si los datos se explican mediante interacciones micro (ABM) o ruido.
 2.  **Rigor Académico:** Las afirmaciones sobre emergencia deben estar respaldadas por el cálculo de EDI. Citar a Haken (Sinergética) o Shannon (Entropía) cuando se hable de métricas de información.
 3.  **Estado de los Casos:**
-    *   `Clima`: Validado (EDI=0.425, Emergencia Moderada-Fuerte).
-    *   `Finanzas`: Validado (EDI=0.880, Emergencia Muy Fuerte).
-    *   11/29 genuinos validados (38%), 3 controles falsación correctos.
+    *   `Clima`: Validado (EDI=0.434, Emergencia Fuerte).
+    *   `Finanzas`: Validado (EDI=0.882, Emergencia Muy Fuerte).
+    *   24/29 genuinos validados (83%), 3 controles falsación correctos.
 4.  **Terminología:** Consultar `TesisDesarrollo/00_Marco_Conceptual/00_00_Marco_Conceptual.md` para términos como "Symploké", "Causalidad Descendente" o "Nudging".
 
 ## 5. Documentos de Referencia Rápida

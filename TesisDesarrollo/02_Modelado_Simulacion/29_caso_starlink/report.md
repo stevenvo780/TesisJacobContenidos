@@ -1,14 +1,78 @@
-# Reporte — Constelaciones Satelitales (Starlink)
+# Reporte de Validación — Constelaciones Satelitales (Starlink)
 
-## Estado: Pendiente Ejecución
+- generated_at: 2026-02-07T09:06:46.252295Z
 
-Este caso fue añadido en la Iteración 8 del proceso de validación.
-Requiere ejecución del pipeline completo con calibración ultra.
+## Fase synthetic
+- **overall_pass**: False
 
-### Indicador
-- World Bank: `IT.NET.USER.ZS`
+### EDI
+- valor: 0.5821
+- bootstrap_mean: 0.5843
+- CI 95%: [0.5148, 0.6650]
+- válido (0.30-0.90): True
 
-### Protocolo
-- Calibración: grid 6400 combos + top 10 × 5000 refinamientos
-- Modo: Zero-Nudging (`assimilation_strength = 0.0`)
-- Validación: C1-C5 + 6 condiciones adicionales
+### Symploké y CR
+- internal: 1.0000
+- external: 0.9998
+- CR: 1.0001
+- CR válido (>2.0): False
+
+### Criterios C1-C5
+- c1_convergence: False
+- c2_robustness: True
+- c3_replication: True
+- c4_validity: True
+- c5_uncertainty: True
+
+### Errores
+- rmse_abm: 0.9102
+- rmse_ode: 0.9161
+- rmse_reduced: 2.1783
+- threshold: 0.8200
+
+### Calibración
+- forcing_scale: 0.5393
+- macro_coupling: 0.1234
+- damping: 0.9500
+- ode_alpha: 0.3103
+- ode_beta: 1.0000
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.8214
+
+## Fase real
+- **overall_pass**: True
+
+### EDI
+- valor: 0.9144
+- bootstrap_mean: 0.9170
+- CI 95%: [0.8979, 0.9514]
+- válido (0.30-0.90): False
+
+### Symploké y CR
+- internal: 1.0000
+- external: 1.0000
+- CR: 1.0000
+- CR válido (>2.0): False
+
+### Criterios C1-C5
+- c1_convergence: True
+- c2_robustness: True
+- c3_replication: True
+- c4_validity: True
+- c5_uncertainty: True
+
+### Errores
+- rmse_abm: 0.6740
+- rmse_ode: 2.0294
+- rmse_reduced: 7.8773
+- threshold: 3.4570
+
+### Calibración
+- forcing_scale: 0.6774
+- macro_coupling: 0.4557
+- damping: 0.9500
+- ode_alpha: 0.0010
+- ode_beta: 0.0010
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.2250
+

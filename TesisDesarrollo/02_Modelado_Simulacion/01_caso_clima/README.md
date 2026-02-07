@@ -44,12 +44,12 @@ El script cachea los datos reales en `data/regional_monthly_tavg.csv`.
 <!-- AUTO:RESULTS:START -->
 | Métrica | Sintético | Real |
 |---------|-----------|------|
-| EDI     | 0.687 | 0.425 |
-| CR      | 1.000 | 1.002 |
-| RMSE ABM| 2.1160 | 0.5546 |
-| RMSE ODE| 1.8845 | 1.6728 |
-| Corr ABM| 0.9994 | 0.8219 |
-| Corr ODE| 0.9997 | -0.0266 |
+| EDI     | 0.687 | 0.434 |
+| CR      | 1.000 | 1.000 |
+| RMSE ABM| 2.1139 | 0.5626 |
+| RMSE ODE| 1.8845 | 1.5087 |
+| Corr ABM| 0.9994 | 0.8233 |
+| Corr ODE| 0.9997 | -0.0542 |
 | C1      | ✅ | ✅ |
 | C2      | ✅ | ✅ |
 | C3      | ✅ | ✅ |

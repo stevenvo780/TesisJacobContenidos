@@ -1,49 +1,78 @@
-# Reporte de Falsacion - Exogeneidad y Shock
+# Reporte de Validación — Falsación: Exogeneidad
 
-## Metadata
-- generated_at: 2026-02-06T02:03:14.194536Z
-- git_commit: 59e0ac2d28887926e1af89161073daf99653a607
-- git_dirty: False
+- generated_at: 2026-02-07T08:05:16.862529Z
 
 ## Fase synthetic
-- overall_pass: False
+- **overall_pass**: True
 
-### Datos
-- start: 2018-01-01
-- end: 2024-12-31
-- split: 2021-01-01
-- obs_mean: 0.4987177895277192
-- obs_std_raw: 0.4818893011344937
-- steps: 2557
-- val_steps: 1461
-- expected_days: 2557
-- observed_days: 2557
-- coverage: 1.0
-- outlier_share: 0.0
+### EDI
+- valor: 0.7041
+- bootstrap_mean: 0.7074
+- CI 95%: [0.6355, 0.7754]
+- válido (0.30-0.90): True
+
+### Symploké y CR
+- internal: 1.0000
+- external: 0.9999
+- CR: 1.0001
+- CR válido (>2.0): False
 
 ### Criterios C1-C5
-- c1_convergence: False
+- c1_convergence: True
+- c2_robustness: True
+- c3_replication: True
 - c4_validity: True
+- c5_uncertainty: True
+
+### Errores
+- rmse_abm: 0.8958
+- rmse_ode: 0.8802
+- rmse_reduced: 3.0272
+- threshold: 1.1951
+
+### Calibración
+- forcing_scale: 0.5916
+- macro_coupling: 0.1000
+- damping: 0.9500
+- ode_alpha: 0.3976
+- ode_beta: 1.0000
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.6965
 
 ## Fase real
-- overall_pass: False
+- **overall_pass**: False
 
-### Datos
-- start: 2018-01-01
-- end: 2024-12-31
-- split: 2021-01-01
-- obs_mean: 10.02828825195977
-- obs_std_raw: 0.47030504486688557
-- steps: 2557
-- val_steps: 1461
-- expected_days: 2557
-- observed_days: 2557
-- coverage: 1.0
-- outlier_share: 0.003910833007430583
+### EDI
+- valor: -0.7315
+- bootstrap_mean: -0.7342
+- CI 95%: [-0.8425, -0.6276]
+- válido (0.30-0.90): False
+
+### Symploké y CR
+- internal: -0.9990
+- external: 0.0220
+- CR: 45.3082
+- CR válido (>2.0): True
 
 ### Criterios C1-C5
 - c1_convergence: False
+- c2_robustness: False
+- c3_replication: True
 - c4_validity: True
+- c5_uncertainty: False
 
-## Notas
-- Caso diseñado para fallar sin nudging.
+### Errores
+- rmse_abm: 0.8609
+- rmse_ode: 0.8036
+- rmse_reduced: 0.4972
+- threshold: 0.4904
+
+### Calibración
+- forcing_scale: 1.3437
+- macro_coupling: 0.7410
+- damping: 0.8685
+- ode_alpha: 0.0337
+- ode_beta: 1.0000
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.3740
+
