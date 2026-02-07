@@ -12,18 +12,18 @@
 <!-- AUTO:RESULTS:START -->
 | Métrica | Sintético | Real |
 |---------|-----------|------|
-| EDI     | 0.342 | -0.179 |
-| CR      | 1.209 | 1.069 |
-| RMSE ABM| 0.6355 | 1.3541 |
-| RMSE ODE| 0.8292 | 1.1538 |
-| Corr ABM| 0.9315 | -0.3544 |
-| Corr ODE| 0.7695 | -0.2400 |
-| C1      | ❌ | ❌ |
-| C2      | ❌ | ❌ |
-| C3      | ❌ | ❌ |
-| C4      | ❌ | ❌ |
+| EDI     | 0.886 | 0.004 |
+| CR      | 1.000 | -154.767 |
+| RMSE ABM| 0.4730 | 1.7144 |
+| RMSE ODE| 0.7366 | 3.1837 |
+| Corr ABM| 0.9405 | 0.1426 |
+| Corr ODE| 0.9405 | -0.3237 |
+| C1      | ✅ | ❌ |
+| C2      | ✅ | ✅ |
+| C3      | ✅ | ✅ |
+| C4      | ✅ | ✅ |
 | C5      | ✅ | ✅ |
-| Estado  | NO VALIDADO | NO VALIDADO |
+| Estado  | VALIDADO | NO VALIDADO |
 <!-- AUTO:RESULTS:END -->
 
 ## Archivos clave

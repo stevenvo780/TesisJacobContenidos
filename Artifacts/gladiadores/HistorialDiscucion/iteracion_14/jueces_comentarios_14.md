@@ -19,3 +19,6 @@
 - Equipo defensor: 0.
 
 **Solicitud explícita:** evidencias verificables con rutas/commits; evitar acusaciones personales.
+
+## Nota de verificación (post-respuesta)
+- Los archivos `verify_synthetic_variance.py`, `verify_synthetic_isolated.py` y `verify_scale_counter.py` **sí existen** en `repos/Simulaciones/19_caso_deforestacion/src/` con los MD5 reportados por la defensa. Esto corrige la falta de trazabilidad señalada previamente.

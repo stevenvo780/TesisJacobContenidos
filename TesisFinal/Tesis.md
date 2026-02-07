@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 04:38 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 05:51 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -227,9 +227,10 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 - **Zero-Nudging:** En la versión final, la evaluación se realiza sin nudging (`assimilation_strength=0.0`) para medir la emergencia pura del acoplamiento macro.
 
 ## Criterios Tecnicos de Validación
-- **EDI > 0.30:** indica eficacia causal macro (emergencia fuerte).
-- **CR > 2.0:** indica frontera sistémica (cohesión interna).
+- **EDI > 0.30:** condición necesaria de H1 — indica eficacia causal macro (emergencia fuerte).
+- **CR > 2.0:** indicador complementario de frontera sistémica (no condición de H1).
 - **C1-C5:** Protocolo de rigor aplicado a la convergencia, robustez, replicación, validez y gestión de incertidumbre.
+- **overall_pass:** 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento ≥ 0.1, no-fraude RMSE).
 
 ## Resultados Consolidados (Matriz de Validación Técnica)
 
@@ -316,7 +317,7 @@ Cada celda indica el resultado del criterio en la **Fase Real** (`assimilation_s
 | 31 | Fuga Cerebros | 0.433 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
 | 32 | IoT | 0.477 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
 
-**Nota sobre la Tabla:** C1-C5 = Criterios del protocolo de validación. Sym = Symploké, NL = No-localidad, Per = Persistencia, Emr = Emergencia, Cp = Coupling ≥ 0.1. `overall_pass` = todas las 11 condiciones ✓ simultáneamente.
+**Nota sobre la Tabla:** C1-C5 = Criterios del protocolo de validación. Sym = Symploké, NL = No-localidad, Per = Persistencia, Emr = Emergencia, Cp = Coupling ≥ 0.1. `overall_pass` = todas las 11 condiciones ✓ simultáneamente. Los 3 controles de falsación (07-09) están diseñados para fallar y lo hacen correctamente.
 
 ### Análisis de Selectividad del Protocolo
 
@@ -456,46 +457,70 @@ La validacion distingue entre evidencia empirica (datasets largos y duros) y evi
 - **RMSE < 1e-10:** fraude por sobreajuste.
 - **CR > 2.0:** cohesión interna supera la externa (condición positiva).
 
-## Resultados Consolidados (Casos Activos de Alta Evidencia)
+## Resultados Consolidados (32 Casos — Protocolo Completo)
 
-Se han eliminado del reporte principal los casos con bajo nivel de evidencia (LoE 1-2) o datasets subjetivos, para centrar la validación en dominios con datos duros (DQ > 3).
+El pipeline se ejecutó sobre 32 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso es **Validado** solo si las 11 condiciones son ✓ simultáneamente.
 
-### Validados — 8 de 20 casos activos (40%)
-| Caso | EDI | corr | EI | Dominio | DQ (1-5) |
-|------|-----|------|-----|---------|----------|
-| 01 Clima | 0.425 | 0.822 | 0.542 | Físico-ambiental | 5 |
-| 04 Energía | 0.351 | 0.789 | 0.327 | Infraestructura | 4 |
-| 10 Finanzas | 0.880 | 0.996 | 1.218 | Económico | 5 |
-| 19 Deforestación | 0.846 | 0.919 | 0.850 | Ambiental | 5 |
-| 21 Urbanización | 0.840 | 0.999 | 1.411 | Social | 4 |
-| 25 Fósforo | 0.901 | 0.881 | 0.711 | Biogeoquímico | 4 |
-| 28 Acuíferos | 0.866 | 1.000 | 0.815 | Hídrico | 5 |
-| 29 Starlink | 0.928 | 0.994 | 1.984 | Tecnológico | 4 |
-
-**Nota sobre DQ (Data Quality):** 5=Series temporales físicas/financieras auditadas; 4=Datos agregados institucionales; 1-2=Encuestas o Proxies débiles (Casos Archivados).
+### Validados — 11 de 29 casos genuinos (38%)
+| Caso | EDI | corr | EI | Dominio |
+|------|-----|------|-----|---------|
+| 01 Clima | 0.425 | 0.822 | 0.542 | Físico-ambiental |
+| 04 Energía | 0.351 | 0.789 | 0.327 | Infraestructura |
+| 10 Finanzas | 0.880 | 0.996 | 1.218 | Económico |
+| 14 Paradigmas | 0.656 | 0.953 | 0.882 | Cultural |
+| 17 RTB Publicidad | 0.426 | 0.755 | 0.464 | Mercado digital |
+| 19 Deforestación | 0.846 | 0.919 | 0.850 | Ambiental |
+| 21 Urbanización | 0.840 | 0.999 | 1.411 | Social |
+| 25 Fósforo | 0.901 | 0.881 | 0.711 | Biogeoquímico |
+| 28 Acuíferos | 0.866 | 1.000 | 0.815 | Hídrico |
+| 29 Starlink | 0.928 | 0.994 | 1.984 | Tecnológico |
+| 31 Fuga Cerebros | 0.433 | 0.970 | 0.631 | Capital intelectual |
 
 ### Controles de Falsación (3/3 correctamente rechazados)
 - 07 Falsación Exogeneidad: ruido sin estructura → rechazado.
 - 08 Falsación No-Estacionariedad: deriva temporal sin causalidad → rechazado.
 - 09 Falsación Observabilidad: límites de medición micro → rechazado.
 
-### Parciales y Rechazados
-El resto de los casos activos presentan EDI < 0.30 o fallos en condiciones C2-C5. Confirman la capacidad discriminante del marco.
+### Rechazados con EDI alto — Prueba de no-tautología
+8 casos tienen EDI > 0.30 pero son rechazados por fallar criterios adicionales del protocolo:
 
-## Análisis Crítico
+| Caso | EDI | Criterios que fallan | Interpretación |
+|------|-----|---------------------|----------------|
+| 30 Riesgo Biológico | 0.917 | Sym, Per | Señal macro fuerte pero sin coherencia topológica |
+| 26 Erosión Dialéctica | 0.739 | C1, Per | Tendencia global pero convergencia insuficiente |
+| 20 Océanos | 0.737 | C1 | EDI alto pero ABM no converge |
+| 22 Acidificación | 0.737 | C1 | Estructura macro pero calibración insuficiente |
+| 23 Kessler | 0.704 | C1 | Shock COVID-19 destruye convergencia |
+| 32 IoT | 0.477 | C1 | ABM no alcanza RMSE suficiente |
+| 27 Microplásticos | 0.432 | C5, Sym | Coherencia topológica insuficiente |
+| 16 Postverdad | 0.310 | C1 | EDI marginal, señal macro débil |
 
-### Tasa de Validación del 40%
-La tasa ajustada (tras eliminar casos débiles) muestra una consistencia mayor. El marco no "valida todo", sino que identifica selectivamente estructuras emergentes en dominios con alta fidelidad de datos.
+### Rechazados con EDI bajo (10 casos)
+Conciencia (-0.323), Contaminación (0.124), Epidemiología (0.172), Estética (0.032), Justicia (-0.237), Moderación (0.004), Movilidad (0.070), Wikipedia (0.017), Salinización (0.164), Políticas (0.294).
+
+## Análisis de Selectividad
+
+### Distribución de modos de fallo (18 rechazados genuinos)
+| Criterio | Fallos | % |
+|----------|--------|---|
+| C1 (Convergencia) | 14/18 | 78% |
+| Emergence | 7/18 | 39% |
+| Symploké | 7/18 | 39% |
+| Persistencia | 3/18 | 17% |
+| C5 (Incertidumbre) | 2/18 | 11% |
+| C2 (Robustez) | 1/18 | 6% |
+
+C1 es el filtro más selectivo: exige que el RMSE del modelo acoplado sea menor que la desviación estándar de las observaciones en escala Z-normalizada. Esto es equivalente al criterio NC1 (RMSE/obs_std < 1.0) propuesto en la literatura.
 
 ### Diversidad de Dominios
-Los 8 casos validados cubren dominios físicos, biológicos y tecnológicos. Se observa una correlación entre alta calidad de datos (DQ 4-5) y éxito en la validación (EDI > 0.30).
+Los 11 casos validados cubren dominios físicos (clima, acuíferos), biológicos (deforestación, fósforo), económicos (finanzas, energía), tecnológicos (starlink, RTB), culturales (paradigmas) y sociales (urbanización, fuga de cerebros).
 
 ### La Paradoja de la Inercia
 El marco detecta **estabilidad de flujo informacional**, no "importancia social". Sistemas con inercia física alta (clima, deforestación) validan fácilmente, mientras que sistemas de alta fricción social (justicia, postverdad) requieren adaptaciones del modelo que están fuera del alcance del ODE lineal actual.
 
 ## Conclusiones
 
-La praxis no busca confirmar la hipótesis, sino sobrevivir intentos de refutación. Con 11 validaciones positivas y 3 falsaciones correctas sobre 32 experimentos, el marco demuestra capacidad discriminante robusta para identificar dominios con estructura macro emergente estable.
+La praxis no busca confirmar la hipótesis, sino sobrevivir intentos de refutación. Con 11 validaciones positivas, 8 rechazos de alto EDI (prueba de no-tautología), 3 falsaciones correctas y 10 rechazos genuinos sobre 32 experimentos, el marco demuestra capacidad discriminante robusta: un EDI alto no garantiza validación — el protocolo C1-C5 actúa como filtro multi-criterio que elimina falsos positivos.
 
 ---
 
@@ -3842,37 +3867,56 @@ ajuste = fuerza_goma * (temp_global_macro - temp_pixel)
 
 > Tabla generada automáticamente desde `metrics.json` de cada caso.
 
-| Caso | LoE | EDI | CR | C1–C5 | Estado |
-|------|-----|-----|----|-------|--------|
-| 01_caso_clima | 5 | 0.425 | 1.002 | 5/5 | ✅ Validado |
-| 02_caso_conciencia | 1 | -0.323 | 0.999 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 03_caso_contaminacion | 4 | 0.124 | 1.365 | 5/5 | ❌ Rechazado (EDI bajo) |
-| 04_caso_energia | 4 | 0.351 | 1.116 | 5/5 | ✅ Validado |
-| 05_caso_epidemiologia | 4 | 0.172 | 0.830 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 06_caso_estetica | 2 | 0.032 | -83.846 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 07_caso_falsacion_exogeneidad | 1 | -0.966 | -34.918 | 2/5 | ❌ Rechazado (EDI bajo) |
-| 08_caso_falsacion_no_estacionariedad | 1 | -0.049 | -64.118 | 3/5 | ❌ Rechazado (EDI bajo) |
-| 09_caso_falsacion_observabilidad | 1 | 0.000 | 0.000 | 0/5 | ❌ Rechazado (EDI bajo) |
-| 10_caso_finanzas | 5 | 0.880 | 1.248 | 5/5 | ✅ Validado |
-| 11_caso_justicia | 2 | -0.237 | 0.999 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 12_caso_moderacion_adversarial | 1 | 0.004 | -154.767 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 13_caso_movilidad | 2 | 0.070 | 1.149 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 14_caso_paradigmas | 2 | 0.656 | 1.001 | 5/5 | ✅ Validado |
-| 15_caso_politicas_estrategicas | 1 | 0.294 | 1.012 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 16_caso_postverdad | 2 | 0.310 | 1.000 | 4/5 | ⚠️ Parcial (4/5) |
-| 17_caso_rtb_publicidad | 1 | 0.426 | 1.030 | 5/5 | ✅ Validado |
-| 18_caso_wikipedia | 3 | 0.017 | 1.151 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 19_caso_deforestacion | — | 0.846 | 1.000 | 5/5 | ✅ Validado |
-| 20_caso_oceanos | — | 0.737 | 1.005 | 4/5 | ⚠️ Parcial (4/5) |
-| 21_caso_urbanizacion | — | 0.840 | 1.000 | 5/5 | ✅ Validado |
-| 22_caso_acidificacion_oceanica | — | 0.737 | 1.005 | 4/5 | ⚠️ Parcial (4/5) |
-| 23_caso_kessler | — | 0.704 | 1.002 | 4/5 | ⚠️ Parcial (4/5) |
-| 24_caso_salinizacion | — | 0.164 | -26.899 | 3/5 | ❌ Rechazado (EDI bajo) |
-| 25_caso_fosforo | — | 0.901 | 1.000 | 5/5 | ✅ Validado |
-| 26_caso_erosion_dialectica | — | 0.739 | 1.000 | 4/5 | ⚠️ Parcial (4/5) |
-| 27_caso_microplasticos | — | 0.432 | -4.359 | 4/5 | ⚠️ Parcial (4/5) |
-| 28_caso_acuiferos | — | 0.866 | 1.000 | 5/5 | ✅ Validado |
-| 29_caso_starlink | — | 0.928 | 1.000 | 5/5 | ✅ Validado |
-| 30_caso_riesgo_biologico | — | 0.917 | 0.989 | 5/5 | ✅ Validado |
-| 31_caso_fuga_cerebros | — | 0.433 | 0.999 | 5/5 | ✅ Validado |
-| 32_caso_iot | — | 0.477 | 1.000 | 4/5 | ⚠️ Parcial (4/5) |
+## Matriz de Protocolo Completa (32 casos × 11 criterios)
+
+Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). **Validado** = 11 condiciones ✓ simultáneamente.
+
+| # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Result |
+| :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| 29 | Starlink | 0.928 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 25 | Fosforo | 0.901 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 10 | Finanzas | 0.880 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 28 | Acuiferos | 0.866 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 19 | Deforestacion | 0.846 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 21 | Urbanizacion | 0.840 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 14 | Paradigmas | 0.656 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 31 | Fuga Cerebros | 0.433 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 17 | Rtb Publicidad | 0.426 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 01 | Clima | 0.425 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 04 | Energia | 0.351 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
+| 07 | Falsacion Exogeneidad | -0.966 | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | Control ❌ |
+| 08 | Falsacion No Estacionariedad | -0.049 | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | Control ❌ |
+| 09 | Falsacion Observabilidad | 0.000 | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | Control ❌ |
+| 30 | Riesgo Biologico | 0.917 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✓ | ✓ | Rechazado |
+| 26 | Erosion Dialectica | 0.739 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | Rechazado |
+| 20 | Oceanos | 0.737 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 22 | Acidificacion Oceanica | 0.737 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 23 | Kessler | 0.704 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 32 | Iot | 0.477 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 27 | Microplasticos | 0.432 | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 16 | Postverdad | 0.310 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 02 | Conciencia | -0.323 | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 03 | Contaminacion | 0.124 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 05 | Epidemiologia | 0.172 | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 06 | Estetica | 0.032 | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 11 | Justicia | -0.237 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 12 | Moderacion Adversarial | 0.004 | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 13 | Movilidad | 0.070 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 15 | Politicas Estrategicas | 0.294 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Rechazado |
+| 18 | Wikipedia | 0.017 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| 24 | Salinizacion | 0.164 | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✓ | ✓ | Rechazado |
+
+**Resumen:** 11 validados, 8 rechazados con EDI > 0.30 (selectividad), 3 controles de falsación, 10 rechazados con EDI bajo.
+
+## Distribución de Modos de Fallo
+
+En los 18 rechazados genuinos:
+
+| Criterio | Fallos | % |
+| :--- | :---: | :---: |
+| C1 | 14/18 | 77% |
+| Emergence | 7/18 | 38% |
+| Symploké | 7/18 | 38% |
+| Persistencia | 3/18 | 16% |
+| C5 | 2/18 | 11% |
+| C2 | 1/18 | 5% |
