@@ -37,6 +37,22 @@ Aunque todos los casos cuentan con motores de simulación implementados y ejecut
 - `14_caso_paradigmas/`: Cambios de fase en grafos de citación científica (OpenAlex).
 - `15_caso_politicas_estrategicas/`: Simulación de impacto macro en decisiones micro.
 - `16_caso_postverdad/`: Difusión de rumores y estabilización de burbujas informativas.
-- `17_caso_rtb_publicidad/`: Mercados de alta frecuencia y aliasing temporal.
+- `17_caso_rtb_publicidad/`: Mercados de alta frecuencia y aliasing temporal. ✅ EDI=0.426
 - `18_caso_wikipedia/`: Atención colectiva y estabilidad del conocimiento colaborativo.
+- `19_caso_deforestacion/`: Pérdida forestal como parámetro de orden macro. ✅ EDI=0.846
+- `20_caso_oceanos/`: Temperatura oceánica y acoplamiento climático.
+- `21_caso_urbanizacion/`: Expansión urbana como atractor macro. ✅ EDI=0.840
+
+### Bloque II — Casos Nuevos (22–32)
+- `22_caso_acidificacion_oceanica/`: Uso energético per cápita y ciclo carbónico.
+- `23_caso_kessler/`: Síndrome de Kessler — debris orbital y tráfico aéreo.
+- `24_caso_salinizacion/`: Pérdida de tierra arable por salinización.
+- `25_caso_fosforo/`: Ciclo del fósforo y fertilización global. ✅ EDI=0.901
+- `26_caso_erosion_dialectica/`: Erosión de la razón — tasas de alfabetización.
+- `27_caso_microplasticos/`: Contaminación por combustibles fósiles.
+- `28_caso_acuiferos/`: Acceso básico al agua y estrés hídrico. ✅ EDI=0.866
+- `29_caso_starlink/`: Difusión de internet como hiperobjeto tecnológico. ✅ EDI=0.928
+- `30_caso_riesgo_biologico/`: Mortalidad infantil como indicador de riesgo sistémico.
+- `31_caso_fuga_cerebros/`: Inversión en I+D y migración de talento. ✅ EDI=0.433
+- `32_caso_iot/`: Suscripciones móviles y conectividad global.
 

@@ -14,12 +14,40 @@ Documentos de referencia:
 - Resumen general del repositorio: `README.md`
 - Tesis final: `../TesisFinal/Tesis.md`
 
-Casos enumerados (02_Modelado_Simulacion):
+Casos enumerados (02_Modelado_Simulacion) — 32 casos:
 
-- `01_caso_clima/`
+**Bloque I — Originales (01–21):**
+- `01_caso_clima/` ✅
+- `02_caso_conciencia/`
 - `03_caso_contaminacion/`
-- `04_caso_energia/`
+- `04_caso_energia/` ✅
 - `05_caso_epidemiologia/`
-- `10_caso_finanzas/`
+- `06_caso_estetica/`
+- `07_caso_falsacion_exogeneidad/` (control)
+- `08_caso_falsacion_no_estacionariedad/` (control)
+- `09_caso_falsacion_observabilidad/` (control)
+- `10_caso_finanzas/` ✅
+- `11_caso_justicia/`
+- `12_caso_moderacion_adversarial/`
 - `13_caso_movilidad/`
+- `14_caso_paradigmas/` ✅
+- `15_caso_politicas_estrategicas/`
+- `16_caso_postverdad/`
+- `17_caso_rtb_publicidad/` ✅
 - `18_caso_wikipedia/`
+- `19_caso_deforestacion/` ✅
+- `20_caso_oceanos/`
+- `21_caso_urbanizacion/` ✅
+
+**Bloque II — Nuevos (22–32):**
+- `22_caso_acidificacion_oceanica/`
+- `23_caso_kessler/`
+- `24_caso_salinizacion/`
+- `25_caso_fosforo/` ✅
+- `26_caso_erosion_dialectica/`
+- `27_caso_microplasticos/`
+- `28_caso_acuiferos/` ✅
+- `29_caso_starlink/` ✅
+- `30_caso_riesgo_biologico/`
+- `31_caso_fuga_cerebros/` ✅
+- `32_caso_iot/`

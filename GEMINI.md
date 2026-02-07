@@ -15,9 +15,10 @@ El repositorio se divide en cuatro áreas críticas:
     *   `00_Marco_Conceptual/`: Ontología y Axiomas.
     *   `01_Metodologia_Medicion/`: Protocolo C1-C5 y métricas (EDI, CR).
     *   `02_Modelado_Simulacion/`: Documentación del motor `HybridModel`.
-*   **/repos/Simulaciones/**: Motor de simulación en Python.
-    *   `caso_clima/`: Modelo validado (EDI 0.45).
-    *   `caso_finanzas/`: Modelo rechazado/falsado (EDI 0.05).
+*   **/repos/Simulaciones/**: Motor de simulación en Python — 32 casos con pipeline completo.
+    *   `01_caso_clima/`: Validado (EDI 0.425).
+    *   `10_caso_finanzas/`: Validado (EDI 0.880).
+    *   11 casos validados en total, 3 controles de falsación, 9 parciales, 9 rechazados.
 *   **/Artifacts/**: Historial de debates, auditorías y ciclos de validación (C1-C5).
 *   **/TesisFinal/**: El documento de tesis consolidado (`Tesis.md`).
 
@@ -31,11 +32,11 @@ El motor de simulación requiere Python 3.10+ y las dependencias listadas en `re
     ```
 *   **Validar Caso Clima:**
     ```bash
-    python3 repos/Simulaciones/caso_clima/src/validate.py
+    python3 repos/Simulaciones/01_caso_clima/src/validate.py
     ```
 *   **Validar Caso Finanzas:**
     ```bash
-    python3 repos/Simulaciones/caso_finanzas/src/validate.py
+    python3 repos/Simulaciones/10_caso_finanzas/src/validate.py
     ```
 
 ## 4. Convenciones y Rigor
@@ -44,8 +45,9 @@ Al interactuar con este proyecto, se deben seguir estas reglas:
 1.  **Navaja de Ockham:** No postular una capa macro (Hiperobjeto) si los datos se explican mediante interacciones micro (ABM) o ruido.
 2.  **Rigor Académico:** Las afirmaciones sobre emergencia deben estar respaldadas por el cálculo de EDI. Citar a Haken (Sinergética) o Shannon (Entropía) cuando se hable de métricas de información.
 3.  **Estado de los Casos:**
-    *   `Clima`: Convergente (Emergencia Fuerte).
-    *   `Finanzas`: Divergente (Límite por Reflexividad).
+    *   `Clima`: Validado (EDI=0.425, Emergencia Moderada-Fuerte).
+    *   `Finanzas`: Validado (EDI=0.880, Emergencia Muy Fuerte).
+    *   11/29 genuinos validados (38%), 3 controles falsación correctos.
 4.  **Terminología:** Consultar `TesisDesarrollo/00_Marco_Conceptual/00_00_Marco_Conceptual.md` para términos como "Symploké", "Causalidad Descendente" o "Nudging".
 
 ## 5. Documentos de Referencia Rápida

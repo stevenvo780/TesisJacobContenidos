@@ -1,0 +1,20 @@
+🔍 Auditoría de consistencia — 2026-02-07T03:18:28.389481
+
+=== 1. SINCRONIZACIÓN metrics.json (Simulaciones ↔ TesisDesarrollo) ===
+  ✅ OK: caso_clima ↔ 01_caso_clima: IDÉNTICO
+  ✅ OK: caso_contaminacion ↔ 03_caso_contaminacion: IDÉNTICO
+  ✅ OK: caso_movilidad ↔ 13_caso_movilidad: IDÉNTICO
+
+=== 2. DETECCIÓN DE MÉTRICAS STALE ===
+
+=== 3. CONSISTENCIA TABLA ↔ metrics.json ===
+
+=== 4. LÓGICA DE overall_pass (hybrid_validator.py L566) ===
+  overall = all([c1, c2, c3, c4, c5, sym_ok, non_local_ok,
+                  persist_ok, emergence_ok, coupling_ok, not rmse_fraud])
+  → Requiere 11 condiciones True simultáneamente
+  → edi_valid y cr_valid se computan pero NO están en overall_pass
+
+============================================================
+RESULTADO: 0 errores, 0 advertencias
+✅ TODO CONSISTENTE

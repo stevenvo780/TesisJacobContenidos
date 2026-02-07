@@ -1,0 +1,211 @@
+{
+  "case": "Constelaciones Satelitales (Starlink)",
+  "generated_at": "2026-02-07T04:07:14.189339Z",
+  "git": {
+    "commit": null,
+    "dirty": null
+  },
+  "phases": {
+    "synthetic": {
+      "phase": "synthetic",
+      "overall_pass": false,
+      "data": {
+        "start": "1990-01-01",
+        "end": "2022-01-01",
+        "split": "2010-01-01",
+        "obs_mean_raw": 0.10289192349602555,
+        "obs_std_raw": 0.08565335705243304,
+        "steps": 33,
+        "val_steps": 13,
+        "coverage": 1.0
+      },
+      "calibration": {
+        "forcing_scale": 0.5148833801179262,
+        "macro_coupling": 0.1,
+        "damping": 0.9,
+        "ode_alpha": 0.3103185648428722,
+        "ode_beta": 1.0,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.8233101354126655
+      },
+      "errors": {
+        "rmse_abm": 0.9104426320633235,
+        "rmse_ode": 0.9161149788186266,
+        "rmse_reduced": 2.1783236090032694,
+        "threshold": 0.8200162751744597
+      },
+      "correlations": {
+        "abm_obs": 0.4110041053187397,
+        "ode_obs": 0.22528440626062948
+      },
+      "edi": {
+        "value": 0.5820443627841353,
+        "bootstrap_mean": 0.5842356007206946,
+        "ci_lo": 0.5162478038894749,
+        "ci_hi": 0.6633607641128567,
+        "valid": true
+      },
+      "effective_information": 0.09628902063177258,
+      "symploke": {
+        "internal": 0.9999712909031865,
+        "external": 0.999333389531611,
+        "cr": 1.0006383268869605,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.002500032818282971,
+        "pass": true
+      },
+      "persistence": {
+        "model": 0.03571163594207303,
+        "obs": 0.7535467076564208,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 2.1783236090032694,
+        "err_abm": 0.9104426320633235,
+        "threshold": 0.16400325503489196,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": false,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 0.9104426320633235,
+        "rmse_ode": 0.9161149788186266,
+        "corr_abm": 0.4110041053187397,
+        "corr_ode": 0.22528440626062948,
+        "threshold": 0.8200162751744597
+      },
+      "c2_detail": {
+        "mean_delta": 0.10613013087056422,
+        "var_delta": 0.02323518569607668,
+        "relative_mean": 0.07059372748494144,
+        "relative_var": 0.02323518569607668
+      },
+      "c3_detail": {
+        "persistence_1": 0.03571163594207303,
+        "persistence_2": 0.035706241536134664
+      },
+      "c4_detail": {
+        "diff": 0.30066768166439406
+      },
+      "c5_detail": {
+        "sensitivity_min": 1.2425744547111193,
+        "sensitivity_max": 1.7607209232950316,
+        "range": 0.5181464685839123,
+        "relative_range": 0.35439206667816087
+      },
+      "synthetic_meta": {
+        "ode_true": {
+          "alpha": 0.08,
+          "beta": 0.03
+        },
+        "measurement_noise": 0.05
+      }
+    },
+    "real": {
+      "phase": "real",
+      "overall_pass": true,
+      "data": {
+        "start": "1990-01-01",
+        "end": "2022-01-01",
+        "split": "2010-01-01",
+        "obs_mean_raw": 38.35555555555555,
+        "obs_std_raw": 15.447553643870181,
+        "steps": 18,
+        "val_steps": 13,
+        "coverage": 0.5454545454545454
+      },
+      "calibration": {
+        "forcing_scale": 0.657783859199918,
+        "macro_coupling": 0.5814799084901775,
+        "damping": 0.9,
+        "ode_alpha": 0.001,
+        "ode_beta": 0.001,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.25225004182141975
+      },
+      "errors": {
+        "rmse_abm": 0.5688914502653062,
+        "rmse_ode": 2.029400008431556,
+        "rmse_reduced": 7.877318743067622,
+        "threshold": 3.4570493491065966
+      },
+      "correlations": {
+        "abm_obs": 0.9943233488599396,
+        "ode_obs": 0.9943149568763348
+      },
+      "edi": {
+        "value": 0.9277810802354601,
+        "bootstrap_mean": 0.9297450585949002,
+        "ci_lo": 0.9129100333606669,
+        "ci_hi": 0.9589830635552985,
+        "valid": false
+      },
+      "effective_information": 1.9837506073941618,
+      "symploke": {
+        "internal": 0.9999557925554413,
+        "external": 0.9999112040773688,
+        "cr": 1.0000445924376993,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.002500057164982331,
+        "pass": true
+      },
+      "persistence": {
+        "model": 1.9246727357282176,
+        "obs": 3.278222730739892,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 7.877318743067622,
+        "err_abm": 0.5688914502653062,
+        "threshold": 0.6914098698213194,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": true,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 0.5688914502653062,
+        "rmse_ode": 2.029400008431556,
+        "corr_abm": 0.9943233488599396,
+        "corr_ode": 0.9943149568763348,
+        "threshold": 3.4570493491065966
+      },
+      "c2_detail": {
+        "mean_delta": 0.4445828591578588,
+        "var_delta": 1.4330463440544938,
+        "relative_mean": 0.06539526343200154,
+        "relative_var": 0.14857390099215576
+      },
+      "c3_detail": {
+        "persistence_1": 1.9246727357282176,
+        "persistence_2": 1.9245599075897846
+      },
+      "c4_detail": {
+        "diff": 1.359675582134753
+      },
+      "c5_detail": {
+        "sensitivity_min": 5.662428969024813,
+        "sensitivity_max": 7.898863070826848,
+        "range": 2.2364341018020353,
+        "relative_range": 0.33759622843245035
+      }
+    }
+  }
+}
