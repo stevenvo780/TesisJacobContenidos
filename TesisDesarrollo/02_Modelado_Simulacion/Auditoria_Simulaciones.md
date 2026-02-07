@@ -4,11 +4,11 @@ Criterios: consistencia documental, presencia de metricas y señales de posibles
 
 | Caso | EDI | CR | Estado | Hallazgos |
 | :--- | ---: | ---: | :--- | :--- |
-| 01_caso_clima | 0.103 | 2.355 | False | OK |
+| 01_caso_clima | 0.425 | 1.002 | True | OK |
 | 02_caso_conciencia | 0.477 | 2.119 | False | OK |
-| 03_caso_contaminacion | 0.423 | 2.472 | True | OK |
-| 04_caso_energia | 0.647 | 3.167 | False | OK |
-| 05_caso_epidemiologia | 0.889 | 2.000 | False | OK |
+| 03_caso_contaminacion | 0.124 | 1.365 | False | OK |
+| 04_caso_energia | 0.351 | 1.116 | True | OK |
+| 05_caso_epidemiologia | -395.634 | -19429.308 | False | CR <= 0 (revisar); EDI fuera de rango esperado (revisar) |
 | 06_caso_estetica | 0.363 | 1.646 | False | OK |
 | 07_caso_falsacion_exogeneidad | -2.513 | 1.005 | False | OK |
 | 08_caso_falsacion_no_estacionariedad | 0.009 | 1.002 | False | OK |
@@ -16,7 +16,7 @@ Criterios: consistencia documental, presencia de metricas y señales de posibles
 | 10_caso_finanzas | 0.769 | 1.078 | False | OK |
 | 11_caso_justicia | 0.619 | 2.001 | False | OK |
 | 12_caso_moderacion_adversarial | -0.179 | 1.069 | False | OK |
-| 13_caso_movilidad | 0.740 | 5.273 | True | OK |
+| 13_caso_movilidad | 0.072 | 1.148 | False | OK |
 | 14_caso_paradigmas | 0.248 | 1.353 | False | OK |
 | 15_caso_politicas_estrategicas | -0.209 | 1.264 | False | OK |
 | 16_caso_postverdad | 0.313 | 1.887 | False | OK |
