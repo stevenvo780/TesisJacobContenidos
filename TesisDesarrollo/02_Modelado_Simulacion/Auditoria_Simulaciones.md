@@ -5,23 +5,28 @@ Criterios: consistencia documental, presencia de metricas y señales de posibles
 | Caso | EDI | CR | Estado | Hallazgos |
 | :--- | ---: | ---: | :--- | :--- |
 | 01_caso_clima | 0.425 | 1.002 | True | OK |
-| 02_caso_conciencia | 0.477 | 2.119 | False | OK |
+| 02_caso_conciencia | -0.320 | 0.999 | False | OK |
 | 03_caso_contaminacion | 0.124 | 1.365 | False | OK |
 | 04_caso_energia | 0.351 | 1.116 | True | OK |
 | 05_caso_epidemiologia | -395.634 | -19429.308 | False | CR <= 0 (revisar); EDI fuera de rango esperado (revisar) |
-| 06_caso_estetica | 0.363 | 1.646 | False | OK |
-| 07_caso_falsacion_exogeneidad | -2.513 | 1.005 | False | OK |
-| 08_caso_falsacion_no_estacionariedad | 0.009 | 1.002 | False | OK |
+| 06_caso_estetica | -1096.608 | -16987.385 | False | CR <= 0 (revisar); EDI fuera de rango esperado (revisar) |
+| 07_caso_falsacion_exogeneidad | -1.649 | 1.000 | False | OK |
+| 08_caso_falsacion_no_estacionariedad | -2.204 | 0.984 | False | OK |
 | 09_caso_falsacion_observabilidad | n/a | n/a | False | EDI no disponible (n/a); CR no disponible (n/a) |
-| 10_caso_finanzas | 0.769 | 1.078 | False | OK |
-| 11_caso_justicia | 0.619 | 2.001 | False | OK |
-| 12_caso_moderacion_adversarial | -0.179 | 1.069 | False | OK |
+| 10_caso_finanzas | 0.879 | 1.248 | True | OK |
+| 11_caso_justicia | -0.237 | 1.001 | False | OK |
+| 12_caso_moderacion_adversarial | -274616.823 | -1291.556 | False | CR <= 0 (revisar); EDI fuera de rango esperado (revisar) |
 | 13_caso_movilidad | 0.072 | 1.148 | False | OK |
-| 14_caso_paradigmas | 0.248 | 1.353 | False | OK |
-| 15_caso_politicas_estrategicas | -0.209 | 1.264 | False | OK |
-| 16_caso_postverdad | 0.313 | 1.887 | False | OK |
-| 17_caso_rtb_publicidad | 0.088 | 6.937 | False | OK |
-| 18_caso_wikipedia | 0.562 | 2.888 | False | OK |
+| 14_caso_paradigmas | 0.657 | 1.001 | True | OK |
+| 15_caso_politicas_estrategicas | 0.296 | 1.012 | False | OK |
+| 16_caso_postverdad | 0.311 | 1.000 | False | OK |
+| 17_caso_rtb_publicidad | 0.426 | 1.030 | True | OK |
+| 18_caso_wikipedia | 0.017 | 1.151 | False | OK |
+| 19_caso_acidificacion_oceanica | n/a | n/a | n/a | README.md faltante; report.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante; metrics.json faltante o ilegible |
+| 19_caso_deforestacion | n/a | n/a | n/a | report.md sin seccion de resultados clara; metrics.json faltante o ilegible |
+| 20_caso_oceanos | n/a | n/a | n/a | report.md sin seccion de resultados clara; metrics.json faltante o ilegible |
+| 21_caso_kessler | n/a | n/a | n/a | README.md faltante; report.md faltante; docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante; metrics.json faltante o ilegible |
+| 21_caso_urbanizacion | n/a | n/a | n/a | report.md sin seccion de resultados clara; metrics.json faltante o ilegible |
 
 ## Recomendaciones
 - Si EDI o CR es n/a, revisar el pipeline de calculo y los datos fuente.

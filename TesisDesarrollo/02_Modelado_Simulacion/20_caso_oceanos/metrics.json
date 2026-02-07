@@ -1,0 +1,211 @@
+{
+  "case": "Consumo Energ\u00e9tico Global",
+  "generated_at": "2026-02-07T02:45:30.437059Z",
+  "git": {
+    "commit": null,
+    "dirty": null
+  },
+  "phases": {
+    "synthetic": {
+      "phase": "synthetic",
+      "overall_pass": false,
+      "data": {
+        "start": "1990-01-01",
+        "end": "2022-01-01",
+        "split": "2010-01-01",
+        "obs_mean_raw": 0.10289192349602555,
+        "obs_std_raw": 0.08565335705243304,
+        "steps": 33,
+        "val_steps": 13,
+        "coverage": 1.0
+      },
+      "calibration": {
+        "forcing_scale": 0.5154990837116423,
+        "macro_coupling": 0.13420625220108012,
+        "damping": 0.9,
+        "ode_alpha": 0.3103185648428722,
+        "ode_beta": 1.0,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.8233102816387524
+      },
+      "errors": {
+        "rmse_abm": 0.9094662916177428,
+        "rmse_ode": 0.9161149788186266,
+        "rmse_reduced": 2.1783236090032694,
+        "threshold": 0.8200162751744597
+      },
+      "correlations": {
+        "abm_obs": 0.41100411594428093,
+        "ode_obs": 0.22528440626062948
+      },
+      "edi": {
+        "value": 0.5824925700392674,
+        "bootstrap_mean": 0.5846707826495646,
+        "ci_lo": 0.5167224813349813,
+        "ci_hi": 0.6639548448243623,
+        "valid": true
+      },
+      "effective_information": 0.09625700778702662,
+      "symploke": {
+        "internal": 0.9999635499567667,
+        "external": 0.9993292272718902,
+        "cr": 1.0006347484568305,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.0025000431620753947,
+        "pass": true
+      },
+      "persistence": {
+        "model": 0.03579709224950831,
+        "obs": 0.7535467076564208,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 2.1783236090032694,
+        "err_abm": 0.9094662916177428,
+        "threshold": 0.16400325503489196,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": false,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 0.9094662916177428,
+        "rmse_ode": 0.9161149788186266,
+        "corr_abm": 0.41100411594428093,
+        "corr_ode": 0.22528440626062948,
+        "threshold": 0.8200162751744597
+      },
+      "c2_detail": {
+        "mean_delta": 0.10625703776998496,
+        "var_delta": 0.023290790937382344,
+        "relative_mean": 0.07059372389153738,
+        "relative_var": 0.023290790937382344
+      },
+      "c3_detail": {
+        "persistence_1": 0.03579709224950831,
+        "persistence_2": 0.03579169036864548
+      },
+      "c4_detail": {
+        "diff": 0.3010272325713279
+      },
+      "c5_detail": {
+        "sensitivity_min": 1.244060353264612,
+        "sensitivity_max": 1.7628264136591445,
+        "range": 0.5187660603945325,
+        "relative_range": 0.35439205593619083
+      },
+      "synthetic_meta": {
+        "ode_true": {
+          "alpha": 0.08,
+          "beta": 0.03
+        },
+        "measurement_noise": 0.05
+      }
+    },
+    "real": {
+      "phase": "real",
+      "overall_pass": false,
+      "data": {
+        "start": "1990-01-01",
+        "end": "2022-01-01",
+        "split": "2010-01-01",
+        "obs_mean_raw": 1702.0919556648241,
+        "obs_std_raw": 102.18681535766271,
+        "steps": 33,
+        "val_steps": 13,
+        "coverage": 1.0
+      },
+      "calibration": {
+        "forcing_scale": 0.4517890930917167,
+        "macro_coupling": 0.9854060099202847,
+        "damping": 0.4866603562480614,
+        "ode_alpha": 0.2525096141966833,
+        "ode_beta": 1.0,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.37169606266473454
+      },
+      "errors": {
+        "rmse_abm": 0.7042490475901944,
+        "rmse_ode": 0.6379814018152153,
+        "rmse_reduced": 2.679976526829882,
+        "threshold": 0.367875490690414
+      },
+      "correlations": {
+        "abm_obs": 0.3614563581272564,
+        "ode_obs": 0.3735455840079958
+      },
+      "edi": {
+        "value": 0.7372182030179034,
+        "bootstrap_mean": 0.7460214777910933,
+        "ci_lo": 0.6091338102489601,
+        "ci_hi": 0.8492753643517565,
+        "valid": true
+      },
+      "effective_information": -0.43278974270611015,
+      "symploke": {
+        "internal": 0.999872670046441,
+        "external": 0.994914371202437,
+        "cr": 1.004983643806463,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.002500166296244839,
+        "pass": true
+      },
+      "persistence": {
+        "model": 0.04761104352480222,
+        "obs": 0.24854021675235732,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 2.679976526829882,
+        "err_abm": 0.7042490475901944,
+        "threshold": 0.0735750981380828,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": false,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 0.7042490475901944,
+        "rmse_ode": 0.6379814018152153,
+        "corr_abm": 0.3614563581272564,
+        "corr_ode": 0.3735455840079958,
+        "threshold": 0.367875490690414
+      },
+      "c2_detail": {
+        "mean_delta": 0.20409104479648726,
+        "var_delta": 0.05744756936499114,
+        "relative_mean": 0.066682551035875,
+        "relative_var": 0.05744756936499114
+      },
+      "c3_detail": {
+        "persistence_1": 0.04761104352480222,
+        "persistence_2": 0.04760054135306817
+      },
+      "c4_detail": {
+        "diff": 0.612104021502784
+      },
+      "c5_detail": {
+        "sensitivity_min": 2.5439792364103937,
+        "sensitivity_max": 3.5625784770860096,
+        "range": 1.018599240675616,
+        "relative_range": 0.3417424044917338
+      }
+    }
+  }
+}

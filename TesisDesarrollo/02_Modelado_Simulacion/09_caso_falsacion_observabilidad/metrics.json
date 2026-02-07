@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: Observabilidad Escasa",
-  "generated_at": "2026-02-07T01:27:14.972409Z",
+  "generated_at": "2026-02-07T02:29:33.417996Z",
   "git": {
     "commit": null,
     "dirty": null
@@ -20,51 +20,51 @@
         "coverage": 1.0
       },
       "calibration": {
-        "forcing_scale": 0.5567729942095548,
+        "forcing_scale": 0.5577274702553311,
         "macro_coupling": 0.1,
         "damping": 0.9,
         "ode_alpha": 0.26312924275188754,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.6475101655946502
+        "calibration_rmse": 0.6475102091185175
       },
       "errors": {
-        "rmse_abm": 1.4453707434486827,
+        "rmse_abm": 1.4479842782053711,
         "rmse_ode": 1.2675934157957955,
         "rmse_reduced": 1.1575210634907156,
         "threshold": 0.9375271634827442
       },
       "correlations": {
-        "abm_obs": 0.39287421442826975,
+        "abm_obs": 0.3928742463957827,
         "ode_obs": 0.5025333240393721
       },
       "edi": {
-        "value": -0.248677703617681,
-        "bootstrap_mean": -0.36941520070326195,
-        "ci_lo": -1.5662274269511016,
-        "ci_hi": 0.3752011350639865,
+        "value": -0.25093557592698207,
+        "bootstrap_mean": -0.4102247070357421,
+        "ci_lo": -1.6998259589825058,
+        "ci_hi": 0.37269393235579606,
         "valid": false
       },
-      "effective_information": 0.05277765628685516,
+      "effective_information": 0.05247186368166212,
       "symploke": {
-        "internal": 0.999971322425611,
-        "external": 0.9994152607815565,
-        "cr": 1.0005563869853455,
+        "internal": 0.9999714205008158,
+        "external": 0.999415307652705,
+        "cr": 1.0005564381932641,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.002500032735763359,
+        "dominance_share": 0.002500032623804058,
         "pass": true
       },
       "persistence": {
-        "model": 0.23203054088575245,
+        "model": 0.23282680652034204,
         "obs": 0.5279427534715436,
         "pass": true
       },
       "emergence": {
         "err_reduced": 1.1575210634907156,
-        "err_abm": 1.4453707434486827,
+        "err_abm": 1.4479842782053711,
         "threshold": 0.18750543269654885,
         "pass": false,
         "significance": "computed"
@@ -77,30 +77,30 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 1.4453707434486827,
+        "rmse_abm": 1.4479842782053711,
         "rmse_ode": 1.2675934157957955,
-        "corr_abm": 0.39287421442826975,
+        "corr_abm": 0.3928742463957827,
         "corr_ode": 0.5025333240393721,
         "threshold": 0.9375271634827442
       },
       "c2_detail": {
-        "mean_delta": 0.1185364401469026,
-        "var_delta": 0.038292594944642565,
-        "relative_mean": 0.0652735490867601,
-        "relative_var": 0.038292594944642565
+        "mean_delta": 0.1187396334440944,
+        "var_delta": 0.038423988105730875,
+        "relative_mean": 0.06527354087210352,
+        "relative_var": 0.038423988105730875
       },
       "c3_detail": {
-        "persistence_1": 0.23203054088575245,
-        "persistence_2": 0.23205286467928013
+        "persistence_1": 0.23282680652034204,
+        "persistence_2": 0.23284916858339932
       },
       "c4_detail": {
-        "diff": 0.36318820811967933
+        "diff": 0.3638108439143741
       },
       "c5_detail": {
-        "sensitivity_min": 1.5133205380465176,
-        "sensitivity_max": 2.110183094795538,
-        "range": 0.5968625567490202,
-        "relative_range": 0.3371995212137068
+        "sensitivity_min": 1.5159148354106475,
+        "sensitivity_max": 2.1138005866991136,
+        "range": 0.5978857512884661,
+        "relative_range": 0.3371995163617848
       },
       "synthetic_meta": {
         "ode_true": {
@@ -130,8 +130,7 @@
       "c2_robustness": false,
       "c3_replication": false,
       "c4_validity": false,
-      "c5_uncertainty": false,
-      "gated_by_synthetic": true
+      "c5_uncertainty": false
     }
   }
 }
