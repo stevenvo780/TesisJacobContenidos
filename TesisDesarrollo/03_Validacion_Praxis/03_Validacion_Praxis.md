@@ -26,4 +26,8 @@ El sistema de clasificación LoE (1-5) indica la robustez de los datos (5 = Dato
 La existencia de código ejecutable para los 18 casos permite una auditoría profunda de los estados de fallo. El caso Finanzas establece la frontera epistémica por reflexividad, mientras que los casos de Falsación (Exogeneidad, No-Estacionariedad) demuestran que el sistema es capaz de rechazar estructuras que no poseen una causalidad macro real. Las pruebas de exogeneidad, ruido blanco e invisibilidad de agentes refuerzan que los éxitos no son artefactos del código, sino propiedades detectadas en la dinámica del sistema.
 
 ## Conclusiones
-La praxis no busca confirmar la hipotesis, sino sobrevivir intentos de refutacion. El marco se valida por su capacidad de discriminar dominios con estructura macro estable.
+
+La praxis no busca confirmar la hipótesis, sino sobrevivir intentos de refutación. El marco se valida por su capacidad de discriminar dominios con estructura macro estable.
+
+### La Fase Titanio (Casos 21-30)
+La expansión del marco a 10 nuevos dominios ha permitido estabilizar los umbrales de la tesis. Mientras que entidades con inercia física como la **Salinización** y los **Microplásticos** muestran un EDI > 0.95, sistemas de alta dispersión como el **IoT** han sido falsados, demostrando que la agregación micro no siempre conduce a la emergencia macro. El **Caso Kessler** permanece como el ejemplo paradigmático de metaestabilidad: una entidad con significancia estadística pero aún en fase de formación ontológica. Para un análisis detallado, consultar el `Resumen_Ejecutivo_Titanio.md`.
