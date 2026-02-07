@@ -36,7 +36,7 @@ Ver `Artifacts/gladiadores/guia_computo_torre.md` para:
    ```bash
    export SSHPASS='[REDACTED]'
    TOWER="stev@10.8.0.11"
-   REMOTE="/datos/repos/Personal/hiper-objeto-simulaciones/repos/Simulaciones"
+   REMOTE="/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones"
    
    # Archivo individual
    sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no archivo.py $TOWER:$REMOTE/ruta/

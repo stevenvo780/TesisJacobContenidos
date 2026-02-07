@@ -7,7 +7,7 @@
 sshpass -p '[REDACTED]' ssh -o StrictHostKeyChecking=no stev@10.8.0.11
 
 # Ruta del repositorio en la torre
-cd /datos/repos/Personal/hiper-objeto-simulaciones
+cd /datos/repos/Personal/TesisJacobContenidos
 ```
 
 **Datos de acceso:**
@@ -35,7 +35,7 @@ cd /datos/repos/Personal/hiper-objeto-simulaciones
 ```bash
 export SSHPASS='[REDACTED]'
 TOWER="stev@10.8.0.11"
-REMOTE="/datos/repos/Personal/hiper-objeto-simulaciones/repos/Simulaciones"
+REMOTE="/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones"
 
 # Archivo individual (ej. hybrid_validator.py)
 sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no \
@@ -97,7 +97,7 @@ done
 
 ```bash
 sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
-  "cd /datos/repos/Personal/hiper-objeto-simulaciones/01_caso_clima/src && python3 validate.py"
+  "cd /datos/repos/Personal/TesisJacobContenidos/01_caso_clima/src && python3 validate.py"
 ```
 
 ### Todos los 32 casos secuencial (mega_run v7)
@@ -135,7 +135,7 @@ sshpass -p '[REDACTED]' ssh stev@10.8.0.11 "free -h && echo '---' && nproc && ec
 ## Estructura del Repo en la Torre
 
 ```
-/datos/repos/Personal/hiper-objeto-simulaciones/
+/datos/repos/Personal/TesisJacobContenidos/
 ├── common/
 │   └── hybrid_validator.py    # Motor de validación (compartido)
 ├── 01_caso_clima/

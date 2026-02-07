@@ -1,7 +1,7 @@
 Workstation: stev@10.8.0.11
 Pass: [REDACTED]
 Port: 22
-Area de trabajo:  /datos/repos/Personal/hiper-objeto-simulaciones
+Area de trabajo:  /datos/repos/Personal/TesisJacobContenidos
 
 128 GB de ram 192 GB de SWAP con RAID0 3 SSD para procesos exageradamente grandes
 

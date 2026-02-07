@@ -95,7 +95,7 @@ La exigencia de EI siempre positivo confunde emergencia ontológica con autonom�
 ## 📊 Evidencia Reproducible
 
 ```
-Commit: 70c08f4 (hiper-objeto-simulaciones)
+Commit: 70c08f4 (TesisJacobContenidos)
 Torre: AMD 9950X3D (32 cores), 128GB RAM
 Workers: 16 paralelos
 Tiempo total: 331s
@@ -130,6 +130,6 @@ Para demostrar que los resultados no dependen del tamaño del grid de búsqueda,
 Los mismos 7 casos pasan (y fallan) en ambas ejecuciones, con variaciones menores en el tercer decimal de EDI. Esto demuestra que el resultado no es un artefacto de optimización sino una propiedad estable del sistema modelado.
 
 **Commits verificables:**
-- v4: `70c08f4` → `hiper-objeto-simulaciones`
-- v5: `6a1b995` → `hiper-objeto-simulaciones`
+- v4: `70c08f4` → `TesisJacobContenidos`
+- v5: `6a1b995` → `TesisJacobContenidos`
 - Documentación: `7a5b431` → `TesisJacobContenidos`
