@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 02:49 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 02:56 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -233,48 +233,50 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 
 ## Resultados Consolidados (Matriz de Validación Técnica)
 
-La siguiente tabla resume los resultados obtenidos tras la ejecución del pipeline completo en los 21 motores. Los valores representan el desempeño del modelo en modo **Zero-Nudging** (`assimilation_strength = 0.0`). Ejecución: Torre 32-core AMD 9950X3D, 16 workers paralelos, commit `a15287d`. Optimizaciones: clamping numérico [-50,50], gating C2-C4, calibración adaptativa multi-punto con early stopping.
+La siguiente tabla resume los resultados obtenidos tras la ejecución del pipeline completo en los 21 motores. Los valores representan el desempeño del modelo en modo **Zero-Nudging** (`assimilation_strength = 0.0`). Ejecución: Torre 32-core AMD 9950X3D, 16 workers paralelos, commit `70c08f4`. Optimizaciones: clamping numérico [-50,50], gating C2-C4, calibración adaptativa multi-punto, symploké con tolerancia numérica 1e-3.
 
 | Caso | EDI | EI | CR | corr | overall_pass | Estado |
 | :--- | ---: | ---: | ---: | ---: | :---: | :--- |
-| 01_caso_clima | 0.424 | 0.542 | 1.002 | 0.822 | ✅ | **Validado** |
-| 02_caso_conciencia | -0.325 | -0.387 | 0.999 | -0.670 | ❌ | Rechazado |
-| 03_caso_contaminacion | 0.123 | 0.243 | 1.365 | 0.708 | ❌ | Parcial (C1-C5✅, emergence✗) |
-| 04_caso_energia | 0.351 | 0.327 | 1.116 | 0.789 | ✅ | **Validado** |
-| 05_caso_epidemiologia | 0.172 | — | 1.000 | 0.743 | ❌ | Rechazado (gated by synth) |
-| 06_caso_estetica | 0.031 | — | 1.000 | 0.080 | ❌ | Rechazado |
-| 07_caso_falsacion_exogeneidad | -0.984 | -0.442 | 1.000 | -0.175 | ❌ | **Control ❌** |
-| 08_caso_falsacion_no_estacionariedad | -0.046 | -0.499 | 0.984 | 0.863 | ❌ | **Control ❌** |
-| 09_caso_falsacion_observabilidad | 0.000 | 0.000 | 0.000 | — | ❌ | **Control ❌** |
-| 10_caso_finanzas | 0.879 | 1.215 | 1.248 | 0.996 | ✅ | **Validado** |
+| 01_caso_clima | 0.425 | 0.542 | 1.002 | 0.822 | ✅ | **Validado** |
+| 02_caso_conciencia | -0.318 | -0.386 | 0.999 | -0.670 | ❌ | Rechazado |
+| 03_caso_contaminacion | 0.124 | 0.243 | 1.365 | 0.711 | ❌ | Parcial (C1-C5✅, emergence✗) |
+| 04_caso_energia | 0.350 | 0.327 | 1.116 | 0.789 | ✅ | **Validado** |
+| 05_caso_epidemiologia | 0.172 | 0.200 | 0.830 | 0.743 | ❌ | Rechazado (gated by synth) |
+| 06_caso_estetica | 0.032 | -0.003 | — | 0.079 | ❌ | Rechazado |
+| 07_caso_falsacion_exogeneidad | -0.959 | -0.441 | — | -0.183 | ❌ | **Control ❌** |
+| 08_caso_falsacion_no_estacionariedad | -0.045 | 0.194 | — | 0.858 | ❌ | **Control ❌** |
+| 09_caso_falsacion_observabilidad | 0.000 | 0.000 | — | — | ❌ | **Control ❌** |
+| 10_caso_finanzas | 0.880 | 1.218 | 1.248 | 0.996 | ✅ | **Validado** |
 | 11_caso_justicia | -0.237 | 0.037 | 1.001 | 0.408 | ❌ | Rechazado |
-| 12_caso_moderacion_adversarial | 0.001 | — | 1.000 | 0.123 | ❌ | Rechazado |
-| 13_caso_movilidad | 0.070 | -0.495 | 1.149 | 0.500 | ❌ | Rechazado |
-| 14_caso_paradigmas | 0.657 | 0.884 | 1.001 | 0.953 | ✅ | **Validado** |
-| 15_caso_politicas_estrategicas | 0.292 | -0.102 | 1.012 | 0.007 | ❌ | Parcial (EDI≈0.30, corr↓) |
-| 16_caso_postverdad | 0.311 | -0.118 | 1.000 | -0.051 | ❌ | Parcial (EDI>0.30, corr↓) |
-| 17_caso_rtb_publicidad | 0.427 | 0.469 | 1.030 | 0.755 | ✅ | **Validado** |
-| 18_caso_wikipedia | 0.017 | 0.070 | 1.151 | 0.309 | ❌ | Rechazado |
-| 19_caso_deforestacion | — | — | — | — | ⏳ | Pendiente |
-| 20_caso_oceanos | — | — | — | — | ⏳ | Pendiente |
-| 21_caso_urbanizacion | — | — | — | — | ⏳ | Pendiente |
+| 12_caso_moderacion_adversarial | 0.003 | -0.021 | — | 0.139 | ❌ | Rechazado |
+| 13_caso_movilidad | 0.070 | -0.497 | 1.149 | 0.500 | ❌ | Rechazado |
+| 14_caso_paradigmas | 0.656 | 0.880 | 1.001 | 0.953 | ✅ | **Validado** |
+| 15_caso_politicas_estrategicas | 0.292 | -0.104 | 1.012 | 0.009 | ❌ | Parcial (EDI≈0.30, corr↓) |
+| 16_caso_postverdad | 0.310 | -0.117 | 1.000 | -0.051 | ❌ | Parcial (EDI>0.30, corr↓) |
+| 17_caso_rtb_publicidad | 0.426 | 0.464 | 1.030 | 0.755 | ✅ | **Validado** |
+| 18_caso_wikipedia | 0.017 | 0.071 | 1.151 | 0.309 | ❌ | Rechazado |
+| 19_caso_deforestacion | 0.847 | 0.850 | 1.000 | 0.919 | ✅ | **Validado** |
+| 20_caso_oceanos | 0.737 | -0.433 | 1.005 | 0.361 | ❌ | Parcial (EDI alto, corr↓) |
+| 21_caso_urbanizacion | 0.840 | 1.411 | 1.000 | 0.999 | ✅ | **Validado** |
 
-**Resumen**: 5 validados (overall_pass=True) + 3 controles de falsación correctamente rechazados + 3 parciales + 7 rechazados + 3 pendientes.
+**Resumen**: 7 validados (overall_pass=True) + 3 controles de falsación correctamente rechazados + 4 parciales + 7 rechazados.
 
-**Nota sobre la Tabla:** El campo "Estado" es **Validado** solo si `overall_pass = True`, lo cual requiere las 11 condiciones del protocolo: C1-C5, symploké, no-localidad, persistencia, emergencia, coupling ≥ 0.1, no-fraude RMSE. Los controles de falsación (07-09) están diseñados para fallar y lo hacen correctamente.
+**Nota sobre la Tabla:** El campo "Estado" es **Validado** solo si `overall_pass = True`, lo cual requiere las 11 condiciones del protocolo: C1-C5, symploké, no-localidad, persistencia, emergencia, coupling ≥ 0.1, no-fraude RMSE. Los controles de falsación (07-09) están diseñados para fallar y lo hacen correctamente. CR con "—" indica cohesión interna negativa (anti-correlación en grid), invalidando la métrica.
 
 ## Análisis de Evidencia y Hallazgos
-Los 21 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella. De los 18 casos evaluados (3 pendientes), 5 pasan el protocolo completo (overall_pass=True) bajo las condiciones más estrictas (assimilation_strength = 0.0):
+Los 21 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella. De los 21 casos evaluados, 7 pasan el protocolo completo (overall_pass=True) bajo las condiciones más estrictas (assimilation_strength = 0.0):
 
-- **Clima** (EDI=0.424, corr=0.822): Emergencia fuerte. El modelo macro reduce el RMSE en 42% respecto al ABM aislado.
-- **Finanzas** (EDI=0.879, corr=0.996): Emergencia muy fuerte. Señal macro clara con excelente calibración.
-- **Paradigmas** (EDI=0.657, corr=0.953): Emergencia fuerte. Estructuras culturales capturadas.
-- **Energía** (EDI=0.351, corr=0.789): Emergencia moderada. Señal macro robusta.
-- **RTB Publicidad** (EDI=0.427, corr=0.755): Emergencia moderada. Dinámica de mercado detectable.
+- **Urbanización** (EDI=0.840, corr=0.999, EI=1.411): Emergencia muy fuerte. La tendencia macro de urbanización global constrinye completamente los patrones micro.
+- **Deforestación** (EDI=0.847, corr=0.919, EI=0.850): Emergencia muy fuerte. Las políticas globales como hiperobjeto reducen la entropía local en un 85%.
+- **Finanzas** (EDI=0.880, corr=0.996, EI=1.218): Emergencia muy fuerte. Los mercados financieros globales como estructura macro dominante.
+- **Paradigmas** (EDI=0.656, corr=0.953, EI=0.880): Emergencia fuerte. Estructuras culturales capturadas con alta fidelidad.
+- **Clima** (EDI=0.425, corr=0.822, EI=0.542): Emergencia moderada-fuerte. El modelo macro reduce el RMSE en 42% respecto al ABM aislado.
+- **RTB Publicidad** (EDI=0.426, corr=0.755, EI=0.464): Emergencia moderada. Dinámica de mercado publicitario detectable.
+- **Energía** (EDI=0.350, corr=0.789, EI=0.327): Emergencia moderada. Señal macro robusta en consumo energético.
 
-Los 3 controles de falsación (exogeneidad, no-estacionariedad, observabilidad) fallan correctamente, confirmando que el marco **no es tautológico**.
+Los 3 controles de falsación (exogeneidad, no-estacionariedad, observabilidad) fallan correctamente, confirmando que el marco **no es tautológico**. El ratio es 7/18 validados de casos genuinos (39%), lo cual demuestra selectividad: el marco rechaza sistemas sin estructura macro detectable (conciencia, estética, justicia, moderación) y valida solo aquellos donde la causalidad descendente es computacionalmente medible.
 
-Los casos parciales (Contaminación, Políticas, Postverdad) muestran EDI cercano al umbral pero fallan en correlación o emergence, indicando que la señal macro existe pero la calibración actual no la captura con suficiente fidelidad.
+Los casos parciales (Contaminación EDI=0.12, Océanos EDI=0.74, Políticas EDI=0.29, Postverdad EDI=0.31) muestran señales macro existentes pero insuficientes para pasar el protocolo C1-C5 completo, lo que refuerza la sensibilidad del marco.
 
 ## C5 — Bitácora de Correcciones y Reporte de Fallos
 
