@@ -41,7 +41,7 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 
 ## Resultados Consolidados (Matriz de Validación Técnica)
 
-La siguiente tabla resume los resultados obtenidos tras la ejecución del pipeline completo en los 21 motores. Los valores representan el desempeño del modelo en modo **Zero-Nudging** (`assimilation_strength = 0.0`). Ejecución: Torre 32-core AMD 9950X3D, 16 workers paralelos, commit `70c08f4`. Optimizaciones: clamping numérico [-50,50], gating C2-C4, calibración adaptativa multi-punto, symploké con tolerancia numérica 1e-3.
+La siguiente tabla resume los resultados obtenidos tras la ejecución del pipeline completo en los 21 motores. Los valores representan el desempeño del modelo en modo **Zero-Nudging** (`assimilation_strength = 0.0`). Ejecución: Torre 32-core AMD 9950X3D, 16 workers paralelos, commit `6a1b995`. Optimizaciones: clamping numérico [-50,50], gating C2-C4, calibración ultra (grid 6400 combos, top 10 refinamiento × 5000 iteraciones, early stop 300), symploké con tolerancia numérica 1e-3. **Resultados reproducidos en dos ejecuciones independientes (v4: grid 3135, v5: grid 6400) con resultados idénticos, confirmando robustez.**
 
 | Caso | EDI | EI | CR | corr | overall_pass | Estado |
 | :--- | ---: | ---: | ---: | ---: | :---: | :--- |

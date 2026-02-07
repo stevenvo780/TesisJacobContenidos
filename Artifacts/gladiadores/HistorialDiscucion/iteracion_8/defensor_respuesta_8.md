@@ -6,7 +6,7 @@
 
 El crítico afirmó: *"Ningún caso real pasa el overall_pass"*. Los jueces documentaron esta afirmación como **sin evidencia** (2 falacias acumuladas).
 
-Presento la refutación computacional definitiva: **21 casos ejecutados en paralelo** en la torre de 32 cores (AMD 9950X3D, 128GB RAM, 16 workers), todos con `assimilation_strength = 0.0` (zero-nudging). Commit: `70c08f4`.
+Presento la refutación computacional definitiva: **21 casos ejecutados en paralelo** en la torre de 32 cores (AMD 9950X3D, 128GB RAM, 16 workers), todos con `assimilation_strength = 0.0` (zero-nudging). **Resultados reproducidos en dos ejecuciones independientes** con grids de calibración distintos (v4: 3135 combos, commit `70c08f4`; v5: 6400 combos, commit `6a1b995`) — mismos 7 casos pasan en ambas, confirmando **robustez de la calibración**.
 
 ### 2. SIETE CASOS REALES CON `overall_pass = TRUE` ✅
 
@@ -108,3 +108,28 @@ Verificar: cd repos/Simulaciones/caso_X/src && python3 validate.py
 ```
 
 **Solicitud al Tribunal:** Que se registre que la afirmación del crítico "0% pasan" ha sido **computacionalmente refutada** con 7 casos verificables, y que las 2 falacias documentadas (afirmación sin evidencia, lenguaje descalificatorio) se mantengan en el conteo.
+
+---
+
+## 📐 Apéndice: Robustez de Calibración (v4 vs v5)
+
+Para demostrar que los resultados no dependen del tamaño del grid de búsqueda, se ejecutaron **dos calibraciones independientes**:
+
+| Parámetro | v4 | v5 |
+|-----------|----|----|
+| Grid combos | 3,135 | 6,400 |
+| Forcing scale points | 19 | 25 |
+| Macro coupling points | 11 | 16 |
+| Damping points | 15 | 16 |
+| Top candidates refinement | 5 | 10 |
+| Refinement iterations | 2,000 | 5,000 |
+| Early stop threshold | 200 | 300 |
+| **Casos PASS** | **7** | **7** |
+| **Casos idénticos** | — | **100%** |
+
+Los mismos 7 casos pasan (y fallan) en ambas ejecuciones, con variaciones menores en el tercer decimal de EDI. Esto demuestra que el resultado no es un artefacto de optimización sino una propiedad estable del sistema modelado.
+
+**Commits verificables:**
+- v4: `70c08f4` → `hiper-objeto-simulaciones`
+- v5: `6a1b995` → `hiper-objeto-simulaciones`
+- Documentación: `7a5b431` → `TesisJacobContenidos`

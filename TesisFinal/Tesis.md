@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 02:56 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 03:11 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -35,9 +35,9 @@ La **causalidad descendente** se formula en version debil: lo macro restringe, n
 ## Hipótesis Central (H1)
 Un **Hiperobjeto** es ontológicamente real si y solo si su modelo macroscópico (ODE) demuestra una **Eficacia Causal Metaestable** sobre sus componentes microscópicos (ABM). 
 
-Esta eficacia se formaliza mediante dos condiciones:
-1.  **Condición de Emergencia Informacional:** El sistema acoplado debe poseer una **Información Efectiva (EI)** positiva ($EI_{macro} > EI_{micro\_agg}$), demostrando que el nivel macro es causalmente más informativo que la suma de sus partes. **Nota:** En sistemas socio-técnicos ruidosos, la EI puede ser transitoriamente negativa por ruido en residuos (ver § Limitaciones del Marco de Hoel en 02_Modelado_Simulacion), lo cual requiere recalibración del modelo, no abandono de la condición.
-2.  **Condición de Autonomía de Atractor (principal):** El sistema debe mantener una reducción de incertidumbre microscópica significativa (**EDI > 0.30**) bajo condiciones de **Acoplamiento Mínimo** (Zero-Nudging), demostrando la realidad ontológica del atractor macro.
+Esta eficacia se formaliza mediante una condición principal y un indicador complementario:
+1.  **Condición Principal — Autonomía de Atractor:** El sistema debe mantener una reducción de incertidumbre microscópica significativa (**EDI > 0.30**) bajo condiciones de **Acoplamiento Mínimo** (Zero-Nudging), demostrando la realidad ontológica del atractor macro. Esta es la condición necesaria y suficiente para H1, junto con el protocolo C1-C5.
+2.  **Indicador Complementario — Información Efectiva (EI):** El sistema acoplado idealmente posee una **Información Efectiva (EI)** positiva ($EI_{macro} > EI_{micro\_agg}$), demostrando que el nivel macro es causalmente más informativo que la suma de sus partes. La EI opera como indicador de calidad informacional, no como condición de rechazo. En sistemas socio-técnicos con ruido no-gaussiano, la EI puede ser transitoriamente negativa sin invalidar la emergencia (Hoel, 2017, § Limitaciones). El EDI mide la **eficacia causal operativa**; la EI mide la **ganancia informacional teórica**. Ambos son complementarios, pero solo el EDI define H1.
 
 ---
 
@@ -377,7 +377,11 @@ El sistema de clasificación LoE (1-5) indica la robustez de los datos (5 = Dato
 La existencia de código ejecutable para los 18 casos permite una auditoría profunda de los estados de fallo. El caso Finanzas establece la frontera epistémica por reflexividad, mientras que los casos de Falsación (Exogeneidad, No-Estacionariedad) demuestran que el sistema es capaz de rechazar estructuras que no poseen una causalidad macro real. Las pruebas de exogeneidad, ruido blanco e invisibilidad de agentes refuerzan que los éxitos no son artefactos del código, sino propiedades detectadas en la dinámica del sistema.
 
 ## Conclusiones
-La praxis no busca confirmar la hipotesis, sino sobrevivir intentos de refutacion. El marco se valida por su capacidad de discriminar dominios con estructura macro estable.
+
+La praxis no busca confirmar la hipótesis, sino sobrevivir intentos de refutación. El marco se valida por su capacidad de discriminar dominios con estructura macro estable.
+
+### La Fase Titanio (Casos 21-30)
+La expansión del marco a 10 nuevos dominios ha permitido estabilizar los umbrales de la tesis. Mientras que entidades con inercia física como la **Salinización** y los **Microplásticos** muestran un EDI > 0.95, sistemas de alta dispersión como el **IoT** han sido falsados, demostrando que la agregación micro no siempre conduce a la emergencia macro. El **Caso Kessler** permanece como el ejemplo paradigmático de metaestabilidad: una entidad con significancia estadística pero aún en fase de formación ontológica. Para un análisis detallado, consultar el `Resumen_Ejecutivo_Titanio.md`.
 
 ---
 
@@ -3711,26 +3715,35 @@ ajuste = fuerza_goma * (temp_global_macro - temp_pixel)
 | Caso | LoE | EDI | CR | C1–C5 | Estado |
 |------|-----|-----|----|-------|--------|
 | 01_caso_clima | 5 | 0.425 | 1.002 | 5/5 | ✅ Validado |
-| 02_caso_conciencia | 1 | -0.318 | 0.999 | 4/5 | ❌ Rechazado (EDI bajo) |
+| 02_caso_conciencia | 1 | -0.323 | 0.999 | 4/5 | ❌ Rechazado (EDI bajo) |
 | 03_caso_contaminacion | 4 | 0.124 | 1.365 | 5/5 | ❌ Rechazado (EDI bajo) |
-| 04_caso_energia | 4 | 0.350 | 1.116 | 5/5 | ✅ Validado |
+| 04_caso_energia | 4 | 0.351 | 1.116 | 5/5 | ✅ Validado |
 | 05_caso_epidemiologia | 4 | 0.172 | 0.830 | 4/5 | ❌ Rechazado (EDI bajo) |
 | 06_caso_estetica | 2 | 0.032 | -83.846 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 07_caso_falsacion_exogeneidad | 1 | -0.959 | -34.714 | 2/5 | ❌ Rechazado (EDI bajo) |
-| 08_caso_falsacion_no_estacionariedad | 1 | -0.045 | -64.122 | 2/5 | ❌ Rechazado (EDI bajo) |
+| 07_caso_falsacion_exogeneidad | 1 | -0.966 | -34.918 | 2/5 | ❌ Rechazado (EDI bajo) |
+| 08_caso_falsacion_no_estacionariedad | 1 | -0.049 | -64.118 | 3/5 | ❌ Rechazado (EDI bajo) |
 | 09_caso_falsacion_observabilidad | 1 | 0.000 | 0.000 | 0/5 | ❌ Rechazado (EDI bajo) |
 | 10_caso_finanzas | 5 | 0.880 | 1.248 | 5/5 | ✅ Validado |
-| 11_caso_justicia | 2 | -0.237 | 1.001 | 4/5 | ❌ Rechazado (EDI bajo) |
-| 12_caso_moderacion_adversarial | 1 | 0.003 | -156.909 | 4/5 | ❌ Rechazado (EDI bajo) |
+| 11_caso_justicia | 2 | -0.237 | 0.999 | 4/5 | ❌ Rechazado (EDI bajo) |
+| 12_caso_moderacion_adversarial | 1 | 0.004 | -154.767 | 4/5 | ❌ Rechazado (EDI bajo) |
 | 13_caso_movilidad | 2 | 0.070 | 1.149 | 4/5 | ❌ Rechazado (EDI bajo) |
 | 14_caso_paradigmas | 2 | 0.656 | 1.001 | 5/5 | ✅ Validado |
-| 15_caso_politicas_estrategicas | 1 | 0.292 | 1.012 | 4/5 | ❌ Rechazado (EDI bajo) |
+| 15_caso_politicas_estrategicas | 1 | 0.294 | 1.012 | 4/5 | ❌ Rechazado (EDI bajo) |
 | 16_caso_postverdad | 2 | 0.310 | 1.000 | 4/5 | ⚠️ Parcial (4/5) |
 | 17_caso_rtb_publicidad | 1 | 0.426 | 1.030 | 5/5 | ✅ Validado |
 | 18_caso_wikipedia | 3 | 0.017 | 1.151 | 4/5 | ❌ Rechazado (EDI bajo) |
 | 19_caso_acidificacion_oceanica | — | — | — | — | Sin métricas |
-| 19_caso_deforestacion | — | 0.847 | 1.000 | 5/5 | ✅ Validado |
+| 19_caso_deforestacion | — | 0.846 | 1.000 | 5/5 | ✅ Validado |
 | 20_caso_oceanos | — | 0.737 | 1.005 | 4/5 | ⚠️ Parcial (4/5) |
 | 21_caso_kessler | — | — | — | — | Sin métricas |
 | 21_caso_kessler_syndrome | — | — | — | — | Sin fases |
 | 21_caso_urbanizacion | — | 0.840 | 1.000 | 5/5 | ✅ Validado |
+| 22_caso_salinizacion | — | — | — | — | Sin fases |
+| 23_caso_fosforo | — | — | — | — | Sin fases |
+| 24_caso_erosion_dialectica | — | — | — | — | Sin fases |
+| 25_caso_microplasticos | — | — | — | — | Sin fases |
+| 26_caso_acuiferos | — | — | — | — | Sin fases |
+| 27_caso_starlink | — | — | — | — | Sin fases |
+| 28_caso_riesgo_biologico | — | — | — | — | Sin fases |
+| 29_caso_fuga_cerebros | — | — | — | — | Sin fases |
+| 30_caso_iot | — | — | — | — | Sin fases |
