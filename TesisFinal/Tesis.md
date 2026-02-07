@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 18:04 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 18:25 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -308,7 +308,15 @@ Los 32 casos demuestran que el modelo híbrido funciona como **herramienta de de
 
 **Total: 24/29 casos genuinos validados (83%)** + 3 controles de falsación correctos.
 
-Los 3 controles de falsación (exogeneidad, no-estacionariedad, observabilidad) fallan correctamente, confirmando que el marco **no es tautológico**.
+### Composición del universo de 32 casos
+
+| Categoría | Casos | Función | Conteo |
+|-----------|-------|---------|--------|
+| **Genuinos** | 01-06, 10-32 (excluyendo 07,08,09) | Hipótesis H1 | 29 |
+| **Falsaciones** | 07 (Exogeneidad), 08 (No-estacionariedad), 09 (Observabilidad) | Controles negativos diseñados para fallar | 3 |
+| **Total** | 01-32 | | 32 |
+
+Los 3 controles de falsación (07, 08, 09) se diseñaron con violaciones intencionales del marco (señal puramente exógena, deriva temporal, observabilidad nula) para verificar que el protocolo C1-C5 + EDI los rechaza correctamente. Su exclusión del denominador "genuinos" sigue la práctica estándar de no contar controles negativos como casos de prueba de la hipótesis.
 
 ## C5 — Bitácora de Correcciones y Reporte de Fallos
 
