@@ -111,7 +111,7 @@ Los 32 casos demuestran que el modelo híbrido funciona como **herramienta de de
 - **Clima** (EDI=0.372): El modelo macro reduce el RMSE en 37% respecto al ABM aislado (con fs≤0.99).
 - **Energía** (EDI=0.354): Señal macro robusta en consumo energético con datos OPSD.
 
-**Total: 25/29 casos genuinos validados (86%)** + 3 controles de falsación correctos.
+**Total: 24/29 casos genuinos validados (83%)** + 3 controles de falsación correctos.
 
 Los 3 controles de falsación (exogeneidad, no-estacionariedad, observabilidad) fallan correctamente, confirmando que el marco **no es tautológico**.
 
@@ -273,6 +273,25 @@ La ODE es un componente auxiliar del pipeline, no un factor del EDI. Lo que el E
 **Crítica (R11):** "Correlaciones de 0.999 en sistemas complejos son identidad forzada."
 
 **Respuesta:** La correlación de 0.999 ocurre en ABMs que operan sobre series suaves (tendencias monotónicas). El ABM produce la media temporal correcta por construcción (macro_coupling → convergencia a media observada). La correlación alta es esperada cuando la serie es monotónica con bajo ruido. Críticamente, el EDI se calcula sobre RMSE, no sobre correlación. Un EDI de 0.85 con corr=0.999 indica que la predicción puntual mejora en un 85%, no que es "identidad forzada."
+
+### Ataque 6: "NC1 ≠ C1" — Convergencia no normalizada (R14)
+
+**Crítica (R14):** "C1 opera en escala absoluta, no en escala Z; se necesita NC1."
+
+**Respuesta:** C1 en `hybrid_validator.py` (L417-424) opera sobre datos z-normalizados. El ABM recibe datos con `mean=0, std=1` (preprocesamiento en L195-207). El threshold de C1 se computa como `mean(obs_std_z, threshold_factor)` donde `threshold_factor=1.2`. Esto equivale operativamente a NC1 en escala Z. No se requiere criterio adicional.
+
+**Verificación:** `repos/Simulaciones/common/hybrid_validator.py`, líneas 195-207 (z-normalización) y 417-424 (evaluación C1).
+
+### Nota sobre trazabilidad (mega_run_v8)
+
+Resultados completos con MD5 por caso disponibles en:
+- **Archivo:** `repos/Simulaciones/mega_run_v8_traceability.json`
+- **Commit de resultados:** `5f1f938`
+- **Ejecución:** 2026-02-07, torre AMD (PID 3606924, 2h11m)
+- **Configuración:** `forcing_scale ∈ [0.001, 0.99]` (Axioma A6)
+- **Git commit de simulaciones:** `7b9c983` (en torre)
+
+Cada `metrics.json` contiene `generated_at` (timestamp ISO) y `git.commit` (hash del código ejecutado).
 
 ## Auditoria de Consistencia
 Ver `Auditoria_Simulaciones.md` para hallazgos y recomendaciones detalladas sobre la calidad de los datos y el comportamiento de las métricas en casos de borde.

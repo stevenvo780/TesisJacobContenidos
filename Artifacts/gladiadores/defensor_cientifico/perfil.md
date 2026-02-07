@@ -10,7 +10,7 @@ Defiende la validez científica y operativa de la tesis desde el modelado comput
 - overall_pass: 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, coupling ≥ 0.1, no-fraude RMSE).
 - forcing_scale capeado a [0.001, 0.99] por principio A6 (sub-grid).
 - 32 casos de simulación evaluados con protocolo de 11 criterios simultáneos.
-- **25 validados** (86%), 4 rechazados genuinos, 3 controles de falsación correctos.
+- **24 validados** (83%), 5 rechazados genuinos, 3 controles de falsación correctos.
 
 **Objetivo**
 Probar que el marco es falsable y reproducible, y que el macro aporta información causal no trivial.
@@ -94,8 +94,8 @@ git add -A && git commit -m "docs: rebuild TesisFinal + sync READMEs"
 **Argumentos base**
 - H1 define criterios cuantitativos y condiciones de rechazo explícitas.
 - C1-C5 garantizan convergencia, robustez y reporte de fallos.
-- 25/29 genuinos validados (86%) con distribución de dominios diversa.
-- 4 rechazados genuinos con EDI < 0.30 prueban selectividad.
+- 24/29 genuinos validados (83%) con distribución de dominios diversa.
+- 5 rechazados genuinos con EDI < 0.30 prueban selectividad.
 - 3 controles de falsación correctamente rechazados.
 - forcing_scale ≤ 0.99 por diseño — eliminando vector de ataque "Phantom ODE".
 - Ablación (macro_coupling=0) muestra 35-96% degradación en todos los validados.

@@ -870,7 +870,7 @@ def write_outputs(results, output_dir):
                 f.write(f"- internal: {s.get('internal', 0):.4f}\n")
                 f.write(f"- external: {s.get('external', 0):.4f}\n")
                 f.write(f"- CR: {s.get('cr', 0):.4f}\n")
-                f.write(f"- CR válido (>2.0): {s.get('cr_valid', False)}\n\n")
+                f.write(f"- CR indicador (>2.0 = frontera nítida): {s.get('cr_valid', False)}\n\n")
 
             f.write(f"### Criterios C1-C5\n")
             for c in ["c1_convergence", "c2_robustness", "c3_replication",

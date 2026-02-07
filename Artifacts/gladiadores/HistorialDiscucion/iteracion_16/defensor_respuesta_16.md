@@ -26,7 +26,7 @@ Estos 5 casos tienen `mc ≥ 0.854` — máximo acoplamiento posible. Si el mc t
 
 ### 1.2 La ablación prueba que mc funciona SOLO cuando hay estructura macro real
 
-| Validados (25 casos) | Rechazados (4 genuinos) |
+| Validados (24 casos) | Rechazados (5 genuinos) |
 |---|---|
 | Ablación: **35–96%** de degradación RMSE al quitar mc | Ablación: **2–18%** de degradación |
 | EDI medio: **0.87** | EDI medio: **0.12** |
@@ -130,7 +130,7 @@ La defensa **nunca afirmó** que la ODE sea el hiperobjeto. La ODE es un modelo 
 
 | Categoría | Cantidad | Proporción |
 |-----------|---------|------------|
-| ✅ Validados genuinos | 25 | 86% de 29 |
+| ✅ Validados genuinos | 24 | 83% de 29 |
 | ❌ Rechazados genuinos | 4 | 14% de 29 |
 | 🎯 Falsaciones correctas | 3 | 100% de 3 |
 
@@ -153,7 +153,7 @@ La defensa **nunca afirmó** que la ODE sea el hiperobjeto. La ODE es un modelo 
 
 **R14-2 (Extractos por caso):** Los 32 `metrics.json` están en `TesisDesarrollo/02_Modelado_Simulacion/NN_caso_*/metrics.json` con rutas verificables. Cada uno contiene `phases.synthetic` y `phases.real` con todos los valores de RMSE, threshold, correlaciones y criterios C1-C5.
 
-**R14-3 (Contradicción EDI/CR):** CR ≈ 1.0 no es condición H1, es indicador informativo. Documentado en `01_Metodologia_Medicion/01_00_Metodologia_Medicion.md` y en el Marco Teórico (Haken 1983 §4.3, equipartición en difusión isotrópica). Los 25 casos validados pasan por EDI > 0.30, no por CR > 2.0.
+**R14-3 (Contradicción EDI/CR):** CR ≈ 1.0 no es condición H1, es indicador informativo. Documentado en `01_Metodologia_Medicion/01_00_Metodologia_Medicion.md` y en el Marco Teórico (Haken 1983 §4.3, equipartición en difusión isotrópica). Los 24 casos validados pasan por EDI > 0.30, no por CR > 2.0.
 
 ---
 

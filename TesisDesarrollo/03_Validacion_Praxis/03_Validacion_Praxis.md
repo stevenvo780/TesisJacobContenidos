@@ -8,7 +8,7 @@ La validacion distingue entre evidencia empirica (datasets largos y duros) y evi
 - **EDI > 0.90:** posible sobreajuste (flag de tautología, no rechazo automático).
 - **Coupling < 0.10:** epifenomenalismo.
 - **RMSE < 1e-10:** fraude por sobreajuste.
-- **CR > 2.0:** cohesión interna supera la externa (condición positiva).
+- **CR > 2.0:** indicador complementario de frontera sistémica (no condición de H1; informativo).
 
 ## Resultados Consolidados (32 Casos — Protocolo Completo)
 
@@ -97,7 +97,7 @@ El marco detecta **estabilidad de flujo informacional**, no "importancia social"
 
 La prueba más directa de emergencia es la ablación: ejecutar el ABM con `macro_coupling=0.0` y `forcing_scale=0.0` (eliminando toda constricción macro) y comparar con el modelo completo. El EDI mide exactamente esta diferencia.
 
-Los 25 casos validados muestran reducciones de RMSE entre 35% (Energía) y 96% (Acuíferos) al incluir la constricción macro. Los 4 rechazados muestran reducciones marginales (<18%) o incluso anti-emergencia (caso 07: el modelo reducido predice MEJOR que el completo, confirmando falsación).
+Los 24 casos validados muestran reducciones de RMSE entre 35% (Energía) y 96% (Acuíferos) al incluir la constricción macro. Los 5 rechazados muestran reducciones marginales (<18%) o incluso anti-emergencia (caso 07: el modelo reducido predice MEJOR que el completo, confirmando falsación).
 
 Esta prueba es análoga al "knockout experiment" en genética: si desactivar un gen (macro_coupling) destruye una función (predicción), el gen es causalmente necesario. Del mismo modo, si desactivar la constricción macro destruye la predicción, la estructura macro es causalmente eficaz.
 

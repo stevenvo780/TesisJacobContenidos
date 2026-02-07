@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 16:11 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-07 18:04 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -33,7 +33,7 @@ El debate **emergencia vs reduccionismo** queda resuelto en favor de un **emerge
 La **causalidad descendente** se formula en version debil: lo macro restringe, no introduce fuerzas nuevas. Esto evita contradicciones con el cierre causal y permite formalizar el efecto macro como restricciones y nudging computacional.
 
 ## Hipótesis Central (H1)
-Un **Hiperobjeto** es ontológicamente real si y solo si su modelo macroscópico (ODE) demuestra una **Eficacia Causal Metaestable** sobre sus componentes microscópicos (ABM). 
+Un **Hiperobjeto** es ontológicamente real si y solo si su modelo macroscópico (ODE) demuestra una **Constricción Macro Efectiva** (antes denominada "Eficacia Causal Metaestable") sobre sus componentes microscópicos (ABM). Se adopta la formulación de constricción (versión débil de causalidad descendente) para evitar ambigüedad: lo macro restringe lo micro sin introducir fuerzas nuevas (cf. L11).
 
 Esta eficacia se formaliza mediante una condición principal y un indicador complementario:
 1.  **Condición Principal — Autonomía de Atractor:** El sistema debe mantener una reducción de incertidumbre microscópica significativa (**EDI > 0.30**) bajo condiciones de **Acoplamiento Mínimo** (Zero-Nudging), demostrando la realidad ontológica del atractor macro. Esta es la condición necesaria y suficiente para H1, junto con el protocolo C1-C5.
@@ -306,7 +306,7 @@ Los 32 casos demuestran que el modelo híbrido funciona como **herramienta de de
 - **Clima** (EDI=0.372): El modelo macro reduce el RMSE en 37% respecto al ABM aislado (con fs≤0.99).
 - **Energía** (EDI=0.354): Señal macro robusta en consumo energético con datos OPSD.
 
-**Total: 25/29 casos genuinos validados (86%)** + 3 controles de falsación correctos.
+**Total: 24/29 casos genuinos validados (83%)** + 3 controles de falsación correctos.
 
 Los 3 controles de falsación (exogeneidad, no-estacionariedad, observabilidad) fallan correctamente, confirmando que el marco **no es tautológico**.
 
@@ -469,6 +469,25 @@ La ODE es un componente auxiliar del pipeline, no un factor del EDI. Lo que el E
 
 **Respuesta:** La correlación de 0.999 ocurre en ABMs que operan sobre series suaves (tendencias monotónicas). El ABM produce la media temporal correcta por construcción (macro_coupling → convergencia a media observada). La correlación alta es esperada cuando la serie es monotónica con bajo ruido. Críticamente, el EDI se calcula sobre RMSE, no sobre correlación. Un EDI de 0.85 con corr=0.999 indica que la predicción puntual mejora en un 85%, no que es "identidad forzada."
 
+### Ataque 6: "NC1 ≠ C1" — Convergencia no normalizada (R14)
+
+**Crítica (R14):** "C1 opera en escala absoluta, no en escala Z; se necesita NC1."
+
+**Respuesta:** C1 en `hybrid_validator.py` (L417-424) opera sobre datos z-normalizados. El ABM recibe datos con `mean=0, std=1` (preprocesamiento en L195-207). El threshold de C1 se computa como `mean(obs_std_z, threshold_factor)` donde `threshold_factor=1.2`. Esto equivale operativamente a NC1 en escala Z. No se requiere criterio adicional.
+
+**Verificación:** `repos/Simulaciones/common/hybrid_validator.py`, líneas 195-207 (z-normalización) y 417-424 (evaluación C1).
+
+### Nota sobre trazabilidad (mega_run_v8)
+
+Resultados completos con MD5 por caso disponibles en:
+- **Archivo:** `repos/Simulaciones/mega_run_v8_traceability.json`
+- **Commit de resultados:** `5f1f938`
+- **Ejecución:** 2026-02-07, torre AMD (PID 3606924, 2h11m)
+- **Configuración:** `forcing_scale ∈ [0.001, 0.99]` (Axioma A6)
+- **Git commit de simulaciones:** `7b9c983` (en torre)
+
+Cada `metrics.json` contiene `generated_at` (timestamp ISO) y `git.commit` (hash del código ejecutado).
+
 ## Auditoria de Consistencia
 Ver `Auditoria_Simulaciones.md` para hallazgos y recomendaciones detalladas sobre la calidad de los datos y el comportamiento de las métricas en casos de borde.
 
@@ -484,7 +503,7 @@ La validacion distingue entre evidencia empirica (datasets largos y duros) y evi
 - **EDI > 0.90:** posible sobreajuste (flag de tautología, no rechazo automático).
 - **Coupling < 0.10:** epifenomenalismo.
 - **RMSE < 1e-10:** fraude por sobreajuste.
-- **CR > 2.0:** cohesión interna supera la externa (condición positiva).
+- **CR > 2.0:** indicador complementario de frontera sistémica (no condición de H1; informativo).
 
 ## Resultados Consolidados (32 Casos — Protocolo Completo)
 
@@ -573,7 +592,7 @@ El marco detecta **estabilidad de flujo informacional**, no "importancia social"
 
 La prueba más directa de emergencia es la ablación: ejecutar el ABM con `macro_coupling=0.0` y `forcing_scale=0.0` (eliminando toda constricción macro) y comparar con el modelo completo. El EDI mide exactamente esta diferencia.
 
-Los 25 casos validados muestran reducciones de RMSE entre 35% (Energía) y 96% (Acuíferos) al incluir la constricción macro. Los 4 rechazados muestran reducciones marginales (<18%) o incluso anti-emergencia (caso 07: el modelo reducido predice MEJOR que el completo, confirmando falsación).
+Los 24 casos validados muestran reducciones de RMSE entre 35% (Energía) y 96% (Acuíferos) al incluir la constricción macro. Los 5 rechazados muestran reducciones marginales (<18%) o incluso anti-emergencia (caso 07: el modelo reducido predice MEJOR que el completo, confirmando falsación).
 
 Esta prueba es análoga al "knockout experiment" en genética: si desactivar un gen (macro_coupling) destruye una función (predicción), el gen es causalmente necesario. Del mismo modo, si desactivar la constricción macro destruye la predicción, la estructura macro es causalmente eficaz.
 

@@ -11,7 +11,7 @@ El debate **emergencia vs reduccionismo** queda resuelto en favor de un **emerge
 La **causalidad descendente** se formula en version debil: lo macro restringe, no introduce fuerzas nuevas. Esto evita contradicciones con el cierre causal y permite formalizar el efecto macro como restricciones y nudging computacional.
 
 ## Hipótesis Central (H1)
-Un **Hiperobjeto** es ontológicamente real si y solo si su modelo macroscópico (ODE) demuestra una **Eficacia Causal Metaestable** sobre sus componentes microscópicos (ABM). 
+Un **Hiperobjeto** es ontológicamente real si y solo si su modelo macroscópico (ODE) demuestra una **Constricción Macro Efectiva** (antes denominada "Eficacia Causal Metaestable") sobre sus componentes microscópicos (ABM). Se adopta la formulación de constricción (versión débil de causalidad descendente) para evitar ambigüedad: lo macro restringe lo micro sin introducir fuerzas nuevas (cf. L11).
 
 Esta eficacia se formaliza mediante una condición principal y un indicador complementario:
 1.  **Condición Principal — Autonomía de Atractor:** El sistema debe mantener una reducción de incertidumbre microscópica significativa (**EDI > 0.30**) bajo condiciones de **Acoplamiento Mínimo** (Zero-Nudging), demostrando la realidad ontológica del atractor macro. Esta es la condición necesaria y suficiente para H1, junto con el protocolo C1-C5.
