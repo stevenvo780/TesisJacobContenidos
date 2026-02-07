@@ -26,54 +26,68 @@ cd /datos/repos/Personal/hiper-objeto-simulaciones
 | Disco | 7 TB (3 SSD RAID0) | Datasets y cachés |
 | Refrigeración | Líquida | Procesos sostenidos largo plazo |
 
-## Flujo Git Push/Pull (Sincronización entre máquinas)
+## Flujo de Sincronización (SCP — repos/Simulaciones está en .gitignore)
 
-El repositorio `repos/Simulaciones` se sincroniza entre la máquina local (workspace) y la torre vía git.
+**IMPORTANTE:** `repos/Simulaciones/` está excluido del git principal. La sincronización se hace con SCP directo.
 
-### Desde la máquina local → torre
+### Enviar archivos al torre
 
 ```bash
-# 1. Hacer cambios en local
-cd /workspace/repos/Simulaciones
-# ... editar archivos ...
-git add -A && git commit -m "descripción del cambio"
-git push origin main
+export SSHPASS='[REDACTED]'
+TOWER="stev@10.8.0.11"
+REMOTE="/datos/repos/Personal/hiper-objeto-simulaciones/repos/Simulaciones"
 
-# 2. En la torre: pull para recibir cambios
-sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
-  "cd /datos/repos/Personal/hiper-objeto-simulaciones && git pull"
+# Archivo individual (ej. hybrid_validator.py)
+sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no \
+    /workspace/repos/Simulaciones/common/hybrid_validator.py \
+    $TOWER:$REMOTE/common/
+
+# validate.py de un caso específico
+sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no \
+    /workspace/repos/Simulaciones/01_caso_clima/src/validate.py \
+    $TOWER:$REMOTE/01_caso_clima/src/
+
+# Mega run script
+sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no \
+    /workspace/repos/Simulaciones/mega_run_v7.py \
+    $TOWER:$REMOTE/
 ```
 
-### Desde la torre → máquina local
+### Borrar caché de datos (OBLIGATORIO si cambia data.py o parámetros)
 
 ```bash
-# 1. En la torre: commit y push
-sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
-  "cd /datos/repos/Personal/hiper-objeto-simulaciones && git add -A && git commit -m 'resultados torre' && git push"
+# Un caso
+sshpass -p "$SSHPASS" ssh $TOWER "rm -f $REMOTE/NN_caso_X/data/*.csv"
 
-# 2. En local: pull para recibir resultados
-cd /workspace/repos/Simulaciones && git pull
+# Todos los casos
+sshpass -p "$SSHPASS" ssh $TOWER 'for d in '$REMOTE'/*/data; do rm -f "$d"/*.csv 2>/dev/null; done'
 ```
 
-### Sincronizar resultados específicos (SCP)
+### Traer resultados de la torre
 
 ```bash
-# Copiar metrics.json de un caso específico (torre → local)
-sshpass -p '[REDACTED]' scp stev@10.8.0.11:/datos/repos/Personal/hiper-objeto-simulaciones/25_caso_fosforo/outputs/metrics.json \
-  /workspace/TesisDesarrollo/02_Modelado_Simulacion/25_caso_fosforo/metrics.json
+# Un caso
+sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/01_caso_clima/outputs/metrics.json \
+    /workspace/repos/Simulaciones/01_caso_clima/outputs/
+sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/01_caso_clima/outputs/report.md \
+    /workspace/repos/Simulaciones/01_caso_clima/outputs/
 
-# Copiar todos los outputs de un caso
-sshpass -p '[REDACTED]' scp -r stev@10.8.0.11:/datos/repos/Personal/hiper-objeto-simulaciones/01_caso_clima/outputs/ \
-  /workspace/repos/Simulaciones/01_caso_clima/outputs/
+# Todos los 32 casos (metrics.json + report.md)
+for case in $(ls -d /workspace/repos/Simulaciones/[0-9]*/); do
+    case_name=$(basename "$case")
+    sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/$case_name/outputs/metrics.json \
+        /workspace/repos/Simulaciones/$case_name/outputs/ 2>/dev/null
+    sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/$case_name/outputs/report.md \
+        /workspace/repos/Simulaciones/$case_name/outputs/ 2>/dev/null
+done
 
-# Copiar todos los metrics.json de golpe
-for n in $(seq -w 1 32); do
-  caso=$(sshpass -p '[REDACTED]' ssh stev@10.8.0.11 "ls -d /datos/repos/Personal/hiper-objeto-simulaciones/${n}_caso_* 2>/dev/null" | head -1)
-  if [ -n "$caso" ]; then
-    nombre=$(basename "$caso")
-    sshpass -p '[REDACTED]' scp stev@10.8.0.11:${caso}/outputs/metrics.json \
-      /workspace/TesisDesarrollo/02_Modelado_Simulacion/${nombre}/metrics.json 2>/dev/null
-  fi
+# Copiar también a TesisDesarrollo
+for case in $(ls -d /workspace/repos/Simulaciones/[0-9]*/); do
+    case_name=$(basename "$case")
+    cp /workspace/repos/Simulaciones/$case_name/outputs/metrics.json \
+       /workspace/TesisDesarrollo/02_Modelado_Simulacion/$case_name/ 2>/dev/null
+    cp /workspace/repos/Simulaciones/$case_name/outputs/report.md \
+       /workspace/TesisDesarrollo/02_Modelado_Simulacion/$case_name/ 2>/dev/null
 done
 ```
 
@@ -86,23 +100,26 @@ sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
   "cd /datos/repos/Personal/hiper-objeto-simulaciones/01_caso_clima/src && python3 validate.py"
 ```
 
-### Todos los 32 casos en paralelo (mega_run)
+### Todos los 32 casos secuencial (mega_run v7)
 
 ```bash
-# Copiar el script mega_run a la torre (si es nuevo)
-sshpass -p '[REDACTED]' scp /workspace/repos/Simulaciones/mega_run_v6.py \
-  stev@10.8.0.11:/datos/repos/Personal/hiper-objeto-simulaciones/
+# Copiar el script mega_run a la torre
+sshpass -p "$SSHPASS" scp /workspace/repos/Simulaciones/mega_run_v7.py \
+  $TOWER:$REMOTE/
 
-# Ejecutar en background con nohup
-sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
-  "cd /datos/repos/Personal/hiper-objeto-simulaciones && nohup python3 mega_run_v6.py > mega_run.log 2>&1 &"
+# Ejecutar en background con nohup (-u para output no-buffered)
+sshpass -p "$SSHPASS" ssh $TOWER \
+  "cd $REMOTE && nohup python3 -u mega_run_v7.py > mega_run_v8.log 2>&1 & echo PID=\$!"
 
 # Monitorear progreso
-sshpass -p '[REDACTED]' ssh stev@10.8.0.11 \
-  "tail -30 /datos/repos/Personal/hiper-objeto-simulaciones/mega_run.log"
+sshpass -p "$SSHPASS" ssh $TOWER "tail -30 $REMOTE/mega_run_v8.log"
 
 # Ver qué procesos python corren
-sshpass -p '[REDACTED]' ssh stev@10.8.0.11 "ps aux | grep python | grep -v grep"
+sshpass -p "$SSHPASS" ssh $TOWER "ps aux | grep python | grep -v grep"
+
+# Solo casos específicos
+sshpass -p "$SSHPASS" ssh $TOWER \
+  "cd $REMOTE && nohup python3 -u mega_run_v7.py 4 19 23 29 > rerun.log 2>&1 & echo PID=\$!"
 ```
 
 ### Monitoreo de recursos

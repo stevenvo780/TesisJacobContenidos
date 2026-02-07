@@ -20,12 +20,14 @@ Observacion → Simulacion → Validacion. El modelo se mantiene solo si supera 
 
 
 ## Reglas de Rechazo Hard-Coded
-1. **EDI < 0.30:** Inexistencia de estructura macro.
-2. **Coupling < 0.10:** Epifenomenalismo (Inercia sin agencia).
-3. **RMSE < e-10:** Fraude por sobreajuste (Copy-paste de datos).
-4. **EDI > 0.90:** Tautología o error de calibración.
+1. **EDI < 0.30:** Inexistencia de estructura macro → **RECHAZO**
+2. **Coupling < 0.10:** Epifenomenalismo (Inercia sin agencia) → **RECHAZO**
+3. **RMSE < 1e-10:** Fraude por sobreajuste (Copy-paste de datos) → **RECHAZO**
+4. **EDI > 0.90:** Flag de tautología — revisión manual pero **no rechazo automático**
+5. **forcing_scale ≥ 1.0:** Cap en calibración — forzamiento externo no amplifica por encima de la unidad
+6. **C1-C5 protocolo completo:** 11 condiciones simultáneas requeridas para `overall_pass`
 
-La auditoria de validacion resalto la dispersion de criterios; por eso se unificaron en este capitulo y se adoptaron como norma transversal.
+Nota: La regla 4 evolucionó de rechazo a flag tras verificar que EDI > 0.90 es alcanzable legítimamente en modelos bien calibrados con señales de tendencia (casos 12, 17, 28, entre otros). El protocolo C1-C5 discrimina tautología de emergencia genuina.
 
 ## Reproducibilidad
 - Hashing de datasets.

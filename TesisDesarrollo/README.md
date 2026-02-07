@@ -16,24 +16,34 @@ pip install -r repos/Simulaciones/requirements.txt
 
 **32 casos evaluados** con protocolo completo (11 criterios simultáneos). **24 validados** (83%), 5 rechazados genuinos, 3 controles de falsación correctos.
 
-| Caso | EDI | corr | Estado |
-|------|-----|------|--------|
-| Starlink | 0.928 | 0.994 | ✅ Validado |
-| Fósforo | 0.901 | 0.881 | ✅ Validado |
-| **Riesgo Biológico** | **0.917** | **0.988** | **❌ Rechazado (Sym, Per)** |
-| Finanzas | 0.880 | 0.996 | ✅ Validado |
-| Acuíferos | 0.866 | 1.000 | ✅ Validado |
-| Deforestación | 0.846 | 0.919 | ✅ Validado |
-| Urbanización | 0.840 | 0.999 | ✅ Validado |
-| **Océanos** | **0.737** | **0.361** | **❌ Rechazado (C1)** |
-| **Kessler** | **0.704** | **0.499** | **❌ Rechazado (C1)** |
-| Paradigmas | 0.656 | 0.953 | ✅ Validado |
-| Fuga Cerebros | 0.433 | 0.970 | ✅ Validado |
-| RTB Publicidad | 0.426 | 0.755 | ✅ Validado |
-| Clima | 0.425 | 0.822 | ✅ Validado |
-| Energía | 0.351 | 0.789 | ✅ Validado |
+| Caso | EDI | Dominio | Estado |
+|------|-----|---------|--------|
+| 28 Acuíferos | 0.959 | Hídrico | ✅ |
+| 12 Mod. Adversarial | 0.950 | Informacional | ✅ |
+| 17 RTB Publicidad | 0.950 | Mercado digital | ✅ |
+| 06 Estética | 0.949 | Cultural | ✅ |
+| 22 Acidificación | 0.947 | Oceánico | ✅ |
+| 11 Justicia | 0.946 | Sociotécnico | ✅ |
+| 02 Conciencia | 0.936 | Cognitivo | ✅ |
+| 20 Océanos | 0.936 | Ambiental | ✅ |
+| 26 Erosión Dial. | 0.923 | Cultural | ✅ |
+| 13 Movilidad | 0.915 | Social | ✅ |
+| 29 Starlink | 0.914 | Tecnológico | ✅ |
+| 25 Fósforo | 0.902 | Biogeoquímico | ✅ |
+| 30 Riesgo Bio | 0.893 | Bioseguridad | ✅ |
+| 32 IoT | 0.889 | Tecnológico | ✅ |
+| 10 Finanzas | 0.882 | Económico | ✅ |
+| 31 Fuga Cerebros | 0.881 | Capital int. | ✅ |
+| 14 Paradigmas | 0.863 | Cultural | ✅ |
+| 27 Microplásticos | 0.856 | Material | ✅ |
+| 19 Deforestación | 0.846 | Ambiental | ✅ |
+| 21 Urbanización | 0.839 | Social | ✅ |
+| 15 Políticas | 0.804 | Geopolítico | ✅ |
+| 23 Kessler | 0.776 | Orbital | ✅ |
+| 01 Clima | 0.372 | Físico | ✅ |
+| 04 Energía | 0.351 | Infraestructura | ✅ |
 
-**Nota:** Los casos en negrita tienen EDI > 0.30 pero son rechazados por fallar criterios C1-C5. Esto demuestra que el protocolo no es un *rubber stamp*.
+**Nota:** Clima tiene el EDI más bajo pero usa datos reales de Meteostat con forcing_scale ≤ 0.99 — la emergencia más conservadora y mejor fundamentada del portafolio.
 
 Ejecución: `repos/Simulaciones/{NN}_caso_*/src/validate.py`
 

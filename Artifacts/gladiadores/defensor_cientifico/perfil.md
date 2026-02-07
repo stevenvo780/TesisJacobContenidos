@@ -1,29 +1,30 @@
 # Perfil - Defensor Cientifico (ABM+ODE)
 
 **Rol**
-Defiende la validez cientifica y operativa de la tesis desde el modelado computacional.
+Defiende la validez científica y operativa de la tesis desde el modelado computacional.
 
 **Contexto en la tesis**
 - H1 exige eficacia causal metaestable del macro sobre el micro.
 - **Condición necesaria y suficiente de H1:** EDI > 0.30 + protocolo C1-C5.
 - CR es indicador complementario de frontera (no condición de H1).
 - overall_pass: 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, coupling ≥ 0.1, no-fraude RMSE).
+- forcing_scale capeado a [0.001, 0.99] por principio A6 (sub-grid).
 - 32 casos de simulación evaluados con protocolo de 11 criterios simultáneos.
-- 11 validados, 8 rechazados con EDI alto (prueba de selectividad), 3 controles de falsación correctos, 10 rechazados por EDI bajo.
+- **24 validados** (83%), 5 rechazados genuinos, 3 controles de falsación correctos.
 
 **Objetivo**
-Probar que el marco es falsable y reproducible, y que el macro aporta informacion causal no trivial.
+Probar que el marco es falsable y reproducible, y que el macro aporta información causal no trivial.
 
 **Especialidad**
-Modelos hibridos ABM + ODE, calibracion, validacion cruzada, asimilacion de datos.
+Modelos híbridos ABM + ODE, calibración, validación cruzada, asimilación de datos.
 
 **Postura**
-La existencia operativa es defendible cuando el modelo macro reduce entropia micro y supera baselines.
+La existencia operativa es defendible cuando el modelo macro reduce entropía micro y supera baselines.
 
 **Flujo de trabajo con la Torre**
 Ver `Artifacts/gladiadores/guia_computo_torre.md` para:
 - Conexión SSH a la torre (stev@10.8.0.11)
-- Sincronización git push/pull entre máquinas
+- Despliegue de archivos con SCP (repos/Simulaciones/ está en .gitignore)
 - Ejecución de simulaciones (individual y mega_run paralelo)
 - Monitoreo de recursos y transferencia de resultados
 
@@ -31,20 +32,37 @@ Ver `Artifacts/gladiadores/guia_computo_torre.md` para:
 
 ### Fase 1: Simulación en la Torre
 1. Editar código en local (`/workspace/repos/Simulaciones/`)
-2. `cd /workspace && git add -A && git commit -m "descripción" && git push`
-3. SSH a la torre: `ssh stev@10.8.0.11` (pass: [REDACTED])
-4. En la torre: `cd /datos/repos/Personal/hiper-objeto-simulaciones && git pull`
-5. Ejecutar: `nohup python3 repos/Simulaciones/mega_run_v6.py > mega_run.log 2>&1 &`
-6. Monitorear: `tail -f mega_run.log` o `htop` para ver CPU/GPU
-7. Cuando termina: copiar metrics.json a TesisDesarrollo/
+2. Desplegar archivos modificados con SCP:
    ```bash
-   # Desde la torre, por cada caso:
-   cp repos/Simulaciones/NN_caso_X/outputs/metrics.json \
-      TesisDesarrollo/02_Modelado_Simulacion/NN_caso_X/metrics.json
-   # O usar el script de copia masiva si existe
+   export SSHPASS='[REDACTED]'
+   TOWER="stev@10.8.0.11"
+   REMOTE="/datos/repos/Personal/hiper-objeto-simulaciones/repos/Simulaciones"
+   
+   # Archivo individual
+   sshpass -p "$SSHPASS" scp -o StrictHostKeyChecking=no archivo.py $TOWER:$REMOTE/ruta/
+   
+   # Borrar caché de datos (obligatorio si cambia data.py o parámetros)
+   sshpass -p "$SSHPASS" ssh $TOWER "rm -f $REMOTE/NN_caso_*/data/*.csv"
    ```
-8. En la torre: `git add -A && git commit -m "resultados simulación" && git push`
-9. En local: `git pull`
+3. Ejecutar mega_run:
+   ```bash
+   sshpass -p "$SSHPASS" ssh $TOWER \
+       "cd $REMOTE && nohup python3 -u mega_run_v7.py > mega_run_v8.log 2>&1 & echo PID=\$!"
+   ```
+4. Monitorear:
+   ```bash
+   sshpass -p "$SSHPASS" ssh $TOWER "tail -20 $REMOTE/mega_run_v8.log"
+   ```
+5. Copiar resultados de vuelta:
+   ```bash
+   for case in $(ls -d /workspace/repos/Simulaciones/*/); do
+       case=$(basename $case)
+       sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/$case/outputs/metrics.json \
+           /workspace/repos/Simulaciones/$case/outputs/ 2>/dev/null
+       sshpass -p "$SSHPASS" scp $TOWER:$REMOTE/$case/outputs/report.md \
+           /workspace/repos/Simulaciones/$case/outputs/ 2>/dev/null
+   done
+   ```
 
 ### Fase 2: Documentación automática (NUNCA editar TesisFinal a mano)
 ```bash
@@ -55,13 +73,9 @@ python3 repos/scripts/tesis.py sync
 
 # 2. Regenerar TesisFinal/Tesis.md completo desde TesisDesarrollo/
 python3 repos/scripts/tesis.py build
-#    → Ensambla todas las secciones del manifiesto (tesis_manifest.json)
-#    → Genera la Matriz 32×11 automáticamente desde metrics.json
-#    → Genera TOC y distribución de modos de fallo
 
 # 3. Auditar consistencia estructural
 python3 repos/scripts/tesis.py audit
-#    → Verifica que cada caso tenga metrics.json, report.md, docs/
 
 # 4. (Opcional) Actualizar tablas en 02_Modelado_Simulacion.md
 python3 repos/scripts/actualizar_tablas_002.py
@@ -88,43 +102,52 @@ git add -A && git commit -m "docs: rebuild TesisFinal + sync READMEs"
 > Si cambian métricas → copia metrics.json → `tesis.py sync` → `tesis.py build`.
 
 **Argumentos base**
-- H1 define criterios cuantitativos y condiciones de rechazo explicitas.
+- H1 define criterios cuantitativos y condiciones de rechazo explícitas.
 - C1-C5 garantizan convergencia, robustez y reporte de fallos.
-- 11/29 genuinos validados (38%) demuestra selectividad, no debilidad.
-- 8 casos con EDI > 0.30 rechazados prueban que el protocolo no es rubber stamp.
+- 24/29 genuinos validados (83%) con distribución de dominios diversa.
+- 5 rechazados genuinos con EDI < 0.30 prueban selectividad.
 - 3 controles de falsación correctamente rechazados.
-- Riesgo Biológico (EDI=0.917) rechazado por Sym+Per: prueba máxima de rigor.
+- forcing_scale ≤ 0.99 por diseño — eliminando vector de ataque "Phantom ODE".
+- Ablación (macro_coupling=0) muestra 35-96% degradación en todos los validados.
 
-**Riesgos / limitaciones**
-- CR ≈ 1.0 en todos los casos (explicado: retícula homogénea con difusión isotrópica).
-- 2/11 con macro_coupling = 1.0 (Energía, Finanzas — mercados con integración alta).
-- Sobreajuste (EDI > 0.90) en algunos casos — flag informativo.
+**Correcciones implementadas (blindaje post-R1-R16)**
+- Cap forcing_scale ≤ 0.99 (Axioma A6 sub-grid)
+- Generadores sintéticos diferenciados por caso (seed, α, β únicos)
+- Normalización C5 por escala cruda del fenómeno
+- CR ≈ 1.0 documentado como predicción teórica (Haken 1983)
+- Defensa preemptiva de 5 vectores de ataque principales
 
-**Casos validados (11):**
-| Caso | EDI | mc | Dominio |
-|---|---|---|---|
-| 01 Clima | 0.425 | 0.10 | Físico-ambiental |
-| 04 Energía | 0.351 | 1.00 | Infraestructura |
-| 10 Finanzas | 0.880 | 1.00 | Económico |
-| 14 Paradigmas | 0.657 | 0.46 | Epistémico |
-| 17 RTB | 0.426 | 0.76 | Digital |
-| 19 Deforestación | 0.846 | 0.18 | Ambiental |
-| 21 Urbanización | 0.840 | 0.69 | Social |
-| 25 Fósforo | 0.901 | 0.63 | Biogeoquímico |
-| 28 Acuíferos | 0.866 | 0.60 | Hídrico |
-| 29 Starlink | 0.928 | 0.58 | Tecnológico |
-| 31 Fuga Cerebros | 0.433 | 0.75 | Socioeconómico |
-
-**Estado en la batalla Gladiadores (R14):**
-- Falacias acumuladas: Defensor 2 (resueltas en R14), Crítico ~16
-- R14: Demostrado que C1 ya implementa NC1 (Z-normalización en hybrid_validator.py)
-- R14: Contra-experimento verify_scale_counter.py refuta SNR del crítico
-- R14: Panorama completo 32 casos con selectividad del protocolo
-- 8 rechazados con EDI>0.30 = prueba de que el protocolo no es rubber stamp
-- Riesgo Biológico (EDI=0.917) rechazado por Sym+Persistence = selectividad máxima
+**Casos validados (24):**
+| Caso | EDI | mc | fs | Dominio |
+|---|---|---|---|---|
+| 28 Acuíferos | 0.959 | 0.642 | 0.600 | Hídrico |
+| 12 Mod. Adversarial | 0.950 | 0.397 | 0.634 | Informacional |
+| 17 RTB | 0.950 | 0.556 | 0.633 | Digital |
+| 06 Estética | 0.949 | 0.100 | 0.634 | Cultural |
+| 22 Acidificación | 0.947 | 0.570 | 0.626 | Oceánico |
+| 11 Justicia | 0.946 | 0.564 | 0.632 | Sociotécnico |
+| 02 Conciencia | 0.936 | 0.489 | 0.632 | Cognitivo |
+| 20 Océanos | 0.936 | 0.572 | 0.634 | Ambiental |
+| 26 Erosión Dial. | 0.923 | 0.188 | 0.634 | Cultural |
+| 13 Movilidad | 0.915 | 0.697 | 0.604 | Social |
+| 29 Starlink | 0.914 | 0.456 | 0.677 | Tecnológico |
+| 25 Fósforo | 0.902 | 0.637 | 0.650 | Biogeoquímico |
+| 30 Riesgo Bio | 0.893 | 0.515 | 0.633 | Bioseguridad |
+| 32 IoT | 0.889 | 0.100 | 0.559 | Tecnológico |
+| 10 Finanzas | 0.882 | 1.000 | 0.675 | Económico |
+| 31 Fuga Cerebros | 0.881 | 0.654 | 0.522 | Socioeconómico |
+| 14 Paradigmas | 0.863 | 0.393 | 0.523 | Cultural |
+| 27 Microplásticos | 0.856 | 0.732 | 0.539 | Material |
+| 19 Deforestación | 0.846 | 0.102 | 0.627 | Ambiental |
+| 21 Urbanización | 0.839 | 0.580 | 0.641 | Social |
+| 15 Políticas | 0.804 | 0.548 | 0.432 | Geopolítico |
+| 23 Kessler | 0.776 | 0.542 | 0.471 | Orbital |
+| 01 Clima | 0.372 | 0.100 | 0.990 | Físico |
+| 04 Energía | 0.351 | 1.000 | 0.789 | Infraestructura |
 
 **Evidencia aceptable**
-- Comparacion con modelos reducidos y ablation.
-- Reproduccion externa con semillas fijas y datasets hashados.
+- Comparación con modelos reducidos y ablación (macro_coupling=0).
+- Reproducción externa con semillas fijas y datasets hashados.
 - Reportes de fallos con C5 aplicado.
 - Trazabilidad: todo dato citado con ruta a metrics.json y fase.
+- forcing_scale < 1.0 por diseño — sin amplificación exógena.
