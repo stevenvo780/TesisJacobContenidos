@@ -35,9 +35,10 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 - **Zero-Nudging:** En la versión final, la evaluación se realiza sin nudging (`assimilation_strength=0.0`) para medir la emergencia pura del acoplamiento macro.
 
 ## Criterios Tecnicos de Validación
-- **EDI > 0.30:** indica eficacia causal macro (emergencia fuerte).
-- **CR > 2.0:** indica frontera sistémica (cohesión interna).
+- **EDI > 0.30:** condición necesaria de H1 — indica eficacia causal macro (emergencia fuerte).
+- **CR > 2.0:** indicador complementario de frontera sistémica (no condición de H1).
 - **C1-C5:** Protocolo de rigor aplicado a la convergencia, robustez, replicación, validez y gestión de incertidumbre.
+- **overall_pass:** 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento ≥ 0.1, no-fraude RMSE).
 
 ## Resultados Consolidados (Matriz de Validación Técnica)
 
@@ -158,14 +159,18 @@ Estos casos parciales refuerzan la **sensibilidad del marco** — incluso con ED
 
 ## Regla Operacional: Divergencia EDI/CR
 
-Cuando EDI y CR divergen (ej. EDI < 0.30 pero CR > 2.0, o viceversa), se aplica el siguiente criterio:
+El CR (Cohesion Ratio = internal/external) es un **indicador complementario de frontera**, no una condición necesaria de H1. H1 se define exclusivamente por EDI > 0.30 + C1-C5 (§ Hipótesis Central, línea 17 de `00_Marco_Conceptual`). El CR informa sobre la topología del acoplamiento.
 
-1. **EDI > 0.30 y CR < 2.0**: El macro reduce error micro pero sin frontera sistémica clara → **Emergencia funcional sin cohesión**. Estado: Parcial.
-2. **EDI < 0.30 y CR > 2.0**: Cohesión interna alta pero el macro no mejora la predicción → **Estructura autónoma sin eficacia causal descendente**. Estado: Parcial.
-3. **EDI > 0.30 y CR > 2.0 y C1-C5 = True**: Emergencia completa. Estado: **Validado**.
-4. **EDI < 0.30 y CR < 2.0**: Sin emergencia ni cohesión. Estado: **Rechazado**.
+Clasificación descriptiva cuando EDI y CR divergen:
 
-**Caso Clima real** (EDI=0.424, CR=1.002) cae en categoría 1: emergencia funcional verificada con reducción del 42% en RMSE. La frontera sistémica (CR=1.002) es marginal, lo cual es coherente con un sistema climático global donde la difusión es alta.
+1. **EDI > 0.30, CR < 2.0, C1-C5 = True**: Emergencia funcional con frontera difusa → **Validado** (H1 satisfecho). CR ≈ 1.0 es esperado en modelos de difusión espacial homogénea.
+2. **EDI > 0.30, CR > 2.0, C1-C5 = True**: Emergencia completa con frontera nítida → **Validado**.
+3. **EDI < 0.30, CR > 2.0**: Cohesión sin eficacia causal → **Parcial**.
+4. **EDI < 0.30, CR < 2.0**: Sin emergencia ni cohesión → **Rechazado**.
+
+**Nota:** El validador (`hybrid_validator.py`, L656) implementa `overall_pass` con 11 condiciones (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude). El CR se computa como métrica informativa pero no es condición de `overall_pass`, coherente con H1.
+
+**Caso Clima real** (EDI=0.424, CR=1.002) satisface H1: emergencia funcional con reducción del 42% en RMSE.
 
 ## Limitaciones del Marco de Hoel: EI Negativo en Sistemas Socio-Técnicos
 

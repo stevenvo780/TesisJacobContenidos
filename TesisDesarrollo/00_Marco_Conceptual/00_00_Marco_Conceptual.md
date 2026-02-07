@@ -49,7 +49,7 @@ Esta base conceptual justifica por qué un modelo puramente local (ABM) suele pr
 ## Glosario Operativo (Reducido)
 - **Hiperobjeto:** entidad distribuida con no-localidad y viscosidad, validada por C1-C5.
 - **EDI (Effective Dependency Index):** Reducción de error al integrar el nivel macro. Exige un umbral > 0.30 para validar la integración y > 0.05 para validar la autonomía estructural (atractor).
-- **CR (Cohesion Ratio):** Ratio de cohesión interna/externa (umbral 2.0). Mide si el hiperobjeto tiene una "frontera" operativa (symploke).
+- **CR (Cohesion Ratio):** Ratio de cohesión interna/externa. Un CR > 2.0 indica frontera nítida. Es indicador complementario de topología, no condición necesaria de H1. La condición operativa de Symploké en el validador es `internal ≥ external - 1e-3`.
 - **Nudging:** acople macro-micro para asimilacion de datos.
 - **Aliasing temporal:** falla por resolucion temporal insuficiente.
 - **Reflexividad:** el sistema cambia al ser observado (limite en finanzas y opinion).

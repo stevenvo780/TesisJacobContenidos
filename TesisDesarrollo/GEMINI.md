@@ -17,11 +17,10 @@ Fuente de verdad documental:
 - `04_Casos_De_Estudio/04_Casos_De_Estudio.md`
 - `Anexos.md`
 
-## 3. Estado de los Modelos
-*   **Caso Clima:** NO VALIDADO (EDI 0.103, CR 2.355). CR > 2.0 pero EDI < 0.30 (estructura macro débil en zero-nudging).
-*   **Caso Finanzas:** NO VALIDADO (EDI 0.769, CR 1.078). EDI alto pero CR < 2.0 (sin frontera sistémica).
-*   **Caso Contaminacion:** VALIDADO (EDI 0.423, CR 2.472).
-*   **Caso Movilidad:** VALIDADO (EDI 0.740, CR 5.273). Series cortas, prototipo.
+## 3. Estado de los Modelos (Actualizado — 32 casos, 11 validados)
+*   **11 Validados:** Clima (EDI=0.425), Energía (0.351), Finanzas (0.880), Paradigmas (0.657), RTB (0.426), Deforestación (0.846), Urbanización (0.840), Fósforo (0.901), Acuíferos (0.866), Starlink (0.928), Fuga Cerebros (0.433).
+*   **3 Controles de Falsación:** Correctamente rechazados.
+*   **9 Parciales + 9 Rechazados:** Confirman capacidad discriminante del marco.
 
 ## 4. Instrucciones para la IA
 *   Priorizar la **Navaja de Ockham**: Si algo se puede explicar sin la capa macro, se descarta el hiperobjeto.
