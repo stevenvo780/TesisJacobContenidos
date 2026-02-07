@@ -1,8 +1,11 @@
 __pycache__/
 *.pyc
-**/outputs/
-caso_energia/data/opsd_time_series.csv
-caso_epidemiologia/data/owid_covid.csv
+
+# Track outputs/metrics.json and outputs/report.md for reproducibility
+# but ignore large data caches
+**/outputs/*.csv
+**/outputs/*.pkl
+**/outputs/*.npy
 
 # Ignore large data files
 caso_*/data/*.csv
@@ -11,3 +14,5 @@ caso_*/data/*.csv
 
 # Ignore datasets
 *.csv
+!**/outputs/metrics.json
+!**/outputs/report.md

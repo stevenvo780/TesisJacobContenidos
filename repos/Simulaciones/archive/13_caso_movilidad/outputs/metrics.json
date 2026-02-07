@@ -1,0 +1,211 @@
+{
+  "case": "Movilidad Urbana (MTA NYC)",
+  "generated_at": "2026-02-07T03:00:47.177231Z",
+  "git": {
+    "commit": null,
+    "dirty": null
+  },
+  "phases": {
+    "synthetic": {
+      "phase": "synthetic",
+      "overall_pass": true,
+      "data": {
+        "start": "2000-01-01",
+        "end": "2019-12-01",
+        "split": "2010-01-01",
+        "obs_mean_raw": 6.758865780536074,
+        "obs_std_raw": 5.834792899035517,
+        "steps": 240,
+        "val_steps": 120,
+        "coverage": 12.0
+      },
+      "calibration": {
+        "forcing_scale": 0.37493620205613404,
+        "macro_coupling": 0.1,
+        "damping": 0.5924966782022352,
+        "ode_alpha": 0.024066025879373544,
+        "ode_beta": 0.8964713536421491,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.1473574829294934
+      },
+      "errors": {
+        "rmse_abm": 2.3936391836705786,
+        "rmse_ode": 1.8844976508596212,
+        "rmse_reduced": 6.829180940540905,
+        "threshold": 2.5747267403780363
+      },
+      "correlations": {
+        "abm_obs": 0.9993686785017653,
+        "ode_obs": 0.9997436100320868
+      },
+      "edi": {
+        "value": 0.6494983506058648,
+        "bootstrap_mean": 0.6496615944488078,
+        "ci_lo": 0.6430513872736833,
+        "ci_hi": 0.6566255597630111,
+        "valid": true
+      },
+      "effective_information": 0.8093680085127593,
+      "symploke": {
+        "internal": 0.9999999688124244,
+        "external": 0.7510552536423845,
+        "cr": 1.3314599211745546,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.0025000000578394837,
+        "pass": true
+      },
+      "persistence": {
+        "model": 0.029248238606264704,
+        "obs": 0.11674876142082295,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 6.829180940540905,
+        "err_abm": 2.3936391836705786,
+        "threshold": 0.5149453480756073,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": true,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 2.3936391836705786,
+        "rmse_ode": 1.8844976508596212,
+        "corr_abm": 0.9993686785017653,
+        "corr_ode": 0.9997436100320868,
+        "threshold": 2.5747267403780363
+      },
+      "c2_detail": {
+        "mean_delta": 0.2996088224051688,
+        "var_delta": 0.3068844077559209,
+        "relative_mean": 0.07231040063251326,
+        "relative_var": 0.1513872641478209
+      },
+      "c3_detail": {
+        "persistence_1": 0.029248238606264704,
+        "persistence_2": 0.0292689849310383
+      },
+      "c4_detail": {
+        "diff": 0.8118897822047053
+      },
+      "c5_detail": {
+        "sensitivity_min": 3.421098135414632,
+        "sensitivity_max": 4.859909249229982,
+        "range": 1.4388111138153494,
+        "relative_range": 0.35739921904293875
+      },
+      "synthetic_meta": {
+        "ode_true": {
+          "alpha": 0.08,
+          "beta": 0.03
+        },
+        "measurement_noise": 0.05
+      }
+    },
+    "real": {
+      "phase": "real",
+      "overall_pass": false,
+      "data": {
+        "start": "2020-03-01",
+        "end": "2025-06-01",
+        "split": "2023-01-01",
+        "obs_mean_raw": 18.080628079658858,
+        "obs_std_raw": 0.468625374029293,
+        "steps": 58,
+        "val_steps": 24,
+        "coverage": 11.6
+      },
+      "calibration": {
+        "forcing_scale": 0.5926073258522061,
+        "macro_coupling": 1.0,
+        "damping": 0.9,
+        "ode_alpha": 0.42592369028472926,
+        "ode_beta": 1.0,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.5342068658899815
+      },
+      "errors": {
+        "rmse_abm": 0.97388550648697,
+        "rmse_ode": 1.8246321130885057,
+        "rmse_reduced": 1.0471593355656523,
+        "threshold": 0.130469378467918
+      },
+      "correlations": {
+        "abm_obs": 0.5003174655313445,
+        "ode_obs": 0.4877664360773287
+      },
+      "edi": {
+        "value": 0.06997390615736754,
+        "bootstrap_mean": 0.07175032810794539,
+        "ci_lo": -0.04814261809393847,
+        "ci_hi": 0.18579385270529203,
+        "valid": false
+      },
+      "effective_information": -0.4970162382164149,
+      "symploke": {
+        "internal": 0.9999819915822877,
+        "external": 0.8706251734415231,
+        "cr": 1.1485792302896844,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.002500021068168384,
+        "pass": true
+      },
+      "persistence": {
+        "model": 0.04503434983315696,
+        "obs": 0.0167868911334768,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 1.0471593355656523,
+        "err_abm": 0.97388550648697,
+        "threshold": 0.026093875693583603,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": false,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 0.97388550648697,
+        "rmse_ode": 1.8246321130885057,
+        "corr_abm": 0.5003174655313445,
+        "corr_ode": 0.4877664360773287,
+        "threshold": 0.130469378467918
+      },
+      "c2_detail": {
+        "mean_delta": 0.1407117885940512,
+        "var_delta": 0.02393862332721553,
+        "relative_mean": 0.07122767497903222,
+        "relative_var": 0.02393862332721553
+      },
+      "c3_detail": {
+        "persistence_1": 0.04503434983315696,
+        "persistence_2": 0.044956687548328905
+      },
+      "c4_detail": {
+        "diff": 0.38399424368715485
+      },
+      "c5_detail": {
+        "sensitivity_min": 1.6347683384238982,
+        "sensitivity_max": 2.3122446575974314,
+        "range": 0.6774763191735331,
+        "relative_range": 0.3528533023901878
+      }
+    }
+  }
+}

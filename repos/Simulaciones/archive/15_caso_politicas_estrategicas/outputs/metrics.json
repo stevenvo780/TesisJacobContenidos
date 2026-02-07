@@ -1,0 +1,211 @@
+{
+  "case": "Pol\u00edticas Estrat\u00e9gicas (WGI Regulatory Quality)",
+  "generated_at": "2026-02-07T02:59:07.999313Z",
+  "git": {
+    "commit": null,
+    "dirty": null
+  },
+  "phases": {
+    "synthetic": {
+      "phase": "synthetic",
+      "overall_pass": false,
+      "data": {
+        "start": "1996-01-01",
+        "end": "2023-01-01",
+        "split": "2010-01-01",
+        "obs_mean_raw": 0.08740514679291947,
+        "obs_std_raw": 0.08079649819354101,
+        "steps": 28,
+        "val_steps": 14,
+        "coverage": 1.0
+      },
+      "calibration": {
+        "forcing_scale": 0.5041509952682025,
+        "macro_coupling": 0.1,
+        "damping": 0.9,
+        "ode_alpha": 0.40011163902258756,
+        "ode_beta": 1.0,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.8514171854485656
+      },
+      "errors": {
+        "rmse_abm": 0.8922666852058868,
+        "rmse_ode": 0.816079987322374,
+        "rmse_reduced": 2.0531918773993447,
+        "threshold": 1.1203349707044976
+      },
+      "correlations": {
+        "abm_obs": 0.6746161168018069,
+        "ode_obs": 0.6950981023749363
+      },
+      "edi": {
+        "value": 0.565424598145173,
+        "bootstrap_mean": 0.5680601238105266,
+        "ci_lo": 0.4374439108920159,
+        "ci_hi": 0.689298072671278,
+        "valid": true
+      },
+      "effective_information": 0.2715699363144344,
+      "symploke": {
+        "internal": 0.9999677904294834,
+        "external": 0.9993506223174723,
+        "cr": 1.000617569147633,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.0025000368239096447,
+        "pass": true
+      },
+      "persistence": {
+        "model": 0.06760390093526908,
+        "obs": 1.1315997721299045,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 2.0531918773993447,
+        "err_abm": 0.8922666852058868,
+        "threshold": 0.22406699414089953,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": false,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 0.8922666852058868,
+        "rmse_ode": 0.816079987322374,
+        "corr_abm": 0.6746161168018069,
+        "corr_ode": 0.6950981023749363,
+        "threshold": 1.1203349707044976
+      },
+      "c2_detail": {
+        "mean_delta": 0.09922167593979073,
+        "var_delta": 0.0384955184917378,
+        "relative_mean": 0.06729958169517716,
+        "relative_var": 0.0384955184917378
+      },
+      "c3_detail": {
+        "persistence_1": 0.06760390093526908,
+        "persistence_2": 0.06759908675841736
+      },
+      "c4_detail": {
+        "diff": 0.2948453519002756
+      },
+      "c5_detail": {
+        "sensitivity_min": 1.2247602260526285,
+        "sensitivity_max": 1.7182875277999525,
+        "range": 0.49352730174732407,
+        "relative_range": 0.3437314467127788
+      },
+      "synthetic_meta": {
+        "ode_true": {
+          "alpha": 0.08,
+          "beta": 0.03
+        },
+        "measurement_noise": 0.05
+      }
+    },
+    "real": {
+      "phase": "real",
+      "overall_pass": false,
+      "data": {
+        "start": "1996-01-01",
+        "end": "2023-01-01",
+        "split": "2010-01-01",
+        "obs_mean_raw": 1.4709621620178228,
+        "obs_std_raw": 0.13515855995043216,
+        "steps": 25,
+        "val_steps": 14,
+        "coverage": 0.8928571428571429
+      },
+      "calibration": {
+        "forcing_scale": 0.519452813906402,
+        "macro_coupling": 0.3225263229437421,
+        "damping": 0.5883229723247422,
+        "ode_alpha": 0.5,
+        "ode_beta": 1.0,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.7856874948070106
+      },
+      "errors": {
+        "rmse_abm": 2.006755086376865,
+        "rmse_ode": 1.9331163717009723,
+        "rmse_reduced": 2.8410583534610687,
+        "threshold": 1.63362494655611
+      },
+      "correlations": {
+        "abm_obs": 0.007765785004131079,
+        "ode_obs": -0.14831661762604878
+      },
+      "edi": {
+        "value": 0.29365932103007625,
+        "bootstrap_mean": 0.2724562885027703,
+        "ci_lo": -0.16329108166739778,
+        "ci_hi": 0.5836024562001049,
+        "valid": false
+      },
+      "effective_information": -0.10341871101748357,
+      "symploke": {
+        "internal": 0.9999953648355637,
+        "external": 0.9878377451444984,
+        "cr": 1.012307304262085,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.002500004857454186,
+        "pass": true
+      },
+      "persistence": {
+        "model": 0.10503248295344586,
+        "obs": 1.1527766249769078,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 2.8410583534610687,
+        "err_abm": 2.006755086376865,
+        "threshold": 0.326724989311222,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": false,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 2.006755086376865,
+        "rmse_ode": 1.9331163717009723,
+        "corr_abm": 0.007765785004131079,
+        "corr_ode": -0.14831661762604878,
+        "threshold": 1.63362494655611
+      },
+      "c2_detail": {
+        "mean_delta": 0.20394943631553977,
+        "var_delta": 0.10819819875455317,
+        "relative_mean": 0.06562668543812615,
+        "relative_var": 0.10819819875455317
+      },
+      "c3_detail": {
+        "persistence_1": 0.10503248295344586,
+        "persistence_2": 0.10503265525418574
+      },
+      "c4_detail": {
+        "diff": 0.6215609474622936
+      },
+      "c5_detail": {
+        "sensitivity_min": -3.6118086350529626,
+        "sensitivity_max": -2.5873192179318076,
+        "range": 1.024489417121155,
+        "relative_range": 0.3383600780981856
+      }
+    }
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "case": "RTB Publicidad Program\u00e1tica",
+  "generated_at": "2026-02-07T14:54:41.224993Z",
+  "git": {
+    "commit": "7b9c9837f057bb3b5f3082a26dc9472277ae6e93",
+    "dirty": true
+  },
+  "phases": {
+    "synthetic": {
+      "phase": "synthetic",
+      "overall_pass": true,
+      "data": {
+        "start": "2012-01-01",
+        "end": "2023-12-01",
+        "split": "2019-01-01",
+        "obs_mean_raw": 2.5756548872356033,
+        "obs_std_raw": 2.2509111091549707,
+        "steps": 144,
+        "val_steps": 60,
+        "coverage": 12.0
+      },
+      "calibration": {
+        "forcing_scale": 0.4120078123474759,
+        "macro_coupling": 0.7375541137761057,
+        "damping": 0.5916381856520975,
+        "ode_alpha": 0.05165708058887954,
+        "ode_beta": 1.0,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.16561250835593772
+      },
+      "errors": {
+        "rmse_abm": 1.30082605219761,
+        "rmse_ode": 1.0271512091376724,
+        "rmse_reduced": 4.996418111027027,
+        "threshold": 1.687075849368421
+      },
+      "correlations": {
+        "abm_obs": 0.9988708131379302,
+        "ode_obs": 0.9991408480003773
+      },
+      "edi": {
+        "value": 0.7396482793690334,
+        "bootstrap_mean": 0.740024664814516,
+        "ci_lo": 0.730409433784855,
+        "ci_hi": 0.7510344936046728,
+        "valid": true
+      },
+      "effective_information": 0.9852579914511328,
+      "symploke": {
+        "internal": 0.9999907324058579,
+        "external": 0.9995676639030272,
+        "cr": 1.0004232514897278,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.0025000124993049743,
+        "pass": true
+      },
+      "persistence": {
+        "model": 0.05186376655600967,
+        "obs": 0.1312579269488072,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 4.996418111027027,
+        "err_abm": 1.30082605219761,
+        "threshold": 0.33741516987368425,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": true,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 1.30082605219761,
+        "rmse_ode": 1.0271512091376724,
+        "corr_abm": 0.9988708131379302,
+        "corr_ode": 0.9991408480003773,
+        "threshold": 1.687075849368421
+      },
+      "c2_detail": {
+        "mean_delta": 0.2563945311878485,
+        "var_delta": 0.1694456445018658,
+        "relative_mean": 0.07191360385722038,
+        "relative_var": 0.1509431116173946
+      },
+      "c3_detail": {
+        "persistence_1": 0.05186376655600967,
+        "persistence_2": 0.05186792930265053
+      },
+      "c4_detail": {
+        "diff": 0.7130601998660677
+      },
+      "c5_detail": {
+        "sensitivity_min": 2.9406507439298277,
+        "sensitivity_max": 4.183691717244273,
+        "range": 1.2430409733144456,
+        "relative_range": 0.35870837760723906
+      },
+      "synthetic_meta": {
+        "ode_true": {
+          "alpha": 0.08,
+          "beta": 0.03
+        },
+        "measurement_noise": 0.05
+      }
+    },
+    "real": {
+      "phase": "real",
+      "overall_pass": true,
+      "data": {
+        "start": "2012-01-01",
+        "end": "2023-12-01",
+        "split": "2019-01-01",
+        "obs_mean_raw": 10.723564396988511,
+        "obs_std_raw": 6.008784662407295,
+        "steps": 144,
+        "val_steps": 60,
+        "coverage": 12.0
+      },
+      "calibration": {
+        "forcing_scale": 0.633215334869325,
+        "macro_coupling": 0.5558525026792843,
+        "damping": 0.95,
+        "ode_alpha": 0.22635645159957363,
+        "ode_beta": 1.0,
+        "assimilation_strength": 0.0,
+        "calibration_rmse": 0.11022281892569513
+      },
+      "errors": {
+        "rmse_abm": 0.14654254791788418,
+        "rmse_ode": 1.375162917983371,
+        "rmse_reduced": 2.903865263169794,
+        "threshold": 0.704244111349283
+      },
+      "correlations": {
+        "abm_obs": 0.9841815280866741,
+        "ode_obs": 0.9847872966359386
+      },
+      "edi": {
+        "value": 0.9495353487034995,
+        "bootstrap_mean": 0.9491109593956596,
+        "ci_lo": 0.9408482003199545,
+        "ci_hi": 0.9578717264886274,
+        "valid": false
+      },
+      "effective_information": 1.1344249278275607,
+      "symploke": {
+        "internal": 0.9999587552074403,
+        "external": 0.9999683531637689,
+        "cr": 0.9999904017399168,
+        "pass": true,
+        "cr_valid": false
+      },
+      "non_locality": {
+        "dominance_share": 0.0025000522576816655,
+        "pass": true
+      },
+      "persistence": {
+        "model": 0.021637165862327872,
+        "obs": 0.032786430199912016,
+        "pass": true
+      },
+      "emergence": {
+        "err_reduced": 2.903865263169794,
+        "err_abm": 0.14654254791788418,
+        "threshold": 0.1408488222698566,
+        "pass": true,
+        "significance": "computed"
+      },
+      "coupling_check": true,
+      "rmse_fraud_check": true,
+      "c1_convergence": true,
+      "c2_robustness": true,
+      "c3_replication": true,
+      "c4_validity": true,
+      "c5_uncertainty": true,
+      "c1_detail": {
+        "rmse_abm": 0.14654254791788418,
+        "rmse_ode": 1.375162917983371,
+        "corr_abm": 0.9841815280866741,
+        "corr_ode": 0.9847872966359386,
+        "threshold": 0.704244111349283
+      },
+      "c2_detail": {
+        "mean_delta": 0.21054102594500615,
+        "var_delta": 0.07492631202458323,
+        "relative_mean": 0.07276916565831176,
+        "relative_var": 0.07492631202458323
+      },
+      "c3_detail": {
+        "persistence_1": 0.021637165862327872,
+        "persistence_2": 0.02163821166367404
+      },
+      "c4_detail": {
+        "diff": 0.5786529167917212
+      },
+      "c5_detail": {
+        "sensitivity_min": 2.3832761139461547,
+        "sensitivity_max": 3.3994765330449064,
+        "range": 1.0162004190987517,
+        "relative_range": 0.09476330644166508
+      }
+    }
+  }
+}

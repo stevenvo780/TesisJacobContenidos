@@ -236,3 +236,26 @@ Si mc fuera tautológico, caso 18 (mc=1.0) validaría y caso 06 (mc=0.1) fallar�
 - Validador: `repos/Simulaciones/common/hybrid_validator.py`
 - Tesis: `TesisFinal/Tesis.md` (4005 líneas, rebuild automático)
 - Commits: `188495b` (R17), `c953027` (actual)
+
+---
+
+## §8. Nota sobre Unificación de Repositorios
+
+**Aclaración preventiva sobre discrepancias de datos entre máquinas.**
+
+La universidad solicitó unificar los repositorios del proyecto (previamente 3 repos separados: simulaciones, tesis-desarrollo, contenidos) en un solo repositorio canónico: `git@github.com:stevenvo780/TesisJacobContenidos.git`.
+
+Durante la unificación (commit `99c7de0`), la estructura de la torre AMD seguía apuntando a la versión PRE-unificación del repo. Las ejecuciones de mega_run_v8 se realizaron con el código UNIFICADO (que incluye el cap `fs ≤ 0.99` en `hybrid_validator.py` L338), pero los resultados (`outputs/`) estaban excluidos del tracking de git por una regla `.gitignore` heredada (`**/outputs/`).
+
+**Corrección aplicada ahora:**
+- Se modificó `repos/Simulaciones/.gitignore`: los archivos `metrics.json` y `report.md` de `outputs/` ahora SÍ se trackean en git
+- Se añadieron los 32 pares (metrics.json + report.md) al repositorio
+- Se clonó el repo actualizado en la torre, reemplazando la copia pre-unificación
+- **Resultado:** Ambas máquinas (local + torre) ahora tienen datos idénticos verificables con MD5
+
+**Si se observa un archivo con `forcing_scale = 1.49` en la torre, pertenece al repo VIEJO** (backup en `/datos/repos/Personal/hiper-objeto-simulaciones_OLD_backup/`). El repo activo en la torre es un clon fresco de GitHub con los mismos commits que este workspace.
+
+**Verificación:**
+- Torre nueva: `git --no-pager log --oneline -1` → mismo commit que local
+- MD5 Clima local: `f6c2f54871218bfc1eec1b71531f2017`
+- MD5 Clima torre (TesisDesarrollo): `f6c2f54871218bfc1eec1b71531f2017` ✅
