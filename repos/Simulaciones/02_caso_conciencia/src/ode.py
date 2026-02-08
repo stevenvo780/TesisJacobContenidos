@@ -1,31 +1,17 @@
-import random
+import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
+
+from ode_models import simulate_ode_model
+
+ODE_MODEL = "logistic_forced"
+ODE_KEY = "c"
 
 
 def simulate_ode(params, steps, seed):
-    random.seed(seed)
-    alpha = params.get("ode_alpha", params.get("alpha", 0.1))
-    beta = params.get("ode_beta", params.get("beta", 0.03))
-    noise = params.get("ode_noise", params.get("noise", 0.01))
-    x = params.get("p0", params.get("t0", 0.0))
-
-    forcing = params["forcing_series"]
-    assimilation_series = params.get("assimilation_series")
-    assimilation_strength = params.get("assimilation_strength", 0.0)
-
-    series = []
-    for t in range(steps):
-        f = forcing[t]
-        dx = alpha * (f - beta * x)
-        x = x + dx + random.uniform(-noise, noise)
-
-        if assimilation_series is not None and t < len(assimilation_series):
-            target = assimilation_series[t]
-            if target is not None:
-                x = x + assimilation_strength * (target - x)
-
-        series.append(x)
-
-    return {
-        "c": series,
-        "forcing": forcing,
-    }
+    p = dict(params)
+    p["ode_model"] = ODE_MODEL
+    if "ode_key" not in p:
+        p["ode_key"] = ODE_KEY
+    return simulate_ode_model(p, steps, seed=seed)

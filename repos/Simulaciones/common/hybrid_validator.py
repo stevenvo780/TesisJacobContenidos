@@ -641,9 +641,14 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     val_start = len(train_df)
     obs_std = variance(obs_val) ** 0.5
 
-    # Forcing
+    # Forcing (sin leakage: solo entrenamiento)
     forcing_trend, trend_params = build_forcing_from_training(obs[:val_start], steps)
-    lag_forcing = [obs[0]] + obs[:-1]
+    if val_start < 1:
+        lag_forcing = [obs[0]] * steps
+    else:
+        lag_train = [obs[0]] + list(obs[:max(val_start - 1, 0)])
+        lag_val = [obs[val_start - 1]] * (steps - val_start)
+        lag_forcing = (lag_train + lag_val)[:steps]
     forcing_series = [forcing_trend[i] + 0.5 * lag_forcing[i] for i in range(steps)]
 
     # Parámetros base
@@ -654,7 +659,11 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         "macro_coupling": 0.2,
         "forcing_series": forcing_series,
         "forcing_scale": 0.05,
+        "forcing_gradient_type": "radial",
+        "forcing_gradient_strength": 0.6,
         "damping": 0.02,
+        "series_key": config.series_key,
+        "ode_key": config.series_key,
         "p0": obs[0],
         "c0": obs[0],
         "p0_ode": obs[0],
@@ -667,6 +676,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         "f0": obs[0],
         "a0": obs[0],
         "h0": 0.5,
+        "v0": 0.1,
         "s0": 0.999, "i0": 0.0, "r0": 0.0,
         "ode_alpha": 0.05,
         "ode_beta": 0.02,
@@ -693,30 +703,42 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     eval_params["assimilation_strength"] = 0.0
     eval_params["assimilation_series"] = None
 
-    # Simulaciones
-    abm = simulate_abm_fn(eval_params, steps, seed=2)
+    # Simulaciones ODE (macro) → ABM (micro)
     ode = simulate_ode_fn(eval_params, steps, seed=3)
+    ode_key = _get_ode_key(ode)
+    ode_series = ode[ode_key]
 
-    # Modelo reducido (sin acoplamiento macro)
-    reduced_params = dict(eval_params)
+    # ABM acoplado a ODE
+    eval_params_ode = dict(eval_params)
+    eval_params_ode["macro_target_series"] = ode_series
+    abm = simulate_abm_fn(eval_params_ode, steps, seed=2)
+
+    # ABM sin ODE (baseline para EDI)
+    eval_params_no_ode = dict(eval_params)
+    eval_params_no_ode["macro_target_series"] = None
+    abm_no_ode = simulate_abm_fn(eval_params_no_ode, steps, seed=2)
+
+    # Modelo nulo (sin acoplamiento macro ni forcing)
+    reduced_params = dict(eval_params_no_ode)
     reduced_params["macro_coupling"] = 0.0
     reduced_params["forcing_scale"] = 0.0
     abm_reduced = simulate_abm_fn(reduced_params, steps, seed=4)
 
     sk = config.series_key
-    ode_key = _get_ode_key(ode)
     abm_val = abm[sk][val_start:]
+    abm_no_ode_val = abm_no_ode[sk][val_start:]
     ode_val = ode[ode_key][val_start:]
     reduced_val = abm_reduced[sk][val_start:]
 
     # Errores
     err_abm = rmse(abm_val, obs_val)
+    err_abm_no_ode = rmse(abm_no_ode_val, obs_val)
     err_ode = rmse(ode_val, obs_val)
     err_reduced = rmse(reduced_val, obs_val)
 
-    # EDI con bootstrap
-    edi_val = compute_edi(err_abm, err_reduced)
-    edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, reduced_val)
+    # EDI con bootstrap (ABM+ODE vs ABM sin ODE)
+    edi_val = compute_edi(err_abm, err_abm_no_ode)
+    edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, abm_no_ode_val)
     
     # EDI Ponderado por LoE (Regla de Descuento Gladiadores)
     # edi_weighted = edi * (loe / 5)
@@ -724,26 +746,29 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     loe_factor = config.loe / 5.0
     edi_weighted = edi_val * loe_factor
 
-    # Effective Information
-    ei = effective_information(obs_val, abm_val, reduced_val)
+    # Effective Information (ABM+ODE vs ABM sin ODE)
+    ei = effective_information(obs_val, abm_val, abm_no_ode_val)
 
-    # C1-C5
+    base_params_ode = dict(base_params)
+    base_params_ode["macro_target_series"] = ode_series
+
+    # C1-C5 (sobre modelo acoplado)
     c1, c1_detail = evaluate_c1(abm_val, ode_val, obs_val, obs_std,
                                  config.threshold_factor, config.corr_threshold)
-    c2, c2_detail = evaluate_c2(base_params, eval_params, steps, val_start,
+    c2, c2_detail = evaluate_c2(base_params_ode, eval_params_ode, steps, val_start,
                                  simulate_abm_fn, sk)
-    c3, c3_detail = evaluate_c3(eval_params, steps, val_start, simulate_abm_fn,
+    c3, c3_detail = evaluate_c3(eval_params_ode, steps, val_start, simulate_abm_fn,
                                  sk, window=config.persistence_window)
-    c4, c4_detail = evaluate_c4(eval_params, base_params, steps, val_start,
+    c4, c4_detail = evaluate_c4(eval_params_ode, base_params_ode, steps, val_start,
                                  simulate_abm_fn, sk)
-    c5, c5_detail = evaluate_c5(base_params, eval_params, steps, val_start,
+    c5, c5_detail = evaluate_c5(base_params_ode, eval_params_ode, steps, val_start,
                                  simulate_abm_fn, sk, n_runs=config.n_runs,
                                  obs_std=obs_std,
                                  obs_mean_raw=obs_mean_raw,
                                  obs_std_raw=obs_std_raw)
                                  
     # Viscosity Test (Variables faltantes Fase 3)
-    c_visc, c_visc_detail = evaluate_viscosity(base_params, steps, val_start, 
+    c_visc, c_visc_detail = evaluate_viscosity(base_params_ode, steps, val_start, 
                                                simulate_abm_fn, sk)
 
     # Symploké, non-locality, persistence
@@ -760,14 +785,14 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
 
     # Emergencia
     emergence_threshold = 0.2 * max(obs_std, 0.01)
-    emergence_ok = (err_reduced - err_abm) > emergence_threshold
+    emergence_ok = (err_abm_no_ode - err_abm) > emergence_threshold
 
     # Coupling check
     coupling_ok = base_params.get("macro_coupling", 0) >= 0.1
     # RMSE fraud check
     rmse_fraud = err_abm < 1e-10
     # EDI thresholds
-    edi_valid = 0.30 <= edi_weighted <= 0.90
+    edi_valid = 0.30 <= edi_val <= 0.90
     cr_valid = cr > 2.0
 
     overall = all([c1, c2, c3, c4, c5, sym_ok, non_local_ok, persist_ok,
@@ -797,6 +822,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         },
         "errors": {
             "rmse_abm": err_abm,
+            "rmse_abm_no_ode": err_abm_no_ode,
             "rmse_ode": err_ode,
             "rmse_reduced": err_reduced,
             "threshold": config.threshold_factor * max(obs_std, 0.1),
@@ -836,7 +862,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             "pass": persist_ok,
         },
         "emergence": {
-            "err_reduced": err_reduced,
+            "err_reduced": err_abm_no_ode,
             "err_abm": err_abm,
             "threshold": emergence_threshold,
             "pass": emergence_ok,

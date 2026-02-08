@@ -43,10 +43,10 @@ def run_gpu_mode():
     from common.abm_gpu import simulate_batch_gpu
     
     # Configuración CONSUMO (Maximizando 16GB VRAM)
-    GRID_SIZE = 450      # 220,900 agentes (FINAL)
-    N_RUNS = 200          # 200 réplicas por caso
+    GRID_SIZE = 470
+    N_RUNS = 200
     STEPS = 1500
-    CHUNK_SIZE = 1600     # Chunks grandes para eficiencia
+    CHUNK_SIZE = 1600
     
     configs = []
     case_dirs = sorted(glob.glob(os.path.join(BASE_PATH, "*_caso_*")))

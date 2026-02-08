@@ -6,7 +6,7 @@ import requests
 
 API_BASE = "https://api.worldbank.org/v2"
 DEFAULT_UA = "Hiperobjetos/0.1"
-INDICATOR = "AG.LND.ARBL.ZS"
+INDICATOR = "AG.LND.IRIG.AG.ZS"
 
 
 def _request(url, params=None, retries=3):
@@ -24,7 +24,7 @@ def _request(url, params=None, retries=3):
 
 
 def fetch_arable_land(cache_path, country="WLD", start_year=1960, end_year=2022, refresh=False):
-    """Obtiene Arable land (% of land area) del World Bank."""
+    """Obtiene irrigated land (% of agricultural land) del World Bank."""
     cache_path = os.path.abspath(cache_path)
     if os.path.exists(cache_path) and not refresh:
         df = pd.read_csv(cache_path)

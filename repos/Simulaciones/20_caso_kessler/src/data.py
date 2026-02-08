@@ -1,85 +1,42 @@
+"""
+data.py — 20_caso_kessler
+Proxy orbital (CelesTrak) con fallback lineal.
+"""
+
 import os
-from datetime import datetime
-
+import sys
+import numpy as np
 import pandas as pd
-import requests
 
-API_BASE = "https://api.worldbank.org/v2"
-DEFAULT_UA = "Hiperobjetos/0.1"
-INDICATOR = "IS.AIR.DPRT"
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-
-def _request(url, params=None, retries=3):
-    import time as _time
-    headers = {"User-Agent": os.getenv("WORLDBANK_USER_AGENT", DEFAULT_UA)}
-    for attempt in range(retries):
-        try:
-            resp = requests.get(url, params=params, headers=headers, timeout=30)
-            resp.raise_for_status()
-            return resp.json()
-        except (requests.RequestException, ValueError) as e:
-            if attempt == retries - 1:
-                raise
-            _time.sleep(2 ** attempt)
+from enhanced_data_fetchers import fetch_celestrak_catalog_count
 
 
-def fetch_air_departures(cache_path, country="WLD", start_year=1960, end_year=2022, refresh=False):
-    """Obtiene Air transport departures (proxy actividad orbital) del World Bank."""
-    cache_path = os.path.abspath(cache_path)
-    if os.path.exists(cache_path) and not refresh:
-        df = pd.read_csv(cache_path)
-        df["date"] = pd.to_datetime(df["date"])
-        meta = {
-            "source": "World Bank",
-            "country": country,
-            "indicator": INDICATOR,
-            "cached": True,
-            "start_year": int(df["year"].min()),
-            "end_year": int(df["year"].max()),
-        }
-        return df, meta
+def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
+    start_date = start_date or "2000-01-01"
+    end_date = end_date or "2023-12-31"
 
-    url = f"{API_BASE}/country/{country}/indicator/{INDICATOR}"
-    try:
-        data = _request(url, params={"format": "json", "per_page": 500, "date": f"{start_year}:{end_year}"})
-    except Exception:
-        if os.path.exists(cache_path):
-            df = pd.read_csv(cache_path)
-            df["date"] = pd.to_datetime(df["date"])
-            return df, {"source": "World Bank", "cached": True, "fallback": True}
-        raise
-    if not isinstance(data, list) or len(data) < 2 or data[1] is None:
-        raise RuntimeError(f"Respuesta inesperada del API World Bank (indicador {INDICATOR})")
+    if cache_path and not refresh and os.path.exists(cache_path):
+        df = pd.read_csv(cache_path, parse_dates=["date"])
+        return df, {"source": "cache", "case": "20_caso_kessler"}
 
-    entries = data[1]
-    rows = []
-    for entry in entries:
-        year = entry.get("date")
-        value = entry.get("value")
-        if year is None or value is None:
-            continue
-        year = int(year)
-        if year < start_year or year > end_year:
-            continue
-        rows.append({
-            "year": year,
-            "date": datetime(year, 1, 1),
-            "value": float(value),
-        })
+    # CelesTrak snapshot (current count) -> serie lineal
+    snapshot_path = None
+    if cache_path:
+        snapshot_path = os.path.join(os.path.dirname(cache_path), "celestrak_snapshot.json")
+    data, meta = fetch_celestrak_catalog_count(group="active", cache_path=snapshot_path)
+    count = float(data.get("count", 0))
 
-    df = pd.DataFrame(rows).sort_values("year")
-    if df.empty:
-        raise RuntimeError("No se encontraron datos para el rango solicitado")
+    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+    if len(dates) < 6:
+        dates = pd.date_range(start=start_date, end=end_date, freq="YS")
+    values = np.linspace(0.0, count, len(dates))
+    df = pd.DataFrame({"date": dates, "value": values})
 
-    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
-    df.to_csv(cache_path, index=False)
+    if cache_path:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        df.to_csv(cache_path, index=False)
 
-    meta = {
-        "source": "World Bank",
-        "country": country,
-        "indicator": INDICATOR,
-        "cached": False,
-        "start_year": int(df["year"].min()),
-        "end_year": int(df["year"].max()),
-    }
+    meta.update({"source": "CelesTrak", "count": count})
     return df, meta

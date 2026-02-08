@@ -304,3 +304,39 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def fetch_celestrak_catalog_count(group="active", cache_path=None):
+    """
+    Fetch count of tracked objects from CelesTrak catalog group.
+    group: 'active', 'starlink', 'all', etc.
+    """
+    if cache_path and os.path.exists(cache_path):
+        with open(cache_path, 'r') as f:
+            data = json.load(f)
+        return data, {"source": "CelesTrak", "cached": True, "group": group}
+
+    url = f"https://celestrak.org/NORAD/elements/gp.php?GROUP={group}&FORMAT=json"
+
+    try:
+        resp = requests.get(url, timeout=60)
+        resp.raise_for_status()
+        satellites = resp.json()
+        count = len(satellites)
+        result = {
+            "date": datetime.now().isoformat(),
+            "count": count,
+            "group": group,
+        }
+        if cache_path:
+            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            with open(cache_path, 'w') as f:
+                json.dump(result, f, indent=2)
+        return result, {"source": "CelesTrak", "cached": False, "group": group}
+    except requests.RequestException as e:
+        print(f"⚠️ CelesTrak catalog fetch failed: {e}")
+        if cache_path and os.path.exists(cache_path):
+            with open(cache_path, 'r') as f:
+                data = json.load(f)
+            return data, {"source": "CelesTrak", "cached": True, "fallback": True, "group": group}
+        return {"date": datetime.now().isoformat(), "count": 0, "group": group}, {"source": "CelesTrak", "error": str(e)}

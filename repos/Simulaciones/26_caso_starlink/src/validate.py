@@ -12,14 +12,14 @@ import pandas as pd
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 from abm import simulate_abm
-from data import fetch_internet_users
+from data import fetch_data
 from ode import simulate_ode
 from hybrid_validator import CaseConfig, run_full_validation, write_outputs
 
 
 def load_real_data(start_date, end_date):
-    cache_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "wb_internet_users.csv"))
-    df, _ = fetch_internet_users(cache_path, start_year=int(start_date[:4]), end_year=int(end_date[:4]))
+    cache_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "dataset.csv"))
+    df, _ = fetch_data(cache_path, start_date=start_date, end_date=end_date)
     df["date"] = pd.to_datetime(df["date"])
     return df.dropna(subset=["date", "value"])
 

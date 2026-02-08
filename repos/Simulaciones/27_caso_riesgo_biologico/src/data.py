@@ -1,53 +1,42 @@
 """
-data.py — Riesgo Biológico Global
-Genera datos con dinámica macro realista para dominio: Bioseguridad.
-SNR diseñado > 3.0 para detectabilidad por ABM.
+data.py — 27_caso_riesgo_biologico
+Carga datos reales cuando es posible; fallback sintético si falla.
 """
 
-import math
 import os
-
+import sys
 import numpy as np
 import pandas as pd
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
+
+from data_universal import fetch_case_data
+
+
+def _synthetic_fallback(start_date, end_date, seed=42):
+    rng = np.random.default_rng(seed)
+    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+    if len(dates) < 6:
+        dates = pd.date_range(start=start_date, end=end_date, freq="YS")
+    steps = len(dates)
+    trend = np.linspace(0.0, 1.0, steps)
+    seasonal = 0.2 * np.sin(np.linspace(0, 4 * np.pi, steps))
+    noise = rng.normal(0, 0.3, steps)
+    values = trend + seasonal + noise
+    return pd.DataFrame({"date": dates, "value": values}), {"source": "synthetic_fallback"}
+
 
 def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
-    if cache_path and not refresh:
-        if os.path.exists(cache_path):
-            df = pd.read_csv(cache_path)
-            df["date"] = pd.to_datetime(df["date"])
-            return df, {"source": "cache", "domain": "Bioseguridad"}
+    start_date = start_date or "2000-01-01"
+    end_date = end_date or "2023-12-31"
 
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
-    steps = len(dates)
-    rng = np.random.default_rng(42)
+    if cache_path and not refresh and os.path.exists(cache_path):
+        df = pd.read_csv(cache_path, parse_dates=["date"])
+        return df, {"source": "cache", "case": "27_caso_riesgo_biologico"}
 
-    # Forzamiento con trend + componente cíclico
-    forcing = []
-    for t in range(steps):
-        trend = 1.5 + 0.003 * t
-        seasonal = 0.6 * math.sin(2 * math.pi * t / 12)
-        forcing.append(trend + seasonal)
+    df, meta = fetch_case_data("27_caso_riesgo_biologico", start_date, end_date, cache_path=cache_path)
+    if df is not None and not df.empty:
+        df["date"] = pd.to_datetime(df["date"])
+        return df, meta
 
-    # Simular ODE para generar observaciones
-    alpha, beta = 0.16, 0.03
-    x = 0.0
-    signal = []
-    for t in range(steps):
-        f = forcing[t]
-        dx = alpha * (f - beta * x)
-        x = x + dx + rng.normal(0, 0.025)
-        signal.append(x)
-
-    signal_arr = np.array(signal)
-    signal_std = max(np.std(signal_arr), 0.01)
-    meas_noise = 0.07 * signal_std
-
-    values = signal_arr + rng.normal(0, meas_noise, size=steps)
-    df = pd.DataFrame({"date": dates, "value": values})
-
-    if cache_path:
-        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
-        df.to_csv(cache_path, index=False)
-
-    return df, {"source": "synthetic_calibrated", "domain": "Bioseguridad", "snr": float(signal_std / meas_noise)}
+    return _synthetic_fallback(start_date, end_date)
