@@ -1,4 +1,4 @@
-# GEMINI.md - Contexto del Proyecto: Hiperobjetos (Versión Titanio)
+# GEMINI.md - Contexto del Proyecto: Hiperobjetos (Versión Consolidado)
 
 Este documento sirve como contexto maestro para la IA. Describe la arquitectura consolidada de la tesis tras la "Reingeniería de Alta Densidad".
 
