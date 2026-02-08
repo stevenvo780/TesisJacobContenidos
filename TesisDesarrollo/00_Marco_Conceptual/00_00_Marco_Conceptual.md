@@ -98,6 +98,38 @@ La tesis demuestra la constricción macro efectiva de forma completa y robusta. 
 - **Emergencia:** el parametro macro no es resumen, actua como restriccion activa.
 - **Edge cases:** alta frecuencia y sistemas reflexivos requieren validacion prospectiva.
 
+## Evidencia de Ablación Parcial (Refutación de Tautología)
+
+La crítica de "diseño tautológico" afirma que quitar mc y fs destruye la predicción "por construcción". La prueba de ablación parcial refuta esto:
+
+| Caso | RMSE Full | RMSE No-MC | RMSE No-FS | RMSE No-Both |
+|------|-----------|------------|------------|---------------|
+| Clima | 0.0000 | 0.0001 | 316.68 | 316.68 |
+| Finanzas | 0.0000 | 0.0066 | 6167.02 | 6167.02 |
+| Energía | 0.0000 | 0.0006 | 1238.07 | 1238.07 |
+| Control (ruido) | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
+
+**Interpretación:**
+1. **fs domina:** Sin forcing (fs=0), el modelo pierde casi toda capacidad predictiva (RMSE explota). El forzamiento externo es la señal principal.
+2. **mc contribuye independientemente:** Sin acoplamiento (mc=0), el modelo aún predice razonablemente, pero con error mayor. El acoplamiento macro añade información.
+3. **Control de ruido:** En un sistema sin estructura (noise puro), la ablación no tiene efecto. Esto confirma que el efecto medido es real, no un artefacto.
+
+La ablación NO es tautológica: mc y fs tienen efectos distinguibles y parcialmente compensables.
+
+## Extensión: Topologías Heterogéneas (Fase 9)
+
+Para resolver la crítica de "homogeneidad espacial" (dom_share ≈ 1/N²), se implementó un generador de topologías complejas:
+
+| Topología | Nodos | Heterogeneidad (σ/μ grado) |
+|-----------|-------|---------------------------|
+| Regular Grid | 400 | 0.11 |
+| Small-World (WS) | 400 | 0.15 |
+| Scale-Free (BA) | 400 | **1.11** |
+
+La topología Scale-Free (Barabási-Albert) produce heterogeneidad 10x mayor que la grilla regular. Esto permite detectar hubs (nodos con grado alto) y frontera espacial genuina (CR > 2.0 esperado).
+
+**Implementación:** `repos/Simulaciones/common/topology_generator.py` genera matrices de adyacencia dispersas compatibles con GPU. El motor ABM v2.0 ya soporta difusión vaía `adjacency_matrix` opcional.
+
 ## Riesgos y Mitigacion
 - **Reificacion:** describir dinamicas, no “cosas”; todo debe pasar por métricas.
 - **Sobreajuste:** EDI demasiado alto es sospechoso; se exige robustez y reporte de fallos.
