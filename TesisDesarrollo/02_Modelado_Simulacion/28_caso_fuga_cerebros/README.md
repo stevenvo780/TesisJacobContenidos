@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Fuga de Cerebros' como flujo migratorio sistémico.
 - **Fuente:** World Bank Open Data
 - **Indicador:** `GB.XPD.RSDV.GD.ZS` (gasto en I+D % del PIB)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/31_caso_fuga_cerebros/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/12_caso_fuga_cerebros/src/validate.py`
 
 ## Estado
 ✅ **Validado** — Emergencia macro confirmada con protocolo C1-C5 completo.

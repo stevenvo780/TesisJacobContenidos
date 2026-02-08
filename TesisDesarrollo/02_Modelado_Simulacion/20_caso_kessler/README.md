@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Basura Espacial / Síndrome de Kessler'. Indicador 
 - **Fuente:** World Bank Open Data
 - **Indicador:** `IS.AIR.DPRT` (departures aéreas globales)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/23_caso_kessler/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/17_caso_kessler/src/validate.py`
 
 ## Estado
 ⚠️ **Parcial** — EDI válido pero convergencia insuficiente.

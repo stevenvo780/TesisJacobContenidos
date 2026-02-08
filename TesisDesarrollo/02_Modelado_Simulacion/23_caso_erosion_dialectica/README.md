@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Erosión Dialéctica' como degradación sistémica 
 - **Fuente:** World Bank Open Data
 - **Indicador:** `SE.ADT.LITR.ZS` (tasa de alfabetización adulta)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/26_caso_erosion_dialectica/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/17_caso_erosion_dialectica/src/validate.py`
 
 ## Estado
 ⚠️ **Parcial** — EDI válido y alta correlación, pero convergencia C1 falla.

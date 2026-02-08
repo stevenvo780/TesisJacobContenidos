@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Internet de las Cosas' como sistema emergente de co
 - **Fuente:** World Bank Open Data
 - **Indicador:** `IT.CEL.SETS.P2` (suscripciones móviles por 100 personas)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/32_caso_iot/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/17_caso_iot/src/validate.py`
 
 ## Estado
 ⚠️ **Parcial** — EDI válido pero convergencia C1 insuficiente.

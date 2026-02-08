@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Acidificación Oceánica' como sistema distribuido 
 - **Fuente:** World Bank Open Data
 - **Indicador:** `EG.USE.PCAP.KG.OE` (consumo energético per cápita)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/22_caso_acidificacion_oceanica/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/12_caso_acidificacion_oceanica/src/validate.py`
 
 ## Estado
 ⚠️ **Parcial** — EDI en rango válido pero convergencia insuficiente.

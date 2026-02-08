@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Depleción de Acuíferos' como crisis hídrica glob
 - **Fuente:** World Bank Open Data
 - **Indicador:** `SH.H2O.BASW.ZS` (acceso básico a agua potable %)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/28_caso_acuiferos/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/12_caso_acuiferos/src/validate.py`
 
 ## Estado
 ✅ **Validado** — Emergencia macro confirmada con protocolo C1-C5 completo.

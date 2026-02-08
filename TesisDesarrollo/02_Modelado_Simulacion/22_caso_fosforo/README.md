@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Disrupción del Ciclo del Fósforo'. Indicador: con
 - **Fuente:** World Bank Open Data
 - **Indicador:** `AG.CON.FERT.ZS` (consumo de fertilizantes por hectárea)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/25_caso_fosforo/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/12_caso_fosforo/src/validate.py`
 
 ## Estado
 ✅ **Validado** — Emergencia macro confirmada con protocolo C1-C5 completo.

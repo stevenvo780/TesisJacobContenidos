@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Megaconstelaciones Satelitales' como infraestructur
 - **Fuente:** World Bank Open Data
 - **Indicador:** `IT.NET.USER.ZS` (usuarios de internet % de población)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/29_caso_starlink/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/17_caso_starlink/src/validate.py`
 
 ## Estado
 ✅ **Validado** — Emergencia macro confirmada con protocolo C1-C5 completo.

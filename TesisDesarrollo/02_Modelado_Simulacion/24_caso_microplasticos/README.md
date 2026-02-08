@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Microplásticos' como contaminante distribuido. Ind
 - **Fuente:** World Bank Open Data
 - **Indicador:** `EG.USE.COMM.FO.ZS` (consumo de energía fósil % del total)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/27_caso_microplasticos/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/06_caso_microplasticos/src/validate.py`
 
 ## Estado
 ⚠️ **Parcial** — EDI válido pero desacoplamiento ODE y C5 falla.

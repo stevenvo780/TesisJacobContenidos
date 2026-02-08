@@ -46,7 +46,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "10_caso_finanzas": {
+    "06_caso_finanzas": {
         "name": "Financial Markets",
         "real_source": "Yahoo Finance",
         "indicator": "SPY log(price)",
@@ -57,7 +57,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "19_caso_deforestacion": {
+    "12_caso_deforestacion": {
         "name": "Deforestation",
         "real_source": "World Bank",
         "indicator": "AG.LND.FRST.ZS (Forest area %)",
@@ -67,7 +67,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "21_caso_urbanizacion": {
+    "06_caso_urbanizacion": {
         "name": "Urbanization",
         "real_source": "World Bank",
         "indicator": "SP.URB.TOTL.IN.ZS (Urban population %)",
@@ -77,7 +77,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "25_caso_fosforo": {
+    "12_caso_fosforo": {
         "name": "Phosphorus Cycle",
         "real_source": "World Bank",
         "indicator": "AG.CON.FERT.ZS (Fertilizer consumption kg/ha)",
@@ -87,7 +87,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "MEDIUM"
     },
     
-    "28_caso_acuiferos": {
+    "12_caso_acuiferos": {
         "name": "Aquifer Stress",
         "real_source": "World Bank",
         "indicator": "SH.H2O.BASW.ZS (Basic water access %)",
@@ -121,7 +121,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "11_caso_justicia": {
+    "06_caso_justicia": {
         "name": "Rule of Law",
         "real_source": "World Bank (WGI)",
         "indicator": "RL.EST (Rule of Law estimate)",
@@ -131,7 +131,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "13_caso_movilidad": {
+    "06_caso_movilidad": {
         "name": "Urban Mobility",
         "real_source": "World Bank",
         "indicator": "IS.VEH.NVEH.P3 (Motor vehicles per 1000 people)",
@@ -141,7 +141,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "MEDIUM"
     },
     
-    "15_caso_politicas_estrategicas": {
+    "06_caso_politicas_estrategicas": {
         "name": "Strategic Policies",
         "real_source": "World Bank",
         "indicator": "GC.TAX.TOTL.GD.ZS (Tax revenue % GDP)",
@@ -151,7 +151,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "20_caso_oceanos": {
+    "17_caso_oceanos": {
         "name": "Ocean Temperature",
         "real_source": "NOAA/World Bank",
         "indicator": "EN.CLC.MDAT.ZS (Temperature deviation)",
@@ -161,7 +161,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "22_caso_acidificacion_oceanica": {
+    "12_caso_acidificacion_oceanica": {
         "name": "Ocean Acidification",
         "real_source": "NOAA Carbon Data",
         "indicator": "Ocean pH / CO2",
@@ -171,7 +171,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "24_caso_salinizacion": {
+    "06_caso_salinizacion": {
         "name": "Soil Salinization",
         "real_source": "World Bank/FAO",
         "indicator": "AG.LND.ARBL.ZS (Arable land %)",
@@ -181,7 +181,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "MEDIUM"
     },
     
-    "26_caso_erosion_dialectica": {
+    "17_caso_erosion_dialectica": {
         "name": "Dialectical Erosion (Literacy)",
         "real_source": "World Bank",
         "indicator": "SE.ADT.LITR.ZS (Literacy rate %)",
@@ -191,7 +191,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "27_caso_microplasticos": {
+    "06_caso_microplasticos": {
         "name": "Microplastics",
         "real_source": "World Bank/UNEP",
         "indicator": "EN.SEA.POLL.MT (Marine pollution)",
@@ -201,7 +201,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "MEDIUM"
     },
     
-    "30_caso_riesgo_biologico": {
+    "06_caso_riesgo_biologico": {
         "name": "Biological Risk",
         "real_source": "World Bank",
         "indicator": "SH.DYN.MORT (Infant mortality)",
@@ -211,7 +211,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "31_caso_fuga_cerebros": {
+    "12_caso_fuga_cerebros": {
         "name": "Brain Drain",
         "real_source": "World Bank",
         "indicator": "GB.XPD.RSDV.GD.ZS (R&D expenditure % GDP)",
@@ -221,7 +221,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "32_caso_iot": {
+    "17_caso_iot": {
         "name": "IoT Connectivity",
         "real_source": "World Bank",
         "indicator": "IT.CEL.SETS.P2 (Mobile subscriptions per 100)",
@@ -235,7 +235,7 @@ DATA_SOURCE_CATALOG = {
     # GRUPO C: APIs ESPECIALIZADAS (necesita implementación)
     # ==========================================================================
     
-    "14_caso_paradigmas": {
+    "12_caso_paradigmas": {
         "name": "Scientific Paradigms",
         "real_source": "OpenAlex",
         "indicator": "Citation counts by concept",
@@ -245,7 +245,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "23_caso_kessler": {
+    "17_caso_kessler": {
         "name": "Kessler Syndrome",
         "real_source": "CelesTrak / Space-Track",
         "indicator": "Active satellites & debris count",
@@ -255,7 +255,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "29_caso_starlink": {
+    "17_caso_starlink": {
         "name": "Starlink Deployment",
         "real_source": "CelesTrak",
         "indicator": "Active Starlink satellites",
@@ -265,7 +265,7 @@ DATA_SOURCE_CATALOG = {
         "quality": "HIGH"
     },
     
-    "18_caso_wikipedia": {
+    "06_caso_wikipedia": {
         "name": "Wikipedia Edits",
         "real_source": "Wikimedia API",
         "indicator": "Monthly edits / page views",
@@ -310,7 +310,7 @@ DATA_SOURCE_CATALOG = {
         "note": "Platforms don't publish moderation data"
     },
     
-    "16_caso_postverdad": {
+    "12_caso_postverdad": {
         "name": "Post-Truth",
         "real_source": "Google Trends / Media APIs",
         "indicator": "Misinformation spread",
@@ -334,7 +334,7 @@ DATA_SOURCE_CATALOG = {
     # GRUPO E: CONTROLES DE FALSACIÓN (deben permanecer sintéticos)
     # ==========================================================================
     
-    "07_caso_falsacion_exogeneidad": {
+    "06_caso_falsacion_exogeneidad": {
         "name": "Falsification Control: Exogeneity",
         "real_source": "SYNTHETIC BY DESIGN",
         "indicator": "Pure noise",
@@ -344,7 +344,7 @@ DATA_SOURCE_CATALOG = {
         "note": "Control case - must remain synthetic"
     },
     
-    "08_caso_falsacion_no_estacionariedad": {
+    "06_caso_falsacion_no_estacionariedad": {
         "name": "Falsification Control: Non-Stationarity",
         "real_source": "SYNTHETIC BY DESIGN",
         "indicator": "Random walk",
@@ -354,7 +354,7 @@ DATA_SOURCE_CATALOG = {
         "note": "Control case - must remain synthetic"
     },
     
-    "09_caso_falsacion_observabilidad": {
+    "06_caso_falsacion_observabilidad": {
         "name": "Falsification Control: Observability",
         "real_source": "SYNTHETIC BY DESIGN",
         "indicator": "Hidden state",
@@ -522,10 +522,10 @@ MANTENER ({len(results['real_implemented']) + len(results['real_available']) + l
 - Todos los casos con datos reales o proxy
 
 REMOVER ({len(results['synthetic_only'])} casos):
-{chr(10).join('- ' + c for c in results['synthetic_only'])}
+{chr(06).join('- ' + c for c in results['synthetic_only'])}
 
 CONTROLES (mantener como están):
-{chr(10).join('- ' + c for c in results['control_synthetic'])}
+{chr(06).join('- ' + c for c in results['control_synthetic'])}
 """)
 
 

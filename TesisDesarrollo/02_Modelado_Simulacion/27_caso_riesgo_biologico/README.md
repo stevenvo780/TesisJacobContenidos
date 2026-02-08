@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Riesgo Biológico' como amenaza sistémica. Indicad
 - **Fuente:** World Bank Open Data
 - **Indicador:** `SH.DYN.MORT` (mortalidad infantil menores de 5 años)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/30_caso_riesgo_biologico/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/06_caso_riesgo_biologico/src/validate.py`
 
 ## Estado
 ❌ **Rechazado** — EDI > 0.90, sospecha de tautología.

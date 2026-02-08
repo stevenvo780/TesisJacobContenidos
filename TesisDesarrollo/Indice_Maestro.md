@@ -26,31 +26,31 @@ Casos enumerados (02_Modelado_Simulacion) — 32 casos:
 - `04_caso_energia/` ✅
 - `05_caso_epidemiologia/`
 - `06_caso_estetica/`
-- `07_caso_falsacion_exogeneidad/` (control)
-- `08_caso_falsacion_no_estacionariedad/` (control)
-- `09_caso_falsacion_observabilidad/` (control)
-- `10_caso_finanzas/` ✅
-- `11_caso_justicia/`
+- `06_caso_falsacion_exogeneidad/` (control)
+- `06_caso_falsacion_no_estacionariedad/` (control)
+- `06_caso_falsacion_observabilidad/` (control)
+- `06_caso_finanzas/` ✅
+- `06_caso_justicia/`
 - `12_caso_moderacion_adversarial/`
-- `13_caso_movilidad/`
-- `14_caso_paradigmas/` ✅
-- `15_caso_politicas_estrategicas/`
-- `16_caso_postverdad/`
+- `06_caso_movilidad/`
+- `12_caso_paradigmas/` ✅
+- `06_caso_politicas_estrategicas/`
+- `12_caso_postverdad/`
 - `17_caso_rtb_publicidad/` ✅
-- `18_caso_wikipedia/`
-- `19_caso_deforestacion/` ✅
-- `20_caso_oceanos/`
-- `21_caso_urbanizacion/` ✅
+- `06_caso_wikipedia/`
+- `12_caso_deforestacion/` ✅
+- `17_caso_oceanos/`
+- `06_caso_urbanizacion/` ✅
 
 **Bloque II — Nuevos (22–32):**
-- `22_caso_acidificacion_oceanica/`
-- `23_caso_kessler/`
-- `24_caso_salinizacion/`
-- `25_caso_fosforo/` ✅
-- `26_caso_erosion_dialectica/`
-- `27_caso_microplasticos/`
-- `28_caso_acuiferos/` ✅
-- `29_caso_starlink/` ✅
-- `30_caso_riesgo_biologico/`
-- `31_caso_fuga_cerebros/` ✅
-- `32_caso_iot/`
+- `12_caso_acidificacion_oceanica/`
+- `17_caso_kessler/`
+- `06_caso_salinizacion/`
+- `12_caso_fosforo/` ✅
+- `17_caso_erosion_dialectica/`
+- `06_caso_microplasticos/`
+- `12_caso_acuiferos/` ✅
+- `17_caso_starlink/` ✅
+- `06_caso_riesgo_biologico/`
+- `12_caso_fuga_cerebros/` ✅
+- `17_caso_iot/`

@@ -7,7 +7,7 @@ Validación del hiperobjeto 'Salinización' como degradación sistémica del sue
 - **Fuente:** World Bank Open Data
 - **Indicador:** `AG.LND.ARBL.ZS` (tierra cultivable % del territorio)
 - **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/24_caso_salinizacion/src/validate.py`
+- **Pipeline:** `repos/Simulaciones/06_caso_salinizacion/src/validate.py`
 
 ## Estado
 ❌ **Rechazado** — EDI < 0.30, sin estructura macro detectable.

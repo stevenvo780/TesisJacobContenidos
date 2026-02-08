@@ -24,82 +24,82 @@ WORLDBANK_INDICATORS = {
         "description": "Mortality rate, under-5 (per 1,000 live births)",
         "column_name": "mortality"
     },
-    "11_caso_justicia": {
+    "06_caso_justicia": {
         "indicator": "RL.EST",
         "description": "Rule of Law: Estimate (WGI)",
         "column_name": "rule_of_law"
     },
-    "13_caso_movilidad": {
+    "06_caso_movilidad": {
         "indicator": "IS.AIR.PSGR",
         "description": "Air transport, passengers carried",
         "column_name": "passengers"
     },
-    "15_caso_politicas_estrategicas": {
+    "06_caso_politicas_estrategicas": {
         "indicator": "GC.TAX.TOTL.GD.ZS",
         "description": "Tax revenue (% of GDP)",
         "column_name": "tax_revenue"
     },
-    "16_caso_postverdad": {
+    "12_caso_postverdad": {
         "indicator": "IT.NET.USER.ZS",
         "description": "Individuals using the Internet (% of population)",
         "column_name": "internet_users"
     },
-    "19_caso_deforestacion": {
+    "12_caso_deforestacion": {
         "indicator": "AG.LND.FRST.ZS",
         "description": "Forest area (% of land area)",
         "column_name": "forest_area"
     },
-    "20_caso_oceanos": {
+    "17_caso_oceanos": {
         "indicator": "EN.ATM.CO2E.KT",
         "description": "CO2 emissions (kt)",
         "column_name": "co2_emissions"
     },
-    "21_caso_urbanizacion": {
+    "06_caso_urbanizacion": {
         "indicator": "SP.URB.TOTL.IN.ZS",
         "description": "Urban population (% of total population)",
         "column_name": "urban_pop"
     },
-    "22_caso_acidificacion_oceanica": {
+    "12_caso_acidificacion_oceanica": {
         "indicator": "EN.ATM.CO2E.PC",
         "description": "CO2 emissions (metric tons per capita)",
         "column_name": "co2_per_capita"
     },
-    "24_caso_salinizacion": {
+    "06_caso_salinizacion": {
         "indicator": "AG.LND.ARBL.ZS",
         "description": "Arable land (% of land area)",
         "column_name": "arable_land"
     },
-    "25_caso_fosforo": {
+    "12_caso_fosforo": {
         "indicator": "AG.CON.FERT.ZS",
         "description": "Fertilizer consumption (kg per hectare)",
         "column_name": "fertilizer"
     },
-    "26_caso_erosion_dialectica": {
+    "17_caso_erosion_dialectica": {
         "indicator": "SE.ADT.LITR.ZS",
         "description": "Literacy rate, adult total (% ages 15+)",
         "column_name": "literacy"
     },
-    "27_caso_microplasticos": {
+    "06_caso_microplasticos": {
         "indicator": "EN.ATM.GHGT.KT.CE",
         "description": "Total greenhouse gas emissions (kt of CO2 equivalent)",
         "column_name": "ghg_emissions"
     },
-    "28_caso_acuiferos": {
+    "12_caso_acuiferos": {
         "indicator": "SH.H2O.BASW.ZS",
         "description": "People using safely managed drinking water (% pop)",
         "column_name": "water_access"
     },
-    "30_caso_riesgo_biologico": {
+    "06_caso_riesgo_biologico": {
         "indicator": "SH.DYN.MORT",
         "description": "Mortality rate, under-5",
         "column_name": "mortality"
     },
-    "31_caso_fuga_cerebros": {
+    "12_caso_fuga_cerebros": {
         "indicator": "GB.XPD.RSDV.GD.ZS",
         "description": "Research and development expenditure (% of GDP)",
         "column_name": "rd_expenditure"
     },
-    "32_caso_iot": {
+    "17_caso_iot": {
         "indicator": "IT.CEL.SETS.P2",
         "description": "Mobile cellular subscriptions (per 100 people)",
         "column_name": "mobile_subs"
