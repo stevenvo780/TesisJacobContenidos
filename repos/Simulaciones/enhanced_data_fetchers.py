@@ -11,6 +11,9 @@ Casos mejorados:
 import os
 import sys
 import json
+import io
+import zipfile
+import re
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
@@ -239,6 +242,248 @@ def fetch_fred_series(series_id="FEDFUNDS", start_date="2000-01-01", end_date=No
     except Exception as e:
         print(f"⚠️ FRED fetch failed: {e}")
         return pd.DataFrame(), {"source": "failed", "error": str(e)}
+
+
+# ==============================================================================
+# 5. WMO (Sea Level, SST, OHC) + BADC-CSV Parser
+# ==============================================================================
+
+def _parse_badc_csv(text: str) -> pd.DataFrame:
+    lines = text.splitlines()
+    data_idx = None
+    for i, line in enumerate(lines):
+        if line.strip().lower() == "data":
+            data_idx = i
+            break
+    if data_idx is None or data_idx + 1 >= len(lines):
+        raise ValueError("BADC-CSV data section not found")
+    data_text = "\n".join(lines[data_idx + 1 :])
+    return pd.read_csv(io.StringIO(data_text))
+
+
+def _badc_zip_to_df(url: str, inner_name: str, cache_path: str | None = None) -> pd.DataFrame:
+    if cache_path and os.path.exists(cache_path):
+        return pd.read_csv(cache_path, parse_dates=["date"])
+    resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+    resp.raise_for_status()
+    zf = zipfile.ZipFile(io.BytesIO(resp.content))
+    with zf.open(inner_name) as f:
+        text = f.read().decode("utf-8")
+    df = _parse_badc_csv(text)
+    if cache_path:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        df.to_csv(cache_path, index=False)
+    return df
+
+
+def _annual_to_monthly(df: pd.DataFrame, value_col: str) -> pd.DataFrame:
+    df = df.copy()
+    df["date"] = pd.to_datetime(df["date"])
+    df = df.sort_values("date").set_index("date")
+    monthly = df[[value_col]].resample("MS").interpolate("linear")
+    return monthly.reset_index()
+
+
+def fetch_wmo_sea_level(start_date=None, end_date=None, cache_path=None):
+    url = (
+        "https://climateindicators-wmo-dashboard.org/"
+        "climate_dashboard/sites/default/files/formatted_data/Sea_level_data_files.zip"
+    )
+    df = _badc_zip_to_df(url, "sealevel_AVISO.csv", cache_path=cache_path)
+    df = df.rename(columns={"data": "sea_level"})
+    df["date"] = pd.to_datetime(
+        dict(year=df["year"], month=df["month"], day=df.get("day", 1)),
+        errors="coerce",
+    )
+    df = df[["date", "sea_level"]].dropna()
+    df = df.groupby(pd.Grouper(key="date", freq="MS"), as_index=False).mean()
+    if start_date and end_date:
+        df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    return df, {"source": "WMO", "dataset": "sea_level"}
+
+
+def fetch_wmo_ohc(start_date=None, end_date=None, cache_path=None):
+    url = (
+        "https://climateindicators-wmo-dashboard.org/"
+        "climate_dashboard/sites/default/files/formatted_data/Ocean_heat_content_data_files.zip"
+    )
+    df = _badc_zip_to_df(url, "ohc_GCOS.csv", cache_path=cache_path)
+    df = df.rename(columns={"data": "ohc"})
+    df["date"] = pd.to_datetime(df["year"].astype(float).astype(int), format="%Y", errors="coerce")
+    df = df[["date", "ohc"]].dropna()
+    df = _annual_to_monthly(df, "ohc")
+    if start_date and end_date:
+        df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    return df, {"source": "WMO", "dataset": "ocean_heat_content"}
+
+
+def fetch_wmo_sst(start_date=None, end_date=None, cache_path=None):
+    url = (
+        "https://climateindicators-wmo-dashboard.org/"
+        "climate_dashboard/sites/default/files/formatted_data/Sea-surface_temperature_data_files.zip"
+    )
+    df = _badc_zip_to_df(url, "sst_ERSST.csv", cache_path=cache_path)
+    df = df.rename(columns={"data": "sst"})
+    df["date"] = pd.to_datetime(df["year"].astype(float).astype(int), format="%Y", errors="coerce")
+    df = df[["date", "sst"]].dropna()
+    df = _annual_to_monthly(df, "sst")
+    if start_date and end_date:
+        df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    return df, {"source": "WMO", "dataset": "sst"}
+
+
+# ==============================================================================
+# 6. Solar Irradiance (SORCE/TSIS) + Stratospheric Aerosols (GISS)
+# ==============================================================================
+
+def _fetch_tsi_daily(url: str) -> pd.DataFrame:
+    resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+    resp.raise_for_status()
+    rows = []
+    for line in resp.text.splitlines():
+        if not line.strip() or line.startswith(";") or line.startswith("#"):
+            continue
+        parts = line.split()
+        if len(parts) < 5:
+            continue
+        yyyymmdd = parts[0].split(".")[0]
+        try:
+            dt = datetime.strptime(yyyymmdd, "%Y%m%d")
+            tsi = float(parts[4])
+        except Exception:
+            continue
+        rows.append({"date": dt, "tsi": tsi})
+    return pd.DataFrame(rows)
+
+
+def fetch_tsi_monthly(start_date=None, end_date=None, cache_path=None):
+    if cache_path and os.path.exists(cache_path):
+        return pd.read_csv(cache_path, parse_dates=["date"]), {"source": "cache"}
+    sorce_url = "http://lasp.colorado.edu/data/sorce/tsi_data/daily/sorce_tsi_L3_c24h_latest.txt"
+    tsis_url = "https://lasp.colorado.edu/data/tsis/tsi_data/tsis_tsi_L3_c24h_latest.txt"
+    df = pd.concat(
+        [_fetch_tsi_daily(sorce_url), _fetch_tsi_daily(tsis_url)],
+        ignore_index=True,
+    ).dropna()
+    if df.empty:
+        return pd.DataFrame(), {"source": "TSI", "error": "no_data"}
+    df["date"] = pd.to_datetime(df["date"])
+    df = df.groupby(pd.Grouper(key="date", freq="MS"), as_index=False)["tsi"].mean()
+    if start_date and end_date:
+        df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    if cache_path:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        df.to_csv(cache_path, index=False)
+    return df, {"source": "SORCE+TSIS", "dataset": "tsi"}
+
+
+def fetch_giss_aod_monthly(start_date=None, end_date=None, cache_path=None):
+    if cache_path and os.path.exists(cache_path):
+        return pd.read_csv(cache_path, parse_dates=["date"]), {"source": "cache"}
+    url = "https://data.giss.nasa.gov/modelforce/strataer/tau.line_2012.12.txt"
+    resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+    resp.raise_for_status()
+    rows = []
+    for line in resp.text.splitlines():
+        if not line.strip():
+            continue
+        if re.match(r"^[A-Za-z\\-]", line.strip()):
+            continue
+        parts = line.split()
+        if len(parts) < 2:
+            continue
+        try:
+            yearmon = float(parts[0])
+            year = int(yearmon)
+            frac = yearmon - year
+            month = int(round(frac * 12 + 0.5))
+            month = min(max(month, 1), 12)
+            dt = datetime(year, month, 1)
+            aod = float(parts[1])
+        except Exception:
+            continue
+        rows.append({"date": dt, "aod": aod})
+    df = pd.DataFrame(rows)
+    if start_date and end_date:
+        df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    if cache_path:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        df.to_csv(cache_path, index=False)
+    return df, {"source": "GISS", "dataset": "aod"}
+
+
+# ==============================================================================
+# 7. OWID Grapher (Plastics, etc.)
+# ==============================================================================
+
+def fetch_owid_grapher_series(slug_candidates, entity="World", cache_path=None):
+    if cache_path and os.path.exists(cache_path):
+        return pd.read_csv(cache_path, parse_dates=["date"]), {"source": "cache"}
+    last_error = None
+    for slug in slug_candidates:
+        url = f"https://ourworldindata.org/grapher/{slug}.csv"
+        try:
+            df = pd.read_csv(url)
+        except Exception as e:
+            last_error = str(e)
+            continue
+        if df.empty or "Year" not in df.columns:
+            continue
+        value_cols = [c for c in df.columns if c not in ("Entity", "Code", "Year")]
+        if not value_cols:
+            continue
+        value_col = value_cols[0]
+        if entity in df["Entity"].unique():
+            df = df[df["Entity"] == entity]
+        else:
+            df = df[df["Entity"] == df["Entity"].iloc[0]]
+        df = df[["Year", value_col]].rename(columns={"Year": "year", value_col: "value"})
+        df["date"] = pd.to_datetime(df["year"].astype(int), format="%Y")
+        df = df[["date", "value"]].dropna()
+        if cache_path:
+            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            df.to_csv(cache_path, index=False)
+        return df, {"source": "OWID", "slug": slug, "entity": entity}
+    return pd.DataFrame(), {"source": "OWID", "error": last_error or "no_slug_worked"}
+
+
+# ==============================================================================
+# 8. CelesTrak SATCAT Time Series
+# ==============================================================================
+
+def _satcat_timeseries(df, start_date, end_date):
+    df = df.copy()
+    df["launch_date"] = pd.to_datetime(df["LAUNCH_DATE"], errors="coerce")
+    df["decay_date"] = pd.to_datetime(df["DECAY_DATE"], errors="coerce")
+    df = df.dropna(subset=["launch_date"])
+    idx = pd.date_range(start=start_date, end=end_date, freq="MS")
+    launch_counts = df["launch_date"].dt.to_period("M").dt.to_timestamp().value_counts()
+    decay_counts = df["decay_date"].dropna().dt.to_period("M").dt.to_timestamp().value_counts()
+    launch_series = launch_counts.reindex(idx, fill_value=0).sort_index()
+    decay_series = decay_counts.reindex(idx, fill_value=0).sort_index()
+    active_series = (launch_series.cumsum() - decay_series.cumsum()).clip(lower=0)
+    out = pd.DataFrame({
+        "date": idx,
+        "active": active_series.values,
+        "launches": launch_series.values,
+    })
+    return out
+
+
+def fetch_celestrak_satcat_timeseries(start_date, end_date, filter_fn=None, cache_path=None):
+    if cache_path and os.path.exists(cache_path):
+        return pd.read_csv(cache_path, parse_dates=["date"]), {"source": "cache"}
+    url = "https://celestrak.org/pub/satcat.csv"
+    resp = requests.get(url, timeout=60)
+    resp.raise_for_status()
+    df = pd.read_csv(io.StringIO(resp.text))
+    if filter_fn is not None:
+        df = df[filter_fn(df)]
+    ts = _satcat_timeseries(df, start_date, end_date)
+    if cache_path:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        ts.to_csv(cache_path, index=False)
+    return ts, {"source": "CelesTrak", "dataset": "satcat"}
 
 
 # ==============================================================================

@@ -22,6 +22,20 @@ def _fetch_fedfunds_monthly(start_date, end_date):
     return df
 
 
+def _fetch_fred_series(series_id, start_date, end_date, col_name):
+    url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}"
+    resp = requests.get(url, timeout=60)
+    resp.raise_for_status()
+    df = pd.read_csv(io.StringIO(resp.text))
+    df = df.rename(columns={"DATE": "date", series_id: col_name})
+    df["date"] = pd.to_datetime(df["date"])
+    df["date"] = df["date"].dt.to_period("M").dt.to_timestamp()
+    df[col_name] = pd.to_numeric(df[col_name], errors="coerce")
+    df = df.dropna()
+    df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    return df
+
+
 def fetch_spy_monthly(start_date, end_date, cache_path=None):
     start = datetime.strptime(start_date, "%Y-%m-%d")
     end = datetime.strptime(end_date, "%Y-%m-%d")
@@ -51,11 +65,19 @@ def fetch_spy_monthly(start_date, end_date, cache_path=None):
     if isinstance(close, pd.DataFrame):
         close = close.iloc[:, 0]
 
+    volume = None
+    if "Volume" in data.columns:
+        volume = data["Volume"]
+        if isinstance(volume, pd.DataFrame):
+            volume = volume.iloc[:, 0]
+
     data = data[["date"]].copy()
     data["Close"] = close.values
     data = data.dropna()
     data["log_price"] = data["Close"].apply(lambda x: float(np.log(x)))
     df = data[["date", "log_price"]].rename(columns={"log_price": "price"})
+    if volume is not None:
+        df["volume"] = volume.values
 
     # VIX como driver macro
     try:
@@ -81,6 +103,29 @@ def fetch_spy_monthly(start_date, end_date, cache_path=None):
         df = df.merge(fed, on="date", how="left")
     except Exception:
         df["fedfunds"] = None
+
+    # Inflation (CPI YoY)
+    try:
+        cpi = _fetch_fred_series("CPIAUCSL", start_date, end_date, "cpi")
+        cpi = cpi.sort_values("date")
+        cpi["inflation"] = cpi["cpi"].pct_change(12)
+        df = df.merge(cpi[["date", "inflation"]], on="date", how="left")
+    except Exception:
+        df["inflation"] = None
+
+    # Credit spread (BAA - AAA) o fallback BAA10Y
+    try:
+        baa = _fetch_fred_series("BAA", start_date, end_date, "baa")
+        aaa = _fetch_fred_series("AAA", start_date, end_date, "aaa")
+        spread = baa.merge(aaa, on="date", how="inner")
+        spread["credit_spread"] = spread["baa"] - spread["aaa"]
+        df = df.merge(spread[["date", "credit_spread"]], on="date", how="left")
+    except Exception:
+        try:
+            baa10 = _fetch_fred_series("BAA10Y", start_date, end_date, "credit_spread")
+            df = df.merge(baa10[["date", "credit_spread"]], on="date", how="left")
+        except Exception:
+            df["credit_spread"] = None
 
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)

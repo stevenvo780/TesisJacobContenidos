@@ -1,10 +1,18 @@
 import os
+import sys
 from datetime import datetime
 import urllib.request
 
 import pandas as pd
 from meteostat import Stations, Monthly
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+
+from enhanced_data_fetchers import (
+    fetch_tsi_monthly,
+    fetch_wmo_ohc,
+    fetch_giss_aod_monthly,
+)
 CO2_URL = "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt"
 
 
@@ -119,6 +127,25 @@ def fetch_regional_monthly(start_date, end_date, max_stations=10, cache_path=Non
         df["co2"] = df["co2"].interpolate(limit_direction="both")
     except Exception:
         df["co2"] = None
+
+    # Merge TSI (solar), OHC (ocean heat content) y aerosoles (AOD)
+    driver_specs = [
+        ("tsi", fetch_tsi_monthly),
+        ("ohc", fetch_wmo_ohc),
+        ("aod", fetch_giss_aod_monthly),
+    ]
+    for col, fn in driver_specs:
+        driver_cache = None
+        if cache_path:
+            driver_cache = os.path.join(os.path.dirname(cache_path), f"{col}.csv")
+        try:
+            df_drv, _ = fn(start_date, end_date, cache_path=driver_cache)
+            if df_drv is not None and not df_drv.empty:
+                df = df.merge(df_drv, on="date", how="left")
+                if col in df.columns:
+                    df[col] = df[col].interpolate(limit_direction="both")
+        except Exception:
+            df[col] = None
 
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)

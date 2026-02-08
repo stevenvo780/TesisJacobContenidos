@@ -21,24 +21,58 @@ def fetch_opsd_load_monthly(start_date, end_date, cache_path=None):
     with open(tmp_path, "wb") as f:
         f.write(resp.content)
 
-    df = pd.read_csv(tmp_path, parse_dates=["utc_timestamp"], low_memory=False)
+    header_cols = pd.read_csv(tmp_path, nrows=0).columns.tolist()
+    load_candidates = [
+        "GB_GBN_load_actual_entsoe_transparency",
+        "GB_GBN_load_actual_entsoe",
+        "GB_GBN_load_actual",
+    ]
+    load_col = next((c for c in load_candidates if c in header_cols), None)
+    if not load_col:
+        raise RuntimeError("No GB load column found in OPSD dataset")
 
-    col = "GB_GBN_load_actual_entsoe_transparency"
-    if col not in df.columns:
-        raise RuntimeError(f"Expected column not found: {col}")
+    price_cols = [c for c in header_cols if c.startswith("GB_GBN") and "price" in c.lower()]
+    renewable_cols = [
+        c for c in header_cols
+        if c.startswith("GB_GBN_generation")
+        and any(tok in c.lower() for tok in ["wind", "solar", "hydro", "biomass", "renewable"])
+    ]
+    total_gen_cols = [
+        c for c in header_cols
+        if c.startswith("GB_GBN_generation") and "total" in c.lower()
+    ]
 
-    df = df[["utc_timestamp", col]].rename(columns={"utc_timestamp": "date", col: "load"})
-    df = df.dropna()
+    usecols = ["utc_timestamp", load_col] + price_cols + renewable_cols + total_gen_cols
+    usecols = list(dict.fromkeys(usecols))  # dedupe preserve order
+    df = pd.read_csv(tmp_path, parse_dates=["utc_timestamp"], usecols=usecols, low_memory=False)
+    df = df.rename(columns={"utc_timestamp": "date", load_col: "load"}).dropna(subset=["date", "load"])
 
     df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
     if df.empty:
         raise RuntimeError("No load data for selected period")
 
+    if price_cols:
+        df["price"] = df[price_cols].mean(axis=1, skipna=True)
+    else:
+        df["price"] = np.nan
+
+    if renewable_cols:
+        renewable_gen = df[renewable_cols].sum(axis=1, skipna=True)
+        if total_gen_cols:
+            total_gen = df[total_gen_cols].sum(axis=1, skipna=True)
+        else:
+            total_gen = df["load"]
+        df["renewables_share"] = np.where(total_gen > 0, renewable_gen / total_gen, np.nan)
+    else:
+        df["renewables_share"] = np.nan
+
     df["month"] = df["date"].dt.to_period("M").dt.to_timestamp()
-    monthly = df.groupby("month", as_index=False)["load"].mean()
+    monthly = df.groupby("month", as_index=False).mean(numeric_only=True)
     monthly["log_load"] = monthly["load"].apply(lambda x: float(np.log(max(x, 1.0))))
 
-    out = monthly[["month", "log_load"]].rename(columns={"month": "date", "log_load": "demand"})
+    out = monthly.rename(columns={"month": "date", "log_load": "demand"})[
+        ["date", "demand", "price", "renewables_share"]
+    ]
 
     # Driver: temperatura mensual (Londres)
     try:

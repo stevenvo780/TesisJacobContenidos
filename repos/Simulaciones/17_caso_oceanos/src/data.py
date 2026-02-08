@@ -1,6 +1,6 @@
 """
 data.py — 17_caso_oceanos
-Carga datos reales cuando es posible; fallback sintético si falla.
+SST + nivel del mar + OHC (WMO).
 """
 
 import os
@@ -8,9 +8,13 @@ import sys
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from data_universal import fetch_case_data
+from enhanced_data_fetchers import (
+    fetch_wmo_sst,
+    fetch_wmo_sea_level,
+    fetch_wmo_ohc,
+)
 
 
 def _synthetic_fallback(start_date, end_date, seed=42):
@@ -27,16 +31,33 @@ def _synthetic_fallback(start_date, end_date, seed=42):
 
 
 def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
-    start_date = start_date or "2000-01-01"
+    start_date = start_date or "1980-01-01"
     end_date = end_date or "2023-12-31"
 
     if cache_path and not refresh and os.path.exists(cache_path):
         df = pd.read_csv(cache_path, parse_dates=["date"])
         return df, {"source": "cache", "case": "17_caso_oceanos"}
 
-    df, meta = fetch_case_data("17_caso_oceanos", start_date, end_date, cache_path=cache_path)
-    if df is not None and not df.empty:
-        df["date"] = pd.to_datetime(df["date"])
-        return df, meta
+    cache_dir = os.path.dirname(cache_path) if cache_path else None
+    sst_cache = os.path.join(cache_dir, "sst_wmo.csv") if cache_dir else None
+    sl_cache = os.path.join(cache_dir, "sea_level_wmo.csv") if cache_dir else None
+    ohc_cache = os.path.join(cache_dir, "ohc_wmo.csv") if cache_dir else None
 
-    return _synthetic_fallback(start_date, end_date)
+    try:
+        df_sst, _ = fetch_wmo_sst(start_date, end_date, cache_path=sst_cache)
+        df_sl, _ = fetch_wmo_sea_level(start_date, end_date, cache_path=sl_cache)
+        df_ohc, _ = fetch_wmo_ohc(start_date, end_date, cache_path=ohc_cache)
+
+        if df_sst.empty:
+            raise RuntimeError("No SST data")
+
+        df = df_sst.rename(columns={"sst": "value"})
+        df = df.merge(df_sl, on="date", how="left")
+        df = df.merge(df_ohc, on="date", how="left")
+
+        if cache_path:
+            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            df.to_csv(cache_path, index=False)
+        return df, {"source": "WMO", "datasets": ["sst", "sea_level", "ohc"]}
+    except Exception:
+        return _synthetic_fallback(start_date, end_date)

@@ -64,6 +64,7 @@ def main():
         real_split="2000-01-01",
         corr_threshold=0.7,
         extra_base_params={},
+        driver_cols=["works", "rd_expenditure"],
     )
 
     results = run_full_validation(

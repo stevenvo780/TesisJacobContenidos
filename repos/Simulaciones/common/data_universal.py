@@ -18,8 +18,16 @@ import enhanced_data_fetchers as enh
 
 
 WORLD_BANK_MAP = {
-    "10_caso_justicia": ("RL.EST", "rule_of_law"),
-    "11_caso_movilidad": ("IS.VEH.NVEH.P3", "vehicles_per_1000"),
+    "10_caso_justicia": [
+        ("RL.EST", "rule_of_law"),
+        ("CC.EST", "corruption_control"),
+        ("SI.POV.GINI", "gini"),
+    ],
+    "11_caso_movilidad": [
+        ("IS.VEH.NVEH.P3", "vehicles_per_1000"),
+        ("EP.PMP.SGAS.CD", "gas_price"),
+        ("NY.GDP.PCAP.KD", "gdp_per_capita"),
+    ],
     "13_caso_politicas_estrategicas": ("MS.MIL.XPND.GD.ZS", "military_spend_gdp"),
     "17_caso_oceanos": ("EN.ATM.CO2E.KT", "co2_emissions"),
     "19_caso_acidificacion_oceanica": ("EN.ATM.CO2E.PC", "co2_per_capita"),
@@ -57,16 +65,41 @@ def fetch_case_data(case_id: str, start_date: str, end_date: str, cache_path: st
 
     # World Bank
     if case_id in WORLD_BANK_MAP:
-        indicator, _ = WORLD_BANK_MAP[case_id]
-        df, err = wb.fetch_worldbank_indicator(indicator)
-        if df is not None:
-            df = df.rename(columns={"value": "value"})
-            df = _filter_date_range(df, start_date, end_date)
-            if cache_path:
-                os.makedirs(os.path.dirname(cache_path), exist_ok=True)
-                df.to_csv(cache_path, index=False)
-            return df, {"source": "worldbank", "indicator": indicator}
-        return None, {"source": "worldbank", "error": err}
+        cfg = WORLD_BANK_MAP[case_id]
+        if isinstance(cfg, tuple):
+            indicator, col = cfg
+            df, err = wb.fetch_worldbank_indicator(indicator)
+            if df is not None:
+                df = df.rename(columns={"value": col})
+                df["value"] = df[col]
+                df = _filter_date_range(df, start_date, end_date)
+                if cache_path:
+                    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+                    df.to_csv(cache_path, index=False)
+                return df, {"source": "worldbank", "indicator": indicator}
+            return None, {"source": "worldbank", "error": err}
+
+        frames = []
+        indicators = []
+        for indicator, col in cfg:
+            df, err = wb.fetch_worldbank_indicator(indicator)
+            if df is None:
+                continue
+            df = df.rename(columns={"value": col})
+            frames.append(df[["date", col]])
+            indicators.append(indicator)
+        if not frames:
+            return None, {"source": "worldbank", "error": "no_indicators"}
+        merged = frames[0]
+        for frame in frames[1:]:
+            merged = merged.merge(frame, on="date", how="outer")
+        first_col = frames[0].columns[1]
+        merged["value"] = merged[first_col]
+        merged = _filter_date_range(merged, start_date, end_date)
+        if cache_path:
+            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            merged.to_csv(cache_path, index=False)
+        return merged, {"source": "worldbank", "indicators": indicators}
 
     # Google Trends
     if case_id in GOOGLE_TRENDS_MAP:

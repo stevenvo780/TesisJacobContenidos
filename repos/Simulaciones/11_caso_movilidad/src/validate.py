@@ -64,6 +64,7 @@ def main():
         real_split="2014-01-01",
         corr_threshold=0.7,
         extra_base_params={},
+        driver_cols=["gas_price", "gdp_per_capita"],
     )
 
     results = run_full_validation(

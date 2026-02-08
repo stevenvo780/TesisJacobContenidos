@@ -65,7 +65,7 @@ def main():
         real_split="2011-01-01",
         corr_threshold=0.7,
         extra_base_params={"sentiment_scale": 0.05},
-        driver_cols=["vix", "fedfunds"],
+        driver_cols=["vix", "fedfunds", "inflation", "credit_spread", "volume"],
         use_topology=True,
         topology_type="small_world",
         topology_params={"k": 4, "p": 0.1},

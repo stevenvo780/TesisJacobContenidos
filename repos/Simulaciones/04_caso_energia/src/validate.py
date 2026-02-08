@@ -65,7 +65,7 @@ def main():
         real_split="2019-01-01",
         corr_threshold=0.7,
         extra_base_params={"demand_scale": 0.05},
-        driver_cols=["tavg"],
+        driver_cols=["tavg", "price", "renewables_share"],
         use_topology=True,
         topology_type="small_world",
         topology_params={"k": 4, "p": 0.1},

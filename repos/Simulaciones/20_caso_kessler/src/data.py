@@ -1,42 +1,47 @@
 """
 data.py — 20_caso_kessler
-Proxy orbital (CelesTrak) con fallback lineal.
+Serie histórica desde SATCAT (CelesTrak).
 """
 
 import os
 import sys
-import numpy as np
 import pandas as pd
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from enhanced_data_fetchers import fetch_celestrak_catalog_count
+from enhanced_data_fetchers import fetch_celestrak_satcat_timeseries
 
 
 def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
-    start_date = start_date or "2000-01-01"
+    start_date = start_date or "1970-01-01"
     end_date = end_date or "2023-12-31"
 
     if cache_path and not refresh and os.path.exists(cache_path):
         df = pd.read_csv(cache_path, parse_dates=["date"])
         return df, {"source": "cache", "case": "20_caso_kessler"}
 
-    # CelesTrak snapshot (current count) -> serie lineal
-    snapshot_path = None
-    if cache_path:
-        snapshot_path = os.path.join(os.path.dirname(cache_path), "celestrak_snapshot.json")
-    data, meta = fetch_celestrak_catalog_count(group="active", cache_path=snapshot_path)
-    count = float(data.get("count", 0))
+    cache_dir = os.path.dirname(cache_path) if cache_path else None
+    all_cache = os.path.join(cache_dir, "satcat_all.csv") if cache_dir else None
+    deb_cache = os.path.join(cache_dir, "satcat_deb.csv") if cache_dir else None
 
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
-    if len(dates) < 6:
-        dates = pd.date_range(start=start_date, end=end_date, freq="YS")
-    values = np.linspace(0.0, count, len(dates))
-    df = pd.DataFrame({"date": dates, "value": values})
+    ts_all, meta = fetch_celestrak_satcat_timeseries(
+        start_date, end_date, filter_fn=None, cache_path=all_cache
+    )
+    ts_deb, _ = fetch_celestrak_satcat_timeseries(
+        start_date, end_date,
+        filter_fn=lambda d: d["OBJECT_TYPE"].fillna("") == "DEB",
+        cache_path=deb_cache,
+    )
+
+    df = ts_all.rename(columns={"active": "value"})
+    df = df.merge(
+        ts_deb[["date", "active"]].rename(columns={"active": "debris_objects"}),
+        on="date",
+        how="left",
+    )
 
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)
         df.to_csv(cache_path, index=False)
 
-    meta.update({"source": "CelesTrak", "count": count})
     return df, meta

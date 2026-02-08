@@ -1,6 +1,6 @@
 """
 data.py — 25_caso_acuiferos
-Carga datos reales cuando es posible; fallback sintético si falla.
+Proxy hidrológico: precipitación + extracción (World Bank).
 """
 
 import os
@@ -8,9 +8,9 @@ import sys
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from data_universal import fetch_case_data
+from worldbank_universal_fetcher import fetch_worldbank_indicator
 
 
 def _synthetic_fallback(start_date, end_date, seed=42):
@@ -26,17 +26,48 @@ def _synthetic_fallback(start_date, end_date, seed=42):
     return pd.DataFrame({"date": dates, "value": values}), {"source": "synthetic_fallback"}
 
 
+def _annual_to_monthly(df, value_col):
+    df = df.copy()
+    df["date"] = pd.to_datetime(df["date"])
+    df = df.sort_values("date").set_index("date")
+    return df[[value_col]].resample("MS").interpolate("linear").reset_index()
+
+
 def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
-    start_date = start_date or "2000-01-01"
+    start_date = start_date or "1980-01-01"
     end_date = end_date or "2023-12-31"
 
     if cache_path and not refresh and os.path.exists(cache_path):
         df = pd.read_csv(cache_path, parse_dates=["date"])
         return df, {"source": "cache", "case": "25_caso_acuiferos"}
 
-    df, meta = fetch_case_data("25_caso_acuiferos", start_date, end_date, cache_path=cache_path)
-    if df is not None and not df.empty:
-        df["date"] = pd.to_datetime(df["date"])
-        return df, meta
+    try:
+        precip, err_p = fetch_worldbank_indicator("AG.LND.PRCP.MM")
+        withdraw, err_w = fetch_worldbank_indicator("ER.H2O.FWTL.ZS")
+        if precip is None or withdraw is None:
+            raise RuntimeError(f"WB fetch failed: {err_p or err_w}")
 
-    return _synthetic_fallback(start_date, end_date)
+        precip = precip.rename(columns={"value": "precip"})
+        withdraw = withdraw.rename(columns={"value": "withdrawal"})
+
+        precip_m = _annual_to_monthly(precip, "precip")
+        withdraw_m = _annual_to_monthly(withdraw, "withdrawal")
+
+        df = precip_m.merge(withdraw_m, on="date", how="outer").sort_values("date")
+        df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+
+        # Storage proxy: acumulado (precip - withdrawal)
+        p = df["precip"].fillna(method="ffill").fillna(method="bfill")
+        w = df["withdrawal"].fillna(method="ffill").fillna(method="bfill")
+        delta = (p - w).fillna(0.0)
+        storage_proxy = (delta - delta.mean()).cumsum()
+
+        df["storage_proxy"] = storage_proxy
+        df = df.rename(columns={"storage_proxy": "value"})
+
+        if cache_path:
+            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+            df.to_csv(cache_path, index=False)
+        return df, {"source": "WorldBank", "note": "storage proxy"}
+    except Exception:
+        return _synthetic_fallback(start_date, end_date)

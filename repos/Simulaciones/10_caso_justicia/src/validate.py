@@ -64,6 +64,7 @@ def main():
         real_split="2016-01-01",
         corr_threshold=0.7,
         extra_base_params={},
+        driver_cols=["corruption_control", "gini"],
     )
 
     results = run_full_validation(

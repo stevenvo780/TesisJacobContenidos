@@ -62,6 +62,7 @@ def main():
         real_split="2010-01-01",
         corr_threshold=0.7,
         extra_base_params={},
+        driver_cols=["launches"],
     )
 
     results = run_full_validation(

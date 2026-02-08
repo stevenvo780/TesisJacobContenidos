@@ -64,6 +64,7 @@ def main():
         real_split="2002-01-01",
         corr_threshold=0.7,
         extra_base_params={},
+        driver_cols=["co2", "pco2_proxy", "sst"],
     )
 
     results = run_full_validation(
