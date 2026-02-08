@@ -15,6 +15,7 @@ import io
 import zipfile
 import re
 import hashlib
+from urllib.parse import quote
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
@@ -330,7 +331,9 @@ def fetch_wmo_ohc(start_date=None, end_date=None, cache_path=None):
     )
     df = _badc_zip_to_df(url, "ohc_GCOS.csv", cache_path=cache_path)
     df = df.rename(columns={"data": "ohc"})
-    df["date"] = pd.to_datetime(df["year"].astype(float).astype(int), format="%Y", errors="coerce")
+    df["year"] = pd.to_numeric(df.get("year"), errors="coerce")
+    df = df.dropna(subset=["year"])
+    df["date"] = pd.to_datetime(df["year"].astype(int), format="%Y", errors="coerce")
     df = df[["date", "ohc"]].dropna()
     df = _annual_to_monthly(df, "ohc")
     if start_date and end_date:
@@ -345,7 +348,9 @@ def fetch_wmo_sst(start_date=None, end_date=None, cache_path=None):
     )
     df = _badc_zip_to_df(url, "sst_ERSST.csv", cache_path=cache_path)
     df = df.rename(columns={"data": "sst"})
-    df["date"] = pd.to_datetime(df["year"].astype(float).astype(int), format="%Y", errors="coerce")
+    df["year"] = pd.to_numeric(df.get("year"), errors="coerce")
+    df = df.dropna(subset=["year"])
+    df["date"] = pd.to_datetime(df["year"].astype(int), format="%Y", errors="coerce")
     df = df[["date", "sst"]].dropna()
     df = _annual_to_monthly(df, "sst")
     if start_date and end_date:
@@ -459,7 +464,9 @@ def fetch_owid_grapher_series(slug_candidates, entity="World", cache_path=None):
             return pd.read_csv(local_cache, parse_dates=["date"]), {"source": "cache"}
         url = f"https://ourworldindata.org/grapher/{slug}.csv"
         try:
-            df = pd.read_csv(url)
+            resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+            resp.raise_for_status()
+            df = pd.read_csv(io.StringIO(resp.text))
         except Exception as e:
             last_error = str(e)
             continue
@@ -524,6 +531,138 @@ def fetch_celestrak_satcat_timeseries(start_date, end_date, filter_fn=None, cach
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)
         ts.to_csv(cache_path, index=False)
     return ts, {"source": "CelesTrak", "dataset": "satcat"}
+
+
+def fetch_celestrak_debris_timeseries(start_date, end_date, name_contains=None, owner=None, cache_path=None):
+    def _filter(df):
+        sel = df["OBJECT_TYPE"].fillna("") == "DEB"
+        if name_contains:
+            sel &= df["OBJECT_NAME"].fillna("").str.contains(name_contains, case=False)
+        if owner:
+            sel &= df["OWNER"].fillna("").str.contains(owner, case=False)
+        return sel
+
+    ts, meta = fetch_celestrak_satcat_timeseries(
+        start_date,
+        end_date,
+        filter_fn=_filter,
+        cache_path=cache_path,
+    )
+    ts = ts.rename(columns={"launches": "debris_new", "active": "debris_active"})
+    meta.update({"type": "debris"})
+    return ts, meta
+
+
+# ==============================================================================
+# 9. GRAVIS (GFZ) Chartdata
+# ==============================================================================
+
+def fetch_gravis_chartdata(model, field, bset, basin, cache_path=None):
+    if cache_path and os.path.exists(cache_path):
+        return pd.read_csv(cache_path, parse_dates=["date"]), {"source": "cache"}
+    url = f"https://gravis.gfz.de/chartdata/{model}/{field}/{bset}/{quote(basin)}"
+    resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+    resp.raise_for_status()
+    js = resp.json()
+    # data: list of series; use first
+    series = js.get("data", [])
+    if not series:
+        return pd.DataFrame(), {"source": "GRAVIS", "error": "no_data"}
+    points = series[0]
+    rows = []
+    for p in points:
+        try:
+            year = int(p.get("y"))
+            day = int(p.get("d"))
+            dt = datetime(year, 1, 1) + timedelta(days=day - 1)
+            val = float(p.get("v"))
+        except Exception:
+            continue
+        rows.append({"date": dt, "value": val})
+    df = pd.DataFrame(rows).sort_values("date")
+    if cache_path:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        df.to_csv(cache_path, index=False)
+    return df, {"source": "GRAVIS", "model": model, "field": field, "basin": basin}
+
+
+# ==============================================================================
+# 10. PMEL CO2 Time Series (pCO2 + pH)
+# ==============================================================================
+
+def fetch_pmel_co2_timeseries(station="WHOTS", start_date=None, end_date=None, cache_path=None):
+    if cache_path and os.path.exists(cache_path):
+        df = pd.read_csv(cache_path, parse_dates=["date"])
+        return df, {"source": "cache"}
+    url = f"https://www.pmel.noaa.gov/co2/timeseries/{station}.txt"
+    shared_txt = _shared_path(_url_cache_name("pmel", url, "txt"))
+    if not os.path.exists(shared_txt):
+        resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+        resp.raise_for_status()
+        with open(shared_txt, "w", encoding="utf-8") as f:
+            f.write(resp.text)
+    df = pd.read_csv(shared_txt, comment="#", sep="\\t", engine="python")
+    if "datetime_utc" not in df.columns:
+        return pd.DataFrame(), {"source": "PMEL", "error": "no_datetime_utc"}
+    df = df.rename(columns={
+        "datetime_utc": "date",
+        "pCO2_sw": "pco2_sw",
+        "pH_sw": "ph_sw",
+    })
+    df["date"] = pd.to_datetime(df["date"])
+    keep = ["date"]
+    if "pco2_sw" in df.columns:
+        keep.append("pco2_sw")
+    if "ph_sw" in df.columns:
+        keep.append("ph_sw")
+    df = df[keep].dropna(subset=["date"])
+    df = df.groupby(pd.Grouper(key="date", freq="MS"), as_index=False).mean()
+    if start_date and end_date:
+        df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    if cache_path:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        df.to_csv(cache_path, index=False)
+    return df, {"source": "PMEL", "station": station}
+
+
+# ==============================================================================
+# 11. USGS Groundwater Withdrawals (Tabla Water Science School)
+# ==============================================================================
+
+def fetch_usgs_groundwater_withdrawals(cache_path=None):
+    if cache_path and os.path.exists(cache_path):
+        return pd.read_csv(cache_path, parse_dates=["date"]), {"source": "cache"}
+    url = "https://www.usgs.gov/special-topics/water-science-school/science/groundwater-use-united-states"
+    tables = pd.read_html(url)
+    if not tables:
+        return pd.DataFrame(), {"source": "USGS", "error": "no_tables"}
+    t = tables[0]
+    # First row is header
+    header = t.iloc[0].tolist()
+    t = t[1:].copy()
+    t.columns = header
+    if "Year" not in t.columns:
+        return pd.DataFrame(), {"source": "USGS", "error": "no_year_col"}
+    t["Year"] = pd.to_numeric(t["Year"], errors="coerce")
+    t = t.dropna(subset=["Year"])
+    # Use Fresh groundwater withdrawals (billion gallons per day)
+    fresh_col = None
+    for c in t.columns:
+        if str(c).strip().lower().startswith("fresh"):
+            fresh_col = c
+            break
+    if fresh_col is None:
+        return pd.DataFrame(), {"source": "USGS", "error": "no_fresh_col"}
+    t[fresh_col] = pd.to_numeric(t[fresh_col], errors="coerce")
+    t = t.dropna(subset=[fresh_col])
+    df = pd.DataFrame({
+        "date": pd.to_datetime(t["Year"].astype(int), format="%Y"),
+        "extraction_usgs": t[fresh_col].astype(float),
+    }).sort_values("date")
+    if cache_path:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        df.to_csv(cache_path, index=False)
+    return df, {"source": "USGS", "unit": "Bgal/d"}
 
 
 # ==============================================================================

@@ -66,7 +66,17 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
 
         df = prod.rename(columns={"value": "value"})
         if not waste.empty:
-            df = df.merge(waste.rename(columns={"value": "mismanaged_waste"}), on="date", how="left")
+            waste = waste.rename(columns={"value": "mismanaged_waste"})
+            if len(waste) < 5:
+                # Si solo hay un año (p.ej., 2019), usar ratio para estimar serie
+                tmp = waste.merge(prod.rename(columns={"value": "production"}), on="date", how="inner")
+                if not tmp.empty and tmp["production"].iloc[0] > 0:
+                    ratio = float(tmp["mismanaged_waste"].iloc[0]) / float(tmp["production"].iloc[0])
+                    df["mismanaged_waste"] = df["value"] * ratio
+                else:
+                    df = df.merge(waste, on="date", how="left")
+            else:
+                df = df.merge(waste, on="date", how="left")
         if river is not None and not river.empty:
             df = df.merge(river, on="date", how="left")
 

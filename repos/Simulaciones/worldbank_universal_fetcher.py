@@ -112,7 +112,7 @@ WORLDBANK_INDICATORS = {
 }
 
 
-def fetch_worldbank_indicator(indicator, country="WLD", start_year=1960, end_year=2023, cache_path=None):
+def fetch_worldbank_indicator(indicator, country="WLD", start_year=1960, end_year=2023, cache_path=None, timeout=60):
     """Fetch World Bank indicator data (con cache)."""
     if cache_path is None:
         os.makedirs(WB_CACHE_DIR, exist_ok=True)
@@ -124,7 +124,7 @@ def fetch_worldbank_indicator(indicator, country="WLD", start_year=1960, end_yea
     params = {"format": "json", "per_page": 500, "date": f"{start_year}:{end_year}"}
     
     try:
-        resp = requests.get(url, params=params, headers={"User-Agent": "Hiperobjetos/0.1"}, timeout=30)
+        resp = requests.get(url, params=params, headers={"User-Agent": "Hiperobjetos/0.1"}, timeout=timeout)
         resp.raise_for_status()
         data = resp.json()
         

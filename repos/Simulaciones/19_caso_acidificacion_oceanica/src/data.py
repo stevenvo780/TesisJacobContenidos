@@ -12,7 +12,7 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from enhanced_data_fetchers import fetch_wmo_sst
+from enhanced_data_fetchers import fetch_wmo_sst, fetch_pmel_co2_timeseries
 
 CO2_URL = "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt"
 
@@ -75,23 +75,32 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
     try:
         df_co2 = _fetch_co2_monthly(start_date, end_date, cache_path=co2_cache)
         df_sst, _ = fetch_wmo_sst(start_date, end_date, cache_path=sst_cache)
+        df_pmel, _ = fetch_pmel_co2_timeseries(
+            station="WHOTS",
+            start_date=start_date,
+            end_date=end_date,
+            cache_path=os.path.join(cache_dir, "pmel_whots.csv") if cache_dir else None,
+        )
 
-        if df_co2.empty:
-            raise RuntimeError("No CO2 data")
+        if df_pmel.empty:
+            raise RuntimeError("No PMEL data")
 
-        df = df_co2.merge(df_sst, on="date", how="left")
-        df["co2"] = df["co2"].interpolate(limit_direction="both")
-        df["sst"] = df["sst"].interpolate(limit_direction="both")
+        df = df_pmel.merge(df_co2, on="date", how="left").merge(df_sst, on="date", how="left")
+        if "co2" in df.columns:
+            df["co2"] = df["co2"].interpolate(limit_direction="both")
+        if "sst" in df.columns:
+            df["sst"] = df["sst"].interpolate(limit_direction="both")
 
-        # Proxies: pCO2 ~ CO2 atm, pH proxy decrece con CO2
-        df["pco2_proxy"] = df["co2"]
-        df["ph_proxy"] = 8.2 - 0.001 * (df["co2"] - 280.0) - 0.0002 * df["sst"].fillna(0.0)
-
-        df = df.rename(columns={"ph_proxy": "value"})
+        # Valor objetivo: pH (interpolado) si hay señal, si no pCO2
+        if "ph_sw" in df.columns and df["ph_sw"].notna().sum() >= 24:
+            df["ph_sw"] = df["ph_sw"].interpolate(limit_direction="both")
+            df = df.rename(columns={"ph_sw": "value"})
+        else:
+            df = df.rename(columns={"pco2_sw": "value"})
 
         if cache_path:
             os.makedirs(os.path.dirname(cache_path), exist_ok=True)
             df.to_csv(cache_path, index=False)
-        return df, {"source": "NOAA+WMO", "note": "pH/pCO2 proxies"}
+        return df, {"source": "PMEL+NOAA+WMO", "note": "pH/pCO2 reales (WHOTS)"}
     except Exception:
         return _synthetic_fallback(start_date, end_date)

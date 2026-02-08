@@ -11,6 +11,7 @@ import pandas as pd
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from worldbank_universal_fetcher import fetch_worldbank_indicator
+from enhanced_data_fetchers import fetch_gravis_chartdata, fetch_usgs_groundwater_withdrawals
 
 
 def _synthetic_fallback(start_date, end_date, seed=42):
@@ -42,32 +43,61 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
         return df, {"source": "cache", "case": "25_caso_acuiferos"}
 
     try:
-        precip, err_p = fetch_worldbank_indicator("AG.LND.PRCP.MM")
-        withdraw, err_w = fetch_worldbank_indicator("ER.H2O.FWTL.ZS")
-        if precip is None or withdraw is None:
-            raise RuntimeError(f"WB fetch failed: {err_p or err_w}")
+        # Precipitación (WB USA) — opcional
+        precip, err_p = fetch_worldbank_indicator("AG.LND.PRCP.MM", country="USA")
+        precip_m = None
+        if precip is not None and not precip.empty:
+            precip = precip.rename(columns={"value": "precip"})
+            precip_m = _annual_to_monthly(precip, "precip")
 
-        precip = precip.rename(columns={"value": "precip"})
-        withdraw = withdraw.rename(columns={"value": "withdrawal"})
+        # Extracción USGS (serie real)
+        cache_dir = os.path.dirname(cache_path) if cache_path else None
+        usgs_cache = os.path.join(cache_dir, "usgs_extraction.csv") if cache_dir else None
+        usgs, _ = fetch_usgs_groundwater_withdrawals(cache_path=usgs_cache)
+        usgs_m = _annual_to_monthly(usgs, "extraction_usgs") if not usgs.empty else None
 
-        precip_m = _annual_to_monthly(precip, "precip")
-        withdraw_m = _annual_to_monthly(withdraw, "withdrawal")
+        # Extracción alternativa WB (fallback)
+        withdraw, err_w = fetch_worldbank_indicator("ER.H2O.FWTL.ZS", country="USA")
+        withdraw_m = None
+        if withdraw is not None and not withdraw.empty:
+            withdraw = withdraw.rename(columns={"value": "withdrawal"})
+            withdraw_m = _annual_to_monthly(withdraw, "withdrawal")
 
-        df = precip_m.merge(withdraw_m, on="date", how="outer").sort_values("date")
+        # GRACE/GRAVIS groundwater storage (GWSA) para un acuífero real
+        gws_cache = os.path.join(cache_dir, "grace_gwsa.csv") if cache_dir else None
+        gws, _ = fetch_gravis_chartdata(
+            model="G3P",
+            field="gwsa",
+            bset="aquifers",
+            basin="Ogallala Aquifer (High Plains)",
+            cache_path=gws_cache,
+        )
+        gws = gws.rename(columns={"value": "grace_gws"})
+        gws["date"] = pd.to_datetime(gws["date"]).dt.to_period("M").dt.to_timestamp()
+        gws = gws.groupby("date", as_index=False)["grace_gws"].mean()
+
+        df = gws.copy()
+        if precip_m is not None:
+            df = df.merge(precip_m, on="date", how="outer")
+        if usgs_m is not None:
+            df = df.merge(usgs_m, on="date", how="outer")
+        if withdraw_m is not None:
+            df = df.merge(withdraw_m, on="date", how="outer")
         df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
 
-        # Storage proxy: acumulado (precip - withdrawal)
-        p = df["precip"].fillna(method="ffill").fillna(method="bfill")
-        w = df["withdrawal"].fillna(method="ffill").fillna(method="bfill")
-        delta = (p - w).fillna(0.0)
-        storage_proxy = (delta - delta.mean()).cumsum()
-
-        df["storage_proxy"] = storage_proxy
-        df = df.rename(columns={"storage_proxy": "value"})
+        # Valor objetivo: GRACE GWS (si existe) o proxy acumulado
+        if "grace_gws" in df.columns and df["grace_gws"].notna().any():
+            df = df.rename(columns={"grace_gws": "value"})
+        else:
+            p = df.get("precip", pd.Series(index=df.index, dtype=float)).fillna(method="ffill").fillna(method="bfill")
+            w = df.get("withdrawal", pd.Series(index=df.index, dtype=float)).fillna(method="ffill").fillna(method="bfill")
+            delta = (p - w).fillna(0.0)
+            storage_proxy = (delta - delta.mean()).cumsum()
+            df["value"] = storage_proxy
 
         if cache_path:
             os.makedirs(os.path.dirname(cache_path), exist_ok=True)
             df.to_csv(cache_path, index=False)
-        return df, {"source": "WorldBank", "note": "storage proxy"}
+        return df, {"source": "GRAVIS+USGS+WB", "note": "GRACE GWSA (Ogallala)"}
     except Exception:
         return _synthetic_fallback(start_date, end_date)

@@ -9,7 +9,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from enhanced_data_fetchers import fetch_celestrak_satcat_timeseries
+from enhanced_data_fetchers import fetch_celestrak_satcat_timeseries, fetch_celestrak_debris_timeseries
 
 
 def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
@@ -32,10 +32,19 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
         filter_fn=lambda d: d["OBJECT_TYPE"].fillna("") == "DEB",
         cache_path=deb_cache,
     )
+    deb_new_cache = os.path.join(cache_dir, "satcat_debris_new.csv") if cache_dir else None
+    ts_deb_new, _ = fetch_celestrak_debris_timeseries(
+        start_date, end_date, cache_path=deb_new_cache
+    )
 
     df = ts_all.rename(columns={"active": "value"})
     df = df.merge(
         ts_deb[["date", "active"]].rename(columns={"active": "debris_objects"}),
+        on="date",
+        how="left",
+    )
+    df = df.merge(
+        ts_deb_new[["date", "debris_new"]],
         on="date",
         how="left",
     )

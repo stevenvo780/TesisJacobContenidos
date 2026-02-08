@@ -62,7 +62,7 @@ def main():
         real_split="2005-01-01",
         corr_threshold=0.7,
         extra_base_params={},
-        driver_cols=["launches", "debris_objects"],
+        driver_cols=["launches", "debris_objects", "debris_new"],
     )
 
     results = run_full_validation(
