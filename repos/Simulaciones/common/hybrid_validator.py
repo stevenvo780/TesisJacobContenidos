@@ -576,7 +576,7 @@ class CaseConfig:
                  driver_cols=None, edi_min=0.325,
                  use_topology=False, topology_type="small_world",
                  topology_params=None, feedback_strength=0.0,
-                 ode_calibration=True):
+                 ode_calibration=True, abm_calibration=True):
         self.case_name = case_name
         self.value_col = value_col
         self.series_key = series_key
@@ -598,6 +598,11 @@ class CaseConfig:
         self.edi_min = edi_min
         self.use_topology = use_topology
         self.topology_type = topology_type
+        self.topology_params = topology_params or {}
+        self.feedback_strength = feedback_strength
+        self.ode_calibration = ode_calibration
+        self.abm_calibration = abm_calibration
+
         self.topology_params = topology_params or {}
         self.feedback_strength = feedback_strength
         self.ode_calibration = ode_calibration
@@ -659,8 +664,10 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         cols = [c for c in config.driver_cols if c in df.columns]
         if cols and val_start >= 3:
             X = df[cols].copy()
-            X = X.interpolate(limit_direction="both")
-            X = X.fillna(method="bfill").fillna(method="ffill")
+            # Interpolamos para cubrir huecos
+            # X = X.resample("D").mean() # Opcional: si ABM es diario
+            # X = X.interpolate(method="linear")
+            X = X.bfill().ffill()
             X = X.values.astype(float)
             X_train = X[:val_start]
             finite_cols = np.isfinite(X_train).all(axis=0)
@@ -802,10 +809,16 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         base_params["ode_beta"] = beta
 
     # Calibración ABM
-    best_abm, best_err, top_5 = calibrate_abm(
-        obs[:val_start], base_params, val_start, simulate_abm_fn,
-        param_grid=param_grid, seed=2
-    )
+    if config.abm_calibration:
+        best_abm, best_err, top_5 = calibrate_abm(
+            obs[:val_start], base_params, val_start, simulate_abm_fn,
+            param_grid=param_grid, seed=2
+        )
+    else:
+        print("DEBUG: Skipping ABM calibration...")
+        best_abm = {}
+        best_err = 0.0
+        top_5 = []
     base_params.update(best_abm)
 
     # Parámetros de evaluación (sin assimilación)
