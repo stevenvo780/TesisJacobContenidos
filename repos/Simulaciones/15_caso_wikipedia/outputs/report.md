@@ -1,6 +1,6 @@
 # Reporte de Validación — Wikipedia Clima
 
-- generated_at: 2026-02-08T20:39:27.309670Z
+- generated_at: 2026-02-08T20:50:21.497795Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -62,7 +62,7 @@
 - c2_robustness: False
 - c3_replication: False
 - c4_validity: True
-- c5_uncertainty: False
+- c5_uncertainty: True
 
 ### Errores
 - rmse_abm: 4.4270

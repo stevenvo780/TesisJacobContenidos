@@ -1,6 +1,6 @@
 # Reporte de Validación — Movilidad Urbana
 
-- generated_at: 2026-02-08T20:38:19.490206Z
+- generated_at: 2026-02-08T20:48:38.171876Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -45,16 +45,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -2.9282
-- bootstrap_mean: -2.9239
-- CI 95%: [-3.0652, -2.7792]
-- weighted_value (LoE factor 0.20): -0.5856
+- valor: -0.3732
+- bootstrap_mean: -0.3814
+- CI 95%: [-0.5645, -0.2556]
+- weighted_value (LoE factor 0.20): -0.0746
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: -1.0000
-- external: -0.0000
-- CR: 23527643.1902
+- external: 0.0000
+- CR: 606691.6594
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,8 +65,8 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 49.4232
-- rmse_abm_no_ode: 12.5816
+- rmse_abm: 89.0065
+- rmse_abm_no_ode: 64.8159
 - rmse_ode: 1.6072
 - rmse_reduced: 1.8218
 - threshold: 0.9936

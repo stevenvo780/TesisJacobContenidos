@@ -1,6 +1,6 @@
 # Reporte de Validación — Políticas Estratégicas Globales
 
-- generated_at: 2026-02-08T20:39:19.213429Z
+- generated_at: 2026-02-08T20:49:44.022076Z
 
 ## Fase synthetic
 - **overall_pass**: False

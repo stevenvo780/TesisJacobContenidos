@@ -1,6 +1,6 @@
 # Reporte de Validación — Ciclo del Fósforo
 
-- generated_at: 2026-02-08T20:41:02.052001Z
+- generated_at: 2026-02-08T20:51:46.702127Z
 
 ## Fase synthetic
 - **overall_pass**: False

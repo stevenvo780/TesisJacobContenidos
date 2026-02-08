@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: Exogeneidad
 
-- generated_at: 2026-02-08T20:39:14.949425Z
+- generated_at: 2026-02-08T20:49:47.208511Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -62,7 +62,7 @@
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
-- c5_uncertainty: False
+- c5_uncertainty: True
 
 ### Errores
 - rmse_abm: 1.0547

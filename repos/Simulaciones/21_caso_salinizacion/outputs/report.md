@@ -1,6 +1,6 @@
 # Reporte de Validación — Salinización de Suelos
 
-- generated_at: 2026-02-08T20:40:40.529183Z
+- generated_at: 2026-02-08T20:51:21.923015Z
 
 ## Fase synthetic
 - **overall_pass**: False

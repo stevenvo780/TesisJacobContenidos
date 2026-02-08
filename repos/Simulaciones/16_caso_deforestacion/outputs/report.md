@@ -1,6 +1,6 @@
 # Reporte de Validación — Deforestación Global
 
-- generated_at: 2026-02-08T20:40:18.848923Z
+- generated_at: 2026-02-08T20:50:56.932278Z
 
 ## Fase synthetic
 - **overall_pass**: False
