@@ -575,7 +575,8 @@ class CaseConfig:
                  extra_base_params=None, loe=1, n_runs=5,
                  driver_cols=None, edi_min=0.325,
                  use_topology=False, topology_type="small_world",
-                 topology_params=None, feedback_strength=0.0):
+                 topology_params=None, feedback_strength=0.0,
+                 ode_calibration=True):
         self.case_name = case_name
         self.value_col = value_col
         self.series_key = series_key
@@ -599,6 +600,7 @@ class CaseConfig:
         self.topology_type = topology_type
         self.topology_params = topology_params or {}
         self.feedback_strength = feedback_strength
+        self.ode_calibration = ode_calibration
         
         # Overrides de High Performance (Variables de Entorno)
         import os
@@ -781,10 +783,23 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     }
     base_params.update(config.extra_base_params)
 
+    # Debug Config
+    print(f"DEBUG: evaluate_phase ode_calibration={config.ode_calibration}") 
+    print(f"DEBUG: extra_base_params={config.extra_base_params}")
+
     # Calibración ODE
-    alpha, beta = calibrate_ode(obs[:val_start], forcing_series[:val_start])
-    base_params["ode_alpha"] = alpha
-    base_params["ode_beta"] = beta
+    if config.ode_calibration:
+        print("DEBUG: Running ODE calibration...")
+        alpha, beta = calibrate_ode(obs[:val_start], forcing_series[:val_start])
+        base_params["ode_alpha"] = alpha
+        base_params["ode_beta"] = beta
+    else:
+        print("DEBUG: Skipping ODE calibration...")
+        # Use provided params or defaults
+        alpha = config.extra_base_params.get("ode_alpha", 0.05)
+        beta = config.extra_base_params.get("ode_beta", 0.02)
+        base_params["ode_alpha"] = alpha
+        base_params["ode_beta"] = beta
 
     # Calibración ABM
     best_abm, best_err, top_5 = calibrate_abm(

@@ -35,8 +35,9 @@ def simulate_ode(params, steps, seed):
     random.seed(seed)
     
     # Initial state
-    T = float(params.get("t0", 288.0)) # Approx 15°C + 273.15
-    if T < 200: T += 273.15 # Auto-correct Celsius to Kelvin if needed
+    T = float(params.get("t0", 288.0)) 
+    # Removed Kelvin auto-correction to support Z-score/Anomaly space
+    # if T < 200: T += 273.15 
     
     # Physics parameters
     albedo = float(params.get("ode_albedo", 0.3))

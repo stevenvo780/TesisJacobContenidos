@@ -1,6 +1,6 @@
 # Reporte de Validación — Clima Regional (CONUS)
 
-- generated_at: 2026-02-08T21:59:47.035835Z
+- generated_at: 2026-02-08T22:41:40.835952Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -13,9 +13,9 @@
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9998
+- internal: 1.0000
 - external: 0.9999
-- CR: 0.9999
+- CR: 1.0001
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -23,23 +23,23 @@
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
-- c5_uncertainty: False
+- c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.3220
-- rmse_abm_no_ode: 1.3220
-- rmse_ode: 4963.8136
-- rmse_reduced: 1.6123
-- threshold: 0.1695
+- rmse_abm: 3.6167
+- rmse_abm_no_ode: 3.6167
+- rmse_ode: 6.0651
+- rmse_reduced: 6.7513
+- threshold: 2.5747
 
 ### Calibración
-- forcing_scale: 0.6376
-- macro_coupling: 0.6462
-- damping: 0.9500
-- ode_alpha: 0.0441
-- ode_beta: 1.0000
+- forcing_scale: 0.3277
+- macro_coupling: 0.2246
+- damping: 0.4766
+- ode_alpha: 0.0060
+- ode_beta: 0.1000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1385
+- calibration_rmse: 0.1491
 
 ## Fase real
 - **overall_pass**: False
@@ -67,7 +67,7 @@
 ### Errores
 - rmse_abm: 1.1922
 - rmse_abm_no_ode: 1.1922
-- rmse_ode: 1.7226
+- rmse_ode: 1.7271
 - rmse_reduced: 0.9637
 - threshold: 0.9547
 
@@ -75,8 +75,8 @@
 - forcing_scale: 0.9900
 - macro_coupling: 0.6916
 - damping: 0.9500
-- ode_alpha: 0.0010
-- ode_beta: 0.0010
+- ode_alpha: 0.0060
+- ode_beta: 0.1000
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.6353
 

@@ -64,13 +64,19 @@ def main():
         real_end="2024-12-31",
         real_split="2011-01-01",
         corr_threshold=0.7,
-        extra_base_params={"humidity_coupling": 0.01, "seasonal_period": 12},
+        extra_base_params={
+            "humidity_coupling": 0.01, 
+            "seasonal_period": 12,
+            "ode_alpha": 0.006, # Physical time constant (~5 years)
+            "ode_beta": 1.5,    # Strong restoring force (Stefan-Boltzmann feedback)
+        },
         driver_cols=["co2", "tsi", "ohc", "aod"],
         use_topology=True,
         topology_type="small_world",
         topology_params={"k": 4, "p": 0.1},
         feedback_strength=0.05,
         loe=5,
+        ode_calibration=False, # Use physical parameters
     )
 
     # Crear adaptador NumPy
