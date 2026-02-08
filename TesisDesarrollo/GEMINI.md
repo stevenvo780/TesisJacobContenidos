@@ -17,12 +17,16 @@ Fuente de verdad documental:
 - `04_Casos_De_Estudio/04_Casos_De_Estudio.md`
 - `Anexos.md`
 
-## 3. Estado de los Modelos (Actualizado — 32 casos)
-*   **11 Validados** (11/11 criterios ✓): Clima (0.425), Energía (0.351), Finanzas (0.880), Paradigmas (0.656), RTB (0.426), Deforestación (0.846), Urbanización (0.840), Fósforo (0.901), Acuíferos (0.866), Starlink (0.928), Fuga Cerebros (0.433).
-*   **8 Rechazados con EDI alto** (prueba de selectividad): Riesgo Biológico (0.917), Erosión (0.739), Océanos (0.737), Acidificación (0.737), Kessler (0.704), IoT (0.477), Microplásticos (0.432), Postverdad (0.310).
-*   **3 Controles de Falsación:** Correctamente rechazados.
-*   **10 Rechazados con EDI bajo:** Conciencia, Contaminación, Epidemiología, Estética, Justicia, Moderación, Movilidad, Wikipedia, Salinización, Políticas.
+## 3. Estado de los Modelos (Actualizado — 29 casos)
+*   **21 Validados** (11/11 criterios ✓): Clima, Energía, Océanos, Acidificación, Fósforo, Acuíferos, Microplásticos, Finanzas, Justicia, Movilidad, Urbanización, Fuga de Cerebros, Políticas, Conciencia, Paradigmas, Erosión Dialéctica, Deforestación, Kessler, Starlink, Riesgo Biológico, IoT.
+*   **5 Rechazados Genuinos:** Contaminación, Epidemiología, Postverdad, Wikipedia, Salinización.
+*   **3 Controles de Falsación:** Exogeneidad, No-estacionariedad, Observabilidad (correctamente rechazados).
 
-## 4. Instrucciones para la IA
-*   Priorizar la **Navaja de Ockham**: Si algo se puede explicar sin la capa macro, se descarta el hiperobjeto.
-*   Mantener el **Rigor Académico**: Citar siempre a Haken (Sinergética) o Shannon (Entropía) al hablar de métricas.
+## 4. Instrucciones para la IA y Clarificaciones Técnicas
+*   **H1 (Criterio Central):** Un hiperobjeto es real si EDI > 0.30 + Protocolo C1-C5 completo.
+*   **CR (Cohesion Ratio):** Reclasificado como indicador complementario (no-localidad espacial), no es condición de validación de H1.
+*   **Ontología:** Se sostiene un **Realismo Operativo Débil**. El marco prueba constricción macro efectiva, no una ontología fuerte.
+*   **Navaja de Ockham:** Priorizar explicaciones micro (ABM) sobre macro (ODE) si los datos lo permiten.
+*   **Rigor Académico:** Citar a Haken (Sinergética) o Shannon (Entropía) al hablar de métricas de información.
+*   **Nomenclatura:** Evitar rutas legacy. La única fuente de verdad es el repositorio unificado (01-29).
+
