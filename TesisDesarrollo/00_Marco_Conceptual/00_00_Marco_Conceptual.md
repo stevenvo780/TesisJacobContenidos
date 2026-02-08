@@ -84,13 +84,19 @@ Esta base conceptual justifica por qué un modelo puramente local (ABM) suele pr
 La tesis demuestra la constricción macro efectiva de forma completa y robusta. Las demás propiedades de Morton están parcialmente operacionalizadas o pendientes. Esto se declara como **horizonte de investigación**, no como deficiencia del marco actual.
 
 
-## Glosario Operativo (Reducido)
-- **Hiperobjeto:** entidad distribuida con no-localidad y viscosidad, validada por C1-C5.
+## Glosario Operativo
+- **Hiperobjeto:** Entidad distribuida con no-localidad y viscosidad, validada por C1-C5.
 - **EDI (Effective Dependency Index):** Reducción de error al integrar el nivel macro. Exige un umbral > 0.30 para validar la integración y > 0.05 para validar la autonomía estructural (atractor).
 - **CR (Cohesion Ratio):** Ratio de cohesión interna/externa. Un CR > 2.0 indica frontera nítida. Es indicador complementario de topología, no condición necesaria de H1. La condición operativa de Symploké en el validador es `internal ≥ external - 1e-3`.
-- **Nudging:** acople macro-micro para asimilacion de datos.
-- **Aliasing temporal:** falla por resolucion temporal insuficiente.
-- **Reflexividad:** el sistema cambia al ser observado (limite en finanzas y opinion).
+- **Nudging:** Acople macro-micro para asimilación de datos.
+- **Aliasing temporal:** Falla por resolución temporal insuficiente.
+- **Reflexividad:** El sistema cambia al ser observado (límite en finanzas y opinión).
+- **Patrón real (Ladyman & Ross):** Estructura relacional que porta información causalmente indispensable; su eliminación produce pérdida predictiva no recuperable desde el nivel inferior.
+- **Irreducibilidad causal funcional:** Propiedad de un nivel macro cuya eliminación degrada la predicción del nivel micro de forma medible (EDI) y robusta (C1-C5), sin que el micro pueda compensar la pérdida reconfigurando sus propios parámetros.
+- **Sonda ontológica (ODE):** Instrumento computacional que genera una señal macro candidata para probar la existencia de constricción efectiva; no representa al hiperobjeto sino que revela su efecto.
+- **Emergentismo fuerte por irreducibilidad causal:** Versión de emergencia fuerte (Humphreys/Batterman) donde "fuerte" significa irreducibilidad funcional demostrada por intervención, no irreducibilidad metafísica.
+- **Nivel de Evidencia (LoE):** Clasificación 1-5 de la calidad epistémica de los datos de un caso. LoE=5: datos físicos de alta calidad con series >10 años. LoE=1: proxies indirectos o datos sintéticos dominantes.
+
 
 ## Dialectica y Limites
 - **Reduccionismo:** no se equipara el sistema a un vector, se mide su dinamica causal.
