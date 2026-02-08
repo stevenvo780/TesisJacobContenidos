@@ -312,5 +312,12 @@ Resultados completos con MD5 por caso disponibles en:
 
 Cada `metrics.json` contiene `generated_at` (timestamp ISO) y `git.commit` (hash del código ejecutado).
 
-## Auditoria de Consistencia
-Ver `Auditoria_Simulaciones.md` para hallazgos y recomendaciones detalladas sobre la calidad de los datos y el comportamiento de las métricas en casos de borde.
+## Auditoría de Consistencia
+
+Para auditar la consistencia estructural de los casos, ejecutar:
+```bash
+python3 repos/scripts/tesis.py audit
+```
+
+Este comando verifica presencia de archivos requeridos, sincronización de timestamps, y rangos válidos de métricas (EDI, CR).
+
