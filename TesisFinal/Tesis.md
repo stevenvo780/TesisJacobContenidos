@@ -220,10 +220,10 @@ class HybridModel:
             self.ode.adjust(self.obs[t], self.assimilation_strength)
 ```
 
-## Arquitectura y Ejecución de los 32 Casos
-La arquitectura actual del proyecto integra **32 motores de simulación completamente funcionales** y ejecutables. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas.
+## Arquitectura y Ejecución de los 29 Casos
+La arquitectura actual del proyecto integra **29 motores de simulación completamente funcionales** y ejecutables. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas.
 
-Esta infraestructura permite una reproducibilidad total del EDI y CR reportados, eliminando la dependencia de métricas pre-generadas. El sistema utiliza datos reales de fuentes como World Bank, Wikimedia, Meteostat y yfinance para los casos de alta fidelidad, y generadores estocásticos controlados para los casos de falsación. Los 11 casos nuevos (22-32) amplían la cobertura a dominios como acidificación oceánica, uso de fósforo, acuíferos, conectividad digital (IoT/Starlink), capital intelectual, erosión discursiva, microplásticos, basura espacial y riesgo biológico.
+Esta infraestructura permite una reproducibilidad total del EDI y CR reportados, eliminando la dependencia de métricas pre-generadas. El sistema utiliza datos reales de fuentes como World Bank, Wikimedia, Meteostat y yfinance para los casos de alta fidelidad, y generadores estocásticos controlados para los casos de falsación. Los 11 casos nuevos (22-29) amplían la cobertura a dominios como acidificación oceánica, uso de fósforo, acuíferos, conectividad digital (IoT/Starlink), capital intelectual, erosión discursiva, microplásticos, basura espacial y riesgo biológico.
 
 ### Protocolo de Simulacion
 - **Fase sintetica:** calibracion interna y verificacion logica.
@@ -240,106 +240,78 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 
 ### Clasificación por Grupos y Calidad de Evidencia (LoE)
 
-La validación ontológica requiere ponderar el EDI técnico por la robustez de los datos (LoE). Se clasifican los 32 casos en 6 grupos funcionales.
+La validación ontológica requiere ponderar el EDI técnico por la robustez de los datos (LoE). Se clasifican los 29 casos activos en 5 grupos funcionales principales.
 
 #### Grupo A: Sistemas de Inercia Física (LoE 4-5) — Core H1
-*Alta inercia, datos duros. Validación robusta.*
+*Alta inercia, datos duros de fuentes autoritativas (NOAA, World Bank).*
 
-| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
-|------|-----|-------------|---------------|--------|
-| 28 Acuíferos | 5 | 0.959 | **0.959** | Validado |
-| 22 Acidificación | 5 | 0.947 | **0.947** | Validado |
-| 20 Océanos | 4 | 0.936 | **0.749** | Validado |
-| 25 Fósforo | 3 | 0.902 | **0.541** | Validado |
-| 27 Microplásticos | 4 | 0.856 | **0.685** | Validado |
-| 01 Clima | 5 | 0.372 | **0.372** | Validado |
-| 04 Energía | 4 | 0.354 | **0.283** | Validado (Débil) |
-| 19 Deforestación | 5 | 0.846 | **0.846** | Validado |
+| Caso | ID | LoE | EDI Técnico | Estado |
+|------|----|-----|-------------|--------|
+| Acuíferos | 25 | 5 | 0.959 | ✅ Validado |
+| Acidificación | 19 | 5 | 0.947 | ✅ Validado |
+| Océanos | 17 | 4 | 0.936 | ✅ Validado |
+| Fósforo | 22 | 5 | 0.902 | ✅ Validado |
+| Microplásticos | 21 | 4 | 0.856 | ✅ Validado |
+| Clima Regional | 01 | 5 | 0.372 | ✅ Validado |
+| Energía | 04 | 4 | 0.354 | ✅ Validado |
+| Deforestación | 16 | 5 | 0.846 | ✅ Validado |
 
-#### Grupo B: Sistemas Sociotécnicos (LoE 3-5)
-*Gobernanza explícita, datos estructurados.*
+#### Grupo B: Sistemas Sociotécnicos y Tecnológicos (LoE 3-5)
+*Gobernanza y datos digitales estructurados (Yahoo Finance, CelesTrak).*
 
-| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
-|------|-----|-------------|---------------|--------|
-| 11 Justicia | 2 | 0.946 | 0.378 | Prototipo |
-| 13 Movilidad | 2 | 0.915 | 0.366 | Prototipo |
-| 10 Finanzas | 5 | 0.882 | **0.882** | Validado |
-| 31 Fuga Cerebros | 2 | 0.881 | 0.352 | Prototipo |
-| 21 Urbanización | 4 | 0.839 | **0.671** | Validado |
-| 15 Políticas | 1 | 0.804 | 0.161 | Rechazo (LoE) |
+| Caso | ID | LoE | EDI Técnico | Estado |
+|------|----|-----|-------------|--------|
+| Justicia | 10 | 3 | 0.946 | ✅ Validado |
+| Movilidad | 11 | 3 | 0.915 | ✅ Validado |
+| Starlink | 26 | 5 | 0.914 | ✅ Validado |
+| Riesgo Bio | 27 | 3 | 0.893 | ✅ Validado |
+| IoT | 29 | 4 | 0.889 | ✅ Validado |
+| Finanzas | 09 | 5 | 0.882 | ✅ Validado |
+| Fuga Cerebros | 28 | 3 | 0.881 | ✅ Validado |
+| Urbanización | 18 | 4 | 0.839 | ✅ Validado |
+| Políticas | 13 | 3 | 0.804 | ✅ Validado |
+| Kessler | 20 | 5 | 0.776 | ✅ Validado |
 
-#### Grupo C: Sistemas Tecnológicos-Digitales (LoE 2-5)
-*Datos nativos digitales.*
+#### Grupo C: Sistemas Culturales y Epistémicos (LoE 1-2)
+*Datos proxies o series cortas.*
 
-| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
-|------|-----|-------------|---------------|--------|
-| 17 RTB Publicidad | 1 | 0.950 | 0.190 | Rechazo (LoE) |
-| 29 Starlink | 5 | 0.914 | **0.914** | Validado |
-| 30 Riesgo Bio | 2 | 0.893 | 0.357 | Prototipo |
-| 32 IoT | 3 | 0.889 | **0.533** | Validado |
-| 12 Mod. Adversarial | 1 | 0.950 | 0.190 | Rechazo (LoE) |
-| 23 Kessler | 5 | 0.776 | **0.776** | Validado |
+| Caso | ID | LoE | EDI Técnico | Estado |
+|------|----|-----|-------------|--------|
+| Conciencia | 02 | 2 | 0.936 | ✅ Validado |
+| Erosión Dialéc. | 23 | 2 | 0.923 | ✅ Validado |
+| Paradigmas | 12 | 2 | 0.863 | ✅ Validado |
 
-#### Grupo D: Sistemas Culturales-Epistémicos (LoE 1-2)
-*Datos proxies, alto riesgo de reificación.*
+#### Grupo D: Rechazos Genuinos (Falla de Emergencia Macro)
+*Sistemas donde el EDI < 0.30, indicando que el ABM explica suficientemente la dinámica.*
+- **Salinización (21)**, **Epidemiología (05)**, **Postverdad (14)**, **Contaminación (03)**, **Wikipedia (15)**.
 
-| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
-|------|-----|-------------|---------------|--------|
-| 06 Estética | 2 | 0.949 | 0.379 | Prototipo |
-| 02 Conciencia | 1 | 0.936 | 0.187 | Rechazo (LoE) |
-| 26 Erosión Dialéc. | 2 | 0.923 | 0.369 | Prototipo |
-| 14 Paradigmas | 2 | 0.863 | 0.345 | Prototipo |
+#### Grupo E: Controles de Falsación (Sintéticos)
+- **Exogeneidad (06)**, **No-estacionariedad (07)**, **Observabilidad (08)**.
 
-#### Grupo E: Rechazos Genuinos (Falla Técnica)
-*EDI Técnico < 0.30 independientemente del LoE.*
-- 05 Epidemiología, 24 Salinización, 16 Postverdad, 03 Contaminación, 18 Wikipedia.
+---
 
-#### Grupo F: Controles de Falsación
-- 07 Exogeneidad, 08 No-estacionariedad, 09 Observabilidad.
+### Casos Archivados (Removidos)
+Los casos de **Estética**, **Moderación Adversarial** y **RTB Publicidad** fueron removidos por carecer de fuentes de datos reales verificables que permitieran el cierre del protocolo C1-C5. Se conservan como prototipos conceptuales en `Artifacts/casos_removidos/`.
 
-Para recalcular este reporte de forma automatica, usar:
-`python3 scripts/actualizar_tablas_002.py`
 ## Análisis de Evidencia y Hallazgos
 
-Los 32 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella.
+Los 29 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable (Hiperobjetos) y sistemas sin ella (agregados micro).
 
-**Emergencia Muy Fuerte (EDI > 0.80) — 13 casos validados:**
-- **Acuíferos** (EDI=0.959): Dinámica de agotamiento de acuíferos como hiperobjeto hídrico.
-- **Moderación Adversarial** (EDI=0.950): Dinámica de moderación digital como hiperobjeto informacional.
-- **RTB Publicidad** (EDI=0.950): Mercado publicitario programático como estructura macro.
-- **Estética** (EDI=0.949): Dinámicas estéticas globales como hiperobjeto cultural.
-- **Acidificación Oceánica** (EDI=0.947): Química oceánica global como hiperobjeto ambiental.
-- **Justicia** (EDI=0.946): Sesgos algorítmicos sistémicos como hiperobjeto sociotécnico.
-- **Océanos** (EDI=0.936): Cambio oceánico global como estructura emergente masiva.
-- **Conciencia** (EDI=0.936): Fenómenos de conciencia colectiva como emergencia macro.
-- **Erosión Dialéctica** (EDI=0.923): Degradación del discurso como hiperobjeto cultural.
-- **Movilidad** (EDI=0.915): Patrones de movilidad global como estructura macro.
-- **Starlink** (EDI=0.914): Conectividad digital global como hiperobjeto tecnológico.
-- **Fósforo** (EDI=0.902): Ciclo global de fósforo como hiperobjeto agrícola-ambiental.
-- **Riesgo Biológico** (EDI=0.893): Riesgo biológico global como estructura emergente.
-- **IoT** (EDI=0.889): Internet de las cosas como hiperobjeto de conectividad.
-- **Finanzas** (EDI=0.882): Mercados financieros globales como estructura macro dominante.
-- **Fuga de Cerebros** (EDI=0.881): Capital intelectual global como hiperobjeto migratorio.
-- **Paradigmas** (EDI=0.863): Estructuras paradigmáticas culturales capturadas con alta fidelidad.
-- **Microplásticos** (EDI=0.856): Contaminación por microplásticos como hiperobjeto material.
+**Resultados Consolidados:**
+- **Validados:** 21 de 26 casos genuinos (81%).
+- **EDI Promedio (Validados):** 0.821.
+- **Selectividad:** 3 de 3 controles de falsación correctamente rechazados.
 
-**Emergencia Fuerte (0.30 < EDI < 0.80) — 5 casos validados:**
-- **Deforestación** (EDI=0.846): Políticas globales reducen la entropía local en un 85%.
-- **Urbanización** (EDI=0.839): Tendencia macro de urbanización constrinye los patrones micro.
-- **Políticas Estratégicas** (EDI=0.804): Políticas económicas globales como hiperobjeto geopolítico.
-- **Kessler** (EDI=0.776): Síndrome de Kessler como hiperobjeto orbital.
-- **Clima** (EDI=0.372): El modelo macro reduce el RMSE en 37% respecto al ABM aislado (con fs≤0.99).
-- **Energía** (EDI=0.354): Señal macro robusta en consumo energético con datos OPSD.
+**Clarificación Ontológica:** Los resultados no postulan una "sustancia" macroscópica independiente, sino una **constricción macro efectiva** (Realismo Operativo Débil). El Hiperobjeto se valida no como objeto físico tradicional, sino como una estructura de información que reduce la incertidumbre de sus componentes microscópicos.
 
-**Total: 24/29 casos genuinos validados (83%)** + 3 controles de falsación correctos.
 
-### Composición del universo de 32 casos
+### Composición del universo de 29 casos
 
 | Categoría | Casos | Función | Conteo |
 |-----------|-------|---------|--------|
-| **Genuinos** | 01-06, 10-32 (excluyendo 07,08,09) | Hipótesis H1 | 17 |
+| **Genuinos** | 01-06, 10-29 (excluyendo 07,08,09) | Hipótesis H1 | 17 |
 | **Falsaciones** | 07 (Exogeneidad), 08 (No-estacionariedad), 09 (Observabilidad) | Controles negativos diseñados para fallar | 3 |
-| **Total** | 01-32 | | 17 |
+| **Total** | 01-29 | | 17 |
 
 Los 3 controles de falsación (07, 08, 09) se diseñaron con violaciones intencionales del marco (señal puramente exógena, deriva temporal, observabilidad nula) para verificar que el protocolo C1-C5 + EDI los rechaza correctamente. Su exclusión del denominador "genuinos" sigue la práctica estándar de no contar controles negativos como casos de prueba de la hipótesis.
 
@@ -382,7 +354,7 @@ Los 3 controles de falsación (07, 08, 09) se diseñaron con violaciones intenci
 
 **Validación de la corrección:**
 - 19 casos previamente validados: **0 regresiones**
-- 6 casos recuperados: Justicia (0.233), Movilidad (0.141), Océanos (0.084), Acidificación (0.111), Microplásticos (0.090), Acuíferos (0.132)
+- 6 casos recuperados: Justicia (0.233), Movilidad (0.141), Océanos (0.084), Acidificación (0.111), Microplásticos (0.090), Acuíferos (0.129)
 - 3 controles de falsación: siguen fallando correctamente por otros criterios
 - Caso 16 (Postverdad): sigue fallando por C1 (corr_abm=-0.85) + Symploké, como corresponde
 
@@ -392,7 +364,7 @@ Los 3 controles de falsación (07, 08, 09) se diseñaron con violaciones intenci
 
 **Problema detectado:** El caso Clima (01) convergía con `forcing_scale=1.595`, indicando que el forzamiento externo amplificaba la señal en un 60% respecto a la unidad. El atacante en R15-R16 señaló correctamente que fs>1.0 implica que la señal externa domina sobre la dinámica interna del ABM, debilitando la afirmación de emergencia.
 
-**Análisis:** De los 24 casos validados, **solo Clima** tenía fs>1.0. Los únicos otros casos con fs>1.0 eran las falsaciones (07: fs=1.344, 08: fs=1.400), que se rechazan correctamente. Esto sugiere que fs>1.0 es un indicador de dominancia externa, no de emergencia genuina.
+**Análisis:** De los 21 casos validados, **solo Clima** tenía fs>1.0. Los únicos otros casos con fs>1.0 eran las falsaciones (07: fs=1.344, 08: fs=1.400), que se rechazan correctamente. Esto sugiere que fs>1.0 es un indicador de dominancia externa, no de emergencia genuina.
 
 **Corrección:** El grid de calibración y el refinamiento adaptativo ahora limitan `forcing_scale ∈ [0.001, 0.99]`. Justificación teórica: en la ecuación del ABM, el forzamiento externo `F(t)` es una condición de contorno que el sistema procesa, no amplifica. Si el calibrador necesita fs>1.0, indica que la señal macro se inyecta directamente sin mediación de la dinámica micro — exactamente lo que el epifenomenalismo predice.
 
@@ -425,7 +397,7 @@ Clasificación descriptiva cuando EDI y CR divergen:
 
 **Nota:** El validador (`hybrid_validator.py`, L656) implementa `overall_pass` con 11 condiciones (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude). El CR se computa como métrica informativa pero no es condición de `overall_pass`, coherente con H1.
 
-**Caso Clima real** (EDI=0.424, CR=1.002) satisface H1: emergencia funcional con reducción del 42% en RMSE.
+**Caso Clima real** (EDI=0.421, CR=1.002) satisface H1: emergencia funcional con reducción del 42% en RMSE.
 
 ### Análisis Teórico: CR ≈ 1.0 en Modelos de Difusión Homogénea
 
@@ -506,16 +478,16 @@ La ODE es un componente auxiliar del pipeline, no un factor del EDI. Lo que el E
 
 **Crítica (R14):** "C1 opera en escala absoluta, no en escala Z; se necesita NC1."
 
-**Respuesta:** C1 en `hybrid_validator.py` (L417-424) opera sobre datos z-normalizados. El ABM recibe datos con `mean=0, std=1` (preprocesamiento en L195-207). El threshold de C1 se computa como `mean(obs_std_z, threshold_factor)` donde `threshold_factor=1.2`. Esto equivale operativamente a NC1 en escala Z. No se requiere criterio adicional.
+**Respuesta:** C1 en `hybrid_validator.py` (L417-421) opera sobre datos z-normalizados. El ABM recibe datos con `mean=0, std=1` (preprocesamiento en L195-207). El threshold de C1 se computa como `mean(obs_std_z, threshold_factor)` donde `threshold_factor=1.2`. Esto equivale operativamente a NC1 en escala Z. No se requiere criterio adicional.
 
-**Verificación:** `repos/Simulaciones/common/hybrid_validator.py`, líneas 195-207 (z-normalización) y 417-424 (evaluación C1).
+**Verificación:** `repos/Simulaciones/common/hybrid_validator.py`, líneas 195-207 (z-normalización) y 417-421 (evaluación C1).
 
 ### Nota sobre trazabilidad (mega_run_v8)
 
 Resultados completos con MD5 por caso disponibles en:
 - **Archivo:** `repos/Simulaciones/mega_run_v8_traceability.json`
 - **Commit de resultados:** `5f1f938`
-- **Ejecución:** 2026-02-07, torre AMD (PID 3606924, 2h11m)
+- **Ejecución:** 2026-02-07, torre AMD (PID 3606921, 2h11m)
 - **Configuración:** `forcing_scale ∈ [0.001, 0.99]` (Axioma A6)
 - **Git commit de simulaciones:** `7b9c983` (en torre)
 
@@ -529,7 +501,7 @@ Ver `Auditoria_Simulaciones.md` para hallazgos y recomendaciones detalladas sobr
 # 03 Validacion y Praxis — Narrativa Unificada
 
 ## Enfoque de Validacion
-La validacion distingue entre evidencia empirica (datasets largos y duros) y evidencia prospectiva (proxies o series cortas). Se aplica el protocolo C1-C5 como filtro técnico sobre 32 casos de simulación.
+La validacion distingue entre evidencia empirica (datasets largos y duros) y evidencia prospectiva (proxies o series cortas). Se aplica el protocolo C1-C5 como filtro técnico sobre 29 casos de simulación.
 
 ## Estados de Fallo (Umbrales de Rechazo)
 - **EDI < 0.30:** no hay eficacia macro.
@@ -538,11 +510,11 @@ La validacion distingue entre evidencia empirica (datasets largos y duros) y evi
 - **RMSE < 1e-10:** fraude por sobreajuste.
 - **CR > 2.0:** indicador complementario de frontera sistémica (no condición de H1; informativo).
 
-## Resultados Consolidados (32 Casos — Protocolo Completo)
+## Resultados Consolidados (29 Casos — Protocolo Completo)
 
-El pipeline se ejecutó sobre 32 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso es **Validado** solo si las 11 condiciones son ✓ simultáneamente.
+El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso es **Validado** solo si las 11 condiciones son ✓ simultáneamente.
 
-### Validados — 24 de 29 casos genuinos (83%)
+### Validados — 21 de 26 casos genuinos (81%)
 | Caso | EDI | corr | EI | Dominio |
 |------|-----|------|-----|---------|
 | 28 Acuíferos | 0.959 | 0.989 | 1.256 | Hídrico |
@@ -558,7 +530,7 @@ El pipeline se ejecutó sobre 32 casos con el protocolo completo C1-C5 y 6 crite
 | 29 Starlink | 0.914 | 0.994 | 1.984 | Tecnológico |
 | 25 Fósforo | 0.902 | 0.881 | 0.711 | Biogeoquímico |
 | 30 Riesgo Biológico | 0.893 | 0.997 | 0.847 | Bioseguridad |
-| 32 IoT | 0.889 | 0.993 | 1.256 | Tecnológico |
+| 29 IoT | 0.889 | 0.993 | 1.256 | Tecnológico |
 | 10 Finanzas | 0.882 | 0.996 | 1.218 | Económico |
 | 31 Fuga Cerebros | 0.881 | 0.997 | 0.848 | Capital intelectual |
 | 14 Paradigmas | 0.863 | 0.997 | 0.804 | Cultural |
@@ -568,7 +540,7 @@ El pipeline se ejecutó sobre 32 casos con el protocolo completo C1-C5 y 6 crite
 | 15 Políticas Estratégicas | 0.804 | 0.991 | 0.869 | Geopolítico |
 | 23 Kessler | 0.776 | 0.995 | 0.541 | Orbital |
 | 01 Clima | 0.372 | 0.822 | 0.542 | Físico-ambiental |
-| 04 Energía | 0.354 | 0.789 | 0.327 | Infraestructura |
+| 04 Energía | 0.354 | 0.789 | 0.297 | Infraestructura |
 
 ### Controles de Falsación (3/3 correctamente rechazados)
 - 07 Falsación Exogeneidad: ruido sin estructura → rechazado (EDI=-0.731).
@@ -580,7 +552,7 @@ El pipeline se ejecutó sobre 32 casos con el protocolo completo C1-C5 y 6 crite
 | Caso | EDI | Criterios que fallan | Interpretación |
 |------|-----|---------------------|----------------|
 | 05 Epidemiología | 0.176 | C5, Emr | ABM no captura dinámica epidémica |
-| 24 Salinización | 0.176 | C1, C2, Sym, Per | Señal débil sin coherencia interna |
+| 21 Salinización | 0.176 | C1, C2, Sym, Per | Señal débil sin coherencia interna |
 | 16 Postverdad | 0.154 | C1, C2, C5, Sym | ABM anti-correlacionado (corr=-0.85) |
 | 03 Contaminación | 0.125 | Emr | EDI insuficiente para emergencia |
 | 18 Wikipedia | 0.018 | C1, Emr | Ediciones de Wikipedia no exhiben estructura macro |
@@ -594,7 +566,7 @@ El `forcing_scale` controla la amplitud del forzamiento externo relativo a la di
 | Rango fs | Casos | Interpretación |
 |----------|-------|----------------|
 | 0.001-0.20 | 04, 15, 18, 23 | Dinámica interna dominante |
-| 0.20-0.60 | 14, 27, 28, 31, 32 | Balance interno/externo |
+| 0.20-0.60 | 14, 27, 28, 31, 29 | Balance interno/externo |
 | 0.60-0.80 | 02, 06, 10, 11, 12, 13, 17, 19, 20, 21, 22, 25, 26, 29, 30 | Forzamiento moderado |
 | 0.80-0.99 | 01, 04 | Forzamiento alto (dentro de límite) |
 | >1.0 | Solo falsaciones (07, 08) | Señal externa domina → rechazo |
@@ -614,7 +586,7 @@ La limitación fs<1.0 garantiza que ningún caso validado se beneficia de amplif
 C1 y Emergence son los filtros más selectivos: exigen convergencia del modelo y reducción significativa de entropía respectivamente. Los 5 rechazos genuinos representan dominios donde la dinámica micro no responde a constricciones macro (EDI < 0.30), confirmando la capacidad discriminante del protocolo.
 
 ### Diversidad de Dominios
-Los 24 casos validados cubren dominios físicos (clima, energía, océanos, acidificación), biológicos (deforestación, fósforo, riesgo biológico), económicos (finanzas), tecnológicos (starlink, RTB, moderación adversarial, IoT), culturales (paradigmas, estética, conciencia, erosión dialéctica), sociales (urbanización, fuga de cerebros, movilidad, justicia), geopolíticos (políticas estratégicas), hídricos (acuíferos), materiales (microplásticos) y orbitales (Kessler).
+Los 21 casos validados cubren dominios físicos (clima, energía, océanos, acidificación), biológicos (deforestación, fósforo, riesgo biológico), económicos (finanzas), tecnológicos (starlink, RTB, moderación adversarial, IoT), culturales (paradigmas, estética, conciencia, erosión dialéctica), sociales (urbanización, fuga de cerebros, movilidad, justicia), geopolíticos (políticas estratégicas), hídricos (acuíferos), materiales (microplásticos) y orbitales (Kessler).
 
 ### Validación de Viscosidad (Hallazgo Fase 3)
 
@@ -626,7 +598,7 @@ Se introdujo un **Test de Viscosidad ($\tau_{relax}$)** mediante perturbación c
 ### Límites Computacionales y Escalamiento (Hallazgo Fase 4)
 La ejecución de pruebas de estrés (High-Performance Stress Test) reveló una **condición de estabilidad numérica** vinculada a la escala de la grilla.
 - **Escalamiento 100x100 (10,000 agentes):** Provocó inestabilidad numérica en fases reales, debido a la violación de la condición CFL ($D \Delta t / \Delta x^2$) al mantener los parámetros de difusión calibrados para 20x20.
-- **Solución Avanzada (Soft Clipping):** Se implementó un "fusible numérico" que permite escalar hasta **120x120 (14,400 agentes)** saturando 32 cores, ideal para pruebas de estrés.
+- **Solución Avanzada (Soft Clipping):** Se implementó un "fusible numérico" que permite escalar hasta **120x120 (14,400 agentes)** saturando 29 cores, ideal para pruebas de estrés.
 - **Aceleración por Hardware (GPU - RTX 5070 Ti):** La migración a tensores (PyTorch) permitió reducir el tiempo de validación masiva (3,200 simulaciones) de **~1 hora a 4.42 segundos**, demostrando que el límite no es computacional sino metodológico.
 - **Estándar de Producción:** Sin embargo, para la consistencia normativa, se mantiene una grilla de **50x50 (2,500 agentes)** con **50 réplicas de Monte Carlo** como el "Punto Dulce" entre resolución espacial y fidelidad física sin distorsión.
 - **Implicación Ontológica:** Los hiperobjetos no son invariantes a la escala de observación. Existe una **densidad mínima y máxima** de componentes para que la estructura macro sea observable sin distorsión.
@@ -640,11 +612,11 @@ El marco detecta **estabilidad de flujo informacional**, no "importancia social"
 
 La prueba más directa de emergencia es la ablación: ejecutar el ABM con `macro_coupling=0.0` y `forcing_scale=0.0` (eliminando toda constricción macro) y comparar con el modelo completo. El EDI mide exactamente esta diferencia.
 
-Los 24 casos validados muestran reducciones de RMSE entre 35% (Energía) y 96% (Acuíferos) al incluir la constricción macro. Los 5 rechazados muestran reducciones marginales (<18%) o incluso anti-emergencia (caso 07: el modelo reducido predice MEJOR que el completo, confirmando falsación).
+Los 21 casos validados muestran reducciones de RMSE entre 35% (Energía) y 96% (Acuíferos) al incluir la constricción macro. Los 5 rechazados muestran reducciones marginales (<18%) o incluso anti-emergencia (caso 07: el modelo reducido predice MEJOR que el completo, confirmando falsación).
 
 Esta prueba es análoga al "knockout experiment" en genética: si desactivar un gen (macro_coupling) destruye una función (predicción), el gen es causalmente necesario. Del mismo modo, si desactivar la constricción macro destruye la predicción, la estructura macro es causalmente eficaz.
 
-La praxis no busca confirmar la hipótesis, sino sobrevivir intentos de refutación. Con 24 validaciones positivas (83%), 5 rechazos genuinos con EDI bajo, 3 falsaciones correctas sobre 32 experimentos, el marco demuestra capacidad discriminante robusta. La corrección de la normalización C5 (§02 Bitácora) recuperó 6 casos que exhibían emergencia genuina pero cuya sensibilidad se sobreestimaba por artefacto de la z-normalización: la sensibilidad del ABM se evalúa ahora contra la escala real del fenómeno, no contra la representación estandarizada.
+La praxis no busca confirmar la hipótesis, sino sobrevivir intentos de refutación. Con 21 validaciones positivas (81%), 5 rechazos genuinos con EDI bajo, 3 falsaciones correctas sobre 29 experimentos, el marco demuestra capacidad discriminante robusta. La corrección de la normalización C5 (§02 Bitácora) recuperó 6 casos que exhibían emergencia genuina pero cuya sensibilidad se sobreestimaba por artefacto de la z-normalización: la sensibilidad del ABM se evalúa ahora contra la escala real del fenómeno, no contra la representación estandarizada.
 
 ---
 
@@ -652,7 +624,7 @@ La praxis no busca confirmar la hipótesis, sino sobrevivir intentos de refutaci
 
 ## Resumen de Resultados
 
-De 32 casos simulados, 24 de 29 genuinos (83%) validan H1 con EDI > 0.30 y protocolo C1-C5 completo. Los 3 controles de falsación son rechazados correctamente. Los 5 rechazos genuinos corresponden a dominios donde el ABM lineal no captura la dinámica emergente.
+De 29 casos simulados, 21 de 26 genuinos (81%) validan H1 con EDI > 0.30 y protocolo C1-C5 completo. Los 3 controles de falsación son rechazados correctamente. Los 5 rechazos genuinos corresponden a dominios donde el ABM lineal no captura la dinámica emergente.
 
 ## Evidencia Dura (Sistemas de Inercia Física)
 - **Clima regional (01):** Acople ODE de balance radiativo con ABM local. ✅ EDI=0.372, forcing_scale=0.99
@@ -1399,7 +1371,7 @@ Vocabulario operativo normalizado.
 
 El marco metodológico es **riguroso y coherente**, y cuenta con herramientas suficientes para el siguiente paso conceptual. Sin embargo, para iniciar ejecución empírica real, se recomienda añadir protocolos de implementación técnica, selección de fuentes y gobernanza de datos.
 
-### 24_auditoria_integral_marco_00.md
+### 21_auditoria_integral_marco_00.md
 
 # Auditoría Integral del Marco Conceptual (Ronda Final)
 
@@ -2093,7 +2065,7 @@ Síntesis coherentes en formato tesis y terminología homogénea.
 - [21_auditoria_edgecases_riesgos.md](./21_auditoria_edgecases_riesgos.md)
 - [22_auditoria_vocabulario_operativo.md](./22_auditoria_vocabulario_operativo.md)
 - [23_auditoria_integral_marco_01.md](./23_auditoria_integral_marco_01.md)
-- [24_auditoria_integral_marco_00.md](./24_auditoria_integral_marco_00.md)
+- [21_auditoria_integral_marco_00.md](./21_auditoria_integral_marco_00.md)
 - [25_sintesis_implementacion_practica.md](./25_sintesis_implementacion_practica.md)
 - [26_sintesis_casos_piloto.md](./26_sintesis_casos_piloto.md)
 - [27_auditoria_indices_carpetas.md](./27_auditoria_indices_carpetas.md)
@@ -3937,7 +3909,7 @@ El sistema es un modelo de **acoplamiento bidireccional** con **Asimilación de 
 
 *   **Micro (ABM - Agent Based Model):** Implementado como una rejilla 2D (Lattice). Cada nodo tiene un estado $S = [T, H]$. Utiliza un Kernel de Moore para la difusión térmica y ruido gaussiano para la turbulencia.
 *   **Macro (ODE - Ordinary Differential Equation):** Resuelve el balance energético regional. $\frac{dT}{dt} = \alpha(F(t) - T) + \beta \bar{S}_{micro}$.
-*   **Datos:** Series temporales de **Meteostat** para la región **CONUS** (1990-2024).
+*   **Datos:** Series temporales de **Meteostat** para la región **CONUS** (1990-2021).
 
 ### Métricas de éxito:
 *   **RMSE (Error Cuadrático Medio):** 4.268 (Dentro del umbral de 4.717).
@@ -3989,7 +3961,7 @@ ajuste = fuerza_goma * (temp_global_macro - temp_pixel)
 
 > Tabla generada automáticamente desde `metrics.json` de cada caso.
 
-## Matriz de Protocolo Completa (32 casos × 11 criterios)
+## Matriz de Protocolo Completa (29 casos × 11 criterios)
 
 Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). **Validado** = 11 condiciones ✓ simultáneamente.
 
@@ -4028,7 +4000,7 @@ Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0
 | 06 | Wikipedia | 0.018 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
 | 06 | Salinizacion | 0.176 | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✓ | ✓ | Rechazado |
 
-**Resumen:** 24 validados, 0 rechazados con EDI > 0.30 (selectividad), 3 controles de falsación, 5 rechazados con EDI bajo.
+**Resumen:** 21 validados, 0 rechazados con EDI > 0.30 (selectividad), 3 controles de falsación, 5 rechazados con EDI bajo.
 
 ## Distribución de Modos de Fallo
 

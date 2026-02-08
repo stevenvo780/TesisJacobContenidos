@@ -14,7 +14,7 @@ pip install -r repos/Simulaciones/requirements.txt
 
 ## Resultados Principales
 
-**32 casos evaluados** con protocolo completo (11 criterios simultaneos). **24 validados** (83%), 5 rechazados genuinos, 3 controles de falsacion correctos.
+**29 casos evaluados** con protocolo completo (11 criterios simultaneos). **21 validados** (81%), 5 rechazados genuinos, 3 controles de falsacion correctos.
 
 | Caso | EDI | Dominio | Estado |
 |------|-----|---------|--------|

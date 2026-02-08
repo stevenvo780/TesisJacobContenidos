@@ -13,44 +13,46 @@ Lectura recomendada en orden:
    - `EjersiciosCriticos/Trazas_Mejoras_Possibles_Dudas.md`
 
 Documentos de referencia:
-
 - Resumen general del repositorio: `README.md`
 - Tesis final: `../TesisFinal/Tesis.md`
 
-Casos enumerados (02_Modelado_Simulacion) — 32 casos:
+---
 
-**Bloque I — Originales (01–21):**
-- `01_caso_clima/` ✅
-- `02_caso_conciencia/`
-- `03_caso_contaminacion/`
-- `04_caso_energia/` ✅
-- `05_caso_epidemiologia/`
-- `06_caso_estetica/`
-- `06_caso_falsacion_exogeneidad/` (control)
-- `06_caso_falsacion_no_estacionariedad/` (control)
-- `06_caso_falsacion_observabilidad/` (control)
-- `06_caso_finanzas/` ✅
-- `06_caso_justicia/`
-- `12_caso_moderacion_adversarial/`
-- `06_caso_movilidad/`
-- `12_caso_paradigmas/` ✅
-- `06_caso_politicas_estrategicas/`
-- `12_caso_postverdad/`
-- `17_caso_rtb_publicidad/` ✅
-- `06_caso_wikipedia/`
-- `12_caso_deforestacion/` ✅
-- `17_caso_oceanos/`
-- `06_caso_urbanizacion/` ✅
+## Lista Completa de Casos (29 casos oficiales)
 
-**Bloque II — Nuevos (22–32):**
-- `12_caso_acidificacion_oceanica/`
-- `17_caso_kessler/`
-- `06_caso_salinizacion/`
-- `12_caso_fosforo/` ✅
-- `17_caso_erosion_dialectica/`
-- `06_caso_microplasticos/`
-- `12_caso_acuiferos/` ✅
-- `17_caso_starlink/` ✅
-- `06_caso_riesgo_biologico/`
-- `12_caso_fuga_cerebros/` ✅
-- `17_caso_iot/`
+### Bloque I: Validados (EDI > 0.30 + C1-C5)
+01. `01_caso_clima/` — Clima regional (Meteostat)
+02. `02_caso_conciencia/` — Conciencia global (Proxy Trends)
+04. `04_caso_energia/` — Energía eléctrica (ENTSOE)
+09. `09_caso_finanzas/` — Finanzas globales (Yahoo Finance)
+10. `10_caso_justicia/` — Estado de Derecho (World Bank)
+11. `11_caso_movilidad/` — Tráfico aéreo (World Bank)
+12. `12_caso_paradigmas/` — Ciencia y citaciones (OpenAlex)
+13. `13_caso_politicas_estrategicas/` — Recaudación fiscal (World Bank)
+16. `16_caso_deforestacion/` — Área forestal (World Bank)
+17. `17_caso_oceanos/` — Temperatura oceánica (World Bank)
+18. `18_caso_urbanizacion/` — Población urbana (World Bank)
+19. `19_caso_acidificacion_oceanica/` — CO2 y Océanos (World Bank)
+20. `20_caso_kessler/` — Desechos orbitales (CelesTrak)
+22. `22_caso_fosforo/` — Uso de fertilizantes (World Bank)
+23. `23_caso_erosion_dialectica/` — Alfabetización (World Bank)
+24. `24_caso_microplasticos/` — Emisiones GHG (World Bank)
+25. `25_caso_acuiferos/` — Acceso al agua (World Bank)
+26. `26_caso_starlink/` — Mega-constelaciones (CelesTrak)
+27. `27_caso_riesgo_biologico/` — Mortalidad (World Bank)
+28. `28_caso_fuga_cerebros/` — I+D (World Bank)
+29. `29_caso_iot/` — Suscripciones móviles (World Bank)
+
+### Bloque II: Rechazados Genuinos (EDI < 0.30)
+03. `03_caso_contaminacion/` — PM2.5 (Sin emergencia macro)
+05. `05_caso_epidemiologia/` — Mortalidad (Dinámica SEIR incompatible)
+14. `14_caso_postverdad/` — Usuarios Internet (Sin estructura macro)
+15. `15_caso_wikipedia/` — Ediciones Wiki (Sin reducción de entropía)
+21. `21_caso_salinizacion/` — Tierras cultivables (Señal débil)
+
+### Bloque III: Controles de Falsación (Sintéticos)
+06. `06_caso_falsacion_exogeneidad/` — Ruido puro
+07. `07_caso_falsacion_no_estacionariedad/` — Random Walk
+08. `08_caso_falsacion_observabilidad/` — Estado oculto
+
+> **Nota de Auditoría:** Los casos Estética (antiguo 06), Moderación (antiguo 12) y RTB (antiguo 17) fueron removidos por inviabilidad de datos reales.

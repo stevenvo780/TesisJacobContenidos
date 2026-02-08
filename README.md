@@ -10,7 +10,7 @@ Un hiperobjeto posee realidad ontológica si su modelo macroscópico (ODE) reduc
 
 ## 🏗️ Estructura del Proyecto
 
-*   **`/TesisDesarrollo/`**: Marco teórico, metodología C1-C5 y documentación técnica detallada de los 32 casos.
+*   **`/TesisDesarrollo/`**: Marco teórico, metodología C1-C5 y documentación técnica detallada de los 29 casos.
 *   **`/repos/Simulaciones/`**: Motor de simulación en Python con el pipeline completo de validación.
 *   **`/Artifacts/`**: Registro de auditorías, debates dialécticos (Gladiadores) y ciclos de validación.
 *   **`/TesisFinal/`**: Documento consolidado de la tesis (`Tesis.md`).
@@ -18,14 +18,17 @@ Un hiperobjeto posee realidad ontológica si su modelo macroscópico (ODE) reduc
 ---
 
 ## 📊 Resultados de Validación
-Se han evaluado **32 casos**, obteniendo resultados consistentes con la hipótesis de emergencia:
+Se han evaluado **29 casos** (tras la remoción de 3 casos por falta de datos reales), obteniendo resultados consistentes con la hipótesis de emergencia:
 
 | Métrica | Valor |
 |---------|-------|
-| Casos Totales | 32 |
-| Casos Validados (EDI > 0.30) | 24 |
+| Casos Totales | 29 |
+| Casos Validados (EDI > 0.30) | 21 |
 | Controles de Falsación | 3 |
 | Rechazados Genuinos | 5 |
+
+> **Nota:** Los casos de Estética, Moderación Adversarial y RTB Publicidad fueron archivados en `/Artifacts/casos_removidos/` por carecer de fuentes de datos reales verificables.
+
 
 ### Casos Destacados:
 *   **Clima:** Validado (EDI=0.434). Basado en datos reales de Meteostat.

@@ -7,6 +7,22 @@
 
 ---
 
+## ACTUALIZACIÓN POST‑EJECUCIÓN (2026-02-08)
+
+**Resumen crítico tras re‑ejecución completa con motor corregido:**
+
+- **Validaciones reales ejecutadas (29/29)** con `HYPER_GRID_SIZE=20` y `HYPER_N_RUNS=5`.  
+  Resultado: **EDI válido en 1/29** y **overall_pass = 0/29**.  
+- **Distribución nula EDI (GPU):** umbral recomendado **0.3248**;  
+  **P(EDI>0.30 | H0) = 0.19**, por lo tanto **0.30 no es significativo**.  
+- **Run GPU mega‑escala ejecutado** (`universal_run.py`):  
+  **470x470 grid**, **6000 batches**, **421.7s** totales, outputs en `outputs_gpu/`.  
+- **Notas operativas:** `pytrends` no instalado → casos 02 y 14 usan fallback sintético.  
+
+**Conclusión provisional:** Con el pipeline limpio (sin leakage y EDI corregido), la validación **colapsa**. La hipótesis H1 queda **no confirmada** bajo criterios estrictos.  
+
+---
+
 ## INDICE
 
 1. [Resumen Ejecutivo](#1-resumen-ejecutivo)
