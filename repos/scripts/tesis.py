@@ -251,18 +251,18 @@ LOE_MAP = {
     "03_caso_contaminacion": 4,
     "04_caso_energia": 4,
     "05_caso_epidemiologia": 4,
-    "06_caso_estetica": 2,
+    # 06_caso_estetica: REMOVED - no real data source
     "07_caso_falsacion_exogeneidad": 1,
     "08_caso_falsacion_no_estacionariedad": 1,
     "09_caso_falsacion_observabilidad": 1,
     "10_caso_finanzas": 5,
     "11_caso_justicia": 2,
-    "12_caso_moderacion_adversarial": 1,
+    # 12_caso_moderacion_adversarial: REMOVED - no real data source
     "13_caso_movilidad": 2,
     "14_caso_paradigmas": 2,
     "15_caso_politicas_estrategicas": 1,
     "16_caso_postverdad": 2,
-    "17_caso_rtb_publicidad": 1,
+    # 17_caso_rtb_publicidad: REMOVED - no real data source
     "18_caso_wikipedia": 3,
     "19_caso_deforestacion": 5,
     "20_caso_oceanos": 4,

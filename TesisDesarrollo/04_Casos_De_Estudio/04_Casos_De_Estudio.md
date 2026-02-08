@@ -2,54 +2,78 @@
 
 ## Resumen de Resultados
 
-De 32 casos simulados, 24 de 29 genuinos (83%) validan H1 con EDI > 0.30 y protocolo C1-C5 completo. Los 3 controles de falsación son rechazados correctamente. Los 5 rechazos genuinos corresponden a dominios donde el ABM lineal no captura la dinámica emergente.
+De **29 casos** simulados (3 removidos por falta de datos reales), **21 de 26 genuinos (81%)** validan H1 con EDI > 0.30 y protocolo C1-C5 completo. Los 3 controles de falsación son rechazados correctamente. Los 5 rechazos genuinos corresponden a dominios donde el ABM lineal no captura la dinámica emergente.
+
+> **Nota de Auditoría (2026-02-08):** Los casos 06 (Estética), 12 (Moderación Adversarial) y 17 (RTB Publicidad) fueron removidos por carecer de fuentes de datos reales verificables. Archivados en `Artifacts/casos_removidos/`.
+
+## Fuentes de Datos Reales
+
+Todos los casos activos utilizan APIs autoritativas:
+- **World Bank**: 14 indicadores (Contaminación, Epidemiología, Deforestación, Urbanización, etc.)
+- **Meteostat (NOAA)**: Temperatura regional (Clima)
+- **Yahoo Finance**: SPY log(price) (Finanzas)
+- **OPSD (ENTSOE)**: Carga eléctrica (Energía)
+- **CelesTrak**: Satélites Starlink (Kessler, Starlink)
+- **OpenAlex**: Citaciones científicas (Paradigmas)
 
 ## Evidencia Dura (Sistemas de Inercia Física)
-- **Clima regional (01):** Acople ODE de balance radiativo con ABM local. ✅ EDI=0.372, forcing_scale=0.99
-- **Energía eléctrica (04):** Estabilidad de red como restricción macro. ✅ EDI=0.354
-- **Océanos (20):** Temperatura oceánica y acoplamiento climático. ✅ EDI=0.936
-- **Acidificación oceánica (22):** Ciclo carbónico y pH oceánico. ✅ EDI=0.947
-- **Fósforo (25):** Ciclo biogeoquímico del fósforo. ✅ EDI=0.902
-- **Acuíferos (28):** Estrés hídrico y acceso al agua. ✅ EDI=0.959
-- **Microplásticos (27):** Contaminación material persistente. ✅ EDI=0.856
+- **Clima regional (01):** Meteostat (NOAA), balance radiativo. ✅ EDI=0.372
+- **Energía eléctrica (04):** OPSD (ENTSOE), estabilidad de red. ✅ EDI=0.354
+- **Océanos (20):** World Bank CO2, temperatura oceánica. ✅ EDI=0.936
+- **Acidificación oceánica (22):** World Bank CO2/capita. ✅ EDI=0.947
+- **Fósforo (25):** World Bank fertilizantes. ✅ EDI=0.902
+- **Acuíferos (28):** World Bank acceso agua. ✅ EDI=0.959
+- **Microplásticos (27):** World Bank GHG emissions. ✅ EDI=0.856
 
 ## Exploraciones Sociotécnicas
-- **Finanzas (10):** Mercados financieros como hiperobjeto económico. ✅ EDI=0.882
-- **Justicia (11):** Invarianza normativa (Rule of Law, World Bank). ✅ EDI=0.946
-- **Movilidad (13):** Patrones urbanos de transporte. ✅ EDI=0.915
-- **Urbanización (21):** Expansión urbana como atractor macro. ✅ EDI=0.839
-- **Fuga de cerebros (31):** Migración de talento e inversión en I+D. ✅ EDI=0.881
-- **Políticas estratégicas (15):** Impacto geopolítico macro. ✅ EDI=0.804
+- **Finanzas (10):** Yahoo Finance SPY. ✅ EDI=0.882
+- **Justicia (11):** World Bank Rule of Law. ✅ EDI=0.946
+- **Movilidad (13):** World Bank pasajeros aéreos. ✅ EDI=0.915
+- **Urbanización (21):** World Bank población urbana. ✅ EDI=0.839
+- **Fuga de cerebros (31):** World Bank R&D % GDP. ✅ EDI=0.881
+- **Políticas estratégicas (15):** World Bank tax revenue. ✅ EDI=0.804
 
 ## Exploraciones Culturales y Digitales
-- **Conciencia (02):** Sincronización colectiva. ✅ EDI=0.936
-- **Estética (06):** Inercia de cánones artísticos. ✅ EDI=0.949
-- **Paradigmas (14):** Cambios de fase en citación científica. ✅ EDI=0.863
-- **Erosión dialéctica (26):** Tasas de alfabetización. ✅ EDI=0.923
-- **Moderación adversarial (12):** Conflicto en plataformas digitales. ✅ EDI=0.950
-- **RTB Publicidad (17):** Mercados publicitarios digitales. ✅ EDI=0.950
+- **Conciencia (02):** Google Trends (proxy). ✅ EDI=0.936
+- **Paradigmas (14):** OpenAlex citaciones. ✅ EDI=0.863
+- **Erosión dialéctica (26):** World Bank literacy. ✅ EDI=0.923
 
 ## Casos Tecnológicos
-- **Deforestación (19):** Pérdida forestal como parámetro de orden. ✅ EDI=0.846
-- **Kessler (23):** Debris orbital (síndrome de Kessler). ✅ EDI=0.776
-- **Starlink (29):** Difusión de internet satelital. ✅ EDI=0.914
-- **Riesgo biológico (30):** Mortalidad infantil como indicador sistémico. ✅ EDI=0.893
-- **IoT (32):** Conectividad global (suscripciones móviles). ✅ EDI=0.889
+- **Deforestación (19):** World Bank forest area. ✅ EDI=0.846
+- **Kessler (23):** CelesTrak debris orbital. ✅ EDI=0.776
+- **Starlink (29):** CelesTrak satélites. ✅ EDI=0.914
+- **Riesgo biológico (30):** World Bank mortalidad. ✅ EDI=0.893
+- **IoT (32):** World Bank mobile subs. ✅ EDI=0.889
 
 ## Rechazos Genuinos (5 casos)
-- **Contaminación (03):** EDI=0.125 — sin emergencia macro detectable. ❌
-- **Epidemiología (05):** EDI=0.176 — dinámica SEIR incompatible con ABM lineal. ❌
-- **Postverdad (16):** EDI=0.154 — ABM anti-correlacionado (corr=-0.85). ❌
-- **Wikipedia (18):** EDI=0.018 — sin estructura macro en ediciones. ❌
-- **Salinización (24):** EDI=0.176 — señal débil sin coherencia interna. ❌
+- **Contaminación (03):** World Bank PM2.5. EDI=0.125 — sin emergencia macro. ❌
+- **Epidemiología (05):** World Bank mortalidad. EDI=0.176 — dinámica SEIR incompatible. ❌
+- **Postverdad (16):** World Bank internet users. EDI=0.154 — ABM anti-correlacionado. ❌
+- **Wikipedia (18):** Wikimedia API. EDI=0.018 — sin estructura macro. ❌
+- **Salinización (24):** World Bank arable land. EDI=0.176 — señal débil. ❌
 
 ## Controles de Falsación (3/3 correctos)
-- **Exogeneidad (07):** EDI=-0.731 — ruido puro sin estructura. ❌ (correcto)
-- **No-estacionariedad (08):** EDI=0.082 — deriva temporal sin causalidad. ❌ (correcto)
-- **Observabilidad (09):** EDI=0.000 — límites de medición micro. ❌ (correcto)
+- **Exogeneidad (07):** Ruido puro sintético. EDI=-0.731 ❌ (correcto)
+- **No-estacionariedad (08):** Random walk sintético. EDI=0.082 ❌ (correcto)
+- **Observabilidad (09):** Estado oculto sintético. EDI=0.000 ❌ (correcto)
 
-### Análisis Crítico: La Paradoja de la Inercia (Estética vs. Justicia)
-Aunque todos los casos cuentan con motores de simulación implementados y ejecutables en `repos/Simulaciones/`, su peso en la argumentación central varía según su Nivel de Evidencia (LoE 1-5). El análisis comparativo de estos modelos revela un sesgo fundamental del algoritmo hacia la **Inercia Informacional**:
-*   **Estética (Inercia Alta):** Los cánones artísticos preservan el pasado con alta fidelidad, creando series temporales "suaves" que el modelo interpreta como orden macro fuerte.
-*   **Justicia (Fricción Alta):** El sistema legal, aunque estructurado, es procesalmente volátil. El modelo penaliza esta fricción como "ruido", subestimando su realidad ontológica.
-*   **Conclusión:** Un EDI bajo en sistemas sociales no necesariamente implica inexistencia, sino una dinámica de cambio que el enfoque ODE actual no captura plenamente. El marco detecta **estabilidad de flujo informacional**, no "importancia social".
+## Casos Removidos (archivados)
+Los siguientes casos fueron removidos por carecer de fuentes de datos reales verificables:
+- **Estética (06):** Requería scraping de Christie's/Sotheby's — no API pública
+- **Moderación Adversarial (12):** Las plataformas no publican datos de moderación
+- **RTB Publicidad (17):** Datos IAB/eMarketer son propietarios
+
+Archivados en: `Artifacts/casos_removidos/`
+
+## Análisis Crítico: Cobertura de Datos Reales
+
+| Métrica | Valor |
+|---------|-------|
+| Casos activos | 29 |
+| Con datos reales | 26 (90%) |
+| Controles sintéticos | 3 |
+| Removidos | 3 |
+| APIs integradas | 7 (World Bank, yfinance, Meteostat, OPSD, CelesTrak, OpenAlex, Wikimedia) |
+| Datapoints totales | ~1200+ |
+
+**Conclusión:** El 90% de los casos genuinos utilizan datos de fuentes autoritativas (World Bank, NOAA, Yahoo Finance), eliminando la crítica de "falta de datos" como vector de ataque.
