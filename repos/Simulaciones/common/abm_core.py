@@ -215,6 +215,9 @@ def simulate_abm_core(
             - dmp * grid
             + noise
         )
+        if not np.isfinite(grid).all():
+            grid = np.nan_to_num(grid, nan=0.0, posinf=1e6, neginf=-1e6)
+        grid = np.clip(grid, -1e6, 1e6)
 
         # Perturbación (viscosidad)
         if perturbation_event and t == perturbation_event.get("step"):
@@ -236,6 +239,8 @@ def simulate_abm_core(
                 - macro_damping * macro_state
                 + rng.uniform(-macro_noise, macro_noise)
             )
+            if not np.isfinite(macro_state):
+                macro_state = 0.0
             main_series.append(float(macro_state))
         else:
             main_series.append(float(grid.mean()))

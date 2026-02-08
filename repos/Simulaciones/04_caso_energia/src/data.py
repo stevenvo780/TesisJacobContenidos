@@ -13,7 +13,10 @@ def fetch_opsd_load_monthly(start_date, end_date, cache_path=None):
 
     resp = requests.get(OPSD_URL, timeout=60)
     resp.raise_for_status()
-    tmp_path = os.path.join(os.path.dirname(cache_path or "./"), "opsd_time_series.csv")
+    tmp_dir = os.path.dirname(cache_path or "./")
+    if tmp_dir:
+        os.makedirs(tmp_dir, exist_ok=True)
+    tmp_path = os.path.join(tmp_dir or ".", "opsd_time_series.csv")
     with open(tmp_path, "wb") as f:
         f.write(resp.content)
 

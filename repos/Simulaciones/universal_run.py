@@ -45,7 +45,7 @@ def run_gpu_mode():
     # Configuración CONSUMO (Maximizando 16GB VRAM)
     GRID_SIZE = 470
     N_RUNS = 200
-    STEPS = 1500
+    STEPS = 800
     CHUNK_SIZE = 1600
     
     configs = []
