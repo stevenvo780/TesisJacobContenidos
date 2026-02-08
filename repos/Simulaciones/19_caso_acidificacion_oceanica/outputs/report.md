@@ -1,6 +1,6 @@
 # Reporte de Validación — Acidificación Oceánica
 
-- generated_at: 2026-02-08T20:41:33.575981Z
+- generated_at: 2026-02-08T20:52:46.766871Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -45,16 +45,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -2.0749
-- bootstrap_mean: -2.0749
-- CI 95%: [-2.0751, -2.0746]
-- weighted_value (LoE factor 0.20): -0.4150
+- valor: -0.4513
+- bootstrap_mean: -0.4732
+- CI 95%: [-0.7319, -0.2754]
+- weighted_value (LoE factor 0.20): -0.0903
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: -1.0000
-- external: -0.0000
-- CR: 41282621.2523
+- external: 0.0000
+- CR: 2658223.2030
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,8 +65,8 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 47786.7794
-- rmse_abm_no_ode: 15540.8073
+- rmse_abm: 34.4842
+- rmse_abm_no_ode: 23.7603
 - rmse_ode: 2.7036
 - rmse_reduced: 2.0497
 - threshold: 1.0498

@@ -1,6 +1,6 @@
 # Reporte de Validación — Constelaciones Satelitales (Starlink)
 
-- generated_at: 2026-02-08T20:43:35.681808Z
+- generated_at: 2026-02-08T20:54:57.911595Z
 
 ## Fase synthetic
 - **overall_pass**: False

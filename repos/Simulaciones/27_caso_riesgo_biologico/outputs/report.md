@@ -1,6 +1,6 @@
 # Reporte de Validación — Riesgo Biológico Global
 
-- generated_at: 2026-02-08T20:43:24.876023Z
+- generated_at: 2026-02-08T20:54:32.824741Z
 
 ## Fase synthetic
 - **overall_pass**: False

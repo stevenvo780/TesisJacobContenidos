@@ -1,6 +1,6 @@
 # Reporte de Validación — Erosión Dialéctica
 
-- generated_at: 2026-02-08T20:41:37.610411Z
+- generated_at: 2026-02-08T20:52:27.531310Z
 
 ## Fase synthetic
 - **overall_pass**: False

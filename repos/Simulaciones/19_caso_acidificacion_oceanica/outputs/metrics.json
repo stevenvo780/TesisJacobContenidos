@@ -1,8 +1,8 @@
 {
   "case": "Acidificaci\u00f3n Oce\u00e1nica",
-  "generated_at": "2026-02-08T20:41:33.575981Z",
+  "generated_at": "2026-02-08T20:52:46.766871Z",
   "git": {
-    "commit": "fdf84a98a3f1429c941e754059f75c9f76520a20",
+    "commit": "1d5da5bc5e73b3ce4c33b418a8a48e913235c411",
     "dirty": true
   },
   "phases": {
@@ -145,54 +145,54 @@
         "calibration_rmse": 0.9646808196809895
       },
       "errors": {
-        "rmse_abm": 47786.779445952794,
-        "rmse_abm_no_ode": 15540.807313267336,
+        "rmse_abm": 34.48420913477813,
+        "rmse_abm_no_ode": 23.760277585983417,
         "rmse_ode": 2.703649298024019,
         "rmse_reduced": 2.049732445197521,
         "threshold": 1.0497537665275187
       },
       "correlations": {
-        "abm_obs": 0.044208969842765795,
+        "abm_obs": 0.02340714228162198,
         "ode_obs": -0.014995721478899071
       },
       "edi": {
-        "value": -2.0749225881693265,
-        "bootstrap_mean": -2.074908871637365,
-        "ci_lo": -2.075136461734638,
-        "ci_hi": -2.0745944084017665,
+        "value": -0.45133864745422597,
+        "bootstrap_mean": -0.47319564096602185,
+        "ci_lo": -0.7318516051772144,
+        "ci_hi": -0.2753578511919265,
         "valid": false,
-        "weighted_value": -0.41498451763386535,
+        "weighted_value": -0.0902677294908452,
         "loe_factor": 0.2
       },
       "viscosity": {
         "pass": true,
         "detail": {
-          "relaxation_time": 8,
+          "relaxation_time": 3,
           "peak_impact": 2.0,
           "shock_step": 378,
           "recovered": true
         }
       },
-      "effective_information": -1.1230519681717102,
+      "effective_information": -0.3999122753025759,
       "symploke": {
-        "internal": -0.9999999976512299,
-        "external": -2.4223267983411803e-08,
-        "cr": 41282621.25226184,
+        "internal": -0.9999990090200294,
+        "external": 3.7619076077103947e-07,
+        "cr": 2658223.20295808,
         "pass": false,
         "cr_valid": true
       },
       "non_locality": {
-        "dominance_share": 0.002500160577933515,
+        "dominance_share": 0.002755701902239652,
         "pass": true
       },
       "persistence": {
-        "model": 31105583954.040783,
+        "model": 0.0,
         "obs": 0.4214569766847067,
-        "pass": false
+        "pass": true
       },
       "emergence": {
-        "err_reduced": 15540.807313267336,
-        "err_abm": 47786.779445952794,
+        "err_reduced": 23.760277585983417,
+        "err_abm": 34.48420913477813,
         "threshold": 0.20995075330550375,
         "pass": false,
         "significance": "computed"
@@ -205,30 +205,30 @@
       "c4_validity": true,
       "c5_uncertainty": false,
       "c1_detail": {
-        "rmse_abm": 47786.779445952794,
+        "rmse_abm": 34.48420913477813,
         "rmse_ode": 2.703649298024019,
-        "corr_abm": 0.044208969842765795,
+        "corr_abm": 0.02340714228162198,
         "corr_ode": -0.014995721478899071,
         "threshold": 1.0497537665275187
       },
       "c2_detail": {
-        "mean_delta": 1.0814272003777395e+18,
-        "var_delta": 1.9650505565152693e+40,
-        "relative_mean": 2108698867478527.8,
-        "relative_var": 8.606112892853105e+30
+        "mean_delta": 2.0038863572322083,
+        "var_delta": 2160595.9201652287,
+        "relative_mean": 2.0038863572322083,
+        "relative_var": 1818.090900723383
       },
       "c3_detail": {
-        "persistence_1": 31105583954.040783,
-        "persistence_2": 23517649228114.88
+        "persistence_1": 0.0,
+        "persistence_2": 1898283.88577489
       },
       "c4_detail": {
-        "diff": 45138.61498803213
+        "diff": 4.369474024216086
       },
       "c5_detail": {
-        "sensitivity_min": -5.841378455999906e+33,
-        "sensitivity_max": 1.286139413663452e+29,
-        "range": 5.841507069941273e+33,
-        "relative_range": 5.0002201822295635
+        "sensitivity_min": -1.623374922731939,
+        "sensitivity_max": 4.506596428868899,
+        "range": 6.129971351600838,
+        "relative_range": 6.129971351600838
       }
     }
   }

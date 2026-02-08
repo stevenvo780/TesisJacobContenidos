@@ -1,6 +1,6 @@
 # Reporte de Validación — Contaminación por Microplásticos
 
-- generated_at: 2026-02-08T20:43:33.149323Z
+- generated_at: 2026-02-08T20:54:42.369692Z
 
 ## Fase synthetic
 - **overall_pass**: False

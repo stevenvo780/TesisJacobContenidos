@@ -1,6 +1,6 @@
 # Reporte de Validación — Nivel Freático de Acuíferos
 
-- generated_at: 2026-02-08T20:42:39.492245Z
+- generated_at: 2026-02-08T20:53:42.584641Z
 
 ## Fase synthetic
 - **overall_pass**: False

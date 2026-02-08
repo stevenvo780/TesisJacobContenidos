@@ -1,6 +1,6 @@
 # Reporte de Validación — Temperatura Oceánica Global
 
-- generated_at: 2026-02-08T20:41:24.526056Z
+- generated_at: 2026-02-08T20:52:14.107911Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -45,16 +45,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -2.0749
-- bootstrap_mean: -2.0749
-- CI 95%: [-2.0751, -2.0746]
-- weighted_value (LoE factor 0.20): -0.4150
+- valor: -0.4511
+- bootstrap_mean: -0.4729
+- CI 95%: [-0.7313, -0.2748]
+- weighted_value (LoE factor 0.20): -0.0902
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: -1.0000
-- external: -0.0000
-- CR: 42194341.3494
+- external: 0.0000
+- CR: 1626939.0440
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,8 +65,8 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 47786.7907
-- rmse_abm_no_ode: 15540.8073
+- rmse_abm: 34.4784
+- rmse_abm_no_ode: 23.7603
 - rmse_ode: 1.4014
 - rmse_reduced: 2.0497
 - threshold: 1.0498

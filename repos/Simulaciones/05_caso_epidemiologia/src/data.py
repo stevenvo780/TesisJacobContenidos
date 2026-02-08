@@ -13,7 +13,10 @@ def fetch_owid_world_weekly(start_date, end_date, cache_path=None):
     resp = requests.get(OWID_URL, timeout=60)
     resp.raise_for_status()
 
-    tmp_path = os.path.join(os.path.dirname(cache_path or "./"), "owid_covid.csv")
+    tmp_dir = os.path.dirname(cache_path or "./")
+    if tmp_dir:
+        os.makedirs(tmp_dir, exist_ok=True)
+    tmp_path = os.path.join(tmp_dir or ".", "owid_covid.csv")
     with open(tmp_path, "wb") as f:
         f.write(resp.content)
 

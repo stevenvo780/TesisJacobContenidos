@@ -1,8 +1,8 @@
 {
   "case": "S\u00edndrome de Kessler",
-  "generated_at": "2026-02-08T20:43:02.767567Z",
+  "generated_at": "2026-02-08T20:54:10.039544Z",
   "git": {
-    "commit": "a0355e1882dd3266a89ac03ffdbe8f00ac2079c4",
+    "commit": "1d5da5bc5e73b3ce4c33b418a8a48e913235c411",
     "dirty": true
   },
   "phases": {
@@ -142,33 +142,33 @@
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.003241328751975021
+        "calibration_rmse": 0.0032413287519753187
       },
       "errors": {
-        "rmse_abm": 1.2199018224904103,
-        "rmse_abm_no_ode": 0.2691772638645005,
-        "rmse_ode": 3.1723004561550407,
-        "rmse_reduced": 2.4621067369275718,
+        "rmse_abm": 1.2199018224904106,
+        "rmse_abm_no_ode": 0.26917726386450075,
+        "rmse_ode": 3.172300456155041,
+        "rmse_reduced": 2.4621067369275713,
         "threshold": 0.40237504860193984
       },
       "correlations": {
-        "abm_obs": 0.9999761734449572,
-        "ode_obs": 0.9996752576890044
+        "abm_obs": 0.9999761734449569,
+        "ode_obs": 0.9996752576890049
       },
       "edi": {
-        "value": -3.53196456853982,
-        "bootstrap_mean": -3.5381559198295323,
-        "ci_lo": -3.762853939104166,
-        "ci_hi": -3.3165317993788226,
+        "value": -3.531964568539817,
+        "bootstrap_mean": -3.53815591982953,
+        "ci_lo": -3.7628539391041644,
+        "ci_hi": -3.31653179937882,
         "valid": false,
-        "weighted_value": -0.7063929137079641,
+        "weighted_value": -0.7063929137079634,
         "loe_factor": 0.2
       },
       "viscosity": {
         "pass": true,
         "detail": {
           "relaxation_time": 4,
-          "peak_impact": 1.9999999999999996,
+          "peak_impact": 1.9999999999999998,
           "shock_step": 504,
           "recovered": true
         }
@@ -186,13 +186,13 @@
         "pass": true
       },
       "persistence": {
-        "model": 5.337424037493336e-05,
+        "model": 5.3374240374932904e-05,
         "obs": 0.00013605519305664852,
         "pass": true
       },
       "emergence": {
-        "err_reduced": 0.2691772638645005,
-        "err_abm": 1.2199018224904103,
+        "err_reduced": 0.26917726386450075,
+        "err_abm": 1.2199018224904106,
         "threshold": 0.08047500972038797,
         "pass": false,
         "significance": "computed"
@@ -205,28 +205,28 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 1.2199018224904103,
-        "rmse_ode": 3.1723004561550407,
-        "corr_abm": 0.9999761734449572,
-        "corr_ode": 0.9996752576890044,
+        "rmse_abm": 1.2199018224904106,
+        "rmse_ode": 3.172300456155041,
+        "corr_abm": 0.9999761734449569,
+        "corr_ode": 0.9996752576890049,
         "threshold": 0.40237504860193984
       },
       "c2_detail": {
-        "mean_delta": 0.07400433523405944,
-        "var_delta": 0.006111892572058526,
-        "relative_mean": 0.060693126758299354,
-        "relative_var": 0.006111892572058526
+        "mean_delta": 0.0740043352340595,
+        "var_delta": 0.006111892572058522,
+        "relative_mean": 0.06069312675829941,
+        "relative_var": 0.006111892572058522
       },
       "c3_detail": {
-        "persistence_1": 5.337424037493336e-05,
-        "persistence_2": 5.364290324744133e-05
+        "persistence_1": 5.3374240374932904e-05,
+        "persistence_2": 5.364290324744368e-05
       },
       "c4_detail": {
-        "diff": 0.29292285528404927
+        "diff": 0.29292285528404904
       },
       "c5_detail": {
-        "sensitivity_min": 1.0191548499498764,
-        "sensitivity_max": 1.3466456211572864,
+        "sensitivity_min": 1.0191548499498762,
+        "sensitivity_max": 1.3466456211572861,
         "range": 0.32749077120741,
         "relative_range": 4.5563933385378784e-05
       }

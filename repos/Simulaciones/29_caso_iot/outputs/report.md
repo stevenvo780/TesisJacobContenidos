@@ -1,6 +1,6 @@
 # Reporte de Validación — Ecosistema IoT Global
 
-- generated_at: 2026-02-08T20:44:35.230391Z
+- generated_at: 2026-02-08T20:55:50.894812Z
 
 ## Fase synthetic
 - **overall_pass**: False

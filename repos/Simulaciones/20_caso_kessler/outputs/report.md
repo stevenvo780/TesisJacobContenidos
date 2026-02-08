@@ -1,6 +1,6 @@
 # Reporte de Validación — Síndrome de Kessler
 
-- generated_at: 2026-02-08T20:43:02.767567Z
+- generated_at: 2026-02-08T20:54:10.039544Z
 
 ## Fase synthetic
 - **overall_pass**: False
