@@ -42,11 +42,11 @@ def run_gpu_mode():
     import torch
     from common.abm_gpu import simulate_batch_gpu
     
-    # Configuración MEGA-MAXIMUM (Usando ~12GB de 16GB VRAM)
-    GRID_SIZE = 400       # 160,000 agentes
+    # Configuración ULTRA-MAXIMUM (Usando ~14GB de 16GB VRAM)
+    GRID_SIZE = 450       # 202,500 agentes
     N_RUNS = 200          # 200 réplicas por caso
     STEPS = 250
-    CHUNK_SIZE = 1600     # Chunks más grandes para mayor eficiencia
+    CHUNK_SIZE = 1600     # Chunks grandes para eficiencia
     
     configs = []
     case_dirs = sorted(glob.glob(os.path.join(BASE_PATH, "*_caso_*")))
