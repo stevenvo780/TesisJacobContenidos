@@ -91,3 +91,47 @@ def dominance_share(grid_series):
     total = sum(scores) if scores else 1.0
     max_share = max(scores) / total if scores else 1.0
     return max_share
+
+
+# --- Energy Stability Metrics (Blackout Risk) ---
+
+def loss_of_load_probability(load_series, generation_capacity):
+    """
+    LOLP: Probability that Load > Generation Capacity.
+    Standard reliability metric.
+    """
+    if not load_series: return 0.0
+    failures = sum(1 for l in load_series if l > generation_capacity)
+    return failures / len(load_series)
+
+
+def rocof_metric(freq_series, dt=1.0):
+    """
+    ROCOF: Rate of Change of Frequency (Hz/s).
+    Max absolute derivative of frequency.
+    High ROCOF (> 1Hz/s) implies system fragility/low inertia.
+    """
+    if len(freq_series) < 2: return 0.0
+    derivs = [(freq_series[i+1] - freq_series[i])/dt for i in range(len(freq_series)-1)]
+    return max(abs(d) for d in derivs)
+
+
+def inertia_estimation(freq_series, power_imbalance_series):
+    """
+    Estimates System Inertia (H) from Swing Equation:
+    2H * df/dt = P_mismatch
+    H ~ P_mismatch / (2 * df/dt)
+    Returns average estimated H.
+    """
+    estimates = []
+    for i in range(len(freq_series)-1):
+        df_dt = freq_series[i+1] - freq_series[i]
+        if abs(df_dt) > 1e-4:
+            # Assuming D=0 for inertia estimation (dominates initial swing)
+            p_mis = power_imbalance_series[i]
+            h_est = abs(p_mis) / (2 * abs(df_dt))
+            # Filter outliers
+            if 0.1 < h_est < 20: 
+                estimates.append(h_est)
+                
+    return sum(estimates)/len(estimates) if estimates else 0.0

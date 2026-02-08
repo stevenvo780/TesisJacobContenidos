@@ -91,3 +91,72 @@ def dominance_share(grid_series):
     total = sum(scores) if scores else 1.0
     max_share = max(scores) / total if scores else 1.0
     return max_share
+
+
+# --- Spatial Metrics (Inequality & Clustering) ---
+
+def gini_coefficient(grid):
+    """
+    Calculates Gini Coefficient of pollution distribution.
+    0 = Perfect Equality (Uniform pollution)
+    1 = Perfect Inequality (All pollution in one cell)
+    """
+    values = [c for row in grid for c in row if c >= 0]
+    if not values: return 0.0
+    
+    sorted_v = sorted(values)
+    n = len(values)
+    cum_v = [0]
+    for v in sorted_v: cum_v.append(cum_v[-1] + v)
+    
+    numerator = sum((i + 1) * v for i, v in enumerate(sorted_v))
+    denominator = n * sum(sorted_v)
+    
+    if denominator == 0: return 0.0
+    
+    # Gini formula: (2 * sum(i*xi)) / (n * sum(xi)) - (n + 1) / n
+    # Adjusted for 0-indexed i: 
+    # G = (2 * sum((i+1)*xi)) / (n * sum(xi)) - (n+1)/n
+    return (2 * numerator) / denominator - (n + 1) / n
+
+
+def morans_i(grid):
+    """
+    Calculates Moran's I for spatial autocorrelation.
+    +1 = Clustered (Pollution clouds)
+    0 = Random
+    -1 = Dispersed (Checkerboard)
+    """
+    rows = len(grid)
+    cols = len(grid[0])
+    N = rows * cols
+    
+    values = [c for row in grid for c in row]
+    mean_v = sum(values) / N
+    
+    # Denominator: sum((xi - mean)^2)
+    denom = sum((x - mean_v)**2 for x in values)
+    if denom == 0: return 0.0
+    
+    # Numerator: N * sum(wij * (xi - mean) * (xj - mean))
+    # Weights wij = 1 if neighbors (Queen), 0 otherwise
+    num = 0.0
+    w_sum = 0.0
+    
+    for i in range(rows):
+        for j in range(cols):
+            idx_i = i * cols + j
+            val_i = values[idx_i]
+            
+            # Neighbors
+            for di in [-1, 0, 1]:
+                for dj in [-1, 0, 1]:
+                    if di == 0 and dj == 0: continue
+                    ni, nj = i + di, j + dj
+                    if 0 <= ni < rows and 0 <= nj < cols:
+                        idx_j = ni * cols + nj
+                        val_j = values[idx_j]
+                        num += (val_i - mean_v) * (val_j - mean_v)
+                        w_sum += 1.0
+                        
+    return (N / w_sum) * (num / denom)

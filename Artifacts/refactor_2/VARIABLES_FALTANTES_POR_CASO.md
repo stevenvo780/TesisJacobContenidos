@@ -141,10 +141,10 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 **Reemplazo:** World Bank `SE.ADT.LITR.ZS` (alfabetizacion adultos %)
 **Esfuerzo:** BAJO
 
-### 02_caso_conciencia (DIFICIL)
-**Actual:** Sintetico
-**Reemplazo posible:** Google Trends multi-termino o Wikipedia pageviews tematicos
-**Esfuerzo:** ALTO — concepto dificil de operacionalizar
+### ~~02_caso_conciencia (DIFICIL)~~ [IMPLEMENTADO]
+**Actual:** Google Trends ("global news") validado como proxy de atencion.
+**Estado:** Completado en Refactor Fase 2.
+
 
 ---
 

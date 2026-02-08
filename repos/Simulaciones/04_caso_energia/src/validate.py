@@ -64,12 +64,15 @@ def main():
         real_end="2020-06-30",
         real_split="2019-01-01",
         corr_threshold=0.7,
-        extra_base_params={"demand_scale": 0.05},
+        extra_base_params={
+            "ode_H": 5.0, # High Inertia (Coal/Nuclear era)
+            "ode_D": 1.0, # Strong Damping
+            "generation_cap": 60000 # MW
+        },
         driver_cols=["tavg", "price", "renewables_share"],
         use_topology=True,
         topology_type="small_world",
-        topology_params={"k": 4, "p": 0.1},
-        feedback_strength=0.05,
+        ode_calibration=False, # Use Physics
     )
 
     results = run_full_validation(
@@ -79,6 +82,42 @@ def main():
 
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
     write_outputs(results, os.path.abspath(out_dir))
+    
+    # --- Verification of Energy Metrics ---
+    print("\n--- Energy Stability Metrics (High Rigor) ---")
+    from metrics import loss_of_load_probability, rocof_metric, inertia_estimation
+    
+    # Re-run synthetic phase for metric calc
+    print("  Calculating LOLP & ROCOF on Synthetic Phase...")
+    dates = pd.date_range(start=config.synthetic_start, end=config.synthetic_end, freq="MS")
+    steps = len(dates)
+    
+    # Synthetic Forcing: Sinusoidal load mismatch
+    forcing = [100 * np.sin(0.1*t) for t in range(steps)]
+    
+    params = {
+        "steps": steps,
+        "ode_H": 5.0, "ode_D": 1.0,
+        "forcing_series": forcing,
+        "f0": 0.0
+    }
+    
+    sim_result = simulate_ode(params, steps, seed=42)
+    freq_series = sim_result["f"]
+    
+    # 1. ROCOF
+    rocof = rocof_metric(freq_series)
+    print(f"  ROCOF (Max df/dt): {rocof:.4f} Hz/s (Safe < 0.5)")
+    
+    # 2. Inertia Estimation (inverse problem)
+    h_est = inertia_estimation(freq_series, forcing)
+    print(f"  Inertia Estimation (Target 5.0): {h_est:.4f} s")
+    
+    # 3. LOLP (Using dummy load vs cap)
+    # Assuming load is normally distributed around 40GW with 60GW cap
+    dummy_load = [np.random.normal(40000, 5000) for _ in range(1000)]
+    lolp = loss_of_load_probability(dummy_load, 50000)
+    print(f"  LOLP (Example Risk): {lolp:.4f} (Prob > 50GW)")
 
     # Resumen
     for phase_name, phase in results.get("phases", {}).items():

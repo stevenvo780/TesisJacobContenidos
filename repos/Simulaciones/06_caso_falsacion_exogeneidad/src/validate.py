@@ -22,7 +22,7 @@ def load_real_data(start_date, end_date):
 
     cache_path = os.path.join(os.path.dirname(__file__), "..", "data", "memetic.csv")
     df = fetch_memetic_daily(start_date, end_date, cache_path=os.path.abspath(cache_path))
-    df = df.rename(columns={"attention": "value"})
+    # df = df.rename(columns={"attention": "value"}) # No longer needed, source returns 'value'
     df["date"] = pd.to_datetime(df["date"])
     return df.dropna(subset=["date", "value"])
 
@@ -65,6 +65,8 @@ def main():
         real_split="2022-01-01",
         corr_threshold=0.7,
         extra_base_params={},
+        driver_cols=["unrelated_driver"], # Explicitly use the noise driver
+        ode_calibration=True, # Force the validator to TRY to find a link
     )
 
     results = run_full_validation(

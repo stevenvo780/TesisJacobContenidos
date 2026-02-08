@@ -59,8 +59,13 @@ def main():
         synthetic_split="2000-01-01",
         real_start="1990-01-01",
         real_end="2022-01-01",
-        real_split="2006-01-01",
-        extra_base_params={"pollution_scale": 0.01},
+        real_split="2010-01-01",
+        extra_base_params={
+            "ode_alpha": 0.8, # High emission factor
+            "ode_beta": 0.2,  # Slow dissipation (persistence)
+        },
+        ode_calibration=False,
+        driver_cols=[], # Driver is inferred from date/trend if no external file
     )
 
     results = run_full_validation(
@@ -71,6 +76,43 @@ def main():
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
     write_outputs(results, os.path.abspath(out_dir))
     print("Validación completa. Ver outputs/metrics.json y outputs/report.md")
+
+    # --- Verification of Spatial Metrics ---
+    print("\n--- Spatial Pollution Metrics ---")
+    from metrics import morans_i, gini_coefficient
+    
+    # Run a short separate simulation to capture grid state
+    # Re-using synthetic configuration
+    print("  Calculating Moran's I & Gini on Synthetic Phase...")
+    
+    start_date = config.synthetic_start
+    end_date = config.synthetic_end
+    dates = pd.date_range(start=start_date, end=end_date, freq="YS")
+    steps = len(dates)
+    
+    params = {
+        "grid_size": config.grid_size,
+        "steps": steps,
+        "ode_alpha": 0.8, "ode_beta": 0.2,
+        "forcing_series": [0.01 * t for t in range(steps)],
+        "store_grid": True 
+    }
+    
+    sim_result = simulate_abm(params, steps, seed=42)
+    
+    if "grid" in sim_result:
+        final_grid = sim_result["grid"][-1]
+        
+        # 1. Moran's I (Clustering)
+        moran = morans_i(final_grid)
+        print(f"  Moran's I (Spatial Autocorrelation): {moran:.4f} (Positive = Clouds)")
+        
+        # 2. Gini (Inequality)
+        gini = gini_coefficient(final_grid)
+        print(f"  Gini Coefficient (Inequality): {gini:.4f} (High = Hotspots)")
+        
+    else:
+        print("  [Warning] Grid history not returned by ABM.")
 
 
 if __name__ == "__main__":

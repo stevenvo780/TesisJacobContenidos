@@ -37,8 +37,17 @@ def fetch_pm25_worldbank(start_date, end_date, cache_path=None):
     df = pd.DataFrame(rows)
     if df.empty:
         raise RuntimeError("No PM2.5 data available for selected period")
+        
+    # Ensure date conversion
     df["date"] = pd.to_datetime(df["date"], errors="coerce")
     df = df.dropna(subset=["date", "pm25"]).sort_values("date")
+    
+    # Reindex to annual frequency and interpolate to fill gaps
+    df = df.set_index("date")
+    full_range = pd.date_range(start=start_date, end=end_date, freq="YS")
+    df = df.reindex(full_range)
+    df["pm25"] = df["pm25"].interpolate(method="linear").bfill().ffill()
+    df = df.reset_index().rename(columns={"index": "date"})
 
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)
