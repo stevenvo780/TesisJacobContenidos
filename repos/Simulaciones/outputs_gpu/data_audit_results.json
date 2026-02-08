@@ -1,0 +1,168 @@
+{
+  "generated_at": "2026-02-08T14:19:44.308675",
+  "real_data_sources": {
+    "01_clima": {
+      "source": "Meteostat (NOAA/DWD)",
+      "type": "real",
+      "api": "meteostat",
+      "indicator": "Temperature (tavg)",
+      "coverage": "1950-2024",
+      "quality": "HIGH",
+      "notes": "NOAA stations, >85% coverage filter",
+      "n_datapoints_expected": 120,
+      "resolution": "monthly"
+    },
+    "04_energia": {
+      "source": "OPSD (Open Power System Data)",
+      "type": "real",
+      "api": "opsd",
+      "indicator": "GB load (MW)",
+      "coverage": "2015-2020",
+      "quality": "HIGH",
+      "notes": "ENTSOE transparency platform",
+      "n_datapoints_expected": 60,
+      "resolution": "monthly"
+    },
+    "10_finanzas": {
+      "source": "Yahoo Finance (yfinance)",
+      "type": "real",
+      "api": "yfinance",
+      "indicator": "SPY log(price)",
+      "coverage": "1993-2024",
+      "quality": "HIGH",
+      "notes": "S&P 500 ETF, highly liquid",
+      "n_datapoints_expected": 360,
+      "resolution": "monthly"
+    },
+    "19_deforestacion": {
+      "source": "World Bank",
+      "type": "real",
+      "api": "worldbank",
+      "indicator": "AG.LND.FRST.ZS",
+      "coverage": "1990-2022",
+      "quality": "HIGH",
+      "notes": "FAO data via World Bank",
+      "n_datapoints_expected": 32,
+      "resolution": "yearly"
+    },
+    "21_urbanizacion": {
+      "source": "World Bank",
+      "type": "real",
+      "api": "worldbank",
+      "indicator": "SP.URB.TOTL.IN.ZS",
+      "coverage": "1960-2022",
+      "quality": "HIGH",
+      "notes": "UN Population Division",
+      "n_datapoints_expected": 62,
+      "resolution": "yearly"
+    },
+    "25_fosforo": {
+      "source": "World Bank",
+      "type": "real",
+      "api": "worldbank",
+      "indicator": "AG.CON.FERT.ZS",
+      "coverage": "1961-2021",
+      "quality": "MEDIUM",
+      "notes": "FAO fertilizer data, some gaps",
+      "n_datapoints_expected": 60,
+      "resolution": "yearly"
+    },
+    "28_acuiferos": {
+      "source": "World Bank",
+      "type": "real",
+      "api": "worldbank",
+      "indicator": "SH.H2O.BASW.ZS",
+      "coverage": "2000-2022",
+      "quality": "HIGH",
+      "notes": "WHO/UNICEF JMP",
+      "n_datapoints_expected": 22,
+      "resolution": "yearly"
+    },
+    "11_justicia": {
+      "source": "World Bank (Rule of Law Index)",
+      "type": "real",
+      "api": "worldbank",
+      "indicator": "RL.EST",
+      "quality": "HIGH",
+      "notes": "Worldwide Governance Indicators"
+    }
+  },
+  "synthetic_sources": {
+    "02_conciencia": {
+      "source": "Synthetic (trend + noise)",
+      "type": "synthetic",
+      "quality": "LOW",
+      "notes": "No real data available, philosophical construct",
+      "improvement": "Could use Google Trends for collective attention"
+    },
+    "06_estetica": {
+      "source": "Synthetic",
+      "type": "synthetic",
+      "quality": "LOW",
+      "notes": "Canon evolution modeled",
+      "improvement": "Could use museum visitor data or auction prices"
+    },
+    "14_paradigmas": {
+      "source": "Synthetic (citation curves)",
+      "type": "synthetic",
+      "quality": "MEDIUM",
+      "notes": "Based on Kuhn theory",
+      "improvement": "Could use OpenAlex citation data"
+    },
+    "17_rtb": {
+      "source": "Synthetic (ad market simulation)",
+      "type": "synthetic",
+      "quality": "LOW",
+      "improvement": "Could use IAB or eMarketer reports"
+    },
+    "29_starlink": {
+      "source": "Synthetic (satellite deployment curve)",
+      "type": "synthetic",
+      "quality": "MEDIUM",
+      "improvement": "Could use CelesTrak TLE data"
+    }
+  },
+  "improvement_priorities": [
+    {
+      "case": "02_conciencia",
+      "priority": "HIGH",
+      "proposal": "Google Trends API: 'global news' or 'breaking news' searches",
+      "api": "pytrends (Google Trends)",
+      "difficulty": "EASY"
+    },
+    {
+      "case": "14_paradigmas",
+      "priority": "HIGH",
+      "proposal": "OpenAlex: Citation counts for paradigm-shifting papers",
+      "api": "OpenAlex API",
+      "difficulty": "MEDIUM"
+    },
+    {
+      "case": "06_estetica",
+      "priority": "MEDIUM",
+      "proposal": "Christie's auction API or MoMA collection data",
+      "api": "Web scraping / Museum APIs",
+      "difficulty": "HARD"
+    },
+    {
+      "case": "29_starlink",
+      "priority": "MEDIUM",
+      "proposal": "CelesTrak TLE: Count active Starlink satellites over time",
+      "api": "CelesTrak API",
+      "difficulty": "EASY"
+    },
+    {
+      "case": "17_rtb",
+      "priority": "LOW",
+      "proposal": "Statista: Digital ad spending time series",
+      "api": "Statista (paid) or FRED",
+      "difficulty": "MEDIUM"
+    }
+  ],
+  "summary": {
+    "total_cases": 13,
+    "real_data_cases": 8,
+    "synthetic_cases": 5,
+    "high_priority_improvements": 2
+  }
+}
