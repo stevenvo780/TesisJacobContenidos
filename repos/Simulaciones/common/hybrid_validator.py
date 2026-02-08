@@ -661,20 +661,29 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             X = X.fillna(method="bfill").fillna(method="ffill")
             X = X.values.astype(float)
             X_train = X[:val_start]
-            mu = np.mean(X_train, axis=0)
-            sd = np.std(X_train, axis=0)
-            sd = np.where(sd < 1e-8, 1.0, sd)
-            Xz = (X - mu) / sd
-            Xz_train = Xz[:val_start]
-            y = np.asarray(obs[:val_start], dtype=np.float64)
-            reg = 1e-3
-            XtX = Xz_train.T @ Xz_train + reg * np.eye(len(cols))
-            try:
-                w = np.linalg.solve(XtX, Xz_train.T @ y)
-                driver_forcing = (Xz @ w).tolist()
-                driver_meta = {"cols": cols, "weights": w.tolist(), "reg": reg}
-            except np.linalg.LinAlgError:
-                driver_forcing = None
+            finite_cols = np.isfinite(X_train).all(axis=0)
+            if not np.any(finite_cols):
+                X = None
+            else:
+                if not np.all(finite_cols):
+                    cols = [c for c, ok in zip(cols, finite_cols) if ok]
+                    X = X[:, finite_cols]
+                    X_train = X[:val_start]
+            if X is not None:
+                mu = np.mean(X_train, axis=0)
+                sd = np.std(X_train, axis=0)
+                sd = np.where(sd < 1e-8, 1.0, sd)
+                Xz = (X - mu) / sd
+                Xz_train = Xz[:val_start]
+                y = np.asarray(obs[:val_start], dtype=np.float64)
+                reg = 1e-3
+                XtX = Xz_train.T @ Xz_train + reg * np.eye(len(cols))
+                try:
+                    w = np.linalg.solve(XtX, Xz_train.T @ y)
+                    driver_forcing = (Xz @ w).tolist()
+                    driver_meta = {"cols": cols, "weights": w.tolist(), "reg": reg}
+                except np.linalg.LinAlgError:
+                    driver_forcing = None
 
     if driver_forcing is None:
         # Forcing (sin leakage: solo entrenamiento)

@@ -14,12 +14,27 @@ import json
 import io
 import zipfile
 import re
+import hashlib
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 import requests
 
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+SHARED_CACHE_DIR = os.environ.get(
+    "SIM_SHARED_CACHE",
+    os.path.join(BASE_PATH, "data_cache", "shared"),
+)
+
+
+def _shared_path(name: str) -> str:
+    os.makedirs(SHARED_CACHE_DIR, exist_ok=True)
+    return os.path.join(SHARED_CACHE_DIR, name)
+
+
+def _url_cache_name(prefix: str, url: str, ext: str) -> str:
+    digest = hashlib.md5(url.encode("utf-8")).hexdigest()
+    return f"{prefix}_{digest}.{ext}"
 
 
 # ==============================================================================
@@ -218,6 +233,8 @@ def fetch_fred_series(series_id="FEDFUNDS", start_date="2000-01-01", end_date=No
     - UNRATE: Unemployment Rate
     - GDP: Gross Domestic Product
     """
+    if cache_path is None:
+        cache_path = _shared_path(f"fred_{series_id}.csv")
     if cache_path and os.path.exists(cache_path):
         df = pd.read_csv(cache_path, parse_dates=["date"])
         return df, {"source": "FRED", "cached": True}
@@ -264,9 +281,13 @@ def _parse_badc_csv(text: str) -> pd.DataFrame:
 def _badc_zip_to_df(url: str, inner_name: str, cache_path: str | None = None) -> pd.DataFrame:
     if cache_path and os.path.exists(cache_path):
         return pd.read_csv(cache_path, parse_dates=["date"])
-    resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
-    resp.raise_for_status()
-    zf = zipfile.ZipFile(io.BytesIO(resp.content))
+    shared_zip = _shared_path(_url_cache_name("wmo", url, "zip"))
+    if not os.path.exists(shared_zip):
+        resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+        resp.raise_for_status()
+        with open(shared_zip, "wb") as f:
+            f.write(resp.content)
+    zf = zipfile.ZipFile(shared_zip)
     with zf.open(inner_name) as f:
         text = f.read().decode("utf-8")
     df = _parse_badc_csv(text)
@@ -337,10 +358,16 @@ def fetch_wmo_sst(start_date=None, end_date=None, cache_path=None):
 # ==============================================================================
 
 def _fetch_tsi_daily(url: str) -> pd.DataFrame:
-    resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
-    resp.raise_for_status()
+    shared_txt = _shared_path(_url_cache_name("tsi", url, "txt"))
+    if not os.path.exists(shared_txt):
+        resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+        resp.raise_for_status()
+        with open(shared_txt, "w", encoding="utf-8") as f:
+            f.write(resp.text)
+    with open(shared_txt, "r", encoding="utf-8") as f:
+        text = f.read()
     rows = []
-    for line in resp.text.splitlines():
+    for line in text.splitlines():
         if not line.strip() or line.startswith(";") or line.startswith("#"):
             continue
         parts = line.split()
@@ -381,10 +408,16 @@ def fetch_giss_aod_monthly(start_date=None, end_date=None, cache_path=None):
     if cache_path and os.path.exists(cache_path):
         return pd.read_csv(cache_path, parse_dates=["date"]), {"source": "cache"}
     url = "https://data.giss.nasa.gov/modelforce/strataer/tau.line_2012.12.txt"
-    resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
-    resp.raise_for_status()
+    shared_txt = _shared_path(_url_cache_name("giss_aod", url, "txt"))
+    if not os.path.exists(shared_txt):
+        resp = requests.get(url, timeout=60, headers={"User-Agent": "Mozilla/5.0"})
+        resp.raise_for_status()
+        with open(shared_txt, "w", encoding="utf-8") as f:
+            f.write(resp.text)
+    with open(shared_txt, "r", encoding="utf-8") as f:
+        text = f.read()
     rows = []
-    for line in resp.text.splitlines():
+    for line in text.splitlines():
         if not line.strip():
             continue
         if re.match(r"^[A-Za-z\\-]", line.strip()):
@@ -417,10 +450,13 @@ def fetch_giss_aod_monthly(start_date=None, end_date=None, cache_path=None):
 # ==============================================================================
 
 def fetch_owid_grapher_series(slug_candidates, entity="World", cache_path=None):
-    if cache_path and os.path.exists(cache_path):
-        return pd.read_csv(cache_path, parse_dates=["date"]), {"source": "cache"}
     last_error = None
     for slug in slug_candidates:
+        local_cache = cache_path
+        if local_cache is None:
+            local_cache = _shared_path(f"owid_{slug}.csv")
+        if local_cache and os.path.exists(local_cache):
+            return pd.read_csv(local_cache, parse_dates=["date"]), {"source": "cache"}
         url = f"https://ourworldindata.org/grapher/{slug}.csv"
         try:
             df = pd.read_csv(url)
@@ -440,9 +476,9 @@ def fetch_owid_grapher_series(slug_candidates, entity="World", cache_path=None):
         df = df[["Year", value_col]].rename(columns={"Year": "year", value_col: "value"})
         df["date"] = pd.to_datetime(df["year"].astype(int), format="%Y")
         df = df[["date", "value"]].dropna()
-        if cache_path:
-            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
-            df.to_csv(cache_path, index=False)
+        if local_cache:
+            os.makedirs(os.path.dirname(local_cache), exist_ok=True)
+            df.to_csv(local_cache, index=False)
         return df, {"source": "OWID", "slug": slug, "entity": entity}
     return pd.DataFrame(), {"source": "OWID", "error": last_error or "no_slug_worked"}
 
@@ -474,9 +510,13 @@ def fetch_celestrak_satcat_timeseries(start_date, end_date, filter_fn=None, cach
     if cache_path and os.path.exists(cache_path):
         return pd.read_csv(cache_path, parse_dates=["date"]), {"source": "cache"}
     url = "https://celestrak.org/pub/satcat.csv"
-    resp = requests.get(url, timeout=60)
-    resp.raise_for_status()
-    df = pd.read_csv(io.StringIO(resp.text))
+    shared_csv = _shared_path(_url_cache_name("satcat", url, "csv"))
+    if not os.path.exists(shared_csv):
+        resp = requests.get(url, timeout=60)
+        resp.raise_for_status()
+        with open(shared_csv, "w", encoding="utf-8") as f:
+            f.write(resp.text)
+    df = pd.read_csv(shared_csv)
     if filter_fn is not None:
         df = df[filter_fn(df)]
     ts = _satcat_timeseries(df, start_date, end_date)
@@ -556,6 +596,8 @@ def fetch_celestrak_catalog_count(group="active", cache_path=None):
     Fetch count of tracked objects from CelesTrak catalog group.
     group: 'active', 'starlink', 'all', etc.
     """
+    if cache_path is None:
+        cache_path = _shared_path(f"celestrak_{group}.json")
     if cache_path and os.path.exists(cache_path):
         with open(cache_path, 'r') as f:
             data = json.load(f)

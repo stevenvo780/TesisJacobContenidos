@@ -11,6 +11,11 @@ import pandas as pd
 import requests
 
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+SHARED_CACHE_DIR = os.environ.get(
+    "SIM_SHARED_CACHE",
+    os.path.join(BASE_PATH, "data_cache", "shared"),
+)
+WB_CACHE_DIR = os.path.join(SHARED_CACHE_DIR, "worldbank")
 
 # Mapeo de casos a indicadores del World Bank
 WORLDBANK_INDICATORS = {
@@ -107,8 +112,14 @@ WORLDBANK_INDICATORS = {
 }
 
 
-def fetch_worldbank_indicator(indicator, country="WLD", start_year=1960, end_year=2023):
-    """Fetch World Bank indicator data."""
+def fetch_worldbank_indicator(indicator, country="WLD", start_year=1960, end_year=2023, cache_path=None):
+    """Fetch World Bank indicator data (con cache)."""
+    if cache_path is None:
+        os.makedirs(WB_CACHE_DIR, exist_ok=True)
+        cache_path = os.path.join(WB_CACHE_DIR, f"{country}_{indicator}.csv")
+    if cache_path and os.path.exists(cache_path):
+        df = pd.read_csv(cache_path, parse_dates=["date"])
+        return df, None
     url = f"https://api.worldbank.org/v2/country/{country}/indicator/{indicator}"
     params = {"format": "json", "per_page": 500, "date": f"{start_year}:{end_year}"}
     
@@ -135,6 +146,8 @@ def fetch_worldbank_indicator(indicator, country="WLD", start_year=1960, end_yea
             return None, "No valid entries"
         
         df = pd.DataFrame(rows).sort_values("year")
+        if cache_path:
+            df.to_csv(cache_path, index=False)
         return df, None
     
     except Exception as e:
