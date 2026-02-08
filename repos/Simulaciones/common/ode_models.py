@@ -65,7 +65,10 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
         series = []
         for t in range(steps):
             f = forcing[t]
-            t_state = t_state + alpha * (f - beta * (t_state ** 4)) + random.uniform(-noise, noise)
+            t_clamped = max(-5.0, min(5.0, t_state))
+            t_state = t_state + alpha * (f - beta * (t_clamped ** 4)) + random.uniform(-noise, noise)
+            if not math.isfinite(t_state):
+                t_state = 0.0
             t_state = _apply_assimilation(t_state, t, params)
             series.append(t_state)
         return {ode_key: series, "forcing": forcing}
@@ -181,4 +184,3 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
         x = _apply_assimilation(x, t, params)
         series.append(x)
     return {ode_key: series, "forcing": forcing}
-

@@ -67,7 +67,7 @@ def fetch_google_trends_proxy(keywords=["global news", "breaking news"],
 
 def _generate_synthetic_trends(start_year, end_year):
     """Fallback: genera tendencias sintéticas realistas."""
-    dates = pd.date_range(start=f'{start_year}-01-01', end=f'{end_year}-12-31', freq='M')
+    dates = pd.date_range(start=f'{start_year}-01-01', end=f'{end_year}-12-31', freq='MS')
     n = len(dates)
     
     # Tendencia + estacionalidad + ruido
