@@ -22,15 +22,20 @@ def fetch_owid_world_weekly(start_date, end_date, cache_path=None):
 
     df = pd.read_csv(tmp_path, parse_dates=["date"])
     df = df[df["location"] == "World"]
-    df = df[["date", "new_cases_smoothed"]].dropna()
+    cols = ["date", "new_cases_smoothed", "new_deaths_smoothed", "people_vaccinated", "stringency_index"]
+    cols = [c for c in cols if c in df.columns]
+    df = df[cols].dropna(subset=["date", "new_cases_smoothed"])
     df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
 
     if df.empty:
         raise RuntimeError("No OWID data for selected period")
 
     df["week"] = df["date"].dt.to_period("W").dt.start_time
-    weekly = df.groupby("week", as_index=False)["new_cases_smoothed"].mean()
-    weekly = weekly.rename(columns={"week": "date", "new_cases_smoothed": "cases"})
+    weekly = df.groupby("week", as_index=False).mean(numeric_only=True)
+    weekly = weekly.rename(columns={"week": "date", "new_cases_smoothed": "cases",
+                                    "new_deaths_smoothed": "deaths",
+                                    "people_vaccinated": "vaccinated",
+                                    "stringency_index": "stringency"})
 
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)

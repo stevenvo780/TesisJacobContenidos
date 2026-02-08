@@ -65,6 +65,11 @@ def main():
         real_split="2011-01-01",
         corr_threshold=0.7,
         extra_base_params={"humidity_coupling": 0.01, "seasonal_period": 12},
+        driver_cols=["co2"],
+        use_topology=True,
+        topology_type="small_world",
+        topology_params={"k": 4, "p": 0.1},
+        feedback_strength=0.05,
         loe=5,
     )
 

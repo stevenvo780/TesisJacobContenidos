@@ -2,6 +2,7 @@ import os
 import requests
 import pandas as pd
 import numpy as np
+from meteostat import Point, Monthly
 
 OPSD_URL = "https://data.open-power-system-data.org/time_series/2020-10-06/time_series_60min_singleindex.csv"
 
@@ -38,6 +39,16 @@ def fetch_opsd_load_monthly(start_date, end_date, cache_path=None):
     monthly["log_load"] = monthly["load"].apply(lambda x: float(np.log(max(x, 1.0))))
 
     out = monthly[["month", "log_load"]].rename(columns={"month": "date", "log_load": "demand"})
+
+    # Driver: temperatura mensual (Londres)
+    try:
+        point = Point(51.5074, -0.1278)
+        temp = Monthly(point, pd.to_datetime(start_date), pd.to_datetime(end_date)).fetch()
+        if temp is not None and not temp.empty and "tavg" in temp.columns:
+            temp = temp[["tavg"]].reset_index().rename(columns={"time": "date"})
+            out = out.merge(temp, on="date", how="left")
+    except Exception:
+        out["tavg"] = None
 
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)

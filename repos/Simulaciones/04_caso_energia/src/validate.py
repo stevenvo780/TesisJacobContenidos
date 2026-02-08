@@ -65,6 +65,11 @@ def main():
         real_split="2019-01-01",
         corr_threshold=0.7,
         extra_base_params={"demand_scale": 0.05},
+        driver_cols=["tavg"],
+        use_topology=True,
+        topology_type="small_world",
+        topology_params={"k": 4, "p": 0.1},
+        feedback_strength=0.05,
     )
 
     results = run_full_validation(

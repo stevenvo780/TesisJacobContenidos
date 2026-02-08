@@ -141,6 +141,8 @@ def simulate_abm_core(
     mc = float(params.get("macro_coupling", 0.3))
     fs = float(params.get("forcing_scale", 0.01))
     dmp = float(params.get("damping", 0.02))
+    hetero = float(params.get("heterogeneity_strength", 0.0))
+    hetero_seed = int(params.get("heterogeneity_seed", seed))
 
     forcing = params.get("forcing_series")
     if forcing is None:
@@ -182,6 +184,20 @@ def simulate_abm_core(
     grid_center = float(params.get("grid_center", macro_state))
     grid = grid_center + rng.uniform(-init_range, init_range, (n, n))
 
+    # Heterogeneidad paramétrica por celda
+    if hetero > 1e-8:
+        rng_h = np.random.RandomState(hetero_seed)
+        diff_map = diff * (1.0 + hetero * rng_h.normal(0.0, 1.0, (n, n)))
+        dmp_map = dmp * (1.0 + hetero * rng_h.normal(0.0, 1.0, (n, n)))
+        noise_map = noise_amp * (1.0 + hetero * rng_h.normal(0.0, 1.0, (n, n)))
+        diff_map = np.clip(diff_map, 0.0, 1.0)
+        dmp_map = np.clip(dmp_map, 0.0, 1.0)
+        noise_map = np.clip(noise_map, 0.0, None)
+    else:
+        diff_map = diff
+        dmp_map = dmp
+        noise_map = noise_amp
+
     assim_series = params.get("assimilation_series")
     assim_strength = float(params.get("assimilation_strength", 0.0))
     perturbation_event = params.get("perturbation_event")
@@ -206,13 +222,16 @@ def simulate_abm_core(
         else:
             macro_target = float(macro_state if macro_mode == "dynamic" else macro_mean)
 
-        noise = rng.uniform(-noise_amp, noise_amp, (n, n))
+        if isinstance(noise_map, np.ndarray):
+            noise = rng.uniform(-1.0, 1.0, (n, n)) * noise_map
+        else:
+            noise = rng.uniform(-noise_amp, noise_amp, (n, n))
         grid = (
             grid
-            + diff * (nb_mean - grid)
+            + diff_map * (nb_mean - grid)
             + fs * f_spatial
             + mc * (macro_target - grid)
-            - dmp * grid
+            - dmp_map * grid
             + noise
         )
         if not np.isfinite(grid).all():

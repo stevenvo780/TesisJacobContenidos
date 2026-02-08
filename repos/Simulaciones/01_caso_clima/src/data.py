@@ -1,8 +1,11 @@
 import os
 from datetime import datetime
+import urllib.request
 
 import pandas as pd
 from meteostat import Stations, Monthly
+
+CO2_URL = "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.txt"
 
 
 def _conus_bounds():
@@ -36,6 +39,40 @@ def _select_stations(start, end, max_stations):
     stations = stations.sort_values("coverage", ascending=False)
     stations = stations[stations["coverage"] > 0.85]
     return stations.head(max_stations)
+
+def fetch_co2_monthly(start_date, end_date, cache_path=None):
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    end = datetime.strptime(end_date, "%Y-%m-%d")
+
+    if cache_path and os.path.exists(cache_path):
+        df = pd.read_csv(cache_path, parse_dates=["date"])
+        return df
+
+    with urllib.request.urlopen(CO2_URL, timeout=60) as resp:
+        raw = resp.read().decode("utf-8")
+
+    rows = []
+    for line in raw.splitlines():
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split()
+        if len(parts) < 4:
+            continue
+        year = int(parts[0])
+        month = int(parts[1])
+        avg = float(parts[3])
+        if avg < -99:
+            continue
+        dt = datetime(year, month, 1)
+        if dt < start or dt > end:
+            continue
+        rows.append({"date": dt, "co2": avg})
+
+    df = pd.DataFrame(rows).sort_values("date")
+    if cache_path:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        df.to_csv(cache_path, index=False)
+    return df
 
 
 def fetch_regional_monthly(start_date, end_date, max_stations=10, cache_path=None):
@@ -71,6 +108,17 @@ def fetch_regional_monthly(start_date, end_date, max_stations=10, cache_path=Non
 
     regional = combined.mean(axis=1).dropna()
     df = regional.reset_index().rename(columns={"time": "date", 0: "tavg", "tavg": "tavg"})
+
+    # Merge CO2 driver
+    co2_cache = None
+    if cache_path:
+        co2_cache = os.path.join(os.path.dirname(cache_path), "co2_mlo.csv")
+    try:
+        df_co2 = fetch_co2_monthly(start_date, end_date, cache_path=co2_cache)
+        df = df.merge(df_co2, on="date", how="left")
+        df["co2"] = df["co2"].interpolate(limit_direction="both")
+    except Exception:
+        df["co2"] = None
 
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)

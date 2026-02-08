@@ -572,7 +572,10 @@ class CaseConfig:
                  real_split="2006-01-01",
                  ode_noise=0.001, base_noise=0.001,
                  corr_threshold=0.7, threshold_factor=1.0,
-                 extra_base_params=None, loe=1, n_runs=5):
+                 extra_base_params=None, loe=1, n_runs=5,
+                 driver_cols=None, edi_min=0.325,
+                 use_topology=False, topology_type="small_world",
+                 topology_params=None, feedback_strength=0.0):
         self.case_name = case_name
         self.value_col = value_col
         self.series_key = series_key
@@ -590,6 +593,12 @@ class CaseConfig:
         self.threshold_factor = threshold_factor
         self.extra_base_params = extra_base_params or {}
         self.loe = loe  # Level of Evidence (1-5)
+        self.driver_cols = driver_cols or []
+        self.edi_min = edi_min
+        self.use_topology = use_topology
+        self.topology_type = topology_type
+        self.topology_params = topology_params or {}
+        self.feedback_strength = feedback_strength
         
         # Overrides de High Performance (Variables de Entorno)
         import os
@@ -641,15 +650,61 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     val_start = len(train_df)
     obs_std = variance(obs_val) ** 0.5
 
-    # Forcing (sin leakage: solo entrenamiento)
-    forcing_trend, trend_params = build_forcing_from_training(obs[:val_start], steps)
-    if val_start < 1:
-        lag_forcing = [obs[0]] * steps
+    # Forcing: prefer drivers exógenos si están disponibles
+    driver_forcing = None
+    driver_meta = {}
+    if config.driver_cols:
+        cols = [c for c in config.driver_cols if c in df.columns]
+        if cols and val_start >= 3:
+            X = df[cols].copy()
+            X = X.interpolate(limit_direction="both")
+            X = X.fillna(method="bfill").fillna(method="ffill")
+            X = X.values.astype(float)
+            X_train = X[:val_start]
+            mu = np.mean(X_train, axis=0)
+            sd = np.std(X_train, axis=0)
+            sd = np.where(sd < 1e-8, 1.0, sd)
+            Xz = (X - mu) / sd
+            Xz_train = Xz[:val_start]
+            y = np.asarray(obs[:val_start], dtype=np.float64)
+            reg = 1e-3
+            XtX = Xz_train.T @ Xz_train + reg * np.eye(len(cols))
+            try:
+                w = np.linalg.solve(XtX, Xz_train.T @ y)
+                driver_forcing = (Xz @ w).tolist()
+                driver_meta = {"cols": cols, "weights": w.tolist(), "reg": reg}
+            except np.linalg.LinAlgError:
+                driver_forcing = None
+
+    if driver_forcing is None:
+        # Forcing (sin leakage: solo entrenamiento)
+        forcing_trend, trend_params = build_forcing_from_training(obs[:val_start], steps)
+        if val_start < 1:
+            lag_forcing = [obs[0]] * steps
+        else:
+            lag_train = [obs[0]] + list(obs[:max(val_start - 1, 0)])
+            lag_val = [obs[val_start - 1]] * (steps - val_start)
+            lag_forcing = (lag_train + lag_val)[:steps]
+        forcing_series = [forcing_trend[i] + 0.5 * lag_forcing[i] for i in range(steps)]
     else:
-        lag_train = [obs[0]] + list(obs[:max(val_start - 1, 0)])
-        lag_val = [obs[val_start - 1]] * (steps - val_start)
-        lag_forcing = (lag_train + lag_val)[:steps]
-    forcing_series = [forcing_trend[i] + 0.5 * lag_forcing[i] for i in range(steps)]
+        forcing_series = driver_forcing
+
+    # Topología opcional (para grids pequeños)
+    adjacency_matrix = None
+    if config.use_topology and config.grid_size <= 50:
+        try:
+            from topology_generator import generate_small_world, generate_scale_free
+            n_agents = config.grid_size * config.grid_size
+            if config.topology_type == "scale_free":
+                m = int(config.topology_params.get("m", 3))
+                adj = generate_scale_free(n_agents=n_agents, m=m, seed=42)
+            else:
+                k = int(config.topology_params.get("k", 4))
+                p = float(config.topology_params.get("p", 0.1))
+                adj = generate_small_world(n_agents=n_agents, k=k, p=p, seed=42)
+            adjacency_matrix = adj.to_dense().cpu().numpy()
+        except Exception:
+            adjacency_matrix = None
 
     # Parámetros base
     base_params = {
@@ -662,6 +717,9 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         "forcing_gradient_type": "radial",
         "forcing_gradient_strength": 0.6,
         "damping": 0.02,
+        "heterogeneity_strength": 0.15,
+        "heterogeneity_seed": 42,
+        "adjacency_matrix": adjacency_matrix,
         "series_key": config.series_key,
         "ode_key": config.series_key,
         "p0": obs[0],
@@ -702,6 +760,19 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     eval_params = dict(base_params)
     eval_params["assimilation_strength"] = 0.0
     eval_params["assimilation_series"] = None
+
+    # Feedback micro→macro (opcional)
+    feedback_series = None
+    if config.feedback_strength and config.feedback_strength > 1e-8:
+        fb_params = dict(eval_params)
+        fb_params["macro_target_series"] = None
+        fb_sim = simulate_abm_fn(fb_params, steps, seed=5)
+        feedback_series = fb_sim[config.series_key]
+        forcing_series_fb = [
+            eval_params["forcing_series"][i] + config.feedback_strength * feedback_series[i]
+            for i in range(steps)
+        ]
+        eval_params["forcing_series"] = forcing_series_fb
 
     # Simulaciones ODE (macro) → ABM (micro)
     ode = simulate_ode_fn(eval_params, steps, seed=3)
@@ -792,7 +863,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     # RMSE fraud check
     rmse_fraud = err_abm < 1e-10
     # EDI thresholds
-    edi_valid = 0.30 <= edi_val <= 0.90
+    edi_valid = config.edi_min <= edi_val <= 0.90
     cr_valid = cr > 2.0
 
     overall = all([c1, c2, c3, c4, c5, sym_ok, non_local_ok, persist_ok,
@@ -819,6 +890,11 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             "ode_beta": beta,
             "assimilation_strength": 0.0,
             "calibration_rmse": best_err,
+        },
+        "forcing": {
+            "driver_meta": driver_meta if driver_meta else None,
+            "feedback_strength": config.feedback_strength,
+            "feedback_used": feedback_series is not None,
         },
         "errors": {
             "rmse_abm": err_abm,

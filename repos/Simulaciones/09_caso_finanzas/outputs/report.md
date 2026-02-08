@@ -1,6 +1,6 @@
 # Reporte de Validación — Finanzas (SPY)
 
-- generated_at: 2026-02-08T20:48:11.451298Z
+- generated_at: 2026-02-08T21:30:50.854219Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -13,33 +13,33 @@
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9996
-- external: 0.9999
-- CR: 0.9998
-- CR indicador (>2.0 = frontera nítida): False
+- internal: -0.1509
+- external: -0.0008
+- CR: 179.7120
+- CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
 - c1_convergence: False
 - c2_robustness: False
-- c3_replication: True
+- c3_replication: False
 - c4_validity: True
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 11591.8750
-- rmse_abm_no_ode: 11591.8750
-- rmse_ode: 11571.0462
+- rmse_abm: 11589.9231
+- rmse_abm_no_ode: 11589.9231
+- rmse_ode: 11570.1013
 - rmse_reduced: 11593.9671
 - threshold: 10261.8656
 
 ### Calibración
-- forcing_scale: 0.7749
-- macro_coupling: 0.6446
-- damping: 0.9500
+- forcing_scale: 0.7472
+- macro_coupling: 0.7907
+- damping: 0.9235
 - ode_alpha: 0.0014
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.4581
+- calibration_rmse: 0.4576
 
 ## Fase real
 - **overall_pass**: False
@@ -52,8 +52,8 @@
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 1.0000
-- external: 1.0000
+- internal: 0.9999
+- external: 0.9999
 - CR: 1.0000
 - CR indicador (>2.0 = frontera nítida): False
 
@@ -65,15 +65,15 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.0957
-- rmse_abm_no_ode: 1.0957
-- rmse_ode: 19.5087
+- rmse_abm: 1.0249
+- rmse_abm_no_ode: 1.0249
+- rmse_ode: 20.4404
 - rmse_reduced: 3.2170
 - threshold: 1.1814
 
 ### Calibración
-- forcing_scale: 0.7068
-- macro_coupling: 0.1083
+- forcing_scale: 0.7069
+- macro_coupling: 0.5851
 - damping: 0.9500
 - ode_alpha: 0.0017
 - ode_beta: 1.0000

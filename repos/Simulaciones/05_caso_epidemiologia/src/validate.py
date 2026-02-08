@@ -64,6 +64,11 @@ def main():
         real_split="2022-01-01",
         corr_threshold=0.7,
         extra_base_params={"beta": 0.3, "sigma": 0.2, "gamma": 0.1, "e0": 0.001, "noise": 0.02},
+        driver_cols=["deaths", "vaccinated", "stringency"],
+        use_topology=True,
+        topology_type="small_world",
+        topology_params={"k": 4, "p": 0.1},
+        feedback_strength=0.05,
     )
 
     results = run_full_validation(
