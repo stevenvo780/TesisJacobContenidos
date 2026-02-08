@@ -1,8 +1,8 @@
 {
   "case": "S\u00edndrome de Kessler",
-  "generated_at": "2026-02-07T15:20:54.397849Z",
+  "generated_at": "2026-02-08T20:43:02.767567Z",
   "git": {
-    "commit": "7b9c9837f057bb3b5f3082a26dc9472277ae6e93",
+    "commit": "a0355e1882dd3266a89ac03ffdbe8f00ac2079c4",
     "dirty": true
   },
   "phases": {
@@ -13,94 +13,106 @@
         "start": "1970-01-01",
         "end": "2019-01-01",
         "split": "2005-01-01",
-        "obs_mean_raw": 4.653856402305781,
-        "obs_std_raw": 2.7258764209771122,
+        "obs_mean_raw": 31.575939084312008,
+        "obs_std_raw": 21.448447006274563,
         "steps": 589,
         "val_steps": 169,
         "coverage": 11.78
       },
       "calibration": {
-        "forcing_scale": 0.6344870815287348,
-        "macro_coupling": 0.5939144668840703,
-        "damping": 0.95,
-        "ode_alpha": 0.12984127775680715,
+        "forcing_scale": 0.5809447463812856,
+        "macro_coupling": 0.6326042751152368,
+        "damping": 0.5709215149614633,
+        "ode_alpha": 0.005108286292166736,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.06569372897438422
+        "calibration_rmse": 0.05545137665369027
       },
       "errors": {
-        "rmse_abm": 0.062242019716363534,
-        "rmse_ode": 0.464832990907694,
-        "rmse_reduced": 2.4547034545478126,
-        "threshold": 0.40558029836976495
+        "rmse_abm": 1.556639137850976,
+        "rmse_abm_no_ode": 0.403567950616048,
+        "rmse_ode": 2.613837420302941,
+        "rmse_reduced": 2.630980869126811,
+        "threshold": 0.4421022093320735
       },
       "correlations": {
-        "abm_obs": 0.9881963462990156,
-        "ode_obs": 0.9886775335708679
+        "abm_obs": 0.9997987111392966,
+        "ode_obs": 0.9673103297961851
       },
       "edi": {
-        "value": 0.9746437723053478,
-        "bootstrap_mean": 0.9747491335011309,
-        "ci_lo": 0.9717502130159433,
-        "ci_hi": 0.977402950151557,
-        "valid": false
+        "value": -2.857192166708879,
+        "bootstrap_mean": -2.860077084005062,
+        "ci_lo": -2.9831907082104006,
+        "ci_hi": -2.741945402208308,
+        "valid": false,
+        "weighted_value": -0.5714384333417758,
+        "loe_factor": 0.2
       },
-      "effective_information": 0.5485961320318313,
+      "viscosity": {
+        "pass": true,
+        "detail": {
+          "relaxation_time": 2,
+          "peak_impact": 1.9999999999999998,
+          "shock_step": 504,
+          "recovered": true
+        }
+      },
+      "effective_information": -0.281245383863634,
       "symploke": {
-        "internal": 0.9999787127177364,
-        "external": 0.9999860502201398,
-        "cr": 0.9999926623952387,
+        "internal": 0.9999218548755553,
+        "external": 0.9999019714305268,
+        "cr": 1.0000198853943651,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0016000158428564242,
+        "dominance_share": 0.0025001275095982846,
         "pass": true
       },
       "persistence": {
-        "model": 0.0003212943673333088,
-        "obs": 0.0020963436587766084,
+        "model": 1.3656458195701064e-05,
+        "obs": 0.00029550211918849095,
         "pass": true
       },
       "emergence": {
-        "err_reduced": 2.4547034545478126,
-        "err_abm": 0.062242019716363534,
-        "threshold": 0.081116059673953,
-        "pass": true,
+        "err_reduced": 0.403567950616048,
+        "err_abm": 1.556639137850976,
+        "threshold": 0.0884204418664147,
+        "pass": false,
         "significance": "computed"
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": true,
+      "c1_convergence": false,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
-      "c5_uncertainty": false,
+      "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 0.062242019716363534,
-        "rmse_ode": 0.464832990907694,
-        "corr_abm": 0.9881963462990156,
-        "corr_ode": 0.9886775335708679,
-        "threshold": 0.40558029836976495
+        "rmse_abm": 1.556639137850976,
+        "rmse_ode": 2.613837420302941,
+        "corr_abm": 0.9997987111392966,
+        "corr_ode": 0.9673103297961851,
+        "threshold": 0.4421022093320735
       },
       "c2_detail": {
-        "mean_delta": 0.25340496597252893,
-        "var_delta": 0.04827275956935938,
-        "relative_mean": 0.10453023085071654,
-        "relative_var": 0.04827275956935938
+        "mean_delta": 0.049260413782679535,
+        "var_delta": 0.0015611879925902347,
+        "relative_mean": 0.046087846315886125,
+        "relative_var": 0.0015611879925902347
       },
       "c3_detail": {
-        "persistence_1": 0.0003212943673333088,
-        "persistence_2": 0.00032164397063574597
+        "persistence_1": 1.3656458195701064e-05,
+        "persistence_2": 1.379345393400338e-05
       },
       "c4_detail": {
-        "diff": 0.4848463616577683
+        "diff": 0.2119748487461217
       },
       "c5_detail": {
-        "sensitivity_min": 0.0014244227212458923,
-        "sensitivity_max": 2.8511259607617454,
-        "range": 2.8497015380404993,
-        "relative_range": 0.6123312134488287
+        "sensitivity_min": 0.9255014060705625,
+        "sensitivity_max": 1.1441068966817283,
+        "range": 0.21860549061116574,
+        "relative_range": 0.006923166719680439
       },
       "synthetic_meta": {
         "ode_true": {
@@ -112,99 +124,111 @@
     },
     "real": {
       "phase": "real",
-      "overall_pass": true,
+      "overall_pass": false,
       "data": {
         "start": "1970-01-01",
         "end": "2019-01-01",
         "split": "2005-01-01",
-        "obs_mean_raw": 19524620.53878631,
-        "obs_std_raw": 8928116.615117041,
-        "steps": 49,
-        "val_steps": 15,
-        "coverage": 0.98
+        "obs_mean_raw": 7187.5,
+        "obs_std_raw": 4156.756390391306,
+        "steps": 589,
+        "val_steps": 169,
+        "coverage": 11.78
       },
       "calibration": {
-        "forcing_scale": 0.4712913093720783,
-        "macro_coupling": 0.541562151621521,
-        "damping": 0.6568914397548798,
-        "ode_alpha": 0.09560941042750677,
-        "ode_beta": 1.0,
+        "forcing_scale": 0.956585929623292,
+        "macro_coupling": 0.4728220761530435,
+        "damping": 0.944875185410639,
+        "ode_alpha": 0.001,
+        "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.17430987477431198
+        "calibration_rmse": 0.003241328751975021
       },
       "errors": {
-        "rmse_abm": 0.8421062887944005,
-        "rmse_ode": 0.8779211997792193,
-        "rmse_reduced": 3.7653941952011607,
-        "threshold": 1.0029447727461678
+        "rmse_abm": 1.2199018224904103,
+        "rmse_abm_no_ode": 0.2691772638645005,
+        "rmse_ode": 3.1723004561550407,
+        "rmse_reduced": 2.4621067369275718,
+        "threshold": 0.40237504860193984
       },
       "correlations": {
-        "abm_obs": 0.9847870934317513,
-        "ode_obs": 0.9841690820118693
+        "abm_obs": 0.9999761734449572,
+        "ode_obs": 0.9996752576890044
       },
       "edi": {
-        "value": 0.7763564064905527,
-        "bootstrap_mean": 0.7770755508202709,
-        "ci_lo": 0.7632834617982861,
-        "ci_hi": 0.7965110702020025,
-        "valid": true
+        "value": -3.53196456853982,
+        "bootstrap_mean": -3.5381559198295323,
+        "ci_lo": -3.762853939104166,
+        "ci_hi": -3.3165317993788226,
+        "valid": false,
+        "weighted_value": -0.7063929137079641,
+        "loe_factor": 0.2
       },
-      "effective_information": 1.001807325702204,
+      "viscosity": {
+        "pass": true,
+        "detail": {
+          "relaxation_time": 4,
+          "peak_impact": 1.9999999999999996,
+          "shock_step": 504,
+          "recovered": true
+        }
+      },
+      "effective_information": 0.0,
       "symploke": {
-        "internal": 0.999979610815621,
-        "external": 0.9986568128944471,
-        "cr": 1.0013245770760228,
+        "internal": 0.9999032440720614,
+        "external": 0.9986995673092491,
+        "cr": 1.0012052441016424,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.001600017344444847,
+        "dominance_share": 0.0025002512624961526,
         "pass": true
       },
       "persistence": {
-        "model": 0.04763178174338596,
-        "obs": 0.09966531624090287,
+        "model": 5.337424037493336e-05,
+        "obs": 0.00013605519305664852,
         "pass": true
       },
       "emergence": {
-        "err_reduced": 3.7653941952011607,
-        "err_abm": 0.8421062887944005,
-        "threshold": 0.20058895454923356,
-        "pass": true,
+        "err_reduced": 0.2691772638645005,
+        "err_abm": 1.2199018224904103,
+        "threshold": 0.08047500972038797,
+        "pass": false,
         "significance": "computed"
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": true,
+      "c1_convergence": false,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 0.8421062887944005,
-        "rmse_ode": 0.8779211997792193,
-        "corr_abm": 0.9847870934317513,
-        "corr_ode": 0.9841690820118693,
-        "threshold": 1.0029447727461678
+        "rmse_abm": 1.2199018224904103,
+        "rmse_ode": 3.1723004561550407,
+        "corr_abm": 0.9999761734449572,
+        "corr_ode": 0.9996752576890044,
+        "threshold": 0.40237504860193984
       },
       "c2_detail": {
-        "mean_delta": 0.19809919274597823,
-        "var_delta": 0.0644383326933177,
-        "relative_mean": 0.06888733822512462,
-        "relative_var": 0.0644383326933177
+        "mean_delta": 0.07400433523405944,
+        "var_delta": 0.006111892572058526,
+        "relative_mean": 0.060693126758299354,
+        "relative_var": 0.006111892572058526
       },
       "c3_detail": {
-        "persistence_1": 0.04763178174338596,
-        "persistence_2": 0.04763876012256426
+        "persistence_1": 5.337424037493336e-05,
+        "persistence_2": 5.364290324744133e-05
       },
       "c4_detail": {
-        "diff": 0.5751346158526447
+        "diff": 0.29292285528404927
       },
       "c5_detail": {
-        "sensitivity_min": 2.382774663947991,
-        "sensitivity_max": 3.359105477786937,
-        "range": 0.9763308138389459,
-        "relative_range": 5.000511082401997e-08
+        "sensitivity_min": 1.0191548499498764,
+        "sensitivity_max": 1.3466456211572864,
+        "range": 0.32749077120741,
+        "relative_range": 4.5563933385378784e-05
       }
     }
   }
