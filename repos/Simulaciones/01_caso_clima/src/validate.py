@@ -65,6 +65,7 @@ def main():
         real_split="2011-01-01",
         corr_threshold=0.7,
         extra_base_params={"humidity_coupling": 0.01, "seasonal_period": 12},
+        loe=5,
     )
 
     results = run_full_validation(

@@ -13,19 +13,29 @@ Estos criterios surgen de auditorias internas: los protocolos deben ser visibles
 Observacion → Simulacion → Validacion. El modelo se mantiene solo si supera falsacion y produce mejoras no triviales sobre el micro. Esta secuencia responde al debate metodologico: no basta con evidencia convergente, se requiere una prueba operativa y un procedimiento de rechazo.
 
 ## Metricas y Justificación Teórica: Emergencia Metaestable
-- **EDI (Effective Dependence Index):** Mide la reducción de entropía del sistema micro gracias a la estructura macro.
-- **Causalidad Acoplada (Nudging Constitutivo):** El descubrimiento fundamental de esta investigación es que los Hiperobjetos no operan como estructuras autónomas (Atractores Fuertes), sino como **Atractores Metaestables**. 
-- **La Función del Nudging:** Se postula que el *Nudging* (asimilación activa) no es un artefacto de cálculo, sino la formalización matemática del acoplamiento causal entre el Hiperobjeto y su base material. La validación se obtiene si la estructura macro logra organizar el micro bajo condiciones de acoplamiento real, demostrando una **Eficacia Causal Mediada**.
-- **Información Efectiva (EI):** Se mide si el sistema acoplado (Híbrido) es más informativo y predictivo que la suma de sus partes. El Hiperobjeto es real en tanto es una **capa de ordenamiento informacional** persistente.
+- **EDI (Effective Dependence Index):** Mide la **indispensabilidad causal** del nivel macro. No es simplemente una reducción de entropía, sino la demostración de que el comportamiento observado no puede explicarse solo por interacciones locales.
+- **Interpretación Ontológica del EDI:** Un EDI > 0.30 indica que eliminar el nivel macro (ablación) causa una pérdida de información irrecuperable.
+- **Ablación como Intervención Causal:** Siguiendo a Woodward (2003), la manipulación de `forcing_scale=0` es una intervención controlada. Si el sistema colapsa predictivamente bajo esta intervención, se demuestra la realidad causal de la variable intervenida (el hiperobjeto).
+- **Regla de Descuento por Nivel de Evidencia (LoE):** Para evitar la reificación de constructos débiles, el EDI se pondera por la calidad de los datos subyacentes.
+  $$EDI_{ponderado} = EDI \times \frac{LoE}{5}$$
+  Esto penaliza hipótesis con datos indirectos (ej. Conciencia, LoE=1) frente a sistemas físicos robustos (ej. Clima, LoE=5).
+
+## Niveles de Evidencia (LoE)
+1. **LoE 1 (Especulativo):** Proxies indirectos, encuestas subjetivas, o datos sintéticos sin ground truth físico. (Ej. Conciencia, Estética).
+2. **LoE 2 (Débil):** Datos digitales traza (Google Trends, Twitter) con alto ruido semántico.
+3. **LoE 3 (Medio):** Datos estructurados pero incompletos o de corto plazo (< 5 años).
+4. **LoE 4 (Fuerte):** Series temporales consistentes, múltiples fuentes, > 10 años.
+5. **LoE 5 (Robusto):** Datos físicos directos (sensores), estandarizados internacionalmente, > 30 años. (Ej. Clima, Océanos).
 
 
-## Reglas de Rechazo Hard-Coded
-1. **EDI < 0.30:** Inexistencia de estructura macro → **RECHAZO**
-2. **Coupling < 0.10:** Epifenomenalismo (Inercia sin agencia) → **RECHAZO**
-3. **RMSE < 1e-10:** Fraude por sobreajuste (Copy-paste de datos) → **RECHAZO**
-4. **EDI > 0.90:** Flag de tautología — revisión manual pero **no rechazo automático**
-5. **forcing_scale ≥ 1.0:** Cap en calibración — forzamiento externo no amplifica por encima de la unidad
-6. **C1-C5 protocolo completo:** 11 condiciones simultáneas requeridas para `overall_pass`
+## Reglas de Rechazo y Validación Ponderada
+1. **EDI_ponderado < 0.20:** Inexistencia de estructura macro robusta → **RECHAZO**
+2. **EDI > 0.30 pero LoE < 3:** Emergencia especulativa → **PROTOTIPO** (No validada ontológicamente)
+3. **Coupling < 0.10:** Epifenomenalismo (Inercia sin agencia) → **RECHAZO**
+4. **RMSE < 1e-10:** Fraude por sobreajuste (Copy-paste de datos) → **RECHAZO**
+5. **EDI > 0.90:** Flag de tautología — revisión manual.
+6. **forcing_scale ≥ 1.0:** Cap en calibración — forzamiento externo no amplifica por encima de la unidad.
+7. **C1-C5 protocolo completo:** Condición necesaria para validez técnica. (EDI ponderado es condición para validez ontológica).
 
 Nota: La regla 4 evolucionó de rechazo a flag tras verificar que EDI > 0.90 es alcanzable legítimamente en modelos bien calibrados con señales de tendencia (casos 12, 17, 28, entre otros). El protocolo C1-C5 discrimina tautología de emergencia genuina.
 

@@ -46,9 +46,33 @@ def _neighbor_mean(grid):
     return acc / count
 
 
+def _neighbor_mean_topology(grid, adj_matrix):
+    """
+    Promedio de vecinos usando matriz de adyacencia arbitraria.
+    grid: (N, N) o (N*N,) flat state
+    adj_matrix: (N*N, N*N) sparse or dense matrix
+    """
+    flat_grid = grid.ravel()
+    # Suma de vecinos: A @ x
+    neighbor_sum = adj_matrix @ flat_grid
+    
+    # Conteo de vecinos (degree vector)
+    # Se recomienda que adj_matrix ya esté normalizada por fila (Stochastic Matrix)
+    # Si no, calculamos degree:
+    # degree = np.sum(adj_matrix, axis=1)
+    # return (neighbor_sum / degree).reshape(grid.shape)
+    
+    # Asumimos que la matriz de entrada puede no estar normalizada,
+    # pero para eficiencia, si es estática, debería pre-calcularse el normalizador.
+    # Aquí calculamos dinámicamente para generalidad (lento si es dense)
+    # Optimización: adj_matrix debería ser row-normalized w_ij = a_ij / d_i
+    
+    return neighbor_sum.reshape(grid.shape)
+
+
 def simulate_abm_numpy(params, steps, seed=2, series_key="tbar",
                        init_center=0.0, init_range=0.5,
-                       store_grid=True):
+                       store_grid=True, adjacency_matrix=None):
     """
     ABM vectorizado. Compatible con la interfaz de todos los casos.
 
@@ -72,8 +96,12 @@ def simulate_abm_numpy(params, steps, seed=2, series_key="tbar",
     mc = params.get("macro_coupling", 0.3)
     fs = params.get("forcing_scale", 0.01)
     dmp = params.get("damping", 0.02)
+    perturbation_event = params.get("perturbation_event", None)  # {"step": t, "magnitude": mag}
+    perturbation_event = params.get("perturbation_event", None)  # {"step": t, "magnitude": mag}
     assim_series = params.get("assimilation_series")
     assim_strength = params.get("assimilation_strength", 0.0)
+    reflexivity_gamma = params.get("reflexivity_gamma", 0.0)
+    reflexivity_target = params.get("reflexivity_target", 0.5)  # Punto de equilibrio homeostático O target dinámico
 
     # Inicialización
     center = params.get("t0", init_center)
@@ -98,7 +126,13 @@ def simulate_abm_numpy(params, steps, seed=2, series_key="tbar",
         macro = grid.mean()
 
         # Difusión vectorizada
-        nb_mean = _neighbor_mean(grid)
+        if adjacency_matrix is not None:
+             # Si se provee topología, asumir que es una matriz normalizada (Row-Stochastic)
+             # o una matriz de pesos donde (A @ grid) da el "campo medio" local
+             nb_mean = _neighbor_mean_topology(grid, adjacency_matrix)
+        else:
+             # Grilla regular rápida
+             nb_mean = _neighbor_mean(grid)
 
         # Update vectorizado completo
         noise_matrix = rng.uniform(-noise_amp, noise_amp, (n, n))
@@ -111,6 +145,10 @@ def simulate_abm_numpy(params, steps, seed=2, series_key="tbar",
             + noise_matrix
         )
 
+        # Perturbación (Test de Viscosidad)
+        if perturbation_event and t == perturbation_event["step"]:
+            grid += perturbation_event.get("magnitude", 0.0)
+
         # Nudging
         if assim_series is not None and t < len(assim_series):
             target = assim_series[t]
@@ -119,6 +157,19 @@ def simulate_abm_numpy(params, steps, seed=2, series_key="tbar",
                 grid += assim_strength * (target - macro_post)
 
         macro_final = float(grid.mean())
+        
+        # Reflexividad: El estado macro altera los parámetros para t+1
+        # Ejemplo: Si el sistema se desvía mucho, la 'regulación' (forcing/damping) aumenta
+        if reflexivity_gamma > 1e-6:
+             # Feedback negativo simple:
+             # deviation = macro_final - reflexivity_target
+             # forcing_scale (t+1) = forcing_scale (t) * (1 + gamma * deviation)
+             # Implementación conservadora: modificar damping o forcing efectivo
+             # Aquí modificamos forcing_scale dinámicamente
+             
+             # Nota: Para estabilidad, clipeamos el cambio
+             delta = (macro_final - reflexivity_target)
+             fs = max(0.0001, min(1.0, fs * (1.0 + reflexivity_gamma * delta)))
         main_series.append(macro_final)
 
         if store_grid:
@@ -150,5 +201,6 @@ def make_abm_adapter(series_key, init_center=0.0, init_range=0.5):
             init_center=params.get("t0", init_center),
             init_range=init_range,
             store_grid=store,
+            adjacency_matrix=params.get("adjacency_matrix", None),
         )
     return simulate_abm

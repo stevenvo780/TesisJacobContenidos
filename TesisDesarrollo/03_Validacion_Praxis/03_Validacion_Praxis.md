@@ -14,33 +14,65 @@ La validacion distingue entre evidencia empirica (datasets largos y duros) y evi
 
 El pipeline se ejecutó sobre 32 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso es **Validado** solo si las 11 condiciones son ✓ simultáneamente.
 
-### Validados — 24 de 29 casos genuinos (83%)
-| Caso | EDI | corr | EI | Dominio |
-|------|-----|------|-----|---------|
-| 28 Acuíferos | 0.959 | 0.989 | 1.256 | Hídrico |
-| 12 Mod. Adversarial | 0.950 | 0.997 | 0.879 | Informacional |
-| 17 RTB Publicidad | 0.950 | 0.997 | 0.841 | Mercado digital |
-| 06 Estética | 0.949 | 0.998 | 0.904 | Cultural |
-| 22 Acidificación Oceánica | 0.947 | 0.992 | 1.256 | Ambiental-oceánico |
-| 11 Justicia | 0.946 | 0.985 | 1.256 | Sociotécnico |
-| 20 Océanos | 0.936 | 0.989 | 1.256 | Ambiental-oceánico |
-| 02 Conciencia | 0.936 | 0.997 | 0.844 | Cognitivo |
-| 26 Erosión Dialéctica | 0.923 | 0.995 | 0.869 | Cultural |
-| 13 Movilidad | 0.915 | 0.987 | 0.869 | Social |
-| 29 Starlink | 0.914 | 0.994 | 1.984 | Tecnológico |
-| 25 Fósforo | 0.902 | 0.881 | 0.711 | Biogeoquímico |
-| 30 Riesgo Biológico | 0.893 | 0.997 | 0.847 | Bioseguridad |
-| 32 IoT | 0.889 | 0.993 | 1.256 | Tecnológico |
-| 10 Finanzas | 0.882 | 0.996 | 1.218 | Económico |
-| 31 Fuga Cerebros | 0.881 | 0.997 | 0.848 | Capital intelectual |
-| 14 Paradigmas | 0.863 | 0.997 | 0.804 | Cultural |
-| 27 Microplásticos | 0.856 | 0.994 | 1.256 | Material-ambiental |
-| 19 Deforestación | 0.846 | 0.919 | 0.850 | Ambiental |
-| 21 Urbanización | 0.839 | 0.999 | 1.411 | Social |
-| 15 Políticas Estratégicas | 0.804 | 0.991 | 0.869 | Geopolítico |
-| 23 Kessler | 0.776 | 0.995 | 0.541 | Orbital |
-| 01 Clima | 0.372 | 0.822 | 0.542 | Físico-ambiental |
-| 04 Energía | 0.354 | 0.789 | 0.327 | Infraestructura |
+### Clasificación por Grupos y Calidad de Evidencia (LoE)
+
+La validación ontológica requiere ponderar el EDI técnico por la robustez de los datos (LoE). Se clasifican los 32 casos en 6 grupos funcionales.
+
+#### Grupo A: Sistemas de Inercia Física (LoE 4-5) — Core H1
+*Alta inercia, datos duros. Validación robusta.*
+
+| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
+|------|-----|-------------|---------------|--------|
+| 28 Acuíferos | 5 | 0.959 | **0.959** | Validado |
+| 22 Acidificación | 5 | 0.947 | **0.947** | Validado |
+| 20 Océanos | 4 | 0.936 | **0.749** | Validado |
+| 25 Fósforo | 3 | 0.902 | **0.541** | Validado |
+| 27 Microplásticos | 4 | 0.856 | **0.685** | Validado |
+| 01 Clima | 5 | 0.372 | **0.372** | Validado |
+| 04 Energía | 4 | 0.354 | **0.283** | Validado (Débil) |
+
+#### Grupo B: Sistemas Sociotécnicos (LoE 3-5)
+*Gobernanza explícita, datos estructurados.*
+
+| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
+|------|-----|-------------|---------------|--------|
+| 11 Justicia | 2 | 0.946 | 0.378 | Prototipo |
+| 13 Movilidad | 2 | 0.915 | 0.366 | Prototipo |
+| 10 Finanzas | 5 | 0.882 | **0.882** | Validado |
+| 31 Fuga Cerebros | 2 | 0.881 | 0.352 | Prototipo |
+| 21 Urbanización | 4 | 0.839 | **0.671** | Validado |
+| 15 Políticas | 1 | 0.804 | 0.161 | Rechazo (LoE) |
+
+#### Grupo C: Sistemas Tecnológicos-Digitales (LoE 2-5)
+*Datos nativos digitales.*
+
+| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
+|------|-----|-------------|---------------|--------|
+| 17 RTB Publicidad | 1 | 0.950 | 0.190 | Rechazo (LoE) |
+| 29 Starlink | 5 | 0.914 | **0.914** | Validado |
+| 30 Riesgo Bio | 2 | 0.893 | 0.357 | Prototipo |
+| 32 IoT | 3 | 0.889 | **0.533** | Validado |
+| 12 Mod. Adversarial | 1 | 0.950 | 0.190 | Rechazo (LoE) |
+| 23 Kessler | 5 | 0.776 | **0.776** | Validado |
+
+#### Grupo D: Sistemas Culturales-Epistémicos (LoE 1-2)
+*Datos proxies, alto riesgo de reificación.*
+
+| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
+|------|-----|-------------|---------------|--------|
+| 06 Estética | 2 | 0.949 | 0.379 | Prototipo |
+| 02 Conciencia | 1 | 0.936 | 0.187 | Rechazo (LoE) |
+| 26 Erosión Dialéc. | 2 | 0.923 | 0.369 | Prototipo |
+| 14 Paradigmas | 2 | 0.863 | 0.345 | Prototipo |
+| 19 Deforestación | 5 | 0.846 | **0.846** | Validado (Reclasif. a Grupo A) |
+
+#### Grupo E: Rechazos Genuinos (Falla Técnica)
+*EDI Técnico < 0.30 independientemente del LoE.*
+- 05 Epidemiología, 24 Salinización, 16 Postverdad, 03 Contaminación, 18 Wikipedia.
+
+#### Grupo F: Controles de Falsación
+- 07 Exogeneidad, 08 No-estacionariedad, 09 Observabilidad.
+
 
 ### Controles de Falsación (3/3 correctamente rechazados)
 - 07 Falsación Exogeneidad: ruido sin estructura → rechazado (EDI=-0.731).

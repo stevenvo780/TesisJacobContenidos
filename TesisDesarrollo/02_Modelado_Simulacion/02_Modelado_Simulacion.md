@@ -24,6 +24,17 @@ class HybridModel:
             self.ode.adjust(self.obs[t], self.assimilation_strength)
 ```
 
+## Rol Ontológico de la ODE: Sonda, No Representación
+
+La ODE no es la representación del hiperobjeto. Es una **sonda ontológica**: un instrumento que genera una señal macro candidata para probar si la dinámica micro responde a constricciones de ese nivel. La ODE es al hiperobjeto lo que el acelerador de partículas es al bosón de Higgs: no es la entidad, es la herramienta que revela la entidad.
+
+Lo que se demuestra como real no es la ODE sino la **constricción macro** que la ODE parametriza. Si la eliminación de esa constricción (ablación: forcing_scale=0, macro_coupling=0) degrada la predicción micro (EDI > 0.30), la constricción es causalmente eficaz. La ODE es un modelo auxiliar cuya función es:
+1. Generar la señal macro que alimenta al ABM (como condición de contorno).
+2. Permitir la comparación ABM_completo vs ABM_reducido (el EDI no mide calidad de la ODE).
+3. Servir de benchmark para evaluar la coherencia macro-micro (correlación ODE-ABM).
+
+Esta distinción resuelve la objeción "Phantom ODE" (Gladiadores R15): una ODE con correlación baja (ej. Clima: corr ≈ 0.82) puede coexistir con un EDI alto (0.372) porque lo que el EDI mide es la diferencia entre ABM con y sin constricción macro, no la calidad de la ODE como predictor independiente.
+
 ## Arquitectura y Ejecución de los 32 Casos
 La arquitectura actual del proyecto integra **32 motores de simulación completamente funcionales** y ejecutables. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas.
 

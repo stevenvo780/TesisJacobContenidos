@@ -499,6 +499,67 @@ def evaluate_c5(base_params, eval_params, steps, val_start,
     }
 
 
+def evaluate_viscosity(base_params, steps, val_start, simulate_abm_fn,
+                       series_key, magnitude=2.0, seed=42):
+    """
+    Test de Viscosidad: Perturbación tipo 'shock' y medición de tiempo de relajación.
+    Hipótesis: Hiperobjetos reales tienen alta viscosidad (inercia estructural).
+    """
+    # 1. Simulación base (sin perturbación)
+    p_base = dict(base_params)
+    p_base["assimilation_strength"] = 0.0
+    p_base["assimilation_series"] = None
+    p_base["perturbation_event"] = None
+    sim_base = simulate_abm_fn(p_base, steps, seed=seed)
+    base_series = np.array(sim_base[series_key])
+    
+    # 2. Simulación con shock
+    p_shock = dict(p_base)
+    shock_step = val_start + int((steps - val_start) / 2)
+    p_shock["perturbation_event"] = {"step": shock_step, "magnitude": magnitude}
+    sim_shock = simulate_abm_fn(p_shock, steps, seed=seed)
+    shock_series = np.array(sim_shock[series_key])
+    
+    # 3. Medir relajación
+    # Diferencia absoluta
+    diff = np.abs(shock_series - base_series)
+    
+    # Umbral de recuperación (e.g., < 5% del shock inicial)
+    shock_effect = diff[shock_step]
+    if shock_effect < 1e-6:
+        # Si el shock no tuvo efecto (e.g. capped), viscosidad indefinida o 0
+        return False, {"relaxation_time": 0, "peak_impact": 0.0}
+        
+    threshold = 0.05 * shock_effect
+    
+    # Buscar cuándo diff cae por debajo del threshold después del peak
+    # (shock_step + 1 en adelante)
+    relaxation_time = 0
+    recovered = False
+    
+    for t in range(shock_step + 1, steps):
+        if diff[t] < threshold:
+            relaxation_time = t - shock_step
+            recovered = True
+            break
+            
+    if not recovered:
+        relaxation_time = steps - shock_step
+        
+    # Interpretación: Viscosidad > 0 implica que la estructura resiste/amortigua
+    # y regresa gradualmente.
+    # Viscosidad muy baja = sistema sin memoria (gas).
+    # Viscosidad muy alta = sistema rígido o con histeresis.
+    pass_viscosity = relaxation_time > 1 
+    
+    return pass_viscosity, {
+        "relaxation_time": relaxation_time,
+        "peak_impact": shock_effect,
+        "shock_step": shock_step,
+        "recovered": recovered
+    }
+
+
 # ─── Pipeline Principal ──────────────────────────────────────────────────────
 
 class CaseConfig:
@@ -511,7 +572,7 @@ class CaseConfig:
                  real_split="2006-01-01",
                  ode_noise=0.001, base_noise=0.001,
                  corr_threshold=0.7, threshold_factor=1.0,
-                 extra_base_params=None):
+                 extra_base_params=None, loe=1):
         self.case_name = case_name
         self.value_col = value_col
         self.series_key = series_key
@@ -528,6 +589,7 @@ class CaseConfig:
         self.corr_threshold = corr_threshold
         self.threshold_factor = threshold_factor
         self.extra_base_params = extra_base_params or {}
+        self.loe = loe  # Level of Evidence (1-5)
 
 
 def evaluate_phase(config, df, start_date, end_date, split_date,
@@ -646,6 +708,12 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     # EDI con bootstrap
     edi_val = compute_edi(err_abm, err_reduced)
     edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, reduced_val)
+    
+    # EDI Ponderado por LoE (Regla de Descuento Gladiadores)
+    # edi_weighted = edi * (loe / 5)
+    # Penaliza constructos débiles (LoE 1-2)
+    loe_factor = config.loe / 5.0
+    edi_weighted = edi_val * loe_factor
 
     # Effective Information
     ei = effective_information(obs_val, abm_val, reduced_val)
@@ -663,6 +731,10 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
                                  simulate_abm_fn, sk, obs_std=obs_std,
                                  obs_mean_raw=obs_mean_raw,
                                  obs_std_raw=obs_std_raw)
+                                 
+    # Viscosity Test (Variables faltantes Fase 3)
+    c_visc, c_visc_detail = evaluate_viscosity(base_params, steps, val_start, 
+                                               simulate_abm_fn, sk)
 
     # Symploké, non-locality, persistence
     internal, external = internal_vs_external_cohesion(abm.get("grid", []), abm.get("forcing", []))
@@ -685,7 +757,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     # RMSE fraud check
     rmse_fraud = err_abm < 1e-10
     # EDI thresholds
-    edi_valid = 0.30 <= edi_val <= 0.90
+    edi_valid = 0.30 <= edi_weighted <= 0.90
     cr_valid = cr > 2.0
 
     overall = all([c1, c2, c3, c4, c5, sym_ok, non_local_ok, persist_ok,
@@ -729,6 +801,12 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             "ci_lo": edi_lo,
             "ci_hi": edi_hi,
             "valid": edi_valid,
+            "weighted_value": edi_weighted,
+            "loe_factor": loe_factor,
+        },
+        "viscosity": {
+            "pass": c_visc,
+            "detail": c_visc_detail
         },
         "effective_information": ei,
         "symploke": {
@@ -862,6 +940,7 @@ def write_outputs(results, output_dir):
                 f.write(f"- valor: {edi.get('value', 0):.4f}\n")
                 f.write(f"- bootstrap_mean: {edi.get('bootstrap_mean', 0):.4f}\n")
                 f.write(f"- CI 95%: [{edi.get('ci_lo', 0):.4f}, {edi.get('ci_hi', 0):.4f}]\n")
+                f.write(f"- weighted_value (LoE factor {edi.get('loe_factor', 1.0):.2f}): {edi.get('weighted_value', 0):.4f}\n")
                 f.write(f"- válido (0.30-0.90): {edi.get('valid', False)}\n\n")
 
             if "symploke" in phase:
