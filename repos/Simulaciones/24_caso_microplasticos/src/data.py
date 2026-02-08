@@ -53,8 +53,12 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
             cache_path=prod_cache,
         )
         waste, _ = fetch_owid_grapher_series(
-            ["plastic-mismanaged-waste", "mismanaged-plastic-waste", "plastic-waste-mismanaged"],
+            ["plastic-waste-mismanaged", "mismanaged-plastic-waste", "plastic-mismanaged-waste"],
             cache_path=waste_cache,
+        )
+        share, _ = fetch_owid_grapher_series(
+            ["share-of-plastic-waste-that-is-mismanaged", "share-of-plastic-waste-mismanaged"],
+            cache_path=os.path.join(cache_dir, "mismanaged_share.csv") if cache_dir else None,
         )
         river, err_r = fetch_worldbank_indicator("ER.H2O.INTR.K3")
         if river is not None:
@@ -68,15 +72,24 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
         if not waste.empty:
             waste = waste.rename(columns={"value": "mismanaged_waste"})
             if len(waste) < 5:
-                # Si solo hay un año (p.ej., 2019), usar ratio para estimar serie
-                tmp = waste.merge(prod.rename(columns={"value": "production"}), on="date", how="inner")
-                if not tmp.empty and tmp["production"].iloc[0] > 0:
-                    ratio = float(tmp["mismanaged_waste"].iloc[0]) / float(tmp["production"].iloc[0])
-                    df["mismanaged_waste"] = df["value"] * ratio
+                # Si solo hay un año, usar share mismanaged si existe, si no ratio
+                if not share.empty:
+                    share = share.rename(columns={"value": "mismanaged_share"})
+                    df = df.merge(share, on="date", how="left")
+                    df["mismanaged_waste"] = df["value"] * (df["mismanaged_share"] / 100.0)
                 else:
-                    df = df.merge(waste, on="date", how="left")
+                    tmp = waste.merge(prod.rename(columns={"value": "production"}), on="date", how="inner")
+                    if not tmp.empty and tmp["production"].iloc[0] > 0:
+                        ratio = float(tmp["mismanaged_waste"].iloc[0]) / float(tmp["production"].iloc[0])
+                        df["mismanaged_waste"] = df["value"] * ratio
+                    else:
+                        df = df.merge(waste, on="date", how="left")
             else:
                 df = df.merge(waste, on="date", how="left")
+        elif not share.empty:
+            share = share.rename(columns={"value": "mismanaged_share"})
+            df = df.merge(share, on="date", how="left")
+            df["mismanaged_waste"] = df["value"] * (df["mismanaged_share"] / 100.0)
         if river is not None and not river.empty:
             df = df.merge(river, on="date", how="left")
 

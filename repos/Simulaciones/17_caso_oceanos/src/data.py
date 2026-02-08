@@ -39,12 +39,14 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
         return df, {"source": "cache", "case": "17_caso_oceanos"}
 
     cache_dir = os.path.dirname(cache_path) if cache_path else None
-    sst_cache = os.path.join(cache_dir, "sst_wmo.csv") if cache_dir else None
+    sst_cache = os.path.join(cache_dir, "sst_ersst.csv") if cache_dir else None
+    sst_alt_cache = os.path.join(cache_dir, "sst_hadsst4.csv") if cache_dir else None
     sl_cache = os.path.join(cache_dir, "sea_level_wmo.csv") if cache_dir else None
     ohc_cache = os.path.join(cache_dir, "ohc_wmo.csv") if cache_dir else None
 
     try:
-        df_sst, _ = fetch_wmo_sst(start_date, end_date, cache_path=sst_cache)
+        df_sst, _ = fetch_wmo_sst(start_date, end_date, cache_path=sst_cache, variant="ERSST")
+        df_sst_alt, _ = fetch_wmo_sst(start_date, end_date, cache_path=sst_alt_cache, variant="HadSST4")
         df_sl, _ = fetch_wmo_sea_level(start_date, end_date, cache_path=sl_cache)
         df_ohc, _ = fetch_wmo_ohc(start_date, end_date, cache_path=ohc_cache)
 
@@ -52,12 +54,13 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
             raise RuntimeError("No SST data")
 
         df = df_sst.rename(columns={"sst": "value"})
+        df = df.merge(df_sst_alt.rename(columns={"sst": "sst_alt"}), on="date", how="left")
         df = df.merge(df_sl, on="date", how="left")
         df = df.merge(df_ohc, on="date", how="left")
 
         if cache_path:
             os.makedirs(os.path.dirname(cache_path), exist_ok=True)
             df.to_csv(cache_path, index=False)
-        return df, {"source": "WMO", "datasets": ["sst", "sea_level", "ohc"]}
+        return df, {"source": "WMO", "datasets": ["sst_ersst", "sst_hadsst4", "sea_level", "ohc"]}
     except Exception:
         return _synthetic_fallback(start_date, end_date)

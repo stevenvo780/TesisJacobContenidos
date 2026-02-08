@@ -341,12 +341,13 @@ def fetch_wmo_ohc(start_date=None, end_date=None, cache_path=None):
     return df, {"source": "WMO", "dataset": "ocean_heat_content"}
 
 
-def fetch_wmo_sst(start_date=None, end_date=None, cache_path=None):
+def fetch_wmo_sst(start_date=None, end_date=None, cache_path=None, variant="ERSST"):
     url = (
         "https://climateindicators-wmo-dashboard.org/"
         "climate_dashboard/sites/default/files/formatted_data/Sea-surface_temperature_data_files.zip"
     )
-    df = _badc_zip_to_df(url, "sst_ERSST.csv", cache_path=cache_path)
+    inner = "sst_ERSST.csv" if variant.upper() == "ERSST" else "sst_HadSST4.csv"
+    df = _badc_zip_to_df(url, inner, cache_path=cache_path)
     df = df.rename(columns={"data": "sst"})
     df["year"] = pd.to_numeric(df.get("year"), errors="coerce")
     df = df.dropna(subset=["year"])
@@ -355,7 +356,7 @@ def fetch_wmo_sst(start_date=None, end_date=None, cache_path=None):
     df = _annual_to_monthly(df, "sst")
     if start_date and end_date:
         df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
-    return df, {"source": "WMO", "dataset": "sst"}
+    return df, {"source": "WMO", "dataset": f"sst_{variant.upper()}"}
 
 
 # ==============================================================================

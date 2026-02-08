@@ -39,6 +39,7 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
         cache_path=deb_cache,
     )
     df = df.merge(ts_deb[["date", "debris_new"]], on="date", how="left")
+    df["collision_events"] = df["debris_new"]
 
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)

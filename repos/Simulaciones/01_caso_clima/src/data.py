@@ -121,12 +121,14 @@ def fetch_regional_monthly(start_date, end_date, max_stations=10, cache_path=Non
     co2_cache = None
     if cache_path:
         co2_cache = os.path.join(os.path.dirname(cache_path), "co2_mlo.csv")
-    try:
-        df_co2 = fetch_co2_monthly(start_date, end_date, cache_path=co2_cache)
+    
+    # Intentionally propagate exceptions to debug data issues
+    df_co2 = fetch_co2_monthly(start_date, end_date, cache_path=co2_cache)
+    if not df_co2.empty:
         df = df.merge(df_co2, on="date", how="left")
         df["co2"] = df["co2"].interpolate(limit_direction="both")
-    except Exception:
-        df["co2"] = None
+    else:
+        raise RuntimeError("Failed to fetch CO2 data (empty result)")
 
     # Merge TSI (solar), OHC (ocean heat content) y aerosoles (AOD)
     driver_specs = [
@@ -138,14 +140,16 @@ def fetch_regional_monthly(start_date, end_date, max_stations=10, cache_path=Non
         driver_cache = None
         if cache_path:
             driver_cache = os.path.join(os.path.dirname(cache_path), f"{col}.csv")
-        try:
-            df_drv, _ = fn(start_date, end_date, cache_path=driver_cache)
-            if df_drv is not None and not df_drv.empty:
-                df = df.merge(df_drv, on="date", how="left")
-                if col in df.columns:
-                    df[col] = df[col].interpolate(limit_direction="both")
-        except Exception:
-            df[col] = None
+        
+        # Propagate exceptions
+        df_drv, meta = fn(start_date, end_date, cache_path=driver_cache)
+        if df_drv is not None and not df_drv.empty:
+            df = df.merge(df_drv, on="date", how="left")
+            if col in df.columns:
+                df[col] = df[col].interpolate(limit_direction="both")
+        else:
+             print(f"Warning: Failed to fetch {col} data (empty result). Using fallback/None.")
+             df[col] = None
 
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)

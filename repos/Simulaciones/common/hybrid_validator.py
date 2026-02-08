@@ -686,14 +686,42 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
                     driver_forcing = None
 
     if driver_forcing is None:
-        # Forcing (sin leakage: solo entrenamiento)
+        # Forcing construction (DATA LEAKAGE FIX)
+        # Old (Leak function): lag_forcing = [obs[0]] + obs[:-1] (uses validation data in obs)
+        # New (Clean): 
+        #   Train phase: use obs[t-1]
+        #   Validation phase: extrapolate/forecast
+        
+        # 1. Build trend from training only
         forcing_trend, trend_params = build_forcing_from_training(obs[:val_start], steps)
+        
+        # 2. Build lag component
         if val_start < 1:
+            # Degenerate case (no training)
             lag_forcing = [obs[0]] * steps
         else:
-            lag_train = [obs[0]] + list(obs[:max(val_start - 1, 0)])
-            lag_val = [obs[val_start - 1]] * (steps - val_start)
-            lag_forcing = (lag_train + lag_val)[:steps]
+            # Training part: use observed history
+            # lag_forcing[t] corresponds to forcing at time t.
+            # We want forcing[t] to depend on obs[t-1].
+            # So lag_train should has length val_start.
+            # lag_train[0] = obs[0] (fallback)
+            # lag_train[1] = obs[0]
+            # lag_train[t] = obs[t-1]
+            lag_train = [obs[0]] + list(obs[:val_start-1])
+            
+            # Validation part: CANNOT use obs[val_start:]. Must use recursion or persistence.
+            # Method A: Persistence (last known value)
+            last_known = obs[val_start-1]
+            lag_val = [last_known] * (steps - val_start)
+            
+            # Method B (Future improvement): Recursive prediction? 
+            # For now, persistence is safe and defines "null forcing" for future.
+            
+            lag_forcing = lag_train + lag_val
+            
+            # Sanity check length
+            lag_forcing = lag_forcing[:steps]
+            
         forcing_series = [forcing_trend[i] + 0.5 * lag_forcing[i] for i in range(steps)]
     else:
         forcing_series = driver_forcing

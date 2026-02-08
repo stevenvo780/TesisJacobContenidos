@@ -9,4 +9,6 @@ SERIES_KEY = "tbar"
 
 
 def simulate_abm(params, steps, seed):
-    return simulate_abm_core(params, steps, seed=seed, series_key=SERIES_KEY)
+    # Ensure macro coupling params are passed through
+    p = dict(params)
+    return simulate_abm_core(p, steps, seed=seed, series_key=SERIES_KEY)

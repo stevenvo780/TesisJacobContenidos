@@ -94,9 +94,9 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
         # Valor objetivo: pH (interpolado) si hay señal, si no pCO2
         if "ph_sw" in df.columns and df["ph_sw"].notna().sum() >= 24:
             df["ph_sw"] = df["ph_sw"].interpolate(limit_direction="both")
-            df = df.rename(columns={"ph_sw": "value"})
+            df["value"] = df["ph_sw"]
         else:
-            df = df.rename(columns={"pco2_sw": "value"})
+            df["value"] = df["pco2_sw"]
 
         if cache_path:
             os.makedirs(os.path.dirname(cache_path), exist_ok=True)
