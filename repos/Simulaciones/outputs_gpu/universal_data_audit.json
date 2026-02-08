@@ -1,0 +1,376 @@
+{
+  "generated_at": "2026-02-08T14:24:59.379467",
+  "catalog": {
+    "01_caso_clima": {
+      "name": "Regional Climate",
+      "real_source": "Meteostat (NOAA/DWD)",
+      "indicator": "Average Temperature (tavg)",
+      "api": "meteostat",
+      "worldbank_backup": null,
+      "status": "REAL_IMPLEMENTED",
+      "datapoints": "~800+ monthly (1950-2024)",
+      "quality": "HIGH"
+    },
+    "04_caso_energia": {
+      "name": "Energy Grid Load",
+      "real_source": "OPSD (ENTSOE Transparency)",
+      "indicator": "GB Load (MW)",
+      "api": "opsd",
+      "worldbank_backup": "EG.USE.ELEC.KH.PC",
+      "status": "REAL_IMPLEMENTED",
+      "datapoints": "~60 monthly (2015-2020)",
+      "quality": "HIGH"
+    },
+    "10_caso_finanzas": {
+      "name": "Financial Markets",
+      "real_source": "Yahoo Finance",
+      "indicator": "SPY log(price)",
+      "api": "yfinance",
+      "worldbank_backup": "CM.MKT.INDX.ZG",
+      "status": "REAL_IMPLEMENTED",
+      "datapoints": "~360 monthly (1993-2024)",
+      "quality": "HIGH"
+    },
+    "19_caso_deforestacion": {
+      "name": "Deforestation",
+      "real_source": "World Bank",
+      "indicator": "AG.LND.FRST.ZS (Forest area %)",
+      "api": "worldbank",
+      "status": "REAL_IMPLEMENTED",
+      "datapoints": "~32 yearly (1990-2022)",
+      "quality": "HIGH"
+    },
+    "21_caso_urbanizacion": {
+      "name": "Urbanization",
+      "real_source": "World Bank",
+      "indicator": "SP.URB.TOTL.IN.ZS (Urban population %)",
+      "api": "worldbank",
+      "status": "REAL_IMPLEMENTED",
+      "datapoints": "~62 yearly (1960-2022)",
+      "quality": "HIGH"
+    },
+    "25_caso_fosforo": {
+      "name": "Phosphorus Cycle",
+      "real_source": "World Bank",
+      "indicator": "AG.CON.FERT.ZS (Fertilizer consumption kg/ha)",
+      "api": "worldbank",
+      "status": "REAL_IMPLEMENTED",
+      "datapoints": "~60 yearly (1961-2021)",
+      "quality": "MEDIUM"
+    },
+    "28_caso_acuiferos": {
+      "name": "Aquifer Stress",
+      "real_source": "World Bank",
+      "indicator": "SH.H2O.BASW.ZS (Basic water access %)",
+      "api": "worldbank",
+      "status": "REAL_IMPLEMENTED",
+      "datapoints": "~22 yearly (2000-2022)",
+      "quality": "HIGH"
+    },
+    "03_caso_contaminacion": {
+      "name": "Air Pollution",
+      "real_source": "World Bank",
+      "indicator": "EN.ATM.PM25.MC.M3 (PM2.5 air pollution)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~30+ yearly",
+      "quality": "HIGH"
+    },
+    "05_caso_epidemiologia": {
+      "name": "Epidemiology",
+      "real_source": "World Bank / WHO",
+      "indicator": "SH.DYN.MORT (Mortality rate, under-5)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~60 yearly",
+      "quality": "HIGH"
+    },
+    "11_caso_justicia": {
+      "name": "Rule of Law",
+      "real_source": "World Bank (WGI)",
+      "indicator": "RL.EST (Rule of Law estimate)",
+      "api": "worldbank_governance",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~25 yearly (1996-2022)",
+      "quality": "HIGH"
+    },
+    "13_caso_movilidad": {
+      "name": "Urban Mobility",
+      "real_source": "World Bank",
+      "indicator": "IS.VEH.NVEH.P3 (Motor vehicles per 1000 people)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~30 yearly",
+      "quality": "MEDIUM"
+    },
+    "15_caso_politicas_estrategicas": {
+      "name": "Strategic Policies",
+      "real_source": "World Bank",
+      "indicator": "GC.TAX.TOTL.GD.ZS (Tax revenue % GDP)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~40 yearly",
+      "quality": "HIGH"
+    },
+    "20_caso_oceanos": {
+      "name": "Ocean Temperature",
+      "real_source": "NOAA/World Bank",
+      "indicator": "EN.CLC.MDAT.ZS (Temperature deviation)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~60 yearly",
+      "quality": "HIGH"
+    },
+    "22_caso_acidificacion_oceanica": {
+      "name": "Ocean Acidification",
+      "real_source": "NOAA Carbon Data",
+      "indicator": "Ocean pH / CO2",
+      "api": "noaa_carbon",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~40 yearly",
+      "quality": "HIGH"
+    },
+    "24_caso_salinizacion": {
+      "name": "Soil Salinization",
+      "real_source": "World Bank/FAO",
+      "indicator": "AG.LND.ARBL.ZS (Arable land %)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~60 yearly",
+      "quality": "MEDIUM"
+    },
+    "26_caso_erosion_dialectica": {
+      "name": "Dialectical Erosion (Literacy)",
+      "real_source": "World Bank",
+      "indicator": "SE.ADT.LITR.ZS (Literacy rate %)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~50 yearly",
+      "quality": "HIGH"
+    },
+    "27_caso_microplasticos": {
+      "name": "Microplastics",
+      "real_source": "World Bank/UNEP",
+      "indicator": "EN.SEA.POLL.MT (Marine pollution)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~20 yearly",
+      "quality": "MEDIUM"
+    },
+    "30_caso_riesgo_biologico": {
+      "name": "Biological Risk",
+      "real_source": "World Bank",
+      "indicator": "SH.DYN.MORT (Infant mortality)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~60 yearly",
+      "quality": "HIGH"
+    },
+    "31_caso_fuga_cerebros": {
+      "name": "Brain Drain",
+      "real_source": "World Bank",
+      "indicator": "GB.XPD.RSDV.GD.ZS (R&D expenditure % GDP)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~30 yearly",
+      "quality": "HIGH"
+    },
+    "32_caso_iot": {
+      "name": "IoT Connectivity",
+      "real_source": "World Bank",
+      "indicator": "IT.CEL.SETS.P2 (Mobile subscriptions per 100)",
+      "api": "worldbank",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~60 yearly",
+      "quality": "HIGH"
+    },
+    "14_caso_paradigmas": {
+      "name": "Scientific Paradigms",
+      "real_source": "OpenAlex",
+      "indicator": "Citation counts by concept",
+      "api": "openalex",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~25 yearly",
+      "quality": "HIGH"
+    },
+    "23_caso_kessler": {
+      "name": "Kessler Syndrome",
+      "real_source": "CelesTrak / Space-Track",
+      "indicator": "Active satellites & debris count",
+      "api": "celestrak",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~30 yearly",
+      "quality": "HIGH"
+    },
+    "29_caso_starlink": {
+      "name": "Starlink Deployment",
+      "real_source": "CelesTrak",
+      "indicator": "Active Starlink satellites",
+      "api": "celestrak",
+      "status": "REAL_IMPLEMENTED",
+      "datapoints": "Current: 9548",
+      "quality": "HIGH"
+    },
+    "18_caso_wikipedia": {
+      "name": "Wikipedia Edits",
+      "real_source": "Wikimedia API",
+      "indicator": "Monthly edits / page views",
+      "api": "wikimedia",
+      "status": "REAL_AVAILABLE",
+      "datapoints": "~240 monthly (2004-2024)",
+      "quality": "HIGH"
+    },
+    "02_caso_conciencia": {
+      "name": "Collective Consciousness",
+      "real_source": "Google Trends (proxy)",
+      "indicator": "Search interest for 'global news'",
+      "api": "google_trends",
+      "status": "PROXY_AVAILABLE",
+      "datapoints": "~180 monthly",
+      "quality": "MEDIUM",
+      "note": "Consciousness is philosophical, Google Trends is proxy for attention"
+    },
+    "06_caso_estetica": {
+      "name": "Aesthetic Canon",
+      "real_source": "No direct API",
+      "indicator": "Art auction prices / museum visits",
+      "api": null,
+      "status": "SYNTHETIC_ONLY",
+      "quality": "LOW",
+      "note": "Requires web scraping from Christie's/Sotheby's"
+    },
+    "12_caso_moderacion_adversarial": {
+      "name": "Platform Moderation",
+      "real_source": "No public API",
+      "indicator": "Content moderation actions",
+      "api": null,
+      "status": "SYNTHETIC_ONLY",
+      "quality": "LOW",
+      "note": "Platforms don't publish moderation data"
+    },
+    "16_caso_postverdad": {
+      "name": "Post-Truth",
+      "real_source": "Google Trends / Media APIs",
+      "indicator": "Misinformation spread",
+      "api": "google_trends",
+      "status": "PROXY_AVAILABLE",
+      "quality": "LOW",
+      "note": "Post-truth is conceptual, no direct measurement"
+    },
+    "17_caso_rtb_publicidad": {
+      "name": "RTB Advertising",
+      "real_source": "IAB / eMarketer (paid)",
+      "indicator": "Digital ad spend",
+      "api": null,
+      "status": "SYNTHETIC_ONLY",
+      "quality": "LOW",
+      "note": "Industry data is proprietary"
+    },
+    "07_caso_falsacion_exogeneidad": {
+      "name": "Falsification Control: Exogeneity",
+      "real_source": "SYNTHETIC BY DESIGN",
+      "indicator": "Pure noise",
+      "api": null,
+      "status": "CONTROL_SYNTHETIC",
+      "quality": "N/A",
+      "note": "Control case - must remain synthetic"
+    },
+    "08_caso_falsacion_no_estacionariedad": {
+      "name": "Falsification Control: Non-Stationarity",
+      "real_source": "SYNTHETIC BY DESIGN",
+      "indicator": "Random walk",
+      "api": null,
+      "status": "CONTROL_SYNTHETIC",
+      "quality": "N/A",
+      "note": "Control case - must remain synthetic"
+    },
+    "09_caso_falsacion_observabilidad": {
+      "name": "Falsification Control: Observability",
+      "real_source": "SYNTHETIC BY DESIGN",
+      "indicator": "Hidden state",
+      "api": null,
+      "status": "CONTROL_SYNTHETIC",
+      "quality": "N/A",
+      "note": "Control case - must remain synthetic"
+    }
+  },
+  "summary": {
+    "total_cases": 32,
+    "real_implemented": 8,
+    "real_available": 16,
+    "proxy": 2,
+    "synthetic": 3,
+    "control": 3,
+    "coverage_pct": 89.65517241379311,
+    "to_remove": [
+      "06_caso_estetica",
+      "12_caso_moderacion_adversarial",
+      "17_caso_rtb_publicidad"
+    ]
+  },
+  "upgrade_results": [
+    {
+      "case": "03_caso_contaminacion",
+      "status": "UPGRADED",
+      "datapoints": 31,
+      "range": "1990-2020"
+    },
+    {
+      "case": "05_caso_epidemiologia",
+      "status": "UPGRADED",
+      "datapoints": 34,
+      "range": "1990-2023"
+    },
+    {
+      "case": "13_caso_movilidad",
+      "status": "FAILED",
+      "error": "No data for IS.VEH.NVEH.P3"
+    },
+    {
+      "case": "15_caso_politicas_estrategicas",
+      "status": "UPGRADED",
+      "datapoints": 24,
+      "range": "1991-2023"
+    },
+    {
+      "case": "20_caso_oceanos",
+      "status": "FAILED",
+      "error": "No valid entries"
+    },
+    {
+      "case": "24_caso_salinizacion",
+      "status": "UPGRADED",
+      "datapoints": 62,
+      "range": "1961-2022"
+    },
+    {
+      "case": "26_caso_erosion_dialectica",
+      "status": "UPGRADED",
+      "datapoints": 49,
+      "range": "1975-2023"
+    },
+    {
+      "case": "27_caso_microplasticos",
+      "status": "FAILED",
+      "error": "No data for EN.SEA.POLL.MT"
+    },
+    {
+      "case": "30_caso_riesgo_biologico",
+      "status": "UPGRADED",
+      "datapoints": 34,
+      "range": "1990-2023"
+    },
+    {
+      "case": "31_caso_fuga_cerebros",
+      "status": "UPGRADED",
+      "datapoints": 27,
+      "range": "1996-2022"
+    },
+    {
+      "case": "32_caso_iot",
+      "status": "UPGRADED",
+      "datapoints": 47,
+      "range": "1960-2023"
+    }
+  ]
+}
