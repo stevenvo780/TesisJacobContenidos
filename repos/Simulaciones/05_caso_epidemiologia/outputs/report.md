@@ -1,6 +1,6 @@
 # Reporte de Validación — Epidemiología (COVID-19 SEIR)
 
-- generated_at: 2026-02-08T21:29:06.336374Z
+- generated_at: 2026-02-08T22:03:45.142204Z
 
 ## Fase synthetic
 - **overall_pass**: False
