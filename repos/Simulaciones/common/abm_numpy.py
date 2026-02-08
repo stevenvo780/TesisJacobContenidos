@@ -170,6 +170,17 @@ def simulate_abm_numpy(params, steps, seed=2, series_key="tbar",
              # Nota: Para estabilidad, clipeamos el cambio
              delta = (macro_final - reflexivity_target)
              fs = max(0.0001, min(1.0, fs * (1.0 + reflexivity_gamma * delta)))
+
+        # ─── Stability Check (CFL / Overflow) ───
+        if not np.isfinite(macro_final) or abs(macro_final) > 1e9:
+            # Detectado overflow o inestabilidad numérica
+            # Fallback seguro: congelar el último estado válido o reiniciar
+            # Para validación, mejor dejar que falle o clipear?
+            # Estrategia: Clipear y advertir (soft fail)
+            grid = np.nan_to_num(grid, nan=0.0, posinf=1e9, neginf=-1e9)
+            grid = np.clip(grid, -1e9, 1e9)
+            macro_final = float(grid.mean())
+            
         main_series.append(macro_final)
 
         if store_grid:

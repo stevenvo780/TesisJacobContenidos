@@ -1,0 +1,24 @@
+# Dockerfile.gpu - Entorno de Simulación High Level (RTX 5070 Ti)
+# Usamos la imagen oficial de CuPy para evitar problemas de compilación
+FROM cupy/cupy:latest
+
+# Evitar diálogos interactivos
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Instalar dependencias extra (joblib para paralelismo si se usa, y herramientas básicas)
+# La imagen de CuPy está basada en Ubuntu o similar
+RUN apt-get update && apt-get install -y \
+  python3-pip \
+  git \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Instalar joblib (numpy y cupy ya vienen)
+RUN pip3 install --no-cache-dir joblib
+
+# Copiar código
+COPY . /app
+
+# Ejecutar
+CMD ["python3", "ultra_run_gpu.py"]

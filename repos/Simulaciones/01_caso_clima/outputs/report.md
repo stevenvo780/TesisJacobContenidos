@@ -1,21 +1,22 @@
 # Reporte de Validación — Clima Regional (CONUS)
 
-- generated_at: 2026-02-07T13:48:10.543206Z
+- generated_at: 2026-02-08T17:26:37.713606Z
 
 ## Fase synthetic
-- **overall_pass**: True
+- **overall_pass**: False
 
 ### EDI
-- valor: 0.6869
-- bootstrap_mean: 0.6870
-- CI 95%: [0.6809, 0.6936]
+- valor: 0.6863
+- bootstrap_mean: 0.6865
+- CI 95%: [0.6803, 0.6930]
+- weighted_value (LoE factor 1.00): 0.6863
 - válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 1.0000
 - external: 1.0000
 - CR: 1.0000
-- CR válido (>2.0): False
+- CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: True
@@ -25,34 +26,35 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.1139
+- rmse_abm: 2.1176
 - rmse_ode: 1.8845
 - rmse_reduced: 6.7513
 - threshold: 2.5747
 
 ### Calibración
-- forcing_scale: 0.3214
-- macro_coupling: 0.9249
-- damping: 0.4669
+- forcing_scale: 0.3277
+- macro_coupling: 0.8746
+- damping: 0.4766
 - ode_alpha: 0.0241
 - ode_beta: 0.8965
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1487
+- calibration_rmse: 0.1488
 
 ## Fase real
-- **overall_pass**: True
+- **overall_pass**: False
 
 ### EDI
 - valor: 0.3725
 - bootstrap_mean: 0.3715
 - CI 95%: [0.3364, 0.4095]
+- weighted_value (LoE factor 1.00): 0.3725
 - válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 0.9999
 - external: 0.9996
 - CR: 1.0003
-- CR válido (>2.0): False
+- CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: True

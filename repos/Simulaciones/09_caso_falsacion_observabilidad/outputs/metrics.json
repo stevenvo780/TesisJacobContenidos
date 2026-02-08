@@ -1,8 +1,8 @@
 {
   "case": "Falsaci\u00f3n: Observabilidad Escasa",
-  "generated_at": "2026-02-07T14:21:55.893042Z",
+  "generated_at": "2026-02-08T17:25:07.574092Z",
   "git": {
-    "commit": "7b9c9837f057bb3b5f3082a26dc9472277ae6e93",
+    "commit": "0b37bdeb6c9384ca0ba03c25933a1721296bff99",
     "dirty": true
   },
   "phases": {
@@ -26,45 +26,54 @@
         "ode_alpha": 0.26312924275188754,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.6414811866643364
+        "calibration_rmse": 0.6414716124579852
       },
       "errors": {
-        "rmse_abm": 1.447126023118484,
+        "rmse_abm": 1.4471302523284737,
         "rmse_ode": 1.2675934157957955,
-        "rmse_reduced": 1.1575211806123058,
+        "rmse_reduced": 1.157514368215007,
         "threshold": 0.9375271634827442
       },
       "correlations": {
-        "abm_obs": 0.3858998463739275,
+        "abm_obs": 0.3859166118925574,
         "ode_obs": 0.5025333240393721
       },
       "edi": {
-        "value": -0.2501939898438687,
-        "bootstrap_mean": -0.4092592418827948,
-        "ci_lo": -1.6996622247185575,
-        "ci_hi": 0.37859340961864846,
-        "valid": false
+        "value": -0.25020500139456653,
+        "bootstrap_mean": -0.40926684838741917,
+        "ci_lo": -1.6996691829025996,
+        "ci_hi": 0.37859705182258174,
+        "valid": false,
+        "weighted_value": -0.05004100027891331,
+        "loe_factor": 0.2
       },
-      "effective_information": 0.04608296058297112,
+      "viscosity": {
+        "pass": false,
+        "detail": {
+          "relaxation_time": 0,
+          "peak_impact": 0.0
+        }
+      },
+      "effective_information": 0.04607952741806365,
       "symploke": {
-        "internal": 0.9999537102401816,
-        "external": 0.9998334314935058,
-        "cr": 1.0001202987846647,
+        "internal": 0.9999551607161968,
+        "external": 0.9998342980257614,
+        "cr": 1.000120882720941,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0025000564345389743,
+        "dominance_share": 6.944596660842623e-05,
         "pass": true
       },
       "persistence": {
-        "model": 0.24478225752771454,
+        "model": 0.24481400959130162,
         "obs": 0.5279427534715436,
         "pass": true
       },
       "emergence": {
-        "err_reduced": 1.1575211806123058,
-        "err_abm": 1.447126023118484,
+        "err_reduced": 1.157514368215007,
+        "err_abm": 1.4471302523284737,
         "threshold": 0.18750543269654885,
         "pass": false,
         "significance": "computed"
@@ -77,30 +86,30 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 1.447126023118484,
+        "rmse_abm": 1.4471302523284737,
         "rmse_ode": 1.2675934157957955,
-        "corr_abm": 0.3858998463739275,
+        "corr_abm": 0.3859166118925574,
         "corr_ode": 0.5025333240393721,
         "threshold": 0.9375271634827442
       },
       "c2_detail": {
-        "mean_delta": 0.11881896908452272,
-        "var_delta": 0.03843867591268536,
-        "relative_mean": 0.06552380385057252,
-        "relative_var": 0.03843867591268536
+        "mean_delta": 0.11881225525202468,
+        "var_delta": 0.03843178534422407,
+        "relative_mean": 0.06551974097175098,
+        "relative_var": 0.03843178534422407
       },
       "c3_detail": {
-        "persistence_1": 0.24478225752771454,
-        "persistence_2": 0.2448056120293561
+        "persistence_1": 0.24481400959130162,
+        "persistence_2": 0.2448041653028122
       },
       "c4_detail": {
-        "diff": 0.36266398646642206
+        "diff": 0.36267479355849175
       },
       "c5_detail": {
-        "sensitivity_min": 1.5105540906994825,
-        "sensitivity_max": 2.1079304194890858,
-        "range": 0.5973763287896032,
-        "relative_range": 0.33801303364438384
+        "sensitivity_min": 1.5092841675354873,
+        "sensitivity_max": 2.1532982152998894,
+        "range": 0.6440140477644021,
+        "relative_range": 0.352337245962859
       },
       "synthetic_meta": {
         "ode_true": {

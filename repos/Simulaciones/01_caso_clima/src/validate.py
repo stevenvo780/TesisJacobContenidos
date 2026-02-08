@@ -12,7 +12,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
-from abm import simulate_abm
+from abm_numpy import make_abm_adapter
 from data import fetch_regional_monthly
 from ode import simulate_ode
 from hybrid_validator import CaseConfig, run_full_validation, write_outputs
@@ -67,6 +67,9 @@ def main():
         extra_base_params={"humidity_coupling": 0.01, "seasonal_period": 12},
         loe=5,
     )
+
+    # Crear adaptador NumPy
+    simulate_abm = make_abm_adapter("tbar", init_center=0.0, init_range=0.5)
 
     results = run_full_validation(
         config, load_real_data, make_synthetic,

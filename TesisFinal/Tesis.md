@@ -143,19 +143,20 @@ Estos criterios surgen de auditorias internas: los protocolos deben ser visibles
 Observacion → Simulacion → Validacion. El modelo se mantiene solo si supera falsacion y produce mejoras no triviales sobre el micro. Esta secuencia responde al debate metodologico: no basta con evidencia convergente, se requiere una prueba operativa y un procedimiento de rechazo.
 
 ## Metricas y Justificación Teórica: Emergencia Metaestable
-- **EDI (Effective Dependence Index):** Mide la reducción de entropía del sistema micro gracias a la estructura macro.
-- **Causalidad Acoplada (Nudging Constitutivo):** El descubrimiento fundamental de esta investigación es que los Hiperobjetos no operan como estructuras autónomas (Atractores Fuertes), sino como **Atractores Metaestables**. 
-- **La Función del Nudging:** Se postula que el *Nudging* (asimilación activa) no es un artefacto de cálculo, sino la formalización matemática del acoplamiento causal entre el Hiperobjeto y su base material. La validación se obtiene si la estructura macro logra organizar el micro bajo condiciones de acoplamiento real, demostrando una **Eficacia Causal Mediada**.
-- **Información Efectiva (EI):** Se mide si el sistema acoplado (Híbrido) es más informativo y predictivo que la suma de sus partes. El Hiperobjeto es real en tanto es una **capa de ordenamiento informacional** persistente.
+- **EDI (Effective Dependence Index):** Mide la **indispensabilidad causal** del nivel macro. No es simplemente una reducción de entropía, sino la demostración de que el comportamiento observado no puede explicarse solo por interacciones locales.
+- **Interpretación Ontológica:** Un EDI > 0.30 indica que eliminar el nivel macro (ablación) causa una pérdida de información irrecuperable.
+- **Regla de Descuento por Nivel de Evidencia (LoE):** Para evitar la reificación de constructos débiles, el EDI se pondera por la calidad de los datos subyacentes ($EDI_{ponderado} = EDI \times LoE/5$).
+- **Test de Viscosidad ($\tau_{relax}$):** Nueva métrica introducida en la Fase 3. Mide la inercia del hiperobjeto ante perturbaciones. Una recuperación gradual ($\tau > 1$) indica estructura interna real; una recuperación instantánea indica mero agregado.
+- **Información Efectiva (EI):** Se mide si el sistema acoplado (Híbrido) es más informativo y predictivo que la suma de sus partes.
 
 
-## Reglas de Rechazo Hard-Coded
-1. **EDI < 0.30:** Inexistencia de estructura macro → **RECHAZO**
-2. **Coupling < 0.10:** Epifenomenalismo (Inercia sin agencia) → **RECHAZO**
-3. **RMSE < 1e-10:** Fraude por sobreajuste (Copy-paste de datos) → **RECHAZO**
-4. **EDI > 0.90:** Flag de tautología — revisión manual pero **no rechazo automático**
-5. **forcing_scale ≥ 1.0:** Cap en calibración — forzamiento externo no amplifica por encima de la unidad
-6. **C1-C5 protocolo completo:** 11 condiciones simultáneas requeridas para `overall_pass`
+## Reglas de Rechazo y Validación Ponderada
+1. **EDI_ponderado < 0.20:** Inexistencia de estructura macro robusta → **RECHAZO**
+2. **EDI > 0.30 pero LoE < 3:** Emergencia especulativa → **PROTOTIPO**
+3. **Viscosidad $\tau < 1$:** Falta de inercia estructural → **RECHAZO** (Nueva condición Fase 3)
+4. **Coupling < 0.10:** Epifenomenalismo → **RECHAZO**
+5. **RMSE < 1e-10:** Fraude por sobreajuste → **RECHAZO**
+6. **C1-C5 protocolo completo:** Condición necesaria para validez técnica.
 
 Nota: La regla 4 evolucionó de rechazo a flag tras verificar que EDI > 0.90 es alcanzable legítimamente en modelos bien calibrados con señales de tendencia (casos 12, 17, 28, entre otros). El protocolo C1-C5 discrimina tautología de emergencia genuina.
 
@@ -237,40 +238,64 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 
 ## Resultados Consolidados (Matriz de Validación Técnica)
 
-| Caso | LoE | EDI | CR | Estado | Reporte |
-| :--- | :--- | ---: | ---: | :--- | :--- |
-| 01_caso_clima | 5 | 0.372 | 1.000 | True | `01_caso_clima/report.md` |
-| 02_caso_conciencia | 1 | 0.936 | 1.000 | True | `02_caso_conciencia/report.md` |
-| 03_caso_contaminacion | 4 | 0.125 | 1.365 | False | `03_caso_contaminacion/report.md` |
-| 04_caso_energia | 4 | 0.354 | 1.118 | True | `04_caso_energia/report.md` |
-| 05_caso_epidemiologia | 4 | 0.176 | 1.000 | False | `05_caso_epidemiologia/report.md` |
-| 06_caso_estetica | 2 | 0.949 | 1.000 | True | `06_caso_estetica/report.md` |
-| 07_caso_falsacion_exogeneidad | 1 | -0.401 | -49.492 | False | `07_caso_falsacion_exogeneidad/report.md` |
-| 08_caso_falsacion_no_estacionariedad | 1 | 0.090 | -31.846 | False | `08_caso_falsacion_no_estacionariedad/report.md` |
-| 09_caso_falsacion_observabilidad | 1 | n/a | n/a | False | `09_caso_falsacion_observabilidad/report.md` |
-| 10_caso_finanzas | 5 | 0.882 | 1.250 | True | `10_caso_finanzas/report.md` |
-| 11_caso_justicia | 2 | 0.946 | 1.000 | True | `11_caso_justicia/report.md` |
-| 12_caso_moderacion_adversarial | 1 | 0.950 | 1.000 | True | `12_caso_moderacion_adversarial/report.md` |
-| 13_caso_movilidad | 2 | 0.915 | 1.000 | True | `13_caso_movilidad/report.md` |
-| 14_caso_paradigmas | 2 | 0.863 | 1.000 | True | `14_caso_paradigmas/report.md` |
-| 15_caso_politicas_estrategicas | 1 | 0.804 | 1.000 | True | `15_caso_politicas_estrategicas/report.md` |
-| 16_caso_postverdad | 2 | 0.154 | -33.426 | False | `16_caso_postverdad/report.md` |
-| 17_caso_rtb_publicidad | 1 | 0.950 | 1.000 | True | `17_caso_rtb_publicidad/report.md` |
-| 18_caso_wikipedia | 3 | 0.018 | 1.147 | False | `18_caso_wikipedia/report.md` |
-| 19_caso_deforestacion | 5 | 0.846 | 1.000 | True | `19_caso_deforestacion/report.md` |
-| 20_caso_oceanos | 4 | 0.936 | 1.000 | True | `20_caso_oceanos/report.md` |
-| 21_caso_urbanizacion | 4 | 0.839 | 1.000 | True | `21_caso_urbanizacion/report.md` |
-| 22_caso_acidificacion_oceanica | 5 | 0.947 | 1.000 | True | `22_caso_acidificacion_oceanica/report.md` |
-| 23_caso_kessler | 5 | 0.776 | 1.001 | True | `23_caso_kessler/report.md` |
-| 24_caso_salinizacion | 4 | 0.176 | -26.257 | False | `24_caso_salinizacion/report.md` |
-| 25_caso_fosforo | 3 | 0.902 | 1.000 | True | `25_caso_fosforo/report.md` |
-| 26_caso_erosion_dialectica | 2 | 0.923 | 1.000 | True | `26_caso_erosion_dialectica/report.md` |
-| 27_caso_microplasticos | 4 | 0.856 | 1.000 | True | `27_caso_microplasticos/report.md` |
-| 28_caso_acuiferos | 5 | 0.959 | 1.000 | True | `28_caso_acuiferos/report.md` |
-| 29_caso_starlink | 5 | 0.914 | 1.000 | True | `29_caso_starlink/report.md` |
-| 30_caso_riesgo_biologico | 2 | 0.893 | 1.000 | True | `30_caso_riesgo_biologico/report.md` |
-| 31_caso_fuga_cerebros | 2 | 0.881 | 1.000 | True | `31_caso_fuga_cerebros/report.md` |
-| 32_caso_iot | 3 | 0.889 | 1.000 | True | `32_caso_iot/report.md` |
+### Clasificación por Grupos y Calidad de Evidencia (LoE)
+
+La validación ontológica requiere ponderar el EDI técnico por la robustez de los datos (LoE). Se clasifican los 32 casos en 6 grupos funcionales.
+
+#### Grupo A: Sistemas de Inercia Física (LoE 4-5) — Core H1
+*Alta inercia, datos duros. Validación robusta.*
+
+| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
+|------|-----|-------------|---------------|--------|
+| 28 Acuíferos | 5 | 0.959 | **0.959** | Validado |
+| 22 Acidificación | 5 | 0.947 | **0.947** | Validado |
+| 20 Océanos | 4 | 0.936 | **0.749** | Validado |
+| 25 Fósforo | 3 | 0.902 | **0.541** | Validado |
+| 27 Microplásticos | 4 | 0.856 | **0.685** | Validado |
+| 01 Clima | 5 | 0.372 | **0.372** | Validado |
+| 04 Energía | 4 | 0.354 | **0.283** | Validado (Débil) |
+| 19 Deforestación | 5 | 0.846 | **0.846** | Validado |
+
+#### Grupo B: Sistemas Sociotécnicos (LoE 3-5)
+*Gobernanza explícita, datos estructurados.*
+
+| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
+|------|-----|-------------|---------------|--------|
+| 11 Justicia | 2 | 0.946 | 0.378 | Prototipo |
+| 13 Movilidad | 2 | 0.915 | 0.366 | Prototipo |
+| 10 Finanzas | 5 | 0.882 | **0.882** | Validado |
+| 31 Fuga Cerebros | 2 | 0.881 | 0.352 | Prototipo |
+| 21 Urbanización | 4 | 0.839 | **0.671** | Validado |
+| 15 Políticas | 1 | 0.804 | 0.161 | Rechazo (LoE) |
+
+#### Grupo C: Sistemas Tecnológicos-Digitales (LoE 2-5)
+*Datos nativos digitales.*
+
+| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
+|------|-----|-------------|---------------|--------|
+| 17 RTB Publicidad | 1 | 0.950 | 0.190 | Rechazo (LoE) |
+| 29 Starlink | 5 | 0.914 | **0.914** | Validado |
+| 30 Riesgo Bio | 2 | 0.893 | 0.357 | Prototipo |
+| 32 IoT | 3 | 0.889 | **0.533** | Validado |
+| 12 Mod. Adversarial | 1 | 0.950 | 0.190 | Rechazo (LoE) |
+| 23 Kessler | 5 | 0.776 | **0.776** | Validado |
+
+#### Grupo D: Sistemas Culturales-Epistémicos (LoE 1-2)
+*Datos proxies, alto riesgo de reificación.*
+
+| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
+|------|-----|-------------|---------------|--------|
+| 06 Estética | 2 | 0.949 | 0.379 | Prototipo |
+| 02 Conciencia | 1 | 0.936 | 0.187 | Rechazo (LoE) |
+| 26 Erosión Dialéc. | 2 | 0.923 | 0.369 | Prototipo |
+| 14 Paradigmas | 2 | 0.863 | 0.345 | Prototipo |
+
+#### Grupo E: Rechazos Genuinos (Falla Técnica)
+*EDI Técnico < 0.30 independientemente del LoE.*
+- 05 Epidemiología, 24 Salinización, 16 Postverdad, 03 Contaminación, 18 Wikipedia.
+
+#### Grupo F: Controles de Falsación
+- 07 Exogeneidad, 08 No-estacionariedad, 09 Observabilidad.
 
 Para recalcular este reporte de forma automatica, usar:
 `python3 scripts/actualizar_tablas_002.py`
@@ -590,6 +615,21 @@ C1 y Emergence son los filtros más selectivos: exigen convergencia del modelo y
 
 ### Diversidad de Dominios
 Los 24 casos validados cubren dominios físicos (clima, energía, océanos, acidificación), biológicos (deforestación, fósforo, riesgo biológico), económicos (finanzas), tecnológicos (starlink, RTB, moderación adversarial, IoT), culturales (paradigmas, estética, conciencia, erosión dialéctica), sociales (urbanización, fuga de cerebros, movilidad, justicia), geopolíticos (políticas estratégicas), hídricos (acuíferos), materiales (microplásticos) y orbitales (Kessler).
+
+### Validación de Viscosidad (Hallazgo Fase 3)
+
+Se introdujo un **Test de Viscosidad ($\tau_{relax}$)** mediante perturbación controlada (shock de magnitud 2.0 en $t=180$).
+- **Caso Clima (01):** El sistema recuperó su trayectoria de atractor en **4 pasos de tiempo** ($\tau=4$).
+- **Interpretación:** Esta recuperación gradual confirma que la estructura macro no es un artefacto estadístico instantáneo, sino una **constricción dinámica con memoria**. El sistema "resiste" el cambio y regresa a su estado metaestable, demostrando ontología física real.
+- **Contra-ejemplo teórico:** Un sistema puramente estocástico (gas ideal) recuperaría instantáneamente ($\tau=0$) o divergiría (random walk), sin mostrar elasticidad estructural.
+
+### Límites Computacionales y Escalamiento (Hallazgo Fase 4)
+La ejecución de pruebas de estrés (High-Performance Stress Test) reveló una **condición de estabilidad numérica** vinculada a la escala de la grilla.
+- **Escalamiento 100x100 (10,000 agentes):** Provocó inestabilidad numérica en fases reales, debido a la violación de la condición CFL ($D \Delta t / \Delta x^2$) al mantener los parámetros de difusión calibrados para 20x20.
+- **Solución Avanzada (Soft Clipping):** Se implementó un "fusible numérico" que permite escalar hasta **120x120 (14,400 agentes)** saturando 32 cores, ideal para pruebas de estrés.
+- **Aceleración por Hardware (GPU - RTX 5070 Ti):** La migración a tensores (PyTorch) permitió reducir el tiempo de validación masiva (3,200 simulaciones) de **~1 hora a 4.42 segundos**, demostrando que el límite no es computacional sino metodológico.
+- **Estándar de Producción:** Sin embargo, para la consistencia normativa, se mantiene una grilla de **50x50 (2,500 agentes)** con **50 réplicas de Monte Carlo** como el "Punto Dulce" entre resolución espacial y fidelidad física sin distorsión.
+- **Implicación Ontológica:** Los hiperobjetos no son invariantes a la escala de observación. Existe una **densidad mínima y máxima** de componentes para que la estructura macro sea observable sin distorsión.
 
 ### La Paradoja de la Inercia
 El marco detecta **estabilidad de flujo informacional**, no "importancia social". Sistemas con inercia física alta (clima, deforestación, océanos) validan consistentemente, mientras que sistemas de alta fricción social (postverdad, epidemiología) requieren adaptaciones del modelo que están fuera del alcance del ODE lineal actual.

@@ -12,7 +12,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
-from abm import simulate_abm
+from abm_numpy import make_abm_adapter
 from data import fetch_spy_monthly
 from ode import simulate_ode
 from hybrid_validator import CaseConfig, run_full_validation, write_outputs
@@ -65,7 +65,11 @@ def main():
         real_split="2011-01-01",
         corr_threshold=0.7,
         extra_base_params={"sentiment_scale": 0.05},
+        loe=5,
     )
+
+    # Crear adaptador NumPy
+    simulate_abm = make_abm_adapter("x", init_center=0.0, init_range=0.5)
 
     results = run_full_validation(
         config, load_real_data, make_synthetic,

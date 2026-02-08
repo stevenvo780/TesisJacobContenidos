@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: Observabilidad Escasa
 
-- generated_at: 2026-02-07T14:21:55.893042Z
+- generated_at: 2026-02-08T17:25:07.574092Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -9,13 +9,14 @@
 - valor: -0.2502
 - bootstrap_mean: -0.4093
 - CI 95%: [-1.6997, 0.3786]
+- weighted_value (LoE factor 0.20): -0.0500
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 1.0000
 - external: 0.9998
 - CR: 1.0001
-- CR válido (>2.0): False
+- CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
@@ -46,6 +47,7 @@
 - valor: 0.0000
 - bootstrap_mean: 0.0000
 - CI 95%: [0.0000, 0.0000]
+- weighted_value (LoE factor 1.00): 0.0000
 - válido (0.30-0.90): False
 
 ### Criterios C1-C5

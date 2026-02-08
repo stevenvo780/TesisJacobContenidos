@@ -572,7 +572,7 @@ class CaseConfig:
                  real_split="2006-01-01",
                  ode_noise=0.001, base_noise=0.001,
                  corr_threshold=0.7, threshold_factor=1.0,
-                 extra_base_params=None, loe=1):
+                 extra_base_params=None, loe=1, n_runs=5):
         self.case_name = case_name
         self.value_col = value_col
         self.series_key = series_key
@@ -590,6 +590,15 @@ class CaseConfig:
         self.threshold_factor = threshold_factor
         self.extra_base_params = extra_base_params or {}
         self.loe = loe  # Level of Evidence (1-5)
+        
+        # Overrides de High Performance (Variables de Entorno)
+        import os
+        if "HYPER_GRID_SIZE" in os.environ:
+            self.grid_size = int(os.environ["HYPER_GRID_SIZE"])
+        if "HYPER_N_RUNS" in os.environ:
+            self.n_runs = int(os.environ["HYPER_N_RUNS"])
+        else:
+            self.n_runs = n_runs
 
 
 def evaluate_phase(config, df, start_date, end_date, split_date,
@@ -728,7 +737,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     c4, c4_detail = evaluate_c4(eval_params, base_params, steps, val_start,
                                  simulate_abm_fn, sk)
     c5, c5_detail = evaluate_c5(base_params, eval_params, steps, val_start,
-                                 simulate_abm_fn, sk, obs_std=obs_std,
+                                 simulate_abm_fn, sk, n_runs=config.n_runs,
+                                 obs_std=obs_std,
                                  obs_mean_raw=obs_mean_raw,
                                  obs_std_raw=obs_std_raw)
                                  
