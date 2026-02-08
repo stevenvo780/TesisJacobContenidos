@@ -42,8 +42,8 @@ def run_gpu_mode():
     import torch
     from common.abm_gpu import simulate_batch_gpu
     
-    # Configuración FINAL-MAXIMUM (Maximizando 16GB VRAM)
-    GRID_SIZE = 470       # 220,900 agentes (FINAL)
+    # Configuración CONSUMO (Maximizando 16GB VRAM)
+    GRID_SIZE = 450      # 220,900 agentes (FINAL)
     N_RUNS = 200          # 200 réplicas por caso
     STEPS = 1500
     CHUNK_SIZE = 1600     # Chunks grandes para eficiencia
