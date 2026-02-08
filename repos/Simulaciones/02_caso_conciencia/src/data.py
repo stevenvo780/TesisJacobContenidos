@@ -38,5 +38,7 @@ def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
     if df is not None and not df.empty:
         df["date"] = pd.to_datetime(df["date"])
         return df, meta
+    
+    # If fetch failed, raise error instead of silent fallback
+    raise RuntimeError("Failed to fetch Google Trends data for Case 02. Check API key or connection.")
 
-    return _synthetic_fallback(start_date, end_date)

@@ -68,7 +68,7 @@ def main():
             "humidity_coupling": 0.01, 
             "seasonal_period": 12,
             "ode_alpha": 0.006, # Physical time constant (~5 years)
-            "ode_beta": 1.5,    # Strong restoring force (Stefan-Boltzmann feedback)
+            "ode_beta": 0.1,    # Weak restoring force (high inertia)
         },
         driver_cols=["co2", "tsi", "ohc", "aod"],
         use_topology=True,

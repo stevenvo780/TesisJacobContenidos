@@ -1,6 +1,6 @@
 # Reporte de Validación — Clima Regional (CONUS)
 
-- generated_at: 2026-02-08T22:41:40.835952Z
+- generated_at: 2026-02-08T22:43:50.415842Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -28,7 +28,7 @@
 ### Errores
 - rmse_abm: 3.6167
 - rmse_abm_no_ode: 3.6167
-- rmse_ode: 6.0651
+- rmse_ode: 5.6123
 - rmse_reduced: 6.7513
 - threshold: 2.5747
 
@@ -37,7 +37,7 @@
 - macro_coupling: 0.2246
 - damping: 0.4766
 - ode_alpha: 0.0060
-- ode_beta: 0.1000
+- ode_beta: 1.5000
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.1491
 
@@ -67,7 +67,7 @@
 ### Errores
 - rmse_abm: 1.1922
 - rmse_abm_no_ode: 1.1922
-- rmse_ode: 1.7271
+- rmse_ode: 1.0277
 - rmse_reduced: 0.9637
 - threshold: 0.9547
 
@@ -76,7 +76,7 @@
 - macro_coupling: 0.6916
 - damping: 0.9500
 - ode_alpha: 0.0060
-- ode_beta: 0.1000
+- ode_beta: 1.5000
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.6353
 
