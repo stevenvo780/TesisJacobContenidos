@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common")
 
 from abm import simulate_abm
 from data import fetch_owid_world_weekly
-from ode import simulate_seir as simulate_ode
+from ode import simulate_ode
 from hybrid_validator import CaseConfig, run_full_validation, write_outputs
 
 
