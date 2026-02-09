@@ -125,46 +125,39 @@ no tiene ningun termino que distinga un agente de otro excepto su posicion en la
 
 ---
 
-## 5. ABM Y ODE NO ESTAN ACOPLADOS — ⚠️ PARCIALMENTE RESUELTO
+## 5. ABM Y ODE NO ESTAN ACOPLADOS — ✅ RESUELTO
 
-> **Estado:** Se implementó acoplamiento **ODE→ABM** (top-down): la serie ODE se pasa como `macro_target_series` al ABM, que la usa como atractor en el término `mc * (macro_target - grid)`. También existe feedback **micro→macro** opcional que modifica el forcing antes de correr la ODE. Sin embargo:
-> - 🚩 El acoplamiento es **unidireccional por defecto** (ODE corre primero, luego alimenta ABM)
-> - 🚩 No hay iteración simultánea paso-a-paso
-> - 🚩 La ODE no "ve" el estado del ABM durante la simulación
+> **Estado:** Acoplamiento **bidireccional** implementado en `hybrid_validator.py`:
+> - **ODE→ABM** (top-down): la serie ODE se pasa como `macro_target_series` al ABM, que la usa como atractor en el término `ode_cs * (macro_target - grid_mean)`.
+> - **ABM→ODE** (bottom-up): el campo medio del ABM se pasa como `abm_feedback_series` a la ODE con `abm_feedback_gamma=0.05`. La ODE recibe feedback `dx += gamma * (abm_mean[t] - x)`.
+> - **2 iteraciones** de acoplamiento: ODE₁→ABM₁→ODE₂→ABM₂ para convergencia.
+> - **`ode_coupling_strength`** separado de `macro_coupling`: el auto-acoplamiento ABM usa `mc`, el nudging ODE→ABM usa `ode_cs = min(0.30, mc*0.8)`.
+>
+> Verificación: 29/29 casos tienen `ode_coupling_strength` y `abm_feedback_gamma=0.05` en `metrics.json`.
 
-**Archivo:** `repos/Simulaciones/common/hybrid_validator.py`, lineas 696-698
-
-```python
-# ANTES (independientes):
-abm = simulate_abm_fn(eval_params, steps, seed=2)   # Independiente
-ode = simulate_ode_fn(eval_params, steps, seed=3)   # Independiente
-```
+**Archivo:** `repos/Simulaciones/common/hybrid_validator.py`
 
 ```python
-# AHORA (ODE→ABM):
-ode = simulate_ode_fn(eval_params, steps, seed=3)
-eval_params_ode["macro_target_series"] = ode[ode_key]
-abm = simulate_abm_fn(eval_params_ode, steps, seed=2)
-```
-
-🚩 **Falta:** Acoplamiento bidireccional simultáneo paso-a-paso.
-
-**Propuesta de acoplamiento real:**
-```python
-# En cada paso temporal:
-ode_state = ode_solver.step(t, forcing[t])
-macro_target = ode_state  # La ODE provee el target macro
-# En el ABM:
-delta = ... + mc * (macro_target - grid) + ...  # Acoplar a la ODE, no al mean(grid)
+# ACTUAL (bidireccional, 2 iteraciones):
+# Iteración 1: ODE→ABM
+ode1 = simulate_ode_fn(eval_params, steps, seed=3)
+eval_params["macro_target_series"] = ode1[ode_key]
+abm1 = simulate_abm_fn(eval_params, steps, seed=2)
+# Iteración 2: ABM→ODE→ABM  
+eval_params["abm_feedback_series"] = abm1["global_mean"]
+eval_params["abm_feedback_gamma"] = 0.05
+ode2 = simulate_ode_fn(eval_params, steps, seed=3)
+eval_params["macro_target_series"] = ode2[ode_key]
+abm_final = simulate_abm_fn(eval_params, steps, seed=2)
 ```
 
 ---
 
-## 6. FASES SINTETICAS COMPARTIDAS — ❌ NO RESUELTO 🚩
+## 6. FASES SINTETICAS COMPARTIDAS — ⚠️ PARCIALMENTE RESUELTO
 
-> **Estado:** 🚩 25/29 casos siguen usando los mismos parámetros sintéticos (`ode_alpha=0.08, ode_beta=0.03`). La fase sintética genera datos idénticos para estos 25 casos. Cada caso debería tener parámetros de ODE sintética calibrados a su dominio.
+> **Estado:** 6/29 casos ya tienen parámetros sintéticos domain-specific (01 clima, 02 conciencia, 03 contaminación, 04 energía, 09 finanzas, 10 justicia). Los 23 restantes siguen usando `ode_alpha=0.08, ode_beta=0.03`.
 >
-> **Acción requerida:** Calibrar parámetros sintéticos por dominio para que cada caso tenga un ground truth diferenciado.
+> **Acción requerida:** Calibrar parámetros sintéticos por dominio para los 23 casos restantes.
 
 5+ grupos de casos comparten parametros sinteticos identicos:
 - Grupo 1 (obs_mean=6.759): Clima, Energia, Finanzas, Wikipedia
