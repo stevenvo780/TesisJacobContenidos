@@ -103,7 +103,7 @@ def main():
     }
     
     sim_result = simulate_ode(params, steps, seed=42)
-    freq_series = sim_result["f"]
+    freq_series = sim_result["e"]  # Renewable share series (ODE key)
     
     # 1. ROCOF
     rocof = rocof_metric(freq_series)

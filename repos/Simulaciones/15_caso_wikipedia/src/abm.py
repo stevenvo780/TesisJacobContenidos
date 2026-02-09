@@ -51,6 +51,8 @@ def simulate_abm(params, steps, seed=42):
     coupling = params.get("macro_coupling", 0.0)
     
     adj = [list(G.neighbors(i)) for i in range(n_agents)]
+    # Filter empty adjacency lists
+    nonempty = [i for i in range(n_agents) if len(adj[i]) > 0]
     
     series_w = [] # Quality
     series_grid = []
@@ -58,31 +60,30 @@ def simulate_abm(params, steps, seed=42):
     for t in range(steps):
         f_t = forcing[t] if t < len(forcing) else 0.0
         
-        # Axelrod Dynamics
-        for _ in range(n_agents):
-            i = rng.integers(0, n_agents)
-            if len(adj[i]) == 0:
-                continue
-            j = rng.choice(adj[i])
+        # Axelrod Dynamics — batch: sample n_agents pairs at once
+        if len(nonempty) > 0:
+            agents_i = rng.choice(nonempty, size=n_agents)
+            # For each agent, pick a random neighbor
+            agents_j = np.array([rng.choice(adj[i]) for i in agents_i])
             
-            # Similarity: Fraction of shared features
-            sim = np.mean(opinions[i] == opinions[j])
+            # Compute similarity for all pairs at once
+            sims = np.mean(opinions[agents_i] == opinions[agents_j], axis=1)
             
-            # Interact with probability proportional to similarity
-            if rng.random() < sim:
-                # Find a feature where they differ
-                diff_features = np.where(opinions[i] != opinions[j])[0]
-                if len(diff_features) > 0:
-                    # i adopts j's trait on one feature
-                    f_idx = rng.choice(diff_features)
-                    opinions[i, f_idx] = opinions[j, f_idx]
-                    # Constructive edit! Quality increases
-                    quality += 0.01
-            else:
-                # Low similarity -> Conflict
-                # Chance of revert (quality decreases)
-                if sim < 0.3 and rng.random() < 0.5:
-                    quality -= 0.02 * (1 + f_t) # More reverting during controversy
+            # Interaction decisions
+            interact_rolls = rng.random(n_agents)
+            
+            for idx in range(n_agents):
+                i, j, sim = agents_i[idx], agents_j[idx], sims[idx]
+                
+                if interact_rolls[idx] < sim:
+                    diff_features = np.where(opinions[i] != opinions[j])[0]
+                    if len(diff_features) > 0:
+                        f_idx = rng.choice(diff_features)
+                        opinions[i, f_idx] = opinions[j, f_idx]
+                        quality += 0.01
+                else:
+                    if sim < 0.3 and rng.random() < 0.5:
+                        quality -= 0.02 * (1 + f_t)
                     
         # Macro Coupling: If global quality is high, stabilize
         if macro_series is not None and t < len(macro_series) and coupling > 0:

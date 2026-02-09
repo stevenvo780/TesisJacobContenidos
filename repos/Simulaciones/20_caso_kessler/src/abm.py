@@ -68,12 +68,13 @@ def simulate_abm(params, steps, seed=42):
     for t in range(steps):
         L_t = forcing[t] if t < len(forcing) else 80
         
-        # Add new launches (distributed across shells)
-        new_objects = int(L_t * 1.5)  # Typical payload + rocket body + fragments
-        for _ in range(new_objects):
-            target_shell = rng.choice([3, 4, 5, 6], p=[0.1, 0.3, 0.4, 0.2])  # Most to 700-1000km
-            size_class = rng.choice([0, 1, 2], p=[0.6, 0.3, 0.1])  # Mostly small
-            population[target_shell, size_class] += 1
+        # Add new launches (vectorized distribution across shells)
+        new_objects = int(L_t * 1.5)
+        target_shells = rng.choice([3, 4, 5, 6], p=[0.1, 0.3, 0.4, 0.2], size=new_objects)
+        size_classes = rng.choice([0, 1, 2], p=[0.6, 0.3, 0.1], size=new_objects)
+        for sh in range(n_shells):
+            for sc in range(3):
+                population[sh, sc] += np.sum((target_shells == sh) & (size_classes == sc))
             
         # Collisions and fragmentation
         for shell in range(n_shells):

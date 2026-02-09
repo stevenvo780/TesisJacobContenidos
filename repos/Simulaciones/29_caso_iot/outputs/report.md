@@ -1,6 +1,6 @@
 # Reporte de Validación — Ecosistema IoT Global (Bass-Metcalfe)
 
-- generated_at: 2026-02-09T03:39:47.245682Z
+- generated_at: 2026-02-09T03:47:53.909564Z
 
 ## Fase synthetic
 - **overall_pass**: False

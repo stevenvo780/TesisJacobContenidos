@@ -35,11 +35,9 @@ def simulate_abm(params, steps, seed=42):
     # Grid Size (2D ocean layer)
     grid_size = params.get("grid_size", 15)
     
-    # Initial Temperature Field (Warm equator, cold poles)
-    T = np.zeros((grid_size, grid_size))
-    for i in range(grid_size):
-        # Latitude gradient (higher i = higher latitude = colder)
-        T[i, :] = 25 - 2 * abs(i - grid_size // 2)
+    # Initial Temperature Field (Warm equator, cold poles) — vectorized
+    lat = np.abs(np.arange(grid_size) - grid_size // 2)
+    T = (25 - 2 * lat)[:, None] * np.ones((1, grid_size))
     T += rng.normal(0, 0.5, (grid_size, grid_size))
     
     # Salinity Field (Higher at subtropics, lower at poles/equator)
