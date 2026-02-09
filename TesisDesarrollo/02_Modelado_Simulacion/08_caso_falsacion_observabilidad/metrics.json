@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: Observabilidad Escasa",
-  "generated_at": "2026-02-09T12:51:48.913083",
+  "generated_at": "2026-02-09T13:26:32.113272",
   "git": {
     "commit": "falsification_confounder",
     "dirty": false
@@ -28,7 +28,8 @@
         "ode_alpha": 0.05,
         "ode_beta": 0.02,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.0
+        "calibration_rmse": 0.0,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": {
@@ -75,6 +76,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": -0.21410595320931947,
       "symploke": {
         "internal": 0.9977221845089798,
@@ -111,7 +119,11 @@
         "rmse_ode": 3.8161329729047186,
         "corr_abm": 0.7148261738632922,
         "corr_ode": -0.256921178709256,
-        "threshold": 0.9158465070483048
+        "threshold": 0.9158465070483048,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 0.7020798563899637,
+        "relative_improvement": -1.505200921782758
       },
       "c2_detail": {
         "mean_delta": 0.009206144049920262,

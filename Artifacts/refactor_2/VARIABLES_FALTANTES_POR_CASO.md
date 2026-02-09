@@ -63,8 +63,8 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 
 ## CASOS SINTETICOS — MIGRACION A DATOS REALES
 
-### 17_caso_oceanos (PRIORIDAD MAXIMA — datos disponibles) — ⚠️ Código listo, API falla
-**Actual:** ~~Sintetico (ODE+ruido)~~ → Código real implementado (WMO SST/ERSST) pero **API WMO falla en ejecución** → cae a fallback sintético (obs_mean≈0.499)
+### 17_caso_oceanos (PRIORIDAD MAXIMA — datos disponibles) — ✅ DATOS REALES CACHEADOS
+**Actual:** Datos reales cacheados en `data/dataset.csv` (35 filas, cols: date,value). Fuente: NOAA SST/ERSST.
 **ODE:** ✅ `ocean_thermal` implementado
 **Acción requerida:** Diagnosticar fallo WMO o usar descarga directa CSV de NOAA ERSST
 **Reemplazo:**
@@ -74,8 +74,8 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 | Nivel del mar | NASA PODAAC | `https://podaac.jpl.nasa.gov/` | Mensual desde 1993 |
 | **Esfuerzo:** BAJO — datos CSV/NetCDF publicos, solo cambiar data.py |
 
-### 19_caso_acidificacion (PRIORIDAD MAXIMA) — ⚠️ Código listo, API falla
-**Actual:** ~~Sintetico~~ → Código real implementado (PMEL+NOAA+WMO) pero **API PMEL falla** → cae a fallback sintético (obs_mean≈0.499)
+### 19_caso_acidificacion (PRIORIDAD MAXIMA) — ✅ DATOS REALES CACHEADOS
+**Actual:** Datos reales cacheados en `data/dataset.csv` (32 filas, cols: date,value). Fuente: PMEL/NOAA.
 **ODE:** ✅ `acidification` implementado
 **Acción requerida:** Diagnosticar fallo API o usar descarga directa HOT CSV
 **Reemplazo:**
@@ -125,18 +125,18 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 **Reemplazo original:** World Bank `SH.DYN.MORT` (mortalidad infantil per 1000) + GHS Index
 **Esfuerzo:** BAJO
 
-### 11_caso_movilidad (FACIL) — ⚠️ Código listo, API falla
-**Actual:** ~~Sintetico~~ → Código real implementado (WorldBank IS.VEH.NVEH.P3) pero **API falla** → cae a fallback sintético (obs_mean≈0.49)
+### 11_caso_movilidad (FACIL) — ✅ DATOS REALES CACHEADOS
+**Actual:** Datos reales cacheados en `data/dataset.csv` (54 filas, cols: year,date,value,gdp_per_capita,air_departures). Fuente: WorldBank.
 **Reemplazo original:** World Bank `IS.VEH.NVEH.P3` (vehiculos per 1000 personas)
 **Esfuerzo:** BAJO
 
-### 10_caso_justicia (FACIL) — ⚠️ Código listo, API falla
-**Actual:** ~~Sintetico~~ → Código real implementado (WorldBank RL.EST) pero **API falla** → cae a fallback sintético (obs_mean≈0.49)
+### 10_caso_justicia (FACIL) — ✅ DATOS REALES CACHEADOS
+**Actual:** Datos reales cacheados en `data/dataset.csv` (62 filas, cols: date,value). Fuente: WorldBank RL.EST.
 **Reemplazo original:** World Bank `RL.EST` (Rule of Law Index, WGI)
 **Esfuerzo:** BAJO
 
-### 14_caso_postverdad (MEDIO) — ⚠️ pytrends no instalado → fallback
-**Actual:** ~~Sintetico~~ → Código real implementado (Google Trends) pero **pytrends no instalado** → cae a fallback sintético (obs_mean≈55.53)
+### 14_caso_postverdad (MEDIO) — ✅ DATOS REALES CACHEADOS
+**Actual:** Datos reales cacheados en `data/dataset.csv` (20 filas, cols: year,date,value,mobile_subs,literacy). Fuente: WorldBank + proxies.
 **Reemplazo original:** Google Trends para "fake news" + "misinformation"
 **Esfuerzo:** MEDIO — Google Trends API tiene limitaciones de rate
 

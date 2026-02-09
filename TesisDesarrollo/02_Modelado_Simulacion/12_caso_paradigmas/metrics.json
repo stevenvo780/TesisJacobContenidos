@@ -1,8 +1,8 @@
 {
   "case": "Paradigmas Cientificos (Ising)",
-  "generated_at": "2026-02-09T17:51:54.567630Z",
+  "generated_at": "2026-02-09T18:26:38.349135Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.031232881555532034,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.7399570330341325
+        "calibration_rmse": 0.7399570330341325,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -65,6 +66,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.0,
       "symploke": {
         "internal": 0.0,
@@ -91,7 +99,7 @@
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -101,7 +109,11 @@
         "rmse_ode": 0.6675410669358547,
         "corr_abm": -0.07353571567405053,
         "corr_ode": -0.030507747201578245,
-        "threshold": 0.1
+        "threshold": 0.1,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 1.1027739517839532,
+        "relative_improvement": 0.0001349169411997142
       },
       "c2_detail": {
         "mean_delta": 0.0010519031141871694,
@@ -163,7 +175,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 1.2232357393913316
+        "calibration_rmse": 1.2232357393913316,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -199,6 +212,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": 0.0,
       "symploke": {
@@ -236,7 +256,11 @@
         "rmse_ode": 9.434831245336037,
         "corr_abm": -0.10414725483977721,
         "corr_ode": -0.9599628679535136,
-        "threshold": 5.738516496471812
+        "threshold": 5.738516496471812,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 9.705579623385475,
+        "relative_improvement": 0.0
       },
       "c2_detail": {
         "mean_delta": 1.1534545454545455,

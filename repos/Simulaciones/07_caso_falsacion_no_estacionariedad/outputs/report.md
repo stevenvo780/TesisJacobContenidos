@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: No-Estacionariedad
 
-- generated_at: 2026-02-09T12:51:48.923745
+- generated_at: 2026-02-09T13:26:32.206856
 
 ## Fase real
 - **overall_pass**: False
@@ -42,4 +42,5 @@
 - ode_beta: 0.0200
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.0000
+- ode_rolling: None
 

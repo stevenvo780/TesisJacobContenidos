@@ -1,8 +1,8 @@
 {
   "case": "Clima Regional (CONUS)",
-  "generated_at": "2026-02-09T17:52:02.481538Z",
+  "generated_at": "2026-02-09T18:26:46.886987Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.006,
         "ode_beta": 0.1,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.25394787220310217
+        "calibration_rmse": 0.25394787220310217,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.24101820345232167,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.02845465708230055,
       "symploke": {
         "internal": 0.9999136078642311,
@@ -93,7 +101,7 @@
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -103,7 +111,11 @@
         "rmse_ode": 8.359181054004903,
         "corr_abm": 0.9977086517199909,
         "corr_ode": 0.994700393437624,
-        "threshold": 3.5362211753962223
+        "threshold": 3.5362211753962223,
+        "c1_relative": false,
+        "c1_absolute": true,
+        "rmse_reduced": 5.860956424500724,
+        "relative_improvement": -0.7468999582263081
       },
       "c2_detail": {
         "mean_delta": 0.11625312098180966,
@@ -168,7 +180,8 @@
         "ode_alpha": 0.006,
         "ode_beta": 0.1,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.6353160874399014
+        "calibration_rmse": 0.6353160874399014,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -207,6 +220,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 9.350859317569515e-05,
       "symploke": {
         "internal": 0.9999549488436109,
@@ -243,7 +263,11 @@
         "rmse_ode": 1.7243510391229637,
         "corr_abm": 0.004097778479975348,
         "corr_ode": -0.018505539480680202,
-        "threshold": 0.954722066670529
+        "threshold": 0.954722066670529,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 1.1921665581273455,
+        "relative_improvement": -0.018208924480989985
       },
       "c2_detail": {
         "mean_delta": 0.20748885821542826,

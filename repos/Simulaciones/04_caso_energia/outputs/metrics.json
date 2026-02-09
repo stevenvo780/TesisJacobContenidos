@@ -1,8 +1,8 @@
 {
   "case": "Energ\u00eda (OPSD GB Grid)",
-  "generated_at": "2026-02-09T17:53:04.469912Z",
+  "generated_at": "2026-02-09T18:27:49.207036Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.05,
         "ode_beta": 0.02,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 1.0172019130038876
+        "calibration_rmse": 1.0172019130038876,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -65,6 +66,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.04802432692816177,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": -0.005703023696824294,
       "symploke": {
         "internal": 0.9136213641578954,
@@ -91,7 +99,7 @@
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -101,7 +109,11 @@
         "rmse_ode": 0.4600719310192836,
         "corr_abm": -0.1334574759339645,
         "corr_ode": -0.04660260620846847,
-        "threshold": 0.3268829040442018
+        "threshold": 0.3268829040442018,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 0.42275523682255234,
+        "relative_improvement": 0.020205686071314677
       },
       "c2_detail": {
         "mean_delta": 0.014281496082414958,
@@ -166,7 +178,8 @@
         "ode_alpha": 0.05,
         "ode_beta": 0.02,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 1.0291971285908466
+        "calibration_rmse": 1.0291971285908466,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -202,6 +215,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": -0.00028142530602592863,
       "symploke": {
@@ -239,7 +259,11 @@
         "rmse_ode": 2.0695715822531273,
         "corr_abm": -0.44331617536870405,
         "corr_ode": -0.37381753654240796,
-        "threshold": 1.2251044426493007
+        "threshold": 1.2251044426493007,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 1.595763451535795,
+        "relative_improvement": -0.004891957576580452
       },
       "c2_detail": {
         "mean_delta": 0.013237691478996134,

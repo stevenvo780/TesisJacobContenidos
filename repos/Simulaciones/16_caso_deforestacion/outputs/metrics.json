@@ -1,8 +1,8 @@
 {
   "case": "Deforestaci\u00f3n Global (von Th\u00fcnen Frontier)",
-  "generated_at": "2026-02-09T17:52:02.176855Z",
+  "generated_at": "2026-02-09T18:26:46.056067Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.010535697553583292,
         "ode_beta": 0.9576866659850334,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.11704243992000683
+        "calibration_rmse": 0.11704243992000683,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.8650307145615048,
       "symploke": {
         "internal": 0.9999984080556918,
@@ -103,7 +111,11 @@
         "rmse_ode": 7.037444243480486,
         "corr_abm": 0.9992511732691998,
         "corr_ode": 0.9991024652694915,
-        "threshold": 0.9651172062671991
+        "threshold": 0.9651172062671991,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "rmse_reduced": 1.2657341793877679,
+        "relative_improvement": 1.0789581309498775
       },
       "c2_detail": {
         "mean_delta": 0.10115038046887737,
@@ -168,7 +180,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.14311115502614116
+        "calibration_rmse": 0.14311115502614116,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -207,6 +220,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": -0.07968080671646216,
       "symploke": {
         "internal": 0.9994212779294845,
@@ -243,7 +263,11 @@
         "rmse_ode": 2.517850201875235,
         "corr_abm": 0.8809800044319188,
         "corr_ode": 0.8776876232926953,
-        "threshold": 0.8478745271017442
+        "threshold": 0.8478745271017442,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "rmse_reduced": 1.1638996831357857,
+        "relative_improvement": 0.7322965585606122
       },
       "c2_detail": {
         "mean_delta": 0.09878531307457009,

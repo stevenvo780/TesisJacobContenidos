@@ -1,8 +1,8 @@
 {
   "case": "Epidemiolog\u00eda (COVID-19 SEIR)",
-  "generated_at": "2026-02-09T17:52:11.861486Z",
+  "generated_at": "2026-02-09T18:26:55.098868Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.006827556262592877,
         "ode_beta": 0.8095327215224352,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 20.15589988814604
+        "calibration_rmse": 20.15589988814604,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -65,6 +66,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 1.2802076652010338e-16,
+        "edi_mean": 0.8672210414009791,
+        "edi_std": 1.1102230246251565e-16,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.5567479110972469,
       "symploke": {
         "internal": 0.3931382559453435,
@@ -91,7 +99,7 @@
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": false,
       "c3_replication": true,
       "c4_validity": true,
@@ -101,7 +109,11 @@
         "rmse_ode": 0.4775387212735672,
         "corr_abm": 0.05576223930293129,
         "corr_ode": 0.11815308922030167,
-        "threshold": 0.1
+        "threshold": 0.1,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 4.262292692381199,
+        "relative_improvement": 1.8998323355205096
       },
       "c2_detail": {
         "mean_delta": 2.1483253588516744,
@@ -166,7 +178,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 1.0
+        "calibration_rmse": 1.0,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -202,6 +215,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.008291340648292626,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": 0.0,
       "symploke": {
@@ -239,7 +259,11 @@
         "rmse_ode": 4606.434638534508,
         "corr_abm": 0.0,
         "corr_ode": 0.6233670173205177,
-        "threshold": 4.367975317169036
+        "threshold": 4.367975317169036,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 4.522062441119455,
+        "relative_improvement": 0.0
       },
       "c2_detail": {
         "mean_delta": 13.901923076923078,

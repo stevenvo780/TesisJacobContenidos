@@ -1,8 +1,8 @@
 {
   "case": "Ocean (Stommel + Thermohaline ABM)",
-  "generated_at": "2026-02-09T17:51:54.954665Z",
+  "generated_at": "2026-02-09T18:26:38.383100Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.002391487436806236,
         "ode_beta": 0.8191366168384485,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 2.2767016515786245
+        "calibration_rmse": 2.2767016515786245,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -65,6 +66,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 1.2944025372144698e-16,
+        "edi_mean": 0.10721384892893673,
+        "edi_std": 1.3877787807814457e-17,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.35289181641730627,
       "symploke": {
         "internal": 0.961501724281507,
@@ -91,7 +99,7 @@
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -101,7 +109,11 @@
         "rmse_ode": 1.469116581933993,
         "corr_abm": 0.9843449388542604,
         "corr_ode": 0.9826705562021807,
-        "threshold": 0.9858005051224059
+        "threshold": 0.9858005051224059,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 5.533674103666446,
+        "relative_improvement": 0.776176198455861
       },
       "c2_detail": {
         "mean_delta": 0.0432785384575725,
@@ -165,7 +177,8 @@
         "ode_alpha": 0.2689594619022923,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 2.5036036083342554
+        "calibration_rmse": 2.5036036083342554,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -202,6 +215,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.05161847741510885,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.013222377191432155,
       "symploke": {
         "internal": 0.9178469187359422,
@@ -228,7 +248,7 @@
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -238,7 +258,11 @@
         "rmse_ode": 2.795433169955101,
         "corr_abm": -0.8868448592211842,
         "corr_ode": -0.7924990231322424,
-        "threshold": 2.735274225022101
+        "threshold": 2.735274225022101,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 3.7846216276757434,
+        "relative_improvement": 0.20123592078777008
       },
       "c2_detail": {
         "mean_delta": 0.029091505538449036,

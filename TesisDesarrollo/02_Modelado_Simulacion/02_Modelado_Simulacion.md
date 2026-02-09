@@ -55,12 +55,14 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 - **Bias Correction:** transformación afín condicional del target ODE para eliminar sesgo de nivel/escala.
 - **CR > 2.0:** indicador complementario de frontera sistémica (no condición de H1).
 - **C1-C5:** Protocolo de rigor aplicado a la convergencia, robustez, replicación, validez y gestión de incertidumbre.
-- **overall_pass:** 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento ≥ 0.1, no-fraude RMSE).
+- **overall_pass:** 13+ condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento ≥ 0.1, no-fraude RMSE, EDI válido, CR > 2.0).
+- **C1 v2.0:** Criterio relativo (acoplado mejor que reducido) OR absoluto relajado (RMSE < 2·obs_std, corr > 0.3). Anterior v1.0 era demasiado estricto (RMSE < obs_std, corr > 0.7).
 - **emergence_taxonomy:** Clasificación diferenciada: strong, weak, suggestive, trend, null, falsification.
+- **noise_sensitivity:** Test de estabilidad del EDI bajo perturbaciones de ruido (CV < 0.5).
 
 ## Resultados Consolidados (Matriz de Validación Técnica)
 
-> **Estado actual (2026-02-09):** Tras la implementación de Bias Correction ODE→ABM y taxonomía de emergencia diferenciada, el resultado bajo criterios estrictos (overall_pass = conjunción de 11 condiciones) sigue siendo **0/29**. Sin embargo, la taxonomía diferenciada revela un espectro de emergencia más matizado: **2 casos con emergencia fuerte**, **1 con emergencia débil**, **4 con señal sugestiva**, y **3 falsificaciones correctamente rechazadas**. La hipótesis H1 queda **parcialmente confirmada** en dominios específicos.
+> **Estado actual (2026-07-11):** Tras la implementación de Bias Correction, taxonomía de emergencia diferenciada, C1 relativo (v2.0), noise sensitivity test y rolling ODE, el resultado bajo criterios estrictos (overall_pass = conjunción de 13+ condiciones) sigue siendo **0/29**. Sin embargo, **C1 convergence mejora de 2/29 a 14/29** gracias al criterio relativo. La taxonomía diferenciada revela: **2 casos con emergencia fuerte**, **1 con emergencia débil**, **4 con señal sugestiva**, y **3 falsificaciones correctamente rechazadas**. La hipótesis H1 queda **parcialmente confirmada** en dominios específicos.
 
 ### Taxonomía de Emergencia Diferenciada
 

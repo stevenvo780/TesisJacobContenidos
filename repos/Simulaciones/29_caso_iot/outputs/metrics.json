@@ -1,8 +1,8 @@
 {
   "case": "Ecosistema IoT Global (Bass-Metcalfe)",
-  "generated_at": "2026-02-09T17:51:52.872718Z",
+  "generated_at": "2026-02-09T18:26:36.590671Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.3875865585953686,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.5084557109870838
+        "calibration_rmse": 0.5084557109870838,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.5396531135761056,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.2520223735765361,
       "symploke": {
         "internal": 0.9996411117926179,
@@ -93,7 +101,7 @@
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -103,7 +111,11 @@
         "rmse_ode": 1.4340666920908953,
         "corr_abm": 0.9371734777099088,
         "corr_ode": 0.9330166467749118,
-        "threshold": 2.4845323696694206
+        "threshold": 2.4845323696694206,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "rmse_reduced": 4.224971803349195,
+        "relative_improvement": 1.2994304234519882
       },
       "c2_detail": {
         "mean_delta": 0.09460617724044322,
@@ -169,7 +181,8 @@
         "ode_alpha": 0.09812890268900906,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.5982017135271743
+        "calibration_rmse": 0.5982017135271743,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": {
@@ -222,6 +235,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.15838544036713814,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.13673382094243625,
       "symploke": {
         "internal": 0.9999869201369125,
@@ -248,7 +268,7 @@
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -258,7 +278,11 @@
         "rmse_ode": 34.485769063917004,
         "corr_abm": 0.9209935517445358,
         "corr_ode": 0.9160918279457153,
-        "threshold": 10.948563819292865
+        "threshold": 10.948563819292865,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 34.63620435121836,
+        "relative_improvement": 0.2550164793253842
       },
       "c2_detail": {
         "mean_delta": 0.17024146390135755,

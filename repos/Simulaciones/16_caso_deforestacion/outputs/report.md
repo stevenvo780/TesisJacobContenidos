@@ -1,6 +1,6 @@
 # Reporte de Validación — Deforestación Global (von Thünen Frontier)
 
-- generated_at: 2026-02-09T17:52:02.176855Z
+- generated_at: 2026-02-09T18:26:46.056067Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -42,6 +42,7 @@
 - ode_beta: 0.9577
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.1170
+- ode_rolling: None
 
 ## Fase real
 - **overall_pass**: False
@@ -83,4 +84,5 @@
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.1431
+- ode_rolling: None
 

@@ -1,8 +1,8 @@
 {
   "case": "Riesgo Biol\u00f3gico Global (TB Incidence \u2014 Woolhouse)",
-  "generated_at": "2026-02-09T17:51:51.834119Z",
+  "generated_at": "2026-02-09T18:26:35.786879Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.3062038152820362,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.7419302334329247
+        "calibration_rmse": 0.7419302334329247,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.13089988086206983,
       "symploke": {
         "internal": 0.9994539055032877,
@@ -93,7 +101,7 @@
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -103,7 +111,11 @@
         "rmse_ode": 0.7149957203546764,
         "corr_abm": 0.7937743940648824,
         "corr_ode": 0.793869352085817,
-        "threshold": 0.758421020910572
+        "threshold": 0.758421020910572,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "rmse_reduced": 1.7012663435549487,
+        "relative_improvement": 0.755865570888045
       },
       "c2_detail": {
         "mean_delta": 0.05200020649724353,
@@ -169,7 +181,8 @@
         "ode_alpha": 0.12881455160273342,
         "ode_beta": 0.5821830472355709,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.19155309100618195
+        "calibration_rmse": 0.19155309100618195,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": {
@@ -218,6 +231,13 @@
           "recovered": false
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": -0.011465784306868065,
       "symploke": {
         "internal": 0.9999192674865633,
@@ -254,7 +274,11 @@
         "rmse_ode": 1.155186223701842,
         "corr_abm": 0.13596343219985024,
         "corr_ode": 0.13724554969683425,
-        "threshold": 0.1
+        "threshold": 0.1,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 0.8072307027375545,
+        "relative_improvement": -0.06206023149642825
       },
       "c2_detail": {
         "mean_delta": 0.16495354881050117,

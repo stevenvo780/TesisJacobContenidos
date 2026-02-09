@@ -1,8 +1,8 @@
 {
   "case": "Wikipedia (Axelrod + Lotka-Volterra)",
-  "generated_at": "2026-02-09T17:52:01.440279Z",
+  "generated_at": "2026-02-09T18:26:44.933215Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 2.2094550818929326
+        "calibration_rmse": 2.2094550818929326,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -65,6 +66,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.07817236565264198,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.0039820844118705345,
       "symploke": {
         "internal": 0.4620942003590093,
@@ -91,7 +99,7 @@
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -101,7 +109,11 @@
         "rmse_ode": 1.8746500831862782,
         "corr_abm": 0.16745341359934393,
         "corr_ode": 0.5106430847448289,
-        "threshold": 1.0224007974784388
+        "threshold": 1.0224007974784388,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 2.768287425139756,
+        "relative_improvement": 0.7960437030943508
       },
       "c2_detail": {
         "mean_delta": 0.5381528143933177,
@@ -164,7 +176,8 @@
         "ode_alpha": 0.09849384267615878,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 1.9966004203446455
+        "calibration_rmse": 1.9966004203446455,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -200,6 +213,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": 0.0,
       "symploke": {
@@ -237,7 +257,11 @@
         "rmse_ode": 3.658506395771973,
         "corr_abm": 0.0,
         "corr_ode": -0.5878469955118516,
-        "threshold": 2.2193943451023888
+        "threshold": 2.2193943451023888,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 5.028699561617746,
+        "relative_improvement": 0.0
       },
       "c2_detail": {
         "mean_delta": 0.0,

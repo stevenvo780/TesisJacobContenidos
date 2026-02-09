@@ -1,8 +1,8 @@
 {
   "case": "Acidificaci\u00f3n Oce\u00e1nica (CO2SYS + Revelle Factor)",
-  "generated_at": "2026-02-09T17:51:52.802576Z",
+  "generated_at": "2026-02-09T18:26:36.057928Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.016965358557405566,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 1.3060835918134348
+        "calibration_rmse": 1.3060835918134348,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -64,6 +65,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.24581405786658736,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": -0.004595209848297088,
       "symploke": {
@@ -101,7 +109,11 @@
         "rmse_ode": 8.314535947539364,
         "corr_abm": 0.09373715203705817,
         "corr_ode": -0.03992122241899381,
-        "threshold": 1.0106980159694856
+        "threshold": 1.0106980159694856,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 1.413523395736175,
+        "relative_improvement": -0.1316662109800657
       },
       "c2_detail": {
         "mean_delta": 1.3665373951804476,
@@ -165,7 +177,8 @@
         "ode_alpha": 0.14922888419211175,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.9495859149375404
+        "calibration_rmse": 0.9495859149375404,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -201,6 +214,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": 0.024428078108793105,
       "symploke": {
@@ -238,7 +258,11 @@
         "rmse_ode": 9.209614090565927,
         "corr_abm": -0.6217412091223901,
         "corr_ode": 0.0,
-        "threshold": 2.3255543500548246
+        "threshold": 2.3255543500548246,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 3.343112006906469,
+        "relative_improvement": -0.00610269416938003
       },
       "c2_detail": {
         "mean_delta": 0.022053813930613585,

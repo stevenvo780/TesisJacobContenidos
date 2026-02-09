@@ -1,8 +1,8 @@
 {
   "case": "S\u00edndrome de Kessler (NASA LEGEND + ORDEM)",
-  "generated_at": "2026-02-09T17:51:57.564027Z",
+  "generated_at": "2026-02-09T18:26:41.883836Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.15320904316135053,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 142138.19385540136
+        "calibration_rmse": 142138.19385540136,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -64,6 +65,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": -1.6874530493127153,
       "symploke": {
@@ -101,7 +109,11 @@
         "rmse_ode": 7660452158067588.0,
         "corr_abm": 0.7778986156297876,
         "corr_ode": 0.7338807378815527,
-        "threshold": 8.92654054209677
+        "threshold": 8.92654054209677,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 608992.9187461098,
+        "relative_improvement": -2082406.6323206143
       },
       "c2_detail": {
         "mean_delta": 56613.663157894836,
@@ -168,7 +180,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 131424.55498326803
+        "calibration_rmse": 131424.55498326803,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -204,6 +217,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": -0.7135892310673722,
       "symploke": {
@@ -241,7 +261,11 @@
         "rmse_ode": 2073629760066926.8,
         "corr_abm": 0.9492264819913797,
         "corr_ode": 0.9181433353573856,
-        "threshold": 2.3530150711304936
+        "threshold": 2.3530150711304936,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 572967.3111640858,
+        "relative_improvement": -92351.97718555329
       },
       "c2_detail": {
         "mean_delta": 105271.42105263165,

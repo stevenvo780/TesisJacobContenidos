@@ -1,8 +1,8 @@
 {
   "case": "Constelaciones Satelitales Starlink (Mega-Constellation)",
-  "generated_at": "2026-02-09T17:52:13.761304Z",
+  "generated_at": "2026-02-09T18:26:56.912728Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.28095365262200567
+        "calibration_rmse": 0.28095365262200567,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": -0.023417639072559948,
       "symploke": {
         "internal": 0.9998587007295499,
@@ -103,7 +111,11 @@
         "rmse_ode": 0.9059103859556391,
         "corr_abm": 0.08510210573072194,
         "corr_ode": 0.06635186946849768,
-        "threshold": 0.1
+        "threshold": 0.1,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 1.276528135235274,
+        "relative_improvement": -0.06697139485212822
       },
       "c2_detail": {
         "mean_delta": 0.0666503925404676,
@@ -168,7 +180,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.00020142140158564884
+        "calibration_rmse": 0.00020142140158564884,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": {
@@ -217,6 +230,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.0,
       "symploke": {
         "internal": 0.9876055870104783,
@@ -253,7 +273,11 @@
         "rmse_ode": 0.6584647530164444,
         "corr_abm": 0.0,
         "corr_ode": 0.0,
-        "threshold": 0.1
+        "threshold": 0.1,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 0.0001265612420774612,
+        "relative_improvement": -0.06906897289566513
       },
       "c2_detail": {
         "mean_delta": 0.0015361222970739995,

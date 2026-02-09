@@ -1,6 +1,6 @@
 # Reporte de Validación — Energía (OPSD GB Grid)
 
-- generated_at: 2026-02-09T17:53:04.469912Z
+- generated_at: 2026-02-09T18:27:49.207036Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -19,7 +19,7 @@
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: False
+- c1_convergence: True
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -42,6 +42,7 @@
 - ode_beta: 0.0200
 - assimilation_strength: 0.0000
 - calibration_rmse: 1.0172
+- ode_rolling: None
 
 ## Fase real
 - **overall_pass**: False
@@ -83,4 +84,5 @@
 - ode_beta: 0.0200
 - assimilation_strength: 0.0000
 - calibration_rmse: 1.0292
+- ode_rolling: None
 

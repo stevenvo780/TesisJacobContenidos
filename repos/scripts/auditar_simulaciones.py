@@ -34,10 +34,22 @@ def compute_metrics(metrics_obj):
     cr = None
     if internal is not None and external not in (None, 0):
         cr = internal / external
+
+    # Nuevos campos v2.0
+    c1_detail = ph.get('c1_detail', {})
+    taxonomy = ph.get('emergence_taxonomy', {})
+    noise = ph.get('noise_sensitivity', {})
+
     return {
         'edi': edi,
         'cr': cr,
-        'overall_pass': ph.get('overall_pass')
+        'overall_pass': ph.get('overall_pass'),
+        'c1': ph.get('c1_convergence'),
+        'c1_relative': c1_detail.get('c1_relative'),
+        'c1_absolute': c1_detail.get('c1_absolute'),
+        'category': taxonomy.get('category', '?'),
+        'noise_stable': noise.get('stable'),
+        'noise_cv': noise.get('cv'),
     }
 
 
@@ -111,14 +123,17 @@ def main():
         case = case_dir.name
         rows.append((case, m, issues))
 
-    lines.append('| Caso | EDI | CR | Estado | Hallazgos |')
-    lines.append('| :--- | ---: | ---: | :--- | :--- |')
+    lines.append('| Caso | EDI | CR | C1 | Cat | NS | Estado | Hallazgos |')
+    lines.append('| :--- | ---: | ---: | :---: | :--- | :---: | :--- | :--- |')
     for case, m, issues in rows:
         edi = fmt(m['edi']) if m else 'n/a'
         cr = fmt(m['cr']) if m else 'n/a'
         state = str(m['overall_pass']) if m else 'n/a'
+        c1 = '✅' if (m and m.get('c1')) else '❌' if m else 'n/a'
+        cat = m.get('category', '?') if m else 'n/a'
+        ns = '✅' if (m and m.get('noise_stable')) else '❌' if m else 'n/a'
         hall = '; '.join(issues) if issues else 'OK'
-        lines.append(f'| {case} | {edi} | {cr} | {state} | {hall} |')
+        lines.append(f'| {case} | {edi} | {cr} | {c1} | {cat} | {ns} | {state} | {hall} |')
 
     lines.append('')
     lines.append('## Recomendaciones')

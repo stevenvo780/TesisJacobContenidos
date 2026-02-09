@@ -1,6 +1,6 @@
 # Reporte de Validación — Fuga de Cerebros Global (Docquier-Rapoport)
 
-- generated_at: 2026-02-09T17:51:52.131042Z
+- generated_at: 2026-02-09T18:26:35.452594Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -42,6 +42,7 @@
 - ode_beta: 0.0200
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.2390
+- ode_rolling: None
 
 ## Fase real
 - **overall_pass**: False
@@ -83,4 +84,5 @@
 - ode_beta: 0.0200
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.4387
+- ode_rolling: None
 

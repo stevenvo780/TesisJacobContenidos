@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: No-Estacionariedad",
-  "generated_at": "2026-02-09T12:51:48.923745",
+  "generated_at": "2026-02-09T13:26:32.206856",
   "git": {
     "commit": "falsification_trend",
     "dirty": false
@@ -28,7 +28,8 @@
         "ode_alpha": 0.05,
         "ode_beta": 0.02,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.0
+        "calibration_rmse": 0.0,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": {
@@ -75,6 +76,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": -0.5932966172753423,
       "symploke": {
         "internal": 0.99887252738129,
@@ -111,7 +119,11 @@
         "rmse_ode": 5.379355823407406,
         "corr_abm": 0.9948604674083315,
         "corr_ode": -0.6466926329542886,
-        "threshold": 1.0297291523794263
+        "threshold": 1.0297291523794263,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 0.532450689416462,
+        "relative_improvement": -2.621668175813556
       },
       "c2_detail": {
         "mean_delta": 0.013313439007073668,

@@ -1,8 +1,8 @@
 {
   "case": "Erosi\u00f3n Dial\u00e9ctica (Abrams-Strogatz)",
-  "generated_at": "2026-02-09T17:52:01.472462Z",
+  "generated_at": "2026-02-09T18:26:44.568587Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.030987936515996822,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.19412385485518885
+        "calibration_rmse": 0.19412385485518885,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.04073753726989526,
       "symploke": {
         "internal": 0.9999961490668801,
@@ -93,7 +101,7 @@
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -103,7 +111,11 @@
         "rmse_ode": 1.796205975039898,
         "corr_abm": 0.9949085185202176,
         "corr_ode": 0.9945101962211351,
-        "threshold": 2.5948461900644357
+        "threshold": 2.5948461900644357,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "rmse_reduced": 4.14684097852735,
+        "relative_improvement": 0.2034376839825267
       },
       "c2_detail": {
         "mean_delta": 0.19361544416254173,
@@ -170,7 +182,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.15471612961096043
+        "calibration_rmse": 0.15471612961096043,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -209,6 +222,13 @@
           "recovered": false
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.0,
       "symploke": {
         "internal": 0.9965715272047962,
@@ -245,7 +265,11 @@
         "rmse_ode": 3.6512687346959196,
         "corr_abm": 0.9938106767522409,
         "corr_ode": 0.9851680882692531,
-        "threshold": 0.3672429897718933
+        "threshold": 0.3672429897718933,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 0.16722572075155412,
+        "relative_improvement": -0.9917394526966594
       },
       "c2_detail": {
         "mean_delta": 0.07377536371040386,

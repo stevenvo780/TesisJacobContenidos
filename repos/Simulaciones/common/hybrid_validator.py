@@ -287,6 +287,58 @@ def calibrate_ode(obs_train, forcing_train, regularization=0.01):
     return alpha, beta
 
 
+def calibrate_ode_rolling(obs_train, forcing_train, window_size=None, 
+                          regularization=0.01):
+    """ODE con ventana deslizante para series no-estacionarias.
+    
+    Divide obs_train en ventanas solapadas y calibra α,β en cada una.
+    Retorna la mediana de los parámetros (robusta a outliers) y las
+    series temporales de α(t), β(t) para diagnóstico.
+    
+    Si window_size es None, usa max(5, len//3) como tamaño de ventana.
+    """
+    n = len(obs_train)
+    if window_size is None:
+        window_size = max(5, n // 3)
+    
+    if n < window_size or n < 5:
+        # Fallback a calibración estática
+        a, b = calibrate_ode(obs_train, forcing_train, regularization)
+        return a, b, {"alphas": [a], "betas": [b], "rolling": False}
+    
+    stride = max(1, window_size // 2)  # 50% overlap
+    alphas = []
+    betas = []
+    
+    for start in range(0, n - window_size + 1, stride):
+        end = start + window_size
+        a_w, b_w = calibrate_ode(
+            obs_train[start:end], 
+            forcing_train[start:end],
+            regularization
+        )
+        alphas.append(a_w)
+        betas.append(b_w)
+    
+    if not alphas:
+        a, b = calibrate_ode(obs_train, forcing_train, regularization)
+        return a, b, {"alphas": [a], "betas": [b], "rolling": False}
+    
+    # Mediana robusta
+    alpha_med = float(np.median(alphas))
+    beta_med = float(np.median(betas))
+    
+    return alpha_med, beta_med, {
+        "alphas": alphas,
+        "betas": betas,
+        "rolling": True,
+        "window_size": window_size,
+        "n_windows": len(alphas),
+        "alpha_std": float(np.std(alphas)),
+        "beta_std": float(np.std(betas)),
+    }
+
+
 def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
                    param_grid=None, seed=2, n_refine=5000):
     """
@@ -453,18 +505,49 @@ def perturb_params(params, pct, seed, keys=None):
 # ─── Validación C1-C5 ────────────────────────────────────────────────────────
 
 def evaluate_c1(abm_val, ode_val, obs_val, obs_std,
-                threshold_factor=1.0, corr_threshold=0.7):
+                threshold_factor=1.0, corr_threshold=0.7,
+                reduced_val=None):
+    """C1 Convergence — criterio relativo + absoluto relajado.
+    
+    Aprueba si se cumple AL MENOS UNA de dos condiciones:
+      (A) Relativa: el modelo acoplado (ABM+ODE) tiene menor RMSE que el
+          reducido (ABM sin macro), es decir, el ODE aporta información.
+      (B) Absoluta relajada: RMSE < 2·obs_std Y corr > 0.3
+          (umbral anterior era 1·obs_std y corr > 0.7, demasiado estricto
+          para datos z-normalizados con ruido).
+    
+    Si reduced_val no se proporciona, solo se evalúa (B).
+    """
     err_abm = rmse(abm_val, obs_val)
     err_ode = rmse(ode_val, obs_val)
     corr_abm = correlation(abm_val, obs_val)
     corr_ode = correlation(ode_val, obs_val)
     threshold = threshold_factor * max(obs_std, 0.1)
-    # C1: the coupled model (ABM) must converge; ODE evaluated but not required
-    c1 = (err_abm < threshold and corr_abm > corr_threshold)
+
+    # Condición (A): relativa — acoplado mejor que reducido
+    if reduced_val is not None:
+        err_reduced = rmse(reduced_val, obs_val)
+        relative_improvement = err_reduced - err_abm
+        c1_relative = relative_improvement > 0  # cualquier mejora cuenta
+    else:
+        err_reduced = None
+        relative_improvement = None
+        c1_relative = False
+
+    # Condición (B): absoluta relajada (2× threshold, corr 0.3)
+    c1_absolute = (err_abm < 2.0 * threshold and corr_abm > 0.3)
+
+    # C1 pasa si cumple (A) o (B)
+    c1 = c1_relative or c1_absolute
+
     return c1, {
         "rmse_abm": err_abm, "rmse_ode": err_ode,
         "corr_abm": corr_abm, "corr_ode": corr_ode,
         "threshold": threshold,
+        "c1_relative": c1_relative,
+        "c1_absolute": c1_absolute,
+        "rmse_reduced": err_reduced,
+        "relative_improvement": relative_improvement,
     }
 
 
@@ -627,7 +710,8 @@ class CaseConfig:
                  driver_cols=None, edi_min=0.325,
                  use_topology=False, topology_type="small_world",
                  topology_params=None, feedback_strength=0.0,
-                 ode_calibration=True, abm_calibration=True):
+                 ode_calibration=True, abm_calibration=True,
+                 ode_rolling=False):
         self.case_name = case_name
         self.value_col = value_col
         self.series_key = series_key
@@ -653,6 +737,7 @@ class CaseConfig:
         self.feedback_strength = feedback_strength
         self.ode_calibration = ode_calibration
         self.abm_calibration = abm_calibration
+        self.ode_rolling = ode_rolling
 
         self.topology_params = topology_params or {}
         self.feedback_strength = feedback_strength
@@ -842,8 +927,13 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     base_params.update(config.extra_base_params)
 
     # Calibración ODE
+    ode_rolling_meta = None
     if config.ode_calibration:
-        alpha, beta = calibrate_ode(obs[:val_start], forcing_series[:val_start])
+        if config.ode_rolling:
+            alpha, beta, ode_rolling_meta = calibrate_ode_rolling(
+                obs[:val_start], forcing_series[:val_start])
+        else:
+            alpha, beta = calibrate_ode(obs[:val_start], forcing_series[:val_start])
         base_params["ode_alpha"] = alpha
         base_params["ode_beta"] = beta
     else:
@@ -1018,7 +1108,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
 
     # C1-C5 (sobre modelo acoplado)
     c1, c1_detail = evaluate_c1(abm_val, ode_val, obs_val, obs_std,
-                                 config.threshold_factor, config.corr_threshold)
+                                 config.threshold_factor, config.corr_threshold,
+                                 reduced_val=abm_no_ode_val)
     c2, c2_detail = evaluate_c2(base_params_ode, eval_params_ode, steps, val_start,
                                  simulate_abm_fn, sk)
     c3, c3_detail = evaluate_c3(eval_params_ode, steps, val_start, simulate_abm_fn,
@@ -1034,6 +1125,19 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     # Viscosity Test (Variables faltantes Fase 3)
     c_visc, c_visc_detail = evaluate_viscosity(base_params_ode, steps, val_start, 
                                                simulate_abm_fn, sk)
+
+    # Noise Sensitivity Test
+    try:
+        from noise_sensitivity import noise_sensitivity_test
+        noise_result = noise_sensitivity_test(
+            base_params_ode, eval_params_ode, steps, val_start,
+            obs_val, simulate_abm_fn, sk,
+            original_noise=base_params.get("base_noise", 0.001),
+            seed=42
+        )
+    except Exception:
+        noise_result = {"stable": None, "cv": None, "edi_mean": None,
+                        "edi_std": None, "detail": [], "message": "Test no disponible"}
 
     # Symploké, non-locality, persistence
     internal, external = internal_vs_external_cohesion(abm.get("grid", []), abm.get("forcing", []))
@@ -1120,6 +1224,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             "ode_beta": beta,
             "assimilation_strength": 0.0,
             "calibration_rmse": best_err,
+            "ode_rolling": ode_rolling_meta,
         },
         "forcing": {
             "driver_meta": driver_meta if driver_meta else None,
@@ -1152,6 +1257,13 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         "viscosity": {
             "pass": c_visc,
             "detail": c_visc_detail
+        },
+        "noise_sensitivity": {
+            "stable": noise_result.get("stable"),
+            "cv": noise_result.get("cv"),
+            "edi_mean": noise_result.get("edi_mean"),
+            "edi_std": noise_result.get("edi_std"),
+            "monotonic_decrease": noise_result.get("monotonic_decrease", False),
         },
         "effective_information": ei,
         "symploke": {

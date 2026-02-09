@@ -1,8 +1,8 @@
 {
   "case": "Justicia Algor\u00edtmica",
-  "generated_at": "2026-02-09T17:51:54.641673Z",
+  "generated_at": "2026-02-09T18:26:37.595867Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.04737682803823468,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.7781902932836744
+        "calibration_rmse": 0.7781902932836744,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -64,6 +65,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": 0.0,
       "symploke": {
@@ -101,7 +109,11 @@
         "rmse_ode": 1.5238415095255746,
         "corr_abm": 0.0,
         "corr_ode": 0.9678514061604984,
-        "threshold": 0.28542280061074377
+        "threshold": 0.28542280061074377,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 0.9581804902539983,
+        "relative_improvement": 0.0
       },
       "c2_detail": {
         "mean_delta": 0.0,
@@ -166,7 +178,8 @@
         "ode_alpha": 0.1330141031675275,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.8940161746411486
+        "calibration_rmse": 0.8940161746411486,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -202,6 +215,13 @@
           "relaxation_time": 0,
           "peak_impact": 0.0
         }
+      },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
       },
       "effective_information": 0.0,
       "symploke": {
@@ -239,7 +259,11 @@
         "rmse_ode": 1.5789019195440723,
         "corr_abm": 0.0,
         "corr_ode": 0.02562541439699423,
-        "threshold": 0.3261907194696316
+        "threshold": 0.3261907194696316,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 1.8888842006600326,
+        "relative_improvement": 0.0
       },
       "c2_detail": {
         "mean_delta": 0.0,

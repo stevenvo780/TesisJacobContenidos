@@ -1,8 +1,8 @@
 {
   "case": "Ciclo del F\u00f3sforo (Carpenter Biogeoqu\u00edmico)",
-  "generated_at": "2026-02-09T17:51:55.564947Z",
+  "generated_at": "2026-02-09T18:26:38.851366Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.12864302040579756,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.21120513621216538
+        "calibration_rmse": 0.21120513621216538,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.31073124909035643,
       "symploke": {
         "internal": 0.999851683842525,
@@ -103,7 +111,11 @@
         "rmse_ode": 0.5558711455614176,
         "corr_abm": 0.9815814140010013,
         "corr_ode": 0.9827714176398761,
-        "threshold": 0.8987065279338431
+        "threshold": 0.8987065279338431,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "rmse_reduced": 1.3358917940429373,
+        "relative_improvement": 0.4764595107349999
       },
       "c2_detail": {
         "mean_delta": 0.09395205486488782,
@@ -168,7 +180,8 @@
         "ode_alpha": 0.011428713735486784,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.27823890832490944
+        "calibration_rmse": 0.27823890832490944,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -207,6 +220,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": -0.844400525147148,
       "symploke": {
         "internal": 0.9984881426527398,
@@ -243,7 +263,11 @@
         "rmse_ode": 3.905081622119732,
         "corr_abm": -0.6366898728308207,
         "corr_ode": -0.8059349320791115,
-        "threshold": 0.45640034782474254
+        "threshold": 0.45640034782474254,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 0.32877066626125767,
+        "relative_improvement": -1.0090413863650576
       },
       "c2_detail": {
         "mean_delta": 0.059802275433575504,

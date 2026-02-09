@@ -1,8 +1,8 @@
 {
   "case": "Movilidad Urbana (Traffic)",
-  "generated_at": "2026-02-09T17:52:56.071094Z",
+  "generated_at": "2026-02-09T18:27:39.931782Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.2695108305890248,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 93.39908675647779
+        "calibration_rmse": 93.39908675647779,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -65,6 +66,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.6366871051679959,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.018819729819926856,
       "symploke": {
         "internal": 0.0,
@@ -91,7 +99,7 @@
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": false,
       "c4_validity": true,
@@ -101,7 +109,11 @@
         "rmse_ode": 138.729394755417,
         "corr_abm": -0.01932881454470582,
         "corr_ode": -0.840858542328574,
-        "threshold": 0.4997630744189651
+        "threshold": 0.4997630744189651,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 34.66402278210417,
+        "relative_improvement": 0.6785897876942073
       },
       "c2_detail": {
         "mean_delta": 2.0999999999999988,
@@ -165,7 +177,8 @@
         "ode_alpha": 0.09098248373489348,
         "ode_beta": 0.7527563305433328,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 88.99722004415541
+        "calibration_rmse": 88.99722004415541,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": {
@@ -210,6 +223,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.02812915791824988,
       "symploke": {
         "internal": 0.0,
@@ -236,7 +256,7 @@
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": false,
       "c4_validity": true,
@@ -246,7 +266,11 @@
         "rmse_ode": 314.4009038077049,
         "corr_abm": 0.6392907695105813,
         "corr_ode": 0.17524787304750894,
-        "threshold": 1.8501359485304647
+        "threshold": 1.8501359485304647,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 178.86194087943827,
+        "relative_improvement": 0.5346433140508395
       },
       "c2_detail": {
         "mean_delta": 3.3894736842105204,

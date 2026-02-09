@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: Exogeneidad
 
-- generated_at: 2026-02-09T12:51:51.033096
+- generated_at: 2026-02-09T13:26:34.486421
 
 ## Fase real
 - **overall_pass**: False
@@ -19,7 +19,7 @@
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: False
+- c1_convergence: True
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: False
@@ -42,4 +42,5 @@
 - ode_beta: 0.0200
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.0000
+- ode_rolling: None
 

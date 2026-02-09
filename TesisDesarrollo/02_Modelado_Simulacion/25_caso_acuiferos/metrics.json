@@ -1,8 +1,8 @@
 {
   "case": "Depleci\u00f3n de Acu\u00edferos (Darcy-Theis)",
-  "generated_at": "2026-02-09T17:52:02.386118Z",
+  "generated_at": "2026-02-09T18:26:46.064353Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.005938541594227171,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.14013623605018932
+        "calibration_rmse": 0.14013623605018932,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": -0.36984070231833566,
       "symploke": {
         "internal": 0.9999987439194098,
@@ -103,7 +111,11 @@
         "rmse_ode": 0.6268033010113828,
         "corr_abm": 0.01340989893354848,
         "corr_ode": 0.011314601741681234,
-        "threshold": 0.1
+        "threshold": 0.1,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "rmse_reduced": 1.3140875347323242,
+        "relative_improvement": -0.7013587180839467
       },
       "c2_detail": {
         "mean_delta": 0.0852164303174395,
@@ -168,7 +180,8 @@
         "ode_alpha": 0.05,
         "ode_beta": 0.02,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.5409962520378572
+        "calibration_rmse": 0.5409962520378572,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -207,6 +220,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": -0.18205820210505275,
       "symploke": {
         "internal": 0.9999356732631378,
@@ -233,7 +253,7 @@
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -243,7 +263,11 @@
         "rmse_ode": 29.44351766172376,
         "corr_abm": 0.9905931796824092,
         "corr_ode": 0.9669373238986003,
-        "threshold": 14.856301332943971
+        "threshold": 14.856301332943971,
+        "c1_relative": false,
+        "c1_absolute": true,
+        "rmse_reduced": 18.713525280713313,
+        "relative_improvement": -3.3996574046469767
       },
       "c2_detail": {
         "mean_delta": 0.45106367288546456,

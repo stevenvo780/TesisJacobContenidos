@@ -1,8 +1,8 @@
 {
   "case": "Fuga de Cerebros Global (Docquier-Rapoport)",
-  "generated_at": "2026-02-09T17:51:52.131042Z",
+  "generated_at": "2026-02-09T18:26:35.452594Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.06,
         "ode_beta": 0.02,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.23899518663417124
+        "calibration_rmse": 0.23899518663417124,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.8729835471622106,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.9116493757142505,
       "symploke": {
         "internal": 0.9998750446585772,
@@ -103,7 +111,11 @@
         "rmse_ode": 0.7834180286567357,
         "corr_abm": 0.9747581922161955,
         "corr_ode": 0.9690996014420463,
-        "threshold": 1.714742732045627
+        "threshold": 1.714742732045627,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "rmse_reduced": 2.7838431741328167,
+        "relative_improvement": 2.098081962186234
       },
       "c2_detail": {
         "mean_delta": 0.12785390936450494,
@@ -168,7 +180,8 @@
         "ode_alpha": 0.06,
         "ode_beta": 0.02,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.438654451883056
+        "calibration_rmse": 0.438654451883056,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": {
@@ -223,6 +236,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 0.441891503136993,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.21987615214820933,
       "symploke": {
         "internal": 0.9995359895606801,
@@ -259,7 +279,11 @@
         "rmse_ode": 3.4862828696355708,
         "corr_abm": 0.7985952676729995,
         "corr_ode": 0.8140480883091674,
-        "threshold": 5.645458513092422
+        "threshold": 5.645458513092422,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "rmse_reduced": 4.618767961674912,
+        "relative_improvement": 0.8789128864600326
       },
       "c2_detail": {
         "mean_delta": 0.17750829277235242,

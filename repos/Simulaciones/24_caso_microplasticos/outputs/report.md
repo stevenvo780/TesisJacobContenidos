@@ -1,6 +1,6 @@
 # Reporte de Validación — Microplásticos Oceánicos (Jambeck Persistent Accumulation)
 
-- generated_at: 2026-02-09T17:52:05.118735Z
+- generated_at: 2026-02-09T18:26:49.338209Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -19,7 +19,7 @@
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: False
+- c1_convergence: True
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -42,6 +42,7 @@
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.2154
+- ode_rolling: None
 
 ## Fase real
 - **overall_pass**: False
@@ -60,7 +61,7 @@
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: False
+- c1_convergence: True
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
@@ -83,4 +84,5 @@
 - ode_beta: 0.0134
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.3876
+- ode_rolling: None
 

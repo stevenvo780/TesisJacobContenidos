@@ -1,8 +1,8 @@
 {
   "case": "Salinizaci\u00f3n de Suelos (Richards-Solute)",
-  "generated_at": "2026-02-09T17:51:55.058315Z",
+  "generated_at": "2026-02-09T18:26:39.024718Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.27393870890657074,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.29831995946117057
+        "calibration_rmse": 0.29831995946117057,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -67,6 +68,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.14628258004713335,
       "symploke": {
         "internal": 0.999770153636827,
@@ -103,7 +111,11 @@
         "rmse_ode": 1.1240156160177979,
         "corr_abm": 0.9278798515456754,
         "corr_ode": 0.930024225348768,
-        "threshold": 0.6860203980059628
+        "threshold": 0.6860203980059628,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "rmse_reduced": 0.7207383330393411,
+        "relative_improvement": 0.23698066146997493
       },
       "c2_detail": {
         "mean_delta": 0.0880646381338435,
@@ -168,7 +180,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.27536316306194786
+        "calibration_rmse": 0.27536316306194786,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -207,6 +220,13 @@
           "recovered": true
         }
       },
+      "noise_sensitivity": {
+        "stable": false,
+        "cv": 0.0,
+        "edi_mean": 0.0,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 0.0,
       "symploke": {
         "internal": 0.998300560295368,
@@ -233,7 +253,7 @@
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
@@ -243,7 +263,11 @@
         "rmse_ode": 3.9088094278155565,
         "corr_abm": -0.5343827212874358,
         "corr_ode": -0.7541274890821228,
-        "threshold": 0.1356528675127133
+        "threshold": 0.1356528675127133,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 0.7696692516871728,
+        "relative_improvement": 0.06795828179508523
       },
       "c2_detail": {
         "mean_delta": 0.036165591013158714,

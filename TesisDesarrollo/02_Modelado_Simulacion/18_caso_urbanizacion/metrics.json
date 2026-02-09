@@ -1,8 +1,8 @@
 {
   "case": "Urbanizaci\u00f3n (Bettencourt + Preferential Attachment)",
-  "generated_at": "2026-02-09T17:52:07.176237Z",
+  "generated_at": "2026-02-09T18:26:51.471184Z",
   "git": {
-    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
+    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
     "dirty": true
   },
   "phases": {
@@ -28,7 +28,8 @@
         "ode_alpha": 0.07103803912161245,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 1.1698816691211864
+        "calibration_rmse": 1.1698816691211864,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -65,6 +66,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 1.235518337988072e-05,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 1.1857673380188949e-05,
       "symploke": {
         "internal": 0.0014268274884972165,
@@ -91,7 +99,7 @@
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": false,
@@ -101,7 +109,11 @@
         "rmse_ode": 2.042740794151317,
         "corr_abm": 0.9773878372908505,
         "corr_ode": 0.0,
-        "threshold": 0.4781718624013132
+        "threshold": 0.4781718624013132,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 2.043997934321651,
+        "relative_improvement": 1.1040682739160701e-05
       },
       "c2_detail": {
         "mean_delta": 0.0012374173923751508,
@@ -164,7 +176,8 @@
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 1.1742531901116224
+        "calibration_rmse": 1.1742531901116224,
+        "ode_rolling": null
       },
       "forcing": {
         "driver_meta": null,
@@ -201,6 +214,13 @@
           "peak_impact": 0.0
         }
       },
+      "noise_sensitivity": {
+        "stable": true,
+        "cv": 0.0,
+        "edi_mean": 4.707731032510848e-06,
+        "edi_std": 0.0,
+        "monotonic_decrease": false
+      },
       "effective_information": 1.5166393727339411e-05,
       "symploke": {
         "internal": 0.0039633141433421445,
@@ -227,7 +247,7 @@
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": false,
@@ -237,7 +257,11 @@
         "rmse_ode": 2.683244053022937,
         "corr_abm": 0.9983568331724583,
         "corr_ode": -3.0486439912381134e-16,
-        "threshold": 0.8866734587245177
+        "threshold": 0.8866734587245177,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "rmse_reduced": 2.6843855950123037,
+        "relative_improvement": 9.284671813691858e-05
       },
       "c2_detail": {
         "mean_delta": 0.001130342139034335,
