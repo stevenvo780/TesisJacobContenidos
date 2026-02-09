@@ -57,9 +57,18 @@ def simulate_abm(params, steps, seed=42):
                     adj[i].add(j_new)
                     adj[j_new].add(i)
     
-    # Convert to list-of-arrays for fast indexing
+    # Convert to padded adjacency array for fully vectorized neighbor sampling
     adj_list = [np.array(sorted(s), dtype=np.int32) for s in adj]
     nonempty = np.array([i for i in range(n_agents) if len(adj_list[i]) > 0], dtype=np.int32)
+    # Padded adjacency: each row has neighbors padded to max_degree
+    max_degree = max(len(a) for a in adj_list) if adj_list else 0
+    adj_padded = np.zeros((n_agents, max(max_degree, 1)), dtype=np.int32)
+    adj_degrees = np.zeros(n_agents, dtype=np.int32)
+    for i in range(n_agents):
+        d = len(adj_list[i])
+        adj_degrees[i] = d
+        if d > 0:
+            adj_padded[i, :d] = adj_list[i]
     
     # Opinion: Vector of length F (Features)
     n_features = params.get("n_features", 5)
@@ -87,8 +96,11 @@ def simulate_abm(params, steps, seed=42):
         # Axelrod Dynamics — fully vectorized synchronous update
         if len(nonempty) > 0:
             agents_i = rng.choice(nonempty, size=n_agents)
-            # Pick random neighbor for each agent (vectorized with pre-indexed adjacency)
-            agents_j = np.array([rng.choice(adj_list[i]) for i in agents_i])
+            # Vectorized neighbor sampling: pick random index into each agent's neighbor list
+            degrees_i = adj_degrees[agents_i]  # (n_agents,)
+            rand_idx = (rng.random(n_agents) * degrees_i).astype(np.int32)
+            rand_idx = np.minimum(rand_idx, degrees_i - 1)  # Safety clamp
+            agents_j = adj_padded[agents_i, rand_idx]
             
             # Similarities: fraction of matching features
             match_mask = (opinions[agents_i] == opinions[agents_j])  # (n_agents, n_features)

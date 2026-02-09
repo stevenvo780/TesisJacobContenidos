@@ -1,6 +1,6 @@
 # Reporte de Validación — Síndrome de Kessler (NASA LEGEND + ORDEM)
 
-- generated_at: 2026-02-09T04:16:18.782674Z
+- generated_at: 2026-02-09T04:22:54.569276Z
 
 ## Fase synthetic
 - **overall_pass**: False

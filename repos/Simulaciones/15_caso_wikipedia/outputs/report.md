@@ -1,32 +1,32 @@
 # Reporte de Validación — Wikipedia (Axelrod + Lotka-Volterra)
 
-- generated_at: 2026-02-09T04:15:20.358599Z
+- generated_at: 2026-02-09T04:23:06.831629Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): 0.0000
-- válido (0.30-0.90): False
+- valor: 0.4099
+- bootstrap_mean: 0.4099
+- CI 95%: [0.3971, 0.4239]
+- weighted_value (LoE factor 0.20): 0.0820
+- válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.6978
-- external: 0.1302
-- CR: 5.3610
+- internal: 0.4621
+- external: -0.0415
+- CR: 11.1287
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: True
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 2.7683
+- rmse_abm: 1.6336
 - rmse_abm_no_ode: 2.7683
 - rmse_ode: 1.7445
 - rmse_reduced: 2.7683
@@ -39,33 +39,33 @@
 - ode_alpha: 0.1149
 - ode_beta: 0.1645
 - assimilation_strength: 0.0000
-- calibration_rmse: 2.1854
+- calibration_rmse: 2.1862
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): 0.0000
-- válido (0.30-0.90): False
+- valor: 0.4099
+- bootstrap_mean: 0.4099
+- CI 95%: [0.3971, 0.4239]
+- weighted_value (LoE factor 0.20): 0.0820
+- válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.6978
-- external: 0.1302
-- CR: 5.3610
+- internal: 0.4621
+- external: -0.0415
+- CR: 11.1287
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: True
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 2.7683
+- rmse_abm: 1.6336
 - rmse_abm_no_ode: 2.7683
 - rmse_ode: 1.7445
 - rmse_reduced: 2.7683
@@ -78,5 +78,5 @@
 - ode_alpha: 0.1149
 - ode_beta: 0.1645
 - assimilation_strength: 0.0000
-- calibration_rmse: 2.1854
+- calibration_rmse: 2.1862
 
