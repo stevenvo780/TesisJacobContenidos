@@ -1,0 +1,12 @@
+FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+
+--- Energy Stability Metrics (High Rigor) ---
+  Calculating LOLP & ROCOF on Synthetic Phase...
+Traceback (most recent call last):
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/04_caso_energia/src/validate.py", line 135, in <module>
+    main()
+    ~~~~^^
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/04_caso_energia/src/validate.py", line 106, in main
+    freq_series = sim_result["f"]
+                  ~~~~~~~~~~^^^^^
+KeyError: 'f'
