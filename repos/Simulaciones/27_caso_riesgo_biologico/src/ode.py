@@ -35,9 +35,8 @@ def simulate_ode(params, steps, seed=3):
     # Core tracking (calibrado por hybrid_validator)
     alpha = float(params.get("ode_alpha", 0.05))
     beta = float(params.get("ode_beta", 0.02))
-    # Corrección bilineal: contención sanitaria ∝ riesgo × presión zoonótica
-    # gamma_bio < 0 → a mayor riesgo y presión, mayor respuesta de contención
-    gamma_bio = float(params.get("ode_gamma_bio", -0.003))
+    # Corrección bilineal: bio-amplificación (riesgo × presión zoonótica)
+    gamma_bio = float(params.get("ode_gamma_bio", 0.02))
 
     R = float(params.get("p0", 0.0))
     series = []

@@ -29,11 +29,8 @@ def load_real_data(start_date, end_date):
 
 def make_synthetic(start_date, end_date, seed=101):
     rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+    dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
-    if steps < 5:
-        dates = pd.date_range(start=start_date, end=end_date, freq="YS")
-        steps = len(dates)
 
     # Forcing: presión zoonótica creciente (Woolhouse 2005)
     forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
@@ -57,23 +54,21 @@ def main():
         value_col="value",
         series_key="b",
         grid_size=25,
-        persistence_window=12,
-        synthetic_start="2000-01-01",
-        synthetic_end="2023-12-01",
-        synthetic_split="2014-01-01",
-        real_start="2000-01-01",
-        real_end="2023-12-01",
-        real_split="2014-01-01",
+        persistence_window=8,
+        synthetic_start="1960-01-01",
+        synthetic_end="2023-01-01",
+        synthetic_split="2005-01-01",
+        real_start="1960-01-01",
+        real_end="2023-01-01",
+        real_split="2005-01-01",
         corr_threshold=0.60,
-        ode_noise=0.03,
+        ode_noise=0.02,
         base_noise=0.004,
         loe=4,
         n_runs=7,
-        ode_calibration=False,
+        ode_calibration=True,
         extra_base_params={
-            "ode_alpha": 0.10,
-            "ode_beta": 1.40,
-            "ode_gamma_bio": 0.0,   # Tracking puro (Woolhouse baseline)
+            "ode_gamma_bio": 0.02,   # Bio-amplificación bilineal (Woolhouse cascade)
             "forcing_scale": 0.10,
             "macro_coupling": 0.25,
         },

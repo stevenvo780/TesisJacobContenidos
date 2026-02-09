@@ -836,6 +836,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         best_err = 0.0
         top_5 = []
     base_params.update(best_abm)
+    print(f"DEBUG_ABM: best_abm={best_abm}, best_err={best_err:.4f}")
 
     # Parámetros de evaluación (sin assimilación)
     eval_params = dict(base_params)
