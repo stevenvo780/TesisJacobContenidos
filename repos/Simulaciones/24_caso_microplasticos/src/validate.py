@@ -73,6 +73,8 @@ def main():
         extra_base_params={
             "ode_inflow": 0.09,   # Ingreso de microplásticos desde ríos y costas
             "ode_decay": 0.003,   # Degradación ultra-lenta (persistencia ~450 años)
+            "forcing_scale": 0.10,
+            "macro_coupling": 0.25,
         },
         driver_cols=["mismanaged_waste", "river_discharge"],
     )

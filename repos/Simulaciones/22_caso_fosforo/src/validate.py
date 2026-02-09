@@ -67,6 +67,8 @@ def main():
         extra_base_params={
             "ode_inflow": 0.07,   # Tasa de aporte fosfatado (fertilizantes + escorrentía)
             "ode_decay": 0.02,    # Reciclaje biogeoquímico lento (sedimentación)
+            "forcing_scale": 0.10,
+            "macro_coupling": 0.25,
         },
     )
 

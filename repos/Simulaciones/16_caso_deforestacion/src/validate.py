@@ -72,6 +72,8 @@ def main():
         extra_base_params={
             "ode_inflow": 0.06,   # Tasa de conversión forestal
             "ode_decay": 0.008,   # Regeneración natural (muy lenta: décadas)
+            "forcing_scale": 0.10,
+            "macro_coupling": 0.25,
         },
     )
 

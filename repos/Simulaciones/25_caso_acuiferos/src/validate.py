@@ -73,6 +73,8 @@ def main():
         extra_base_params={
             "ode_recharge": 0.04,    # Recarga por precipitación/infiltración
             "ode_extraction": 0.06,  # Extracción agrícola > recarga = depleción
+            "forcing_scale": 0.10,
+            "macro_coupling": 0.25,
         },
         driver_cols=["grace_gws", "precip", "extraction_usgs", "withdrawal"],
     )

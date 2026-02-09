@@ -75,6 +75,8 @@ def main():
             "ode_k": 1.0,       # Capacidad: dominio completo
             "ode_delta": 0.01,   # Attrition dialectal
             "ode_gamma": 0.08,   # Sensibilidad a presión mediática
+            "forcing_scale": 0.10,
+            "macro_coupling": 0.25,
         },
     )
 

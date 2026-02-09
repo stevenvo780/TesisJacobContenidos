@@ -70,6 +70,8 @@ def main():
         extra_base_params={
             "ode_inflow": 0.18,   # Tasa de despliegue satelital
             "ode_decay": 0.015,   # De-orbit programado (~5 años)
+            "forcing_scale": 0.12,
+            "macro_coupling": 0.28,
         },
         driver_cols=["launches", "collision_events"],
     )

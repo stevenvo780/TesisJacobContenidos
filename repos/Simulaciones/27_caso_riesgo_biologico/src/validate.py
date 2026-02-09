@@ -75,6 +75,8 @@ def main():
             "ode_k": 2.0,       # Techo de riesgo biológico global
             "ode_delta": 0.025,  # Contención/respuesta sanitaria
             "ode_gamma": 0.10,   # Sensibilidad a forcing zoonótico
+            "forcing_scale": 0.10,
+            "macro_coupling": 0.25,
         },
     )
 
