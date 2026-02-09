@@ -1,15 +1,15 @@
 # Reporte de Validación — Movilidad Urbana (Traffic)
 
-- generated_at: 2026-02-09T18:27:39.931782Z
+- generated_at: 2026-02-09T18:54:40.598730Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0196
-- bootstrap_mean: 0.0194
-- CI 95%: [-0.0022, 0.0409]
-- weighted_value (LoE factor 0.20): 0.0039
+- valor: 0.0225
+- bootstrap_mean: 0.0220
+- CI 95%: [0.0002, 0.0427]
+- weighted_value (LoE factor 0.20): 0.0045
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -26,9 +26,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 33.9854
+- rmse_abm: 33.8845
 - rmse_abm_no_ode: 34.6640
-- rmse_ode: 138.7294
+- rmse_ode: 31.9215
 - rmse_reduced: 89.1702
 - threshold: 0.4998
 
@@ -48,10 +48,10 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0030
-- bootstrap_mean: 0.0029
-- CI 95%: [-0.0045, 0.0093]
-- weighted_value (LoE factor 0.20): 0.0006
+- valor: 0.0067
+- bootstrap_mean: 0.0065
+- CI 95%: [-0.0051, 0.0191]
+- weighted_value (LoE factor 0.20): 0.0013
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -68,9 +68,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 178.3273
+- rmse_abm: 177.6707
 - rmse_abm_no_ode: 178.8619
-- rmse_ode: 314.4009
+- rmse_ode: 9.9827
 - rmse_reduced: 85.8555
 - threshold: 1.8501
 

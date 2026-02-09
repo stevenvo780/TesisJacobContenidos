@@ -1,8 +1,8 @@
 {
   "case": "Deforestaci\u00f3n Global (von Th\u00fcnen Frontier)",
-  "generated_at": "2026-02-09T18:26:46.056067Z",
+  "generated_at": "2026-02-09T18:53:45.937020Z",
   "git": {
-    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
+    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
     "dirty": true
   },
   "phases": {
@@ -37,33 +37,33 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 0.1867760484378904,
+        "rmse_abm": 0.1942016176144547,
         "rmse_abm_no_ode": 1.2657341793877679,
-        "rmse_ode": 7.037444243480486,
+        "rmse_ode": 6.969602804917756,
         "rmse_reduced": 3.788155376115055,
         "threshold": 0.9651172062671991
       },
       "correlations": {
-        "abm_obs": 0.9992511732691998,
-        "ode_obs": 0.9991024652694915
+        "abm_obs": 0.9992607568092327,
+        "ode_obs": 0.9991164599359306
       },
       "edi": {
-        "value": 0.8524365925488134,
-        "bootstrap_mean": 0.8523422931361606,
-        "ci_lo": 0.835657773823047,
-        "ci_hi": 0.8658641434668706,
+        "value": 0.8465699822466756,
+        "bootstrap_mean": 0.8464700971710173,
+        "ci_lo": 0.8296035180118694,
+        "ci_hi": 0.860294223491853,
         "valid": true,
-        "weighted_value": 0.5114619555292881,
+        "weighted_value": 0.5079419893480053,
         "loe_factor": 0.6,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.15860778677880527,
+        "permutation_null_95": 0.1561031969937678,
         "permutation_significant": true
       },
       "viscosity": {
         "pass": true,
         "detail": {
           "relaxation_time": 2,
-          "peak_impact": 2.0000000000000004,
+          "peak_impact": 2.000000000000001,
           "shock_step": 312,
           "recovered": true
         }
@@ -77,24 +77,24 @@
       },
       "effective_information": 0.8650307145615048,
       "symploke": {
-        "internal": 0.9999984080556918,
-        "external": 0.9687576139307279,
-        "cr": 1.0322483082204688,
+        "internal": 0.999998414346818,
+        "external": 0.9684842760958275,
+        "cr": 1.0325396488397631,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.001600148502545089,
+        "dominance_share": 0.001600149172881258,
         "pass": true
       },
       "persistence": {
-        "model": 0.0010827508582245777,
+        "model": 0.0010873958839588004,
         "obs": 0.0009896276816774333,
         "pass": true
       },
       "emergence": {
         "err_reduced": 1.2657341793877679,
-        "err_abm": 0.1867760484378904,
+        "err_abm": 0.1942016176144547,
         "threshold": 0.19302344125343984,
         "pass": true,
         "significance": "computed"
@@ -107,47 +107,47 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 0.1867760484378904,
-        "rmse_ode": 7.037444243480486,
-        "corr_abm": 0.9992511732691998,
-        "corr_ode": 0.9991024652694915,
+        "rmse_abm": 0.1942016176144547,
+        "rmse_ode": 6.969602804917756,
+        "corr_abm": 0.9992607568092327,
+        "corr_ode": 0.9991164599359306,
         "threshold": 0.9651172062671991,
         "c1_relative": true,
         "c1_absolute": true,
         "rmse_reduced": 1.2657341793877679,
-        "relative_improvement": 1.0789581309498775
+        "relative_improvement": 1.0715325617733131
       },
       "c2_detail": {
-        "mean_delta": 0.10115038046887737,
-        "var_delta": 0.04184411740987437,
-        "relative_mean": 0.026334131777557515,
-        "relative_var": 0.04184411740987437
+        "mean_delta": 0.10132275358643347,
+        "var_delta": 0.04217277656072551,
+        "relative_mean": 0.026319420322507454,
+        "relative_var": 0.04217277656072551
       },
       "c3_detail": {
-        "persistence_1": 0.0010827508582245777,
-        "persistence_2": 0.0010812025029309576
+        "persistence_1": 0.0010873958839588004,
+        "persistence_2": 0.0010858411748949086
       },
       "c4_detail": {
-        "diff": 0.21110628927821118
+        "diff": 0.21110628927821162
       },
       "c5_detail": {
-        "sensitivity_min": 3.5436535864480776,
-        "sensitivity_max": 4.08284594567415,
-        "range": 0.5391923592260728,
-        "relative_range": 0.024451099641288825
+        "sensitivity_min": 3.551732604425651,
+        "sensitivity_max": 4.092016051917633,
+        "range": 0.5402834474919818,
+        "relative_range": 0.024500577916436256
       },
       "bias_correction": {
         "applied": true,
         "mode": "full",
-        "ode_obs_corr_train": 0.9108769808004119,
-        "ode_mean_train": -1.9182820219813836,
+        "ode_obs_corr_train": 0.9099829440922096,
+        "ode_mean_train": -1.9121945573791492,
         "obs_mean_train": 1.1842378929335003e-16,
-        "scale_factor": 0.39001910312634613
+        "scale_factor": 0.3936047896300125
       },
       "emergence_taxonomy": {
         "category": "strong",
         "ode_quality": "good",
-        "ode_obs_corr": 0.9991024652694915,
+        "ode_obs_corr": 0.9991164599359306,
         "interpretation": "Emergencia macro fuerte: el ODE reduce significativamente la incertidumbre del ABM"
       },
       "synthetic_meta": {
@@ -189,26 +189,26 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 0.4316031245751736,
+        "rmse_abm": 0.4270048537299463,
         "rmse_abm_no_ode": 1.1638996831357857,
-        "rmse_ode": 2.517850201875235,
+        "rmse_ode": 2.486152821467507,
         "rmse_reduced": 3.531366016372466,
         "threshold": 0.8478745271017442
       },
       "correlations": {
-        "abm_obs": 0.8809800044319188,
-        "ode_obs": 0.8776876232926953
+        "abm_obs": 0.8809850499390451,
+        "ode_obs": 0.8776218971030975
       },
       "edi": {
-        "value": 0.629174978884481,
-        "bootstrap_mean": 0.6272402296900803,
-        "ci_lo": 0.5206707483451563,
-        "ci_hi": 0.7283724830716712,
+        "value": 0.6331257238772442,
+        "bootstrap_mean": 0.6317991807711282,
+        "ci_lo": 0.5220995899134622,
+        "ci_hi": 0.7343610283814501,
         "valid": true,
-        "weighted_value": 0.3775049873306886,
+        "weighted_value": 0.3798754343263465,
         "loe_factor": 0.6,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.2776050643463378,
+        "permutation_null_95": 0.2856462705462237,
         "permutation_significant": true
       },
       "viscosity": {
@@ -227,26 +227,26 @@
         "edi_std": 0.0,
         "monotonic_decrease": false
       },
-      "effective_information": -0.07968080671646216,
+      "effective_information": -0.0629460755585769,
       "symploke": {
-        "internal": 0.9994212779294845,
-        "external": 0.9814083292968684,
-        "cr": 1.0183541835695664,
+        "internal": 0.9994125285418705,
+        "external": 0.9827459528189217,
+        "cr": 1.0169591903941624,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0016008606982991214,
+        "dominance_share": 0.0016008540476859022,
         "pass": true
       },
       "persistence": {
-        "model": 0.1194024706993451,
+        "model": 0.11427673230096455,
         "obs": 0.015969938498941644,
         "pass": false
       },
       "emergence": {
         "err_reduced": 1.1638996831357857,
-        "err_abm": 0.4316031245751736,
+        "err_abm": 0.4270048537299463,
         "threshold": 0.16957490542034884,
         "pass": true,
         "significance": "computed"
@@ -259,47 +259,47 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 0.4316031245751736,
-        "rmse_ode": 2.517850201875235,
-        "corr_abm": 0.8809800044319188,
-        "corr_ode": 0.8776876232926953,
+        "rmse_abm": 0.4270048537299463,
+        "rmse_ode": 2.486152821467507,
+        "corr_abm": 0.8809850499390451,
+        "corr_ode": 0.8776218971030975,
         "threshold": 0.8478745271017442,
         "c1_relative": true,
         "c1_absolute": true,
         "rmse_reduced": 1.1638996831357857,
-        "relative_improvement": 0.7322965585606122
+        "relative_improvement": 0.7368948294058395
       },
       "c2_detail": {
-        "mean_delta": 0.09878531307457009,
-        "var_delta": 0.044475908850689506,
-        "relative_mean": 0.028836639010203526,
-        "relative_var": 0.044475908850689506
+        "mean_delta": 0.09803680267025258,
+        "var_delta": 0.04280678797840785,
+        "relative_mean": 0.02898727750850706,
+        "relative_var": 0.04280678797840785
       },
       "c3_detail": {
-        "persistence_1": 0.1194024706993451,
-        "persistence_2": 0.11937888316507186
+        "persistence_1": 0.11427673230096455,
+        "persistence_2": 0.11425365826249745
       },
       "c4_detail": {
-        "diff": 0.3339746153547263
+        "diff": 0.3339746153547267
       },
       "c5_detail": {
-        "sensitivity_min": -3.7654113757805874,
-        "sensitivity_max": -3.109584413037109,
-        "range": 0.6558269627434785,
-        "relative_range": 0.02050822868961496
+        "sensitivity_min": -3.7172416986971686,
+        "sensitivity_max": -3.069489384674654,
+        "range": 0.6477523140225148,
+        "relative_range": 0.02025572802714585
       },
       "bias_correction": {
         "applied": true,
         "mode": "full",
-        "ode_obs_corr_train": 0.8393951246385615,
-        "ode_mean_train": 1.8879388137127704,
+        "ode_obs_corr_train": 0.8534237010946555,
+        "ode_mean_train": 1.830330026514145,
         "obs_mean_train": -1.2076759345644758e-14,
-        "scale_factor": 1.9635357167527185
+        "scale_factor": 1.9335102547005756
       },
       "emergence_taxonomy": {
         "category": "strong",
         "ode_quality": "good",
-        "ode_obs_corr": 0.8776876232926953,
+        "ode_obs_corr": 0.8776218971030975,
         "interpretation": "Emergencia macro fuerte: el ODE reduce significativamente la incertidumbre del ABM"
       }
     }

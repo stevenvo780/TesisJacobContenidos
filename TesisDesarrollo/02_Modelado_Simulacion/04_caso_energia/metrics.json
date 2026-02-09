@@ -1,8 +1,8 @@
 {
   "case": "Energ\u00eda (OPSD GB Grid)",
-  "generated_at": "2026-02-09T18:27:49.207036Z",
+  "generated_at": "2026-02-09T18:54:49.537298Z",
   "git": {
-    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
+    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
     "dirty": true
   },
   "phases": {
@@ -39,13 +39,13 @@
       "errors": {
         "rmse_abm": 0.40254955075123766,
         "rmse_abm_no_ode": 0.42275523682255234,
-        "rmse_ode": 0.4600719310192836,
+        "rmse_ode": 0.4415375182417048,
         "rmse_reduced": 0.4390028359553667,
         "threshold": 0.3268829040442018
       },
       "correlations": {
         "abm_obs": -0.1334574759339645,
-        "ode_obs": -0.04660260620846847
+        "ode_obs": -0.11529924858852285
       },
       "edi": {
         "value": 0.04779523542554206,
@@ -106,9 +106,9 @@
       "c5_uncertainty": true,
       "c1_detail": {
         "rmse_abm": 0.40254955075123766,
-        "rmse_ode": 0.4600719310192836,
+        "rmse_ode": 0.4415375182417048,
         "corr_abm": -0.1334574759339645,
-        "corr_ode": -0.04660260620846847,
+        "corr_ode": -0.11529924858852285,
         "threshold": 0.3268829040442018,
         "c1_relative": true,
         "c1_absolute": false,
@@ -137,15 +137,15 @@
       "bias_correction": {
         "applied": true,
         "mode": "full",
-        "ode_obs_corr_train": 0.9387578595195062,
-        "ode_mean_train": 0.7766851124732076,
+        "ode_obs_corr_train": 0.9380116786935235,
+        "ode_mean_train": 0.750958792714884,
         "obs_mean_train": 2.7478019859472625e-16,
-        "scale_factor": 4.684519713444033
+        "scale_factor": 4.90256048876483
       },
       "emergence_taxonomy": {
         "category": "trend",
         "ode_quality": "poor",
-        "ode_obs_corr": -0.04660260620846847,
+        "ode_obs_corr": -0.11529924858852285,
         "interpretation": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma"
       },
       "synthetic_meta": {
@@ -189,13 +189,13 @@
       "errors": {
         "rmse_abm": 1.6006554091123755,
         "rmse_abm_no_ode": 1.595763451535795,
-        "rmse_ode": 2.0695715822531273,
+        "rmse_ode": 2.0439796982743528,
         "rmse_reduced": 1.581981344343945,
         "threshold": 1.2251044426493007
       },
       "correlations": {
         "abm_obs": -0.44331617536870405,
-        "ode_obs": -0.37381753654240796
+        "ode_obs": -0.37491523521601683
       },
       "edi": {
         "value": -0.0030655906875623287,
@@ -256,9 +256,9 @@
       "c5_uncertainty": true,
       "c1_detail": {
         "rmse_abm": 1.6006554091123755,
-        "rmse_ode": 2.0695715822531273,
+        "rmse_ode": 2.0439796982743528,
         "corr_abm": -0.44331617536870405,
-        "corr_ode": -0.37381753654240796,
+        "corr_ode": -0.37491523521601683,
         "threshold": 1.2251044426493007,
         "c1_relative": false,
         "c1_absolute": false,
@@ -287,7 +287,7 @@
       "bias_correction": {
         "applied": false,
         "mode": "none",
-        "ode_obs_corr_train": -0.40627606655084025,
+        "ode_obs_corr_train": -0.406342223351137,
         "ode_mean_train": null,
         "obs_mean_train": null,
         "scale_factor": null
@@ -295,7 +295,7 @@
       "emergence_taxonomy": {
         "category": "null",
         "ode_quality": "moderate",
-        "ode_obs_corr": -0.37381753654240796,
+        "ode_obs_corr": -0.37491523521601683,
         "interpretation": "Emergencia nula: sin evidencia de constricci\u00f3n macro efectiva"
       }
     }

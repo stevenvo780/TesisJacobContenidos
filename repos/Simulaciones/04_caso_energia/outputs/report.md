@@ -1,6 +1,6 @@
 # Reporte de Validación — Energía (OPSD GB Grid)
 
-- generated_at: 2026-02-09T18:27:49.207036Z
+- generated_at: 2026-02-09T18:54:49.537298Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -28,7 +28,7 @@
 ### Errores
 - rmse_abm: 0.4025
 - rmse_abm_no_ode: 0.4228
-- rmse_ode: 0.4601
+- rmse_ode: 0.4415
 - rmse_reduced: 0.4390
 - threshold: 0.3269
 
@@ -70,7 +70,7 @@
 ### Errores
 - rmse_abm: 1.6007
 - rmse_abm_no_ode: 1.5958
-- rmse_ode: 2.0696
+- rmse_ode: 2.0440
 - rmse_reduced: 1.5820
 - threshold: 1.2251
 

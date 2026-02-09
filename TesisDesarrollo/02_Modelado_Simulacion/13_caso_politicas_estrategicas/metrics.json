@@ -1,8 +1,8 @@
 {
   "case": "Pol\u00edticas Estrat\u00e9gicas (Bass Diffusion + Inertia)",
-  "generated_at": "2026-02-09T18:26:55.337970Z",
+  "generated_at": "2026-02-09T18:53:56.310596Z",
   "git": {
-    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
+    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
     "dirty": true
   },
   "phases": {
@@ -37,26 +37,26 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 1.3992558662038133,
+        "rmse_abm": 1.3978006559998286,
         "rmse_abm_no_ode": 1.3985340124240857,
-        "rmse_ode": 0.5130020394147978,
+        "rmse_ode": 0.5470404932628831,
         "rmse_reduced": 1.405174602909975,
         "threshold": 0.3899643195002039
       },
       "correlations": {
-        "abm_obs": 0.26889933948448336,
-        "ode_obs": 0.0
+        "abm_obs": 0.33321906692489534,
+        "ode_obs": 0.3332190669248953
       },
       "edi": {
-        "value": -0.000516150321204103,
-        "bootstrap_mean": -0.0005080069244540917,
-        "ci_lo": -0.0011408090497354538,
-        "ci_hi": -9.764907274679948e-05,
+        "value": 0.0005243751083221508,
+        "bootstrap_mean": 0.0005361973904477342,
+        "ci_lo": 9.594727205005055e-05,
+        "ci_hi": 0.001119136758253228,
         "valid": false,
-        "weighted_value": -0.0001032300642408206,
+        "weighted_value": 0.00010487502166443017,
         "loe_factor": 0.2,
-        "permutation_pvalue": 0.83,
-        "permutation_null_95": -0.00035211335794387824,
+        "permutation_pvalue": 0.1,
+        "permutation_null_95": 0.0005477124526070243,
         "permutation_significant": false
       },
       "viscosity": {
@@ -73,16 +73,16 @@
         "edi_std": 0.0,
         "monotonic_decrease": false
       },
-      "effective_information": -0.000789708009492629,
+      "effective_information": 0.0008581194577594875,
       "symploke": {
-        "internal": 0.9297207748691955,
-        "external": 0.8592851205201452,
-        "cr": 1.0819700617024697,
+        "internal": 0.9116930233247339,
+        "external": 0.8593117044656073,
+        "cr": 1.060957297086628,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.021352836218402303,
+        "dominance_share": 0.021344860141086386,
         "pass": true
       },
       "persistence": {
@@ -92,34 +92,34 @@
       },
       "emergence": {
         "err_reduced": 1.3985340124240857,
-        "err_abm": 1.3992558662038133,
+        "err_abm": 1.3978006559998286,
         "threshold": 0.07799286390004079,
         "pass": false,
         "significance": "computed"
       },
       "coupling_check": false,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 1.3992558662038133,
-        "rmse_ode": 0.5130020394147978,
-        "corr_abm": 0.26889933948448336,
-        "corr_ode": 0.0,
+        "rmse_abm": 1.3978006559998286,
+        "rmse_ode": 0.5470404932628831,
+        "corr_abm": 0.33321906692489534,
+        "corr_ode": 0.3332190669248953,
         "threshold": 0.3899643195002039,
-        "c1_relative": false,
+        "c1_relative": true,
         "c1_absolute": false,
         "rmse_reduced": 1.3985340124240857,
-        "relative_improvement": -0.0007218537797275548
+        "relative_improvement": 0.0007333564242570922
       },
       "c2_detail": {
-        "mean_delta": 0.00446280991735557,
-        "var_delta": 3.4915647838262473e-05,
-        "relative_mean": 0.00446280991735557,
-        "relative_var": 3.4915647838262473e-05
+        "mean_delta": 0.006247933884297607,
+        "var_delta": 4.5144457345809803e-05,
+        "relative_mean": 0.006247933884297607,
+        "relative_var": 4.5144457345809803e-05
       },
       "c3_detail": {
         "persistence_1": 0.0,
@@ -129,24 +129,24 @@
         "diff": 0.008760330578512998
       },
       "c5_detail": {
-        "sensitivity_min": 0.9614876033057835,
+        "sensitivity_min": 0.9733884297520674,
         "sensitivity_max": 1.0,
-        "range": 0.038512396694216466,
-        "relative_range": 0.038512396694216466
+        "range": 0.026611570247932592,
+        "relative_range": 0.026611570247932592
       },
       "bias_correction": {
-        "applied": true,
-        "mode": "full",
-        "ode_obs_corr_train": 0.9034938707287445,
-        "ode_mean_train": 0.8572448052643894,
-        "obs_mean_train": -1.1842378929335003e-16,
-        "scale_factor": 1.0437721418798924
+        "applied": false,
+        "mode": "reverted",
+        "ode_obs_corr_train": 0.9038015896306927,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
       },
       "emergence_taxonomy": {
-        "category": "null",
-        "ode_quality": "poor",
-        "ode_obs_corr": 0.0,
-        "interpretation": "Emergencia nula: sin evidencia de constricci\u00f3n macro efectiva"
+        "category": "trend",
+        "ode_quality": "moderate",
+        "ode_obs_corr": 0.3332190669248953,
+        "interpretation": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma"
       },
       "synthetic_meta": {
         "model": "Institutional Inertia + Shocks",
@@ -187,7 +187,7 @@
       "errors": {
         "rmse_abm": 1.7745042536632007,
         "rmse_abm_no_ode": 1.794437915149382,
-        "rmse_ode": 0.9596040115262453,
+        "rmse_ode": 1.0011404684442051,
         "rmse_reduced": 1.8131304021817063,
         "threshold": 0.1452195661686112
       },
@@ -254,7 +254,7 @@
       "c5_uncertainty": true,
       "c1_detail": {
         "rmse_abm": 1.7745042536632007,
-        "rmse_ode": 0.9596040115262453,
+        "rmse_ode": 1.0011404684442051,
         "corr_abm": 0.0,
         "corr_ode": 0.0,
         "threshold": 0.1452195661686112,
@@ -285,10 +285,10 @@
       "bias_correction": {
         "applied": true,
         "mode": "full",
-        "ode_obs_corr_train": 0.8788696405545304,
-        "ode_mean_train": 0.9997904083526111,
+        "ode_obs_corr_train": 0.8777871342477224,
+        "ode_mean_train": 0.9879342212683141,
         "obs_mean_train": 1.924386576016938e-16,
-        "scale_factor": 1.0541680107480687
+        "scale_factor": 1.1146319093506742
       },
       "emergence_taxonomy": {
         "category": "trend",
