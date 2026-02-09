@@ -7,10 +7,16 @@ __pycache__/
 **/outputs/*.pkl
 **/outputs/*.npy
 
+# Data caches (regenerable)
+data_cache/
+
+# Ephemeral run outputs
+outputs_run/
+outputs_gpu/
+
 # Ignore large data files
 caso_*/data/*.csv
 04_caso_energia/data/opsd_time_series.csv
-06_caso_estetica/data/moma_artworks.csv
 
 # Ignore datasets
 *.csv
