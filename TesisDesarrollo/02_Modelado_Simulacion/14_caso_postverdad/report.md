@@ -1,6 +1,6 @@
 # Reporte de Validación — Postverdad (SIS Infodemic)
 
-- generated_at: 2026-02-09T22:01:51.230338Z
+- generated_at: 2026-02-09T23:01:07.325646Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -93,5 +93,5 @@ Categoría de emergencia: **null**. No se detecta estructura macro significativa
 - ode_rolling: None
 
 ### Interpretación
-Los resultados muestran señal de emergencia **suggestive**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

@@ -1,6 +1,6 @@
 # Reporte de Validación — Wikipedia (Axelrod + Lotka-Volterra)
 
-- generated_at: 2026-02-09T22:02:01.680951Z
+- generated_at: 2026-02-09T23:01:18.297539Z
 
 ## Fase synthetic
 - **overall_pass**: False

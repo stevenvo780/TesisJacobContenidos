@@ -88,7 +88,7 @@ def compute_edi(rmse_abm, rmse_reduced):
     return float(np.clip(raw, -1.0, 1.0))
 
 
-def permutation_test_edi(obs_val, abm_val, reduced_val, n_perm=200, seed=42):
+def permutation_test_edi(obs_val, abm_val, reduced_val, n_perm=999, seed=42):
     """
     Test de permutación para EDI (Fix C12).
     
@@ -96,6 +96,9 @@ def permutation_test_edi(obs_val, abm_val, reduced_val, n_perm=200, seed=42):
     generada permutando las observaciones. Si el EDI real no supera
     el percentil 95 de la distribución nula, la estructura detectada
     no es significativa.
+    
+    n_perm=999 sigue Phipson & Smyth (2010): resolución p mínima = 0.001,
+    suficiente para α=0.05 con margen de error estrecho.
     
     Returns:
         (edi_real, p_value, edi_null_95)
@@ -750,9 +753,14 @@ class CaseConfig:
         self.ode_calibration = ode_calibration
         
         # Overrides de High Performance (Variables de Entorno)
+        # HYPER_GRID_SIZE: solo aplica a modelos espaciales (grid_size > 1).
+        # Modelos no-espaciales (grid_size=1, e.g. Brock-Hommes HAM) no deben
+        # ser sobrescritos porque la grilla no tiene significado físico.
+        # Además, nunca REDUCIR grid_size: si el caso define 25, no bajar a 20.
         import os
-        if "HYPER_GRID_SIZE" in os.environ:
-            self.grid_size = int(os.environ["HYPER_GRID_SIZE"])
+        if "HYPER_GRID_SIZE" in os.environ and self.grid_size > 1:
+            env_gs = int(os.environ["HYPER_GRID_SIZE"])
+            self.grid_size = max(self.grid_size, env_gs)
         if "HYPER_N_RUNS" in os.environ:
             self.n_runs = int(os.environ["HYPER_N_RUNS"])
         else:
@@ -764,6 +772,12 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
                    synthetic_meta=None, param_grid=None):
     """Evalúa una fase completa (sintética o real)."""
     phase_name = "synthetic" if synthetic_meta else "real"
+
+    # Fix reproducibilidad: fijar estado global de RNG al inicio de cada fase.
+    # Esto garantiza que resultados no varíen entre ejecuciones dado los mismos
+    # datos de entrada. Cada función interna usa su propio seed local además.
+    np.random.seed(42)
+    random.seed(42)
 
     if df.empty or len(df) < 10:
         return _empty_phase(phase_name, start_date, end_date, split_date, "Datos insuficientes")
@@ -1152,10 +1166,14 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, abm_no_ode_val)
     
     # Fix C12: Permutation test para significancia del EDI
+    # n_perm=999: estándar en literatura (Phipson & Smyth 2010), resolución p=0.001
     _, edi_pvalue, edi_null_95 = permutation_test_edi(
-        obs_val, abm_val, abm_no_ode_val, n_perm=200, seed=42
+        obs_val, abm_val, abm_no_ode_val, n_perm=999, seed=42
     )
-    edi_significant = edi_pvalue < 0.05  # EDI es significativo al 5%
+    # Significancia requiere AMBOS: p < 0.05 Y EDI > 0.01 (mínimo efecto).
+    # Sin el gate de magnitud, series con autocorrelación fuerte pueden producir
+    # p=0.0 con EDI≈0, lo cual es un artefacto estadístico sin valor ontológico.
+    edi_significant = (edi_pvalue < 0.05) and (edi_val > 0.01)
 
     # Fix T6: Test de sesgo de predictibilidad (trend bias)
     # Si la serie tiene tendencia lineal fuerte, el EDI puede inflarse
