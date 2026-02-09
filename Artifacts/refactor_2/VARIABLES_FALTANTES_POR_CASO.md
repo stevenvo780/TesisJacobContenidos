@@ -1,5 +1,7 @@
 # Variables Faltantes por Caso — Oportunidades de Mejora
 
+> **Actualizado:** 2026-02-10 (post commit 3d0a9d1 — Fix #5/#7)
+
 Este documento lista las variables reales disponibles que podrian integrarse para mejorar
 cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibles.
 
