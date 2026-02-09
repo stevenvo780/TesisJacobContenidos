@@ -86,11 +86,13 @@ def main():
         base_noise=0.005,
         loe=4,                       # Level of Evidence: alto (datos sólidos, modelo validado)
         n_runs=7,
-        ode_calibration=True,
+        ode_calibration=False,   # Bypass calibrate_ode (aplasta alpha→0.001 con Tikhonov)
         extra_base_params={
-            "ode_delta": 0.005,     # Damping cuadrático: saturación
-            "forcing_scale": 0.15,
-            "macro_coupling": 0.40,
+            "ode_alpha": 0.10,         # Tracking forcing (Bass adoption rate)
+            "ode_beta": 0.02,          # Drag leve (obsolescencia)
+            "ode_saturation": 0.003,   # Saturación mercado finito
+            "forcing_scale": 0.10,
+            "macro_coupling": 0.25,
         },
         driver_cols=["internet_users", "broadband", "gdp_pc", "gdp_growth"],
     )

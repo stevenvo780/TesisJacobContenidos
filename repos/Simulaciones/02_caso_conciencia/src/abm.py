@@ -125,8 +125,9 @@ def simulate_abm(params, steps, seed=42):
         
         series_c.append(consciousness)
         
-        # Grid representation (4x4 modules)
-        grid = activations.reshape((grid_size, grid_size))
+        # Grid representation (sqrt(n_modules) x sqrt(n_modules))
+        actual_grid_size = int(np.sqrt(n_modules))
+        grid = activations[:actual_grid_size**2].reshape((actual_grid_size, actual_grid_size))
         series_grid.append(grid.copy())
         
     return {"c": series_c, "forcing": forcing, "grid": series_grid}

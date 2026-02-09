@@ -143,9 +143,13 @@ def simulate_abm(params, steps, seed=42):
         
         series_e.append(renewable_share)
         
-        # Grid representation: total capacity by tech
-        grid_state = capacity.sum(axis=0).reshape(1, -1)
-        grid_state = np.tile(grid_state, (grid_size, 1))
-        series_grid.append(grid_state)
+        # Grid representation: producer capacity map (grid_size x grid_size)
+        # Aggregate total renewable capacity per "region" 
+        grid = np.zeros((grid_size, grid_size))
+        for i in range(n_producers):
+            gx = i % grid_size
+            gy = (i // grid_size) % grid_size
+            grid[gx, gy] = (capacity[i, 2] + capacity[i, 3]) / (capacity[i].sum() + 1e-6)  # Renewable share
+        series_grid.append(grid)
         
     return {"e": series_e, "forcing": forcing, "grid": series_grid}

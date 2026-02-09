@@ -1,6 +1,7 @@
-Validation Results - 2026-02-08 21:30:29
+Validation Results - 2026-02-08 21:42:08
 ============================================================
 
+01_caso_clima: OK | EDI=0.0 | 19.8s
 02_caso_conciencia: FAIL | EDI=None | 0.3s
   Error:      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     )
@@ -11,14 +12,31 @@ Validation Results - 2026-02-08 21:30:29
     grid = activations.reshape((grid_size, grid_size))
 ValueError: cannot reshape array of size 16 into shape (20,20)
 
-03_caso_contaminacion: OK | EDI=None | 38.7s
-04_caso_energia: FAIL | EDI=None | 1.9s
-  Error: aso_energia/src/../../common/hybrid_validator.py", line 309, in calibrate_abm
-    sim = simulate_abm_fn(params, steps, seed=seed)
-  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/04_caso_energia/src/abm.py", line 125, in simulate_abm
-    retired_tech = rng.choice(n_tech, p=retirement_prob)
-  File "numpy/random/_generator.pyx", line 891, in numpy.random._generator.Generator.choice
-ValueError: Probabilities do not sum to 1. See Notes section of docstring for more information.
+03_caso_contaminacion: OK | EDI=None | 41.7s
+04_caso_energia: FAIL | EDI=None | 504.0s
+  Error: nal = internal_vs_external_cohesion(abm.get("grid", []), abm.get("forcing", []))
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/04_caso_energia/src/../../common/hybrid_validator.py", line 175, in internal_vs_external_cohesion
+    if j < n-1: nb_list.append(gs[:, i, j+1])
+                               ~~^^^^^^^^^^^
+IndexError: index 5 is out of bounds for axis 2 with size 5
 
+05_caso_epidemiologia: OK | EDI=0.0 | 120.1s
+06_caso_falsacion_exogeneidad: OK | EDI=None | 2.3s
+07_caso_falsacion_no_estacionariedad: OK | EDI=None | 0.6s
+08_caso_falsacion_observabilidad: OK | EDI=None | 0.6s
+09_caso_finanzas: OK | EDI=0.0 | 3.6s
+10_caso_justicia: OK | EDI=0.0 | 8.2s
+11_caso_movilidad: OK | EDI=0.0 | 13.7s
+12_caso_paradigmas: OK | EDI=0.2281 | 72.7s
+13_caso_politicas_estrategicas: OK | EDI=-0.0036 | 45.3s
+14_caso_postverdad: OK | EDI=0.0025 | 14.6s
+15_caso_wikipedia: OK | EDI=0.4143 | 242.4s
+16_caso_deforestacion: OK | EDI=-1.001 | 13.0s
+17_caso_oceanos: OK | EDI=-0.069 | 87.3s
+18_caso_urbanizacion: OK | EDI=0.0011 | 15.2s
+19_caso_acidificacion_oceanica: OK | EDI=0.0 | 310.6s
+20_caso_kessler: TIMEOUT | EDI=None | 600.0s
+  Error: Exceeded 10 minute timeout
 
-Total: 1/3 OK
+Total: 17/20 OK

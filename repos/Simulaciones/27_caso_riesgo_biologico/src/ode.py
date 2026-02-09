@@ -46,19 +46,19 @@ def simulate_ode(params, steps, seed=6):
     # Core tracking (calibrado por hybrid_validator)
     alpha = float(params.get("ode_alpha", 0.06))
     beta = float(params.get("ode_beta", 0.025))
-    # Damping cuadrático: autorregulación epidemiológica
-    delta = float(params.get("ode_delta", 0.005))
+    # Corrección: contención sanitaria lineal (freno proporcional al riesgo)
+    containment = float(params.get("ode_containment", 0.003))
 
     R = float(params.get("p0", 0.0))
     series = []
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
-        # Core puro: mean-reversion tracking hacia forcing (espacio Z)
+        # Core: mean-reversion tracking hacia forcing (espacio Z)
         core = alpha * (f - beta * R)
-        # No-lineal: freno cuadrático (contención sanitaria proporcional a R²)
-        damping = delta * R * abs(R)
-        dR = core - damping + random.gauss(0, noise_std)
+        # Contención: freno lineal suave (como burial en microplásticos)
+        contain = containment * max(0.0, R)
+        dR = core - contain + random.gauss(0, noise_std)
         R += dR
         R = max(-10.0, min(R, 10.0))
         R = _apply_assimilation(R, t, params)
