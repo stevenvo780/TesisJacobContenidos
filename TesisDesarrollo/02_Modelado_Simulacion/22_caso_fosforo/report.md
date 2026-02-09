@@ -1,6 +1,6 @@
 # Reporte de Validación — Ciclo del Fósforo (Carpenter Biogeoquímico)
 
-- generated_at: 2026-02-09T21:46:42.166565Z
+- generated_at: 2026-02-09T22:02:51.472150Z
 
 ## Fase synthetic
 - **overall_pass**: True

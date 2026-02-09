@@ -61,6 +61,7 @@ def main():
     config = CaseConfig(
         case_name="Deforestación Global (von Thünen Frontier)",
         value_col="value",
+        driver_cols=[],  # Dataset univariado (WorldBank AG.LND.FRST.ZS)
         series_key="d",
         grid_size=25,
         persistence_window=5,

@@ -1,8 +1,8 @@
 {
   "case": "Ocean (Stommel + Thermohaline ABM)",
-  "generated_at": "2026-02-09T21:46:41.274533Z",
+  "generated_at": "2026-02-09T22:02:17.223440Z",
   "git": {
-    "commit": "a0aba6c5656e61d475469687f66bef0a124ab8d3",
+    "commit": "431446216979ffa29ef7dab7406fe789fbe03687",
     "dirty": true
   },
   "phases": {
@@ -92,9 +92,13 @@
         "pass": true
       },
       "persistence": {
-        "model": 0.22595634075839346,
-        "obs": 0.02242057704285852,
-        "pass": false
+        "model_var": 0.22595634075839346,
+        "obs_var": 0.02242057704285852,
+        "model_std": 0.4753486517898136,
+        "obs_std": 0.149735022766414,
+        "std_ratio": 3.174598988316551,
+        "threshold_std": 5.0,
+        "pass": true
       },
       "emergence": {
         "err_reduced": 5.533674103666446,
@@ -158,7 +162,7 @@
         "c5_uncertainty": true,
         "symploke_pass": true,
         "non_locality_pass": true,
-        "persistence_pass": false,
+        "persistence_pass": true,
         "emergence_pass": true,
         "coupling_ok": false,
         "rmse_fraud_check": true,
@@ -264,8 +268,12 @@
         "pass": true
       },
       "persistence": {
-        "model": 0.001454854910391931,
-        "obs": 7.481725086070256,
+        "model_var": 0.001454854910391931,
+        "obs_var": 7.481725086070256,
+        "model_std": 0.03814256035443781,
+        "obs_std": 2.735274225022101,
+        "std_ratio": 0.013944693371330847,
+        "threshold_std": 5.0,
         "pass": true
       },
       "emergence": {

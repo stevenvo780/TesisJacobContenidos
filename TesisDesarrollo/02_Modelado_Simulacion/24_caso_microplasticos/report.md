@@ -1,6 +1,6 @@
 # Reporte de Validación — Microplásticos Oceánicos (Jambeck Persistent Accumulation)
 
-- generated_at: 2026-02-09T21:46:52.779526Z
+- generated_at: 2026-02-09T22:03:16.011450Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -48,7 +48,7 @@
 Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 
 ## Fase real
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
 - valor: 0.4265

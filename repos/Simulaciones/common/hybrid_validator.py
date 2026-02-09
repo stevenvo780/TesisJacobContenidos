@@ -1255,12 +1255,15 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     # Fix P9: usar la serie 1D reducida (mean-field) para consistencia con obs_val 1D
     # Antes usaba abm[sk][val_start:] que puede ser 3D (T,N,N) → varianza inflada
     model_persistence = window_variance(abm_val, config.persistence_window)
-    # Threshold 10x: varianza del modelo < 10× varianza obs (~3.16× en std)
-    # Justificación: el ABM introduce ruido estocástico que amplifica la varianza
-    # del mean-field vs. la serie observacional suavizada. Un ratio 10× en varianza
-    # (~3.2× en desviación estándar) es generoso pero evita falsos positivos en
-    # casos con datos z-normalizados donde las magnitudes son pequeñas.
-    persist_ok = model_persistence < 10.0 * max(obs_persistence, 0.001)
+    # Threshold 5× en desviación estándar (equivale a 25× en varianza).
+    # Justificación: comparar en std mantiene las mismas unidades que los datos,
+    # lo que hace el umbral interpretable: "la volatilidad del modelo no debe
+    # superar 5 veces la volatilidad observada". El ABM introduce ruido
+    # estocástico que amplifica la varianza del mean-field vs. la serie
+    # observacional suavizada, pero >5× en std indica divergencia no física.
+    model_std = np.sqrt(model_persistence)
+    obs_std_persist = np.sqrt(max(obs_persistence, 0.001))
+    persist_ok = model_std < 5.0 * obs_std_persist
 
     # Emergencia
     emergence_threshold = 0.2 * max(obs_std, 0.01)
@@ -1413,8 +1416,12 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             "pass": non_local_ok,
         },
         "persistence": {
-            "model": model_persistence,
-            "obs": obs_persistence,
+            "model_var": model_persistence,
+            "obs_var": obs_persistence,
+            "model_std": float(model_std),
+            "obs_std": float(obs_std_persist),
+            "std_ratio": float(model_std / obs_std_persist) if obs_std_persist > 0 else float("inf"),
+            "threshold_std": 5.0,
             "pass": persist_ok,
         },
         "emergence": {

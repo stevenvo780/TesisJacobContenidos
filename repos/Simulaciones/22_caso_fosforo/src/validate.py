@@ -55,6 +55,7 @@ def main():
     config = CaseConfig(
         case_name="Ciclo del Fósforo (Carpenter Biogeoquímico)",
         value_col="value",
+        driver_cols=[],  # Dataset univariado (WorldBank AG.CON.FERT.ZS)
         series_key="ph",
         grid_size=25,
         persistence_window=5,

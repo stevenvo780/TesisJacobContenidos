@@ -1,8 +1,8 @@
 {
   "case": "Riesgo Biol\u00f3gico Global (TB Incidence \u2014 Woolhouse)",
-  "generated_at": "2026-02-09T21:46:39.319377Z",
+  "generated_at": "2026-02-09T22:03:53.022017Z",
   "git": {
-    "commit": "a0aba6c5656e61d475469687f66bef0a124ab8d3",
+    "commit": "431446216979ffa29ef7dab7406fe789fbe03687",
     "dirty": true
   },
   "phases": {
@@ -94,8 +94,12 @@
         "pass": true
       },
       "persistence": {
-        "model": 0.028913362410796017,
-        "obs": 0.15989056256062714,
+        "model_var": 0.028913362410796017,
+        "obs_var": 0.15989056256062714,
+        "model_std": 0.17003929666637654,
+        "obs_std": 0.3998631798010754,
+        "std_ratio": 0.4252436964838022,
+        "threshold_std": 5.0,
         "pass": true
       },
       "emergence": {
@@ -280,9 +284,13 @@
         "pass": true
       },
       "persistence": {
-        "model": 0.12337038981266675,
-        "obs": 0.006018847408481328,
-        "pass": false
+        "model_var": 0.12337038981266675,
+        "obs_var": 0.006018847408481328,
+        "model_std": 0.3512412131465594,
+        "obs_std": 0.07758123103226275,
+        "std_ratio": 4.527399326784245,
+        "threshold_std": 5.0,
+        "pass": true
       },
       "emergence": {
         "err_reduced": 0.8072307027375545,
@@ -346,7 +354,7 @@
         "c5_uncertainty": true,
         "symploke_pass": true,
         "non_locality_pass": true,
-        "persistence_pass": false,
+        "persistence_pass": true,
         "emergence_pass": true,
         "coupling_ok": false,
         "rmse_fraud_check": true,

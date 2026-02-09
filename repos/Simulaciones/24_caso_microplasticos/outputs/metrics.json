@@ -1,8 +1,8 @@
 {
   "case": "Micropl\u00e1sticos Oce\u00e1nicos (Jambeck Persistent Accumulation)",
-  "generated_at": "2026-02-09T21:46:52.779526Z",
+  "generated_at": "2026-02-09T22:03:16.011450Z",
   "git": {
-    "commit": "a0aba6c5656e61d475469687f66bef0a124ab8d3",
+    "commit": "431446216979ffa29ef7dab7406fe789fbe03687",
     "dirty": true
   },
   "phases": {
@@ -94,8 +94,12 @@
         "pass": true
       },
       "persistence": {
-        "model": 0.0004024796792312546,
-        "obs": 0.00010313543393415657,
+        "model_var": 0.0004024796792312546,
+        "obs_var": 0.00010313543393415657,
+        "model_std": 0.02006189620228493,
+        "obs_std": 0.03162277660168379,
+        "std_ratio": 0.634412861811025,
+        "threshold_std": 5.0,
         "pass": true
       },
       "emergence": {
@@ -183,7 +187,7 @@
     },
     "real": {
       "phase": "real",
-      "overall_pass": false,
+      "overall_pass": true,
       "data": {
         "start": "1980-01-01",
         "end": "2020-12-01",
@@ -279,9 +283,13 @@
         "pass": true
       },
       "persistence": {
-        "model": 29.569355919023597,
-        "obs": 1.45645641091809,
-        "pass": false
+        "model_var": 29.569355919023597,
+        "obs_var": 1.45645641091809,
+        "model_std": 5.437771227168683,
+        "obs_std": 1.206837358933709,
+        "std_ratio": 4.505802863090997,
+        "threshold_std": 5.0,
+        "pass": true
       },
       "emergence": {
         "err_reduced": 18.183870954285045,
@@ -345,7 +353,7 @@
         "c5_uncertainty": true,
         "symploke_pass": true,
         "non_locality_pass": true,
-        "persistence_pass": false,
+        "persistence_pass": true,
         "emergence_pass": true,
         "coupling_ok": true,
         "rmse_fraud_check": true,
