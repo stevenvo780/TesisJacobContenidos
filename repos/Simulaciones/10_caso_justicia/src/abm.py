@@ -28,6 +28,10 @@ def simulate_abm(params, steps, seed=42):
     # Initial Opinions (Random or clustered)
     opinions = rng.uniform(0.0, 1.0, size=(grid_size, grid_size))
     
+    # Macro Coupling (ODE justice index)
+    macro_series = params.get("macro_target_series")
+    coupling = params.get("macro_coupling", 0.0)
+    
     # Output series (Mean Opinion across society)
     series_x = []
     
@@ -47,6 +51,11 @@ def simulate_abm(params, steps, seed=42):
         # Apply Law enforcement (Global Field)
         # op = op + law_strength * (target - op)
         opinions = opinions + law_strength * (target_norm - opinions) + rng.normal(0, 0.01, size=opinions.shape)
+        
+        # Macro coupling: ODE justice index nudges societal opinion
+        if macro_series is not None and t < len(macro_series) and coupling > 0:
+            macro_target = macro_series[t]
+            opinions += coupling * (macro_target - np.mean(opinions))
         
         # 2. Pairwise Interactions (Deffuant)
         # We can simulate N interactions per step to approximate time scale

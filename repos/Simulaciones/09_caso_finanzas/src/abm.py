@@ -131,77 +131,63 @@ def simulate_spatial_ham(params, steps, seed, forcing):
     g_chart = params.get("abm_g_chart", 0.5)
     noise = params.get("abm_noise", 0.05)
     
+    # Macro Coupling (ODE influence on fundamental anchor)
+    macro_series = params.get("macro_target_series")
+    coupling = params.get("macro_coupling", 0.0)
+    
     # Agents: 0 = Fundamentalist, 1 = Chartist
     strategies = rng.choice([0, 1], size=(grid_size, grid_size))
     
     price = params.get("p0", 0.0)
     prev_price = price
     
+    series_x = []
     series_grid = []
     
+    n_agents = grid_size * grid_size
+    lambda_depth = max(1.0, float(n_agents) * 0.1)
+    
     for t in range(steps):
-        p_fund = forcing[t] * 10 if t < len(forcing) else 0
+        # Fundamental anchor: forcing or macro coupling
+        p_fund_base = forcing[t] * 10 if t < len(forcing) else 0
+        if macro_series is not None and t < len(macro_series):
+            p_fund = (1.0 - coupling) * p_fund_base + coupling * macro_series[t]
+        else:
+            p_fund = p_fund_base
+        
         trend = price - prev_price
         
-        # Calculate Demand per agent
-        # Fund: g_f * (P* - P)
-        # Chart: g_c * Trend
-        
+        # Demand per agent type
         d_funds = g_fund * (p_fund - price)
         d_charts = g_chart * trend
         
-        # Total Demand sum
-        # strategies is 0/1. 
-        # Demand = sum( (1-s)*d_f + s*d_c )
         n_chart = np.sum(strategies)
-        n_fund = (grid_size*grid_size) - n_chart
+        n_fund = n_agents - n_chart
         
-        # Scale noise by sqrt(N) to keep volatility consistent regardless of size
-        n_agents = grid_size * grid_size
         excess_demand = n_fund * d_funds + n_chart * d_charts + rng.normal(0, noise * np.sqrt(n_agents))
         
-        # Price Impact
-        # Market Depth lambda ~ N
-        # If N=1, depth=1. If N=400, depth=400.
-        # This keeps price volatility comparable.
-        lambda_depth = max(1.0, float(n_agents) * 0.1)
         next_price = price + excess_demand / lambda_depth
+        # Prevent price explosion (mean-reverting bound)
+        next_price = np.clip(next_price, -100, 100)
         
         realized_return = next_price - price
         
-        # Profitability
-        prof_f = d_funds * realized_return
-        prof_c = d_charts * realized_return
+        # Profitability (clipped for stability)
+        prof_f = np.clip(d_funds * realized_return, -10, 10)
+        prof_c = np.clip(d_charts * realized_return, -10, 10)
         
-        # Switching Logic (Ising-like)
-        # Agents look at Profit Diff + Local Majority (Social Proof)
-        diff_profit = prof_c - prof_f
+        diff_profit = np.clip(prof_c - prof_f, -20 / max(beta, 0.01), 20 / max(beta, 0.01))
         
-        # Social term: J * (sum of neighbor strategies - sum of neighbor opposite)
-        # simplified: J * (fraction_neighbors_same - 0.5)
-        # For now, pure profit switching + global social trend
-        
-        # Vectorized probability update
-        # U_c - U_f = beta * diff_profit
-        # Prob(switch to C) = 1 / (1 + exp(-(U_c - U_f)))
         prob_c = 1.0 / (1.0 + np.exp(-beta * diff_profit))
         
-        # Update grid
         random_draws = rng.random((grid_size, grid_size))
         strategies = (random_draws < prob_c).astype(int)
         
-        # Store state
-        # We store the PRICE in the grid? No, the grid is agents.
-        # But the validator expects a grid of VALUES (Prices).
-        # We can replicate the global price to the grid + local noise
-        # to simulate "Local Prices" in a fragmented market?
-        # Or just store the scalar price in every cell (efficient).
-        
-        # Validator expects grid[t][x][y]
         grid_state = np.full((grid_size, grid_size), price)
         series_grid.append(grid_state)
+        series_x.append(float(price))
         
         prev_price = price
         price = next_price
         
-    return {"x": series_grid, "forcing": forcing}
+    return {"x": series_x, "forcing": forcing, "grid": series_grid}

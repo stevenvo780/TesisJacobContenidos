@@ -58,7 +58,7 @@ def simulate_abm(params, steps, seed=42):
     beta = params.get("abm_beta", 0.3)        # Transmission prob per contact
     latent_period = params.get("abm_latent", 3)    # Days E -> I
     infectious_period = params.get("abm_infectious", 7)  # Days I -> R
-    immunity_waning = params.get("abm_waning", 0.0)  # Prob R -> S per day
+    immunity_waning = params.get("abm_waning", 0.02)  # Prob R -> S per step (~50 step immunity)
     
     # Forcing: Behavioral changes / interventions
     forcing = params.get("forcing_series")

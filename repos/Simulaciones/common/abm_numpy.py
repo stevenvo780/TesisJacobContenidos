@@ -97,7 +97,7 @@ def simulate_abm_numpy(params, steps, seed=2, series_key="tbar",
     fs = params.get("forcing_scale", 0.01)
     dmp = params.get("damping", 0.02)
     perturbation_event = params.get("perturbation_event", None)  # {"step": t, "magnitude": mag}
-    perturbation_event = params.get("perturbation_event", None)  # {"step": t, "magnitude": mag}
+    macro_target_series = params.get("macro_target_series")  # ODE macro target for coupling
     assim_series = params.get("assimilation_series")
     assim_strength = params.get("assimilation_strength", 0.0)
     reflexivity_gamma = params.get("reflexivity_gamma", 0.0)
@@ -144,6 +144,14 @@ def simulate_abm_numpy(params, steps, seed=2, series_key="tbar",
             - dmp * grid
             + noise_matrix
         )
+
+        # Coupling macro→micro: nudging hacia ODE target (cuando disponible)
+        # Esto es el acoplamiento descendente (causal descendence)
+        # Sin este término, ABM con ODE = ABM sin ODE → EDI = 0
+        if macro_target_series is not None and t < len(macro_target_series):
+            target = macro_target_series[t]
+            current_mean = grid.mean()
+            grid += mc * (target - current_mean)
 
         # Perturbación (Test de Viscosidad)
         if perturbation_event and t == perturbation_event["step"]:

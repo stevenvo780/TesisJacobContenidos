@@ -82,7 +82,7 @@ def simulate_abm(params, steps, seed=42):
         # 1. Bottom-up activation (stimulus + noise)
         # Different modules respond to different stimuli
         stimulus_response = rng.uniform(0, max(0.01, stimulus), size=n_modules)
-        activations += 0.1 * stimulus_response
+        activations += stimulus_response  # Full stimulus, not attenuated
         
         # 2. Decay
         activations *= (1 - decay_rate)
@@ -120,8 +120,9 @@ def simulate_abm(params, steps, seed=42):
             scale = 1 + coupling * 0.5 * (target - workspace_activation)
             activations *= np.clip(scale, 0.8, 1.2)
             
-        # Consciousness level = workspace activation (integrated information proxy)
-        consciousness = workspace_activation
+        # Consciousness level = global workspace activation
+        # Combines ignition events with background integration (Dehaene)
+        consciousness = max(workspace_activation, np.mean(activations))
         
         series_c.append(consciousness)
         

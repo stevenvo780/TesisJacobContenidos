@@ -58,6 +58,9 @@ def simulate_abm(params, steps, seed=42):
         
         # Activate random dormant agents
         dormant = [a for a in agents if not a["active"] and a["arrival_time"] is None]
+        if not dormant:
+            # Also re-queue agents with empty paths from recirculation
+            dormant = [a for a in agents if not a["active"] and len(a["path"]) == 0]
         if dormant:
             batch = rng.choice(dormant, size=min(len(dormant), n_to_activate), replace=False)
             for a in batch:
@@ -98,7 +101,7 @@ def simulate_abm(params, steps, seed=42):
             
             # Let's use a simple Global Constraint:
             # global_factor = params.get("macro_series")[t] if available
-            macro_series = params.get("macro_series")
+            macro_series = params.get("macro_target_series")
             coupling = params.get("macro_coupling", 0.0)
             
             if macro_series is not None and t < len(macro_series) and coupling > 0.0:
@@ -126,6 +129,16 @@ def simulate_abm(params, steps, seed=42):
             G[u][v]['weight'] = current_travel_time # Update for routing
             
         # 3. Move Agents
+        # Compute global speed factor from macro coupling
+        global_macro_factor = 1.0
+        macro_series = params.get("macro_target_series")
+        coupling = params.get("macro_coupling", 0.0)
+        if macro_series is not None and t < len(macro_series) and coupling > 0.0:
+            macro_val = macro_series[t]
+            # Interpret ODE output as normalized efficiency signal
+            global_macro_factor = 1.0 + coupling * macro_val
+            global_macro_factor = max(0.1, min(3.0, global_macro_factor))
+        
         # Reset occupancy for next step tally or keep persistent?
         # Agents occupy edge for duration.
         # Simplified: Agents jump nodes based on speed?
@@ -134,7 +147,7 @@ def simulate_abm(params, steps, seed=42):
         # Let's clear occupancy and rebuild it based on agent positions
         edge_occupancy = {e: 0 for e in G.edges()}
         
-        active_agents = [a for a in agents if a["active"]]
+        active_agents = [a for a in agents if a["active"] and len(a["path"]) > 0]
         
         for a in active_agents:
             # Check if arrived
@@ -142,6 +155,11 @@ def simulate_abm(params, steps, seed=42):
                 a["active"] = False
                 a["arrival_time"] = t
                 total_completed += 1
+                # Reset for next trip (recirculate)
+                a["origin"], a["dest"] = a["dest"], a["origin"]
+                a["path"] = []
+                a["pos"] = 0
+                a["arrival_time"] = None
                 continue
                 
             # Current Edge
@@ -162,7 +180,7 @@ def simulate_abm(params, steps, seed=42):
             # P_move ~ SpeedFactor
             # If jammed, P_move -> low
             density = current_jam / capacity
-            prob_move = max(0.05, 1.0 - density)
+            prob_move = max(0.05, (1.0 - density) * global_macro_factor)
             
             if rng.random() < prob_move:
                 a["pos"] += 1
@@ -187,6 +205,8 @@ def simulate_abm(params, steps, seed=42):
         
         # Aggregate active agent positions
         for a in active_agents:
+            if not a["active"] or len(a["path"]) == 0 or a["pos"] >= len(a["path"]):
+                continue
             u = a["path"][a["pos"]]
             v = a["path"][min(len(a["path"])-1, a["pos"]+1)]
             

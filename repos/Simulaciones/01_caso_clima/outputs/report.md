@@ -1,21 +1,21 @@
 # Reporte de Validación — Clima Regional (CONUS)
 
-- generated_at: 2026-02-09T04:23:05.360391Z
+- generated_at: 2026-02-09T04:43:49.724509Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [0.0000, 0.0000]
-- weighted_value (LoE factor 1.00): 0.0000
+- valor: -0.5929
+- bootstrap_mean: -0.5949
+- CI 95%: [-0.6612, -0.5364]
+- weighted_value (LoE factor 1.00): -0.5929
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 1.0000
-- external: 0.9999
-- CR: 1.0000
+- internal: 0.9999
+- external: 0.9038
+- CR: 1.1063
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,7 +26,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.6424
+- rmse_abm: 5.8021
 - rmse_abm_no_ode: 3.6424
 - rmse_ode: 6.0653
 - rmse_reduced: 6.7513
@@ -45,16 +45,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [0.0000, 0.0000]
-- weighted_value (LoE factor 1.00): 0.0000
+- valor: -0.3008
+- bootstrap_mean: -0.3018
+- CI 95%: [-0.3275, -0.2797]
+- weighted_value (LoE factor 1.00): -0.3008
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9975
-- external: 0.9980
-- CR: 0.9995
+- internal: 0.9828
+- external: 0.9172
+- CR: 1.0715
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -65,7 +65,7 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 1.1922
+- rmse_abm: 1.5508
 - rmse_abm_no_ode: 1.1922
 - rmse_ode: 1.7271
 - rmse_reduced: 0.9637
