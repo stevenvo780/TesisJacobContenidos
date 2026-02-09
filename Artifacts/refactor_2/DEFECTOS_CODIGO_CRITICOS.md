@@ -125,17 +125,12 @@ no tiene ningun termino que distinga un agente de otro excepto su posicion en la
 
 ---
 
-## 5. ABM Y ODE NO ESTAN ACOPLADOS
-
-**Archivo:** `repos/Simulaciones/common/hybrid_validator.py`, lineas 696-698
-
-```python
 ## 5. ABM Y ODE NO ESTAN ACOPLADOS — ⚠️ PARCIALMENTE RESUELTO
 
 > **Estado:** Se implementó acoplamiento **ODE→ABM** (top-down): la serie ODE se pasa como `macro_target_series` al ABM, que la usa como atractor en el término `mc * (macro_target - grid)`. También existe feedback **micro→macro** opcional que modifica el forcing antes de correr la ODE. Sin embargo:
-> - El acoplamiento es **unidireccional por defecto** (ODE corre primero, luego alimenta ABM)
-> - No hay iteración simultánea paso-a-paso
-> - La ODE no "ve" el estado del ABM durante la simulación
+> - 🚩 El acoplamiento es **unidireccional por defecto** (ODE corre primero, luego alimenta ABM)
+> - 🚩 No hay iteración simultánea paso-a-paso
+> - 🚩 La ODE no "ve" el estado del ABM durante la simulación
 
 **Archivo:** `repos/Simulaciones/common/hybrid_validator.py`, lineas 696-698
 
@@ -152,10 +147,7 @@ eval_params_ode["macro_target_series"] = ode[ode_key]
 abm = simulate_abm_fn(eval_params_ode, steps, seed=2)
 ```
 
-Falta acoplamiento bidireccional simultáneo paso-a-paso.
-```
-
-No hay ninguna linea donde la salida de la ODE alimente al ABM. El `macro_coupling` en el ABM acopla celdas a su propio promedio (`grid.mean()`), no a la ODE.
+🚩 **Falta:** Acoplamiento bidireccional simultáneo paso-a-paso.
 
 **Propuesta de acoplamiento real:**
 ```python
@@ -168,9 +160,11 @@ delta = ... + mc * (macro_target - grid) + ...  # Acoplar a la ODE, no al mean(g
 
 ---
 
-## 6. FASES SINTETICAS COMPARTIDAS — ❌ NO RESUELTO
+## 6. FASES SINTETICAS COMPARTIDAS — ❌ NO RESUELTO 🚩
 
-> **Estado:** 25/29 casos siguen usando los mismos parámetros sintéticos (`ode_alpha=0.08, ode_beta=0.03`). La fase sintética genera datos idénticos para estos 25 casos. Cada caso debería tener parámetros de ODE sintética calibrados a su dominio.
+> **Estado:** 🚩 25/29 casos siguen usando los mismos parámetros sintéticos (`ode_alpha=0.08, ode_beta=0.03`). La fase sintética genera datos idénticos para estos 25 casos. Cada caso debería tener parámetros de ODE sintética calibrados a su dominio.
+>
+> **Acción requerida:** Calibrar parámetros sintéticos por dominio para que cada caso tenga un ground truth diferenciado.
 
 5+ grupos de casos comparten parametros sinteticos identicos:
 - Grupo 1 (obs_mean=6.759): Clima, Energia, Finanzas, Wikipedia

@@ -2,16 +2,46 @@ import os
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
-
-from ode_models import simulate_ode_model
-
-ODE_MODEL = "logistic_forced"
-ODE_KEY = "v"
-
+import numpy as np
 
 def simulate_ode(params, steps, seed):
-    p = dict(params)
-    p["ode_model"] = ODE_MODEL
-    if "ode_key" not in p:
-        p["ode_key"] = ODE_KEY
-    return simulate_ode_model(p, steps, seed=seed)
+    """
+    Macroscopic Fundamental Diagram (MFD) Model.
+    Models the aggregate traffic state without individual cars.
+    
+    State: Density K (Cars/km)
+    Output: Flow Q (Cars/hr)
+    Relation: Q = vf * K * (1 - K/Kj)
+    Dyn: dK/dt = Demand(t) - Q(K)
+    """
+    rng = np.random.default_rng(seed)
+    
+    vf = params.get("mfd_vf", 60.0)
+    kj = params.get("mfd_kj", 150.0)
+    noise = params.get("ode_noise", 5.0)
+    
+    forcing = params.get("forcing_series") or np.zeros(steps)
+    
+    series = []
+    k = 10.0 # Initial density
+    
+    for t in range(steps):
+        # Demand (Forcing)
+        inflow = list(forcing)[t] * 10.0 # Scale forcing to inflow units
+        
+        # Outflow (Capacity)
+        q_out = vf * k * (1 - k/kj)
+        q_out = max(0, q_out)
+        
+        # dK/dt
+        dk = (inflow - q_out) * 0.1
+        k += dk
+        k = max(0, min(kj, k)) # Clamp density
+        
+        # Observation is Flow (+ noise)
+        obs = q_out + rng.normal(0, noise)
+        obs = max(0, obs)
+        
+        series.append(obs)
+        
+    return {"v": series, "forcing": forcing}

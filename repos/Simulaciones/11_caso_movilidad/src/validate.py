@@ -13,68 +13,27 @@ import pandas as pd
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 from abm import simulate_abm
-from data import fetch_data
+from data import load_real_data, make_synthetic
 from ode import simulate_ode
 from hybrid_validator import CaseConfig, run_full_validation, write_outputs
 
 
-def load_real_data(start_date, end_date):
-    cache_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "data", "dataset.csv")
-    )
-    df, _ = fetch_data(cache_path, start_date=start_date, end_date=end_date)
-    df["date"] = pd.to_datetime(df["date"])
-    return df.dropna(subset=["date", "value"])
-
-
-def make_synthetic(start_date, end_date, seed=101):
-    rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
-    steps = len(dates)
-    if steps < 5:
-        dates = pd.date_range(start=start_date, end=end_date, freq="YS")
-        steps = len(dates)
-
-    # Forcing: Linear growth (e.g. Population)
-    forcing = [0.01 * t for t in range(steps)]
-    
-    # True Model: Superlinear Scaling Y ~ N^1.15
-    # We simulate N growing linearly (forcing)
-    # So Y grows superlinearly with time.
-    
-    true_params = {
-        "p0": 1.0, "t0": 0.0, "ode_G": 0.05, "ode_beta": 1.15, "ode_D": 0.02,
-        "ode_noise": 0.02, "forcing_series": forcing,
-    }
-    sim = simulate_ode(true_params, steps, seed=seed + 1)
-    # The ODE returns 'v' (Mobility/Interaction) which is already scaled
-    obs = np.array(sim["v"]) + rng.normal(0.0, 0.05, size=steps)
-    
-    # Normalize to avoid massive values
-    obs = obs / np.mean(obs)
-
-    df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"beta": 1.15}, "measurement_noise": 0.05}
-    return df, meta
-
-
-
 def main():
     config = CaseConfig(
-        case_name="Movilidad Urbana (Scaling)",
+        case_name="Movilidad Urbana (Traffic)",
         value_col="value",
         series_key="v",
-        grid_size=20, 
-        persistence_window=12,
-        synthetic_start="2000-01-01",
-        synthetic_end="2023-12-01",
-        synthetic_split="2014-01-01",
-        real_start="2000-01-01",
-        real_end="2023-12-01",
-        real_split="2014-01-01",
+        grid_size=20, # Flow is aggregate, but we track spatial density
+        persistence_window=24, # Daily cycle
+        synthetic_start="2023-01-01 00:00:00",
+        synthetic_end="2023-01-07 23:00:00", # 1 week hourly
+        synthetic_split="2023-01-05 00:00:00",
+        real_start="2023-01-01 00:00:00",
+        real_end="2023-01-07 23:00:00",
+        real_split="2023-01-05 00:00:00",
         corr_threshold=0.6,
-        extra_base_params={"abm_gravity_alpha": 1.0, "abm_gravity_gamma": 2.0, "ode_beta": 1.15},
-        driver_cols=["gas_price", "gdp_per_capita"],
+        extra_base_params={"n_nodes": 50, "n_agents": 200},
+        driver_cols=["gas_price"],
     )
 
     results = run_full_validation(

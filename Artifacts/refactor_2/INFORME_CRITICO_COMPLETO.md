@@ -64,10 +64,10 @@ La tesis presenta un marco computacional ABM+ODE para validar la existencia de h
 | C3 | **ODE tiene correlacion nula en Clima (-0.027)** | R15 | La ODE de Clima tiene alpha=0.001 (casi inerte). Implementar ODE con balance radiativo real usando CO2 como forcing en lugar de obs[t-1]. | ✅ Resuelto — Clima usa Budyko-Sellers |
 | C4 | **forcing_scale > 1.0 viola A6** | R13, R17 | Ya corregido: cap en 0.99. Verificar en todos los metrics.json actuales (CONFIRMADO: ningun caso viola A6 actualmente). | ✅ Resuelto — cap fs≤0.99 |
 | C5 | **Dominance_share = 1/N (agentes clonados)** | R19, R20 | Existe `abm_gpu_v3.py` con forcing_gradient pero NO se usa. Integrar en validaciones: topologias no regulares, forzamiento espacial heterogeneo, parametros locales. | ✅ Resuelto — 3 capas heterogeneidad en abm_core.py |
-| C6 | **macro_coupling = 1.0 (esclavizacion)** | R11, R17 | 22/29 casos tienen mc > 0.5. Recalibrar con restriccion mc < 0.5 y reportar cual es el mc minimo que mantiene EDI > 0.30. | ❌ No resuelto — 23/29 con mc>0.5, sin restricción en calibración |
+| C6 | **macro_coupling = 1.0 (esclavizacion)** | R11, R17 | 22/29 casos tienen mc > 0.5. Recalibrar con restriccion mc < 0.5 y reportar cual es el mc minimo que mantiene EDI > 0.30. | 🚩 ❌ No resuelto — 23/29 con mc>0.5, sin restricción en calibración |
 | C7 | **Datos sinteticos en 12 casos** | R11, Brutal | Implementar fuentes de datos reales para al menos 8 de los 12 casos sinteticos (ver Seccion 5). | ⚠️ Parcial — 9/12 tienen código real, pero 6 caen a fallback sintético en ejecución |
 | C8 | **Proxies inadecuados** (Kessler=vuelos, Starlink=internet) | Nueva | Reemplazar con datos de CelesTrak (objetos orbitales) para Kessler y Starlink. | ✅ Resuelto — Kessler y Starlink usan CelesTrak SATCAT |
-| C9 | **Fases sinteticas compartidas entre casos** | Nueva | Al menos 5 grupos de casos comparten parametros sinteticos identicos. Cada caso debe tener parametros de ODE sintetica calibrados a su dominio. | ❌ No resuelto — 25/29 con alpha=0.08, beta=0.03 |
+| C9 | **Fases sinteticas compartidas entre casos** | Nueva | Al menos 5 grupos de casos comparten parametros sinteticos identicos. Cada caso debe tener parametros de ODE sintetica calibrados a su dominio. | 🚩 ❌ No resuelto — 25/29 con alpha=0.08, beta=0.03 |
 | C10 | **Data leakage: forcing contiene obs[t-1]** | Nueva | En `hybrid_validator.py:646-647`, `lag_forcing = obs[t-1]` contamina la validacion. El forcing debe construirse SOLO con datos del periodo de entrenamiento. | ✅ Resuelto — persistence en validación |
 
 ### GRUPO B: REQUIEREN REFACTOR ARQUITECTURAL
@@ -81,14 +81,14 @@ La tesis presenta un marco computacional ABM+ODE para validar la existencia de h
 
 ### GRUPO C: CRITICAS ONTOLOGICAS (no solucionables con codigo)
 
-| # | Critica | Iteracion | Estrategia Defensiva |
-|---|---------|-----------|---------------------|
-| C15 | **"Constriccion macro" no es "ontologia fuerte"** | R19, R20, Veredicto | Aceptar: la tesis valida constriccion macro efectiva bajo realismo operativo debil. Declerar explicitamente. |
-| C16 | **Circularidad en calibracion** | Termonuclear | El forcing contiene datos observacionales, pero la evaluacion se hace sin assimilation. Documentar el protocolo de separacion train/eval. |
-| C17 | **"Inercia de datos" vs "ontologia"** | Termonuclear | Admitir que el marco detecta inercia informacional. Argumentar que la inercia es evidencia de constriccion (no al reves). |
-| C18 | **Sesgo de predictibilidad** | Pendientes | Las series suaves dan EDI alto. Documentar como limitacion. Incluir test de sensibilidad a ruido. |
-| C19 | **Paradoja Estetica > Justicia** | Termonuclear | Justicia ahora es sintetico (EDI=0.946, tautologico). Si se pasa a datos reales, el resultado sera genuino. |
-| C20 | **Tono "Modo Dios"** | Brutal | Revisar narrativa de capitulos 02-04, agregar mas humildad y limitaciones explicitas. |
+| # | Critica | Iteracion | Estrategia Defensiva | Estado |
+|---|---------|-----------|---------------------|--------|
+| C15 | **"Constriccion macro" no es "ontologia fuerte"** | R19, R20, Veredicto | Aceptar: la tesis valida constriccion macro efectiva bajo realismo operativo debil. Declerar explicitamente. | 🚩 No resuelto — requiere revisión narrativa |
+| C16 | **Circularidad en calibracion** | Termonuclear | El forcing contiene datos observacionales, pero la evaluacion se hace sin assimilation. Documentar el protocolo de separacion train/eval. | 🚩 No resuelto — protocolo no documentado |
+| C17 | **"Inercia de datos" vs "ontologia"** | Termonuclear | Admitir que el marco detecta inercia informacional. Argumentar que la inercia es evidencia de constriccion (no al reves). | 🚩 No resuelto — argumento no redactado |
+| C18 | **Sesgo de predictibilidad** | Pendientes | Las series suaves dan EDI alto. Documentar como limitacion. Incluir test de sensibilidad a ruido. | 🚩 No resuelto — test de sensibilidad pendiente |
+| C19 | **Paradoja Estetica > Justicia** | Termonuclear | Justicia ahora es sintetico (EDI=0.946, tautologico). Si se pasa a datos reales, el resultado sera genuino. | 🚩 No resuelto — Justicia sigue con fallback sintético |
+| C20 | **Tono "Modo Dios"** | Brutal | Revisar narrativa de capitulos 02-04, agregar mas humildad y limitaciones explicitas. | 🚩 No resuelto — narrativa no revisada |
 
 ---
 
@@ -309,7 +309,7 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 | **P2.1** Integrar heterogeneidad de agentes | `caso_*/src/abm.py` o usar `common/abm_gpu_v3.py` | Activar `forcing_gradient`, topologias no regulares (small-world), parametros locales variables. | ✅ Resuelto |
 | **P2.2** Implementar acoplamiento ABM-ODE real | `common/hybrid_validator.py` + `caso_*/src/` | La salida de la ODE debe alimentar al ABM (como forcing o constraint macro), y las estadisticas del ABM deben informar parametros de la ODE. | ⚠️ Parcial — ODE→ABM ok |
 | **P2.3** Redisenar EDI para incluir la ODE | `common/hybrid_validator.py` | Comparar ABM_con_ODE vs ABM_sin_ODE, no vs ABM_sin_nada. | ⚠️ Parcial |
-| **P2.4** Restringir macro_coupling < 0.5 | `common/hybrid_validator.py` | Agregar restriccion en calibracion. Reportar resultados con mc limitado. | ❌ No resuelto — 23/29 con mc>0.5 |
+| **P2.4** Restringir macro_coupling < 0.5 | `common/hybrid_validator.py` | Agregar restriccion en calibracion. Reportar resultados con mc limitado. | 🚩 ❌ No resuelto — 23/29 con mc>0.5 |
 | **P2.5** Reemplazar proxies inadecuados | `20_caso_kessler/src/data.py`, `26_caso_starlink/src/data.py` | Usar CelesTrak para datos orbitales reales. | ✅ Resuelto |
 
 ### PRIORIDAD 3: MEDIA (mejora robustez y credibilidad)
@@ -317,10 +317,10 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 | Accion | Archivo(s) | Descripcion | Estado |
 |--------|-----------|-------------|--------|
 | **P3.1** Escalar grid a 100x100 | `common/abm_gpu_v3.py` + validaciones | Demostrar que resultados son estables con N=10,000. | ✅ Resuelto — 470x470 GPU |
-| **P3.2** Independizar fases sinteticas por caso | `caso_*/src/validate.py` | Cada caso debe tener ODE sintetica con parametros calibrados a su dominio, no compartidos. | ❌ No resuelto — 25/29 idénticos |
-| **P3.3** Agregar variables multivariadas | `caso_*/src/data.py` | Ver tabla 5.3. Al menos CO2 para clima, VIX para finanzas. | ❌ No resuelto |
+| **P3.2** Independizar fases sinteticas por caso | `caso_*/src/validate.py` | Cada caso debe tener ODE sintetica con parametros calibrados a su dominio, no compartidos. | 🚩 ❌ No resuelto — 25/29 idénticos |
+| **P3.3** Agregar variables multivariadas | `caso_*/src/data.py` | Ver tabla 5.3. Al menos CO2 para clima, VIX para finanzas. | 🚩 ❌ No resuelto |
 | **P3.4** Publicar distribucion nula del EDI | `common/edi_null_distribution_analysis.py` | Ejecutar y documentar el umbral 0.30 derivado de la distribucion nula bajo ruido puro. | ⚠️ Parcial — distribución GPU calculada (0.3248) |
-| **P3.5** Replay total con hashes | Scripts de verificacion | Regenerar todos los outputs, registrar MD5, versionar en git. | ❌ No resuelto |
+| **P3.5** Replay total con hashes | Scripts de verificacion | Regenerar todos los outputs, registrar MD5, versionar en git. | 🚩 ❌ No resuelto |
 
 ---
 
@@ -330,11 +330,13 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 
 La tesis tiene un **nucleo conceptual valido** (la idea de medir constriccion macro via ABM+ODE es genuinamente innovadora), pero la **implementacion computacional tiene defectos estructurales** que la hacen vulnerable a criticas demoledoras:
 
-1. **Solo 4 casos son genuinamente validados** con datos reales y EDI en rango: Energia, Finanzas, Paradigmas (sintetico), Deforestacion.
-2. **El caso bandera (Clima) tiene overall_pass=false** y su ODE es un fantasma (corr = -0.027).
-3. **El 46% de los "hiperobjetos" validados no existen** — son datos sinteticos generados por la misma ODE que luego se valida.
-4. **El data leakage en el forcing** infla todas las metricas artificialmente.
-5. **Los agentes son identicos** en la practica (varianza cae 99.7% en 10 pasos).
+1. 🚩 **Solo 1/29 EDI válido** — overall_pass = 0/29 tras correcciones. *(Antes: 4 validados con métricas infladas)*
+2. 🚩 **El caso bandera (Clima) sigue con overall_pass=false** — ODE Budyko-Sellers implementada ✅ pero correlación aún baja.
+3. ⚠️ **6 casos caen a fallback sintético** por fallos de API — código real listo en 9/12. *(Antes: 46% sintéticos)*
+4. ✅ ~~**Data leakage en forcing**~~ — Corregido con persistence en validación.
+5. ✅ ~~**Agentes idénticos**~~ — 3 capas de heterogeneidad implementadas.
+6. 🚩 **macro_coupling > 0.5 en 23/29 casos** — sin restricción en calibración.
+7. 🚩 **Fases sintéticas compartidas** — 25/29 con params idénticos (alpha=0.08, beta=0.03).
 
 ### Potencial Tras las Mejoras
 

@@ -1,89 +1,206 @@
 import numpy as np
+import networkx as nx
+from data import generate_city_graph
 
 def simulate_abm(params, steps, seed=42):
     """
-    Gravity Model of Mobility (Network Flow).
-    - Agents are 'Zones' or 'Cities'.
-    - Flow T_ij ~ (Pop_i * Pop_j) / Dist_ij^gamma
-    - We simulate the total flow (Mobility Index) as the emergent property.
+    Traffic ABM (High Fidelity).
+    - Network: Scale-Free City.
+    - Agents: Vehicles with Origin-Destination.
+    - Dynamics: Routing + Congestion.
     """
     rng = np.random.default_rng(seed)
     
-    # Grid of zones
-    grid_size = params.get("grid_size", 10)
-    n_zones = grid_size * grid_size
+    # 1. Setup Network
+    n_nodes = params.get("n_nodes", 100)
+    G = generate_city_graph(n_nodes, seed=seed)
     
-    # Parameters
-    alpha = params.get("abm_gravity_alpha", 1.0) # Mass exponent
-    gamma = params.get("abm_gravity_gamma", 2.0) # Distance decay
+    # 2. Setup Agents
+    n_agents = params.get("n_agents", 500)
+    agents = []
     
-    # Setup Zones
-    # Populations: Zipf's Law distribution (Power Law)
-    # P ~ 1/rank
-    ranks = np.arange(1, n_zones + 1)
-    populations = 10000 / ranks
-    # Shuffle positions
-    rng.shuffle(populations)
+    # Assign Homes and Works
+    # Hubs (low IDs) are Work centers. High IDs are Homes.
+    work_nodes = list(range(10))
+    home_nodes = list(range(10, n_nodes))
     
-    # Positions (Grid)
-    x = np.linspace(0, 1, grid_size)
-    y = np.linspace(0, 1, grid_size)
-    xx, yy = np.meshgrid(x, y)
-    positions = np.column_stack((xx.ravel(), yy.ravel()))
-    
-    forcing = params.get("forcing_series") # External drivers (e.g. GDP, Fuel Price)
+    for i in range(n_agents):
+        origin = rng.choice(home_nodes)
+        dest = rng.choice(work_nodes)
+        agents.append({
+            "id": i,
+            "origin": origin,
+            "dest": dest,
+            "path": [], # List of nodes
+            "pos": 0,   # Index in path
+            "active": False,
+            "arrival_time": None
+        })
+        
+    # Forcing (Demand Profile)
+    forcing = params.get("forcing_series")
     if forcing is None:
         forcing = np.ones(steps)
         
-    series_v = []
-    series_grid = []
+    series_flow = []
+    series_grid = [] # Store aggregate density map?
+    
+    # Traffic State tracking
+    # edges: (u, v) -> current_occupancy
+    edge_occupancy = {e: 0 for e in G.edges()}
+    total_completed = 0
     
     for t in range(steps):
-        f = forcing[t] if t < len(forcing) else 1.0
+        # 1. Demand Injection (Rush Hour based on Forcing)
+        # If forcing is high, activate more agents
+        demand_level = forcing[t] if t < len(forcing) else 0.5
+        n_to_activate = int(demand_level * 50) # 50 agents/hr max
         
-        # Calculate Flows
-        # Distance Matrix
-        # (Simplified: we recalculate or cache? N=100 is small enough)
-        # But this is purely static unless Pop or Forcing changes.
-        # Let's make Population grow with Forcing (Urbanization)
+        # Activate random dormant agents
+        dormant = [a for a in agents if not a["active"] and a["arrival_time"] is None]
+        if dormant:
+            batch = rng.choice(dormant, size=min(len(dormant), n_to_activate), replace=False)
+            for a in batch:
+                a["active"] = True
+                # Compute Initial Path (Dijkstra)
+                try:
+                    path = nx.shortest_path(G, source=a["origin"], target=a["dest"], weight="travel_time")
+                    a["path"] = path
+                    a["pos"] = 0
+                except nx.NetworkXNoPath:
+                    a["active"] = False # Nowhere to go
+                    
+        # 2. Update Edge Speeds (Greenshields)
+        # v = vf * (1 - k/kj)
+        # Update graph weights based on occupancy
+        for u, v in G.edges():
+            capacity = G[u][v]['capacity']
+            occ = edge_occupancy.get((u, v), 0) + edge_occupancy.get((v, u), 0) # Undirected flow logic? Or directed?
+            # NetworkX graph is undirected by default unless DiGraph. generate_city_graph uses barabasi_albert (undir).
+            # So (u,v) flows interact with (v,u)? Let's assume non-separated lanes for simplicity (Jam is bidirectional).
+            
+            density_ratio = occ / (capacity * 0.1) # Scale capacity to simulation step
+            density_ratio = min(1.0, density_ratio)
+            
+            speed_factor = max(0.1, 1.0 - density_ratio) # Min 10% speed
+            
+            # 2b. Macro-Coupling (Hyperobject Constraint)
+            # If Global State (MFD) says "Jam", we slow down everyone.
+            # macro_series[t] is Global Flow or Density?
+            # ODE returns 'v' (Flow). High Flow = Good? Or Jam?
+            # MFD: High Flow means Optimal Density. Low Flow means Empty OR Jammed.
+            # Let's assume 'macro_series' passed here is a "Stress" or "Congestion" index?
+            # hybrid_validator passes the ODE output ('v' = Flow).
+            # Using Flow to constrain speed is tricky (Parabolic).
+            # Let's assume the ODE output for coupling is DENSITY or inverse speed?
+            # Config 'ode_key'='v'.
+            # We can use 'forcing' as the macro signal? No, forcing is Demand.
+            
+            # Let's use a simple Global Constraint:
+            # global_factor = params.get("macro_series")[t] if available
+            macro_series = params.get("macro_series")
+            coupling = params.get("macro_coupling", 0.0)
+            
+            if macro_series is not None and t < len(macro_series) and coupling > 0.0:
+                # Interpret macro_val as "Global Speed Factor" or similar?
+                # If ODE outputs Flow, it's hard to interpret as Speed Constraint directly.
+                # But let's assume High Flow = High Speed (in uncongested regime).
+                # Normalize macro_val?
+                macro_val = macro_series[t]
+                # Assume macro_val is approx proportional to system efficiency.
+                # We blend local speed with global efficiency.
+                # speed = (1-c)*local + c*global
+                # Need to normalize macro_val to [0,1].
+                # Synthetic max flow ~ 2000? 
+                # Let's just use it as a raw factor if scaled? 
+                # Or simplistic: macro_val is just a signal.
+                
+                # BETTER: Recalibrate ODE to output "Efficiency" (0-1) in 'v' or separate key 'e'?
+                # For now, let's assume macro_val is scaled flow.
+                # If flow is high, traffic moves.
+                
+                global_speed = min(1.0, macro_val / 500.0) # Crude normalization
+                speed_factor = (1.0 - coupling) * speed_factor + coupling * global_speed
+            
+            current_travel_time = G[u][v]['length'] / (G[u][v]['free_flow_speed'] * max(0.01, speed_factor))
+            G[u][v]['weight'] = current_travel_time # Update for routing
+            
+        # 3. Move Agents
+        # Reset occupancy for next step tally or keep persistent?
+        # Agents occupy edge for duration.
+        # Simplified: Agents jump nodes based on speed?
+        # Or Agents occupy ONE edge at a time.
         
-        current_pops = populations * (1.0 + f * 0.1) 
+        # Let's clear occupancy and rebuild it based on agent positions
+        edge_occupancy = {e: 0 for e in G.edges()}
         
-        # Compute Total Flow (Mobility Index)
-        total_flow = 0.0
+        active_agents = [a for a in agents if a["active"]]
         
-        # We can sample pairs to speed up if N is large, but for N=400 (20x20) it's 160,000 pairs. Doable.
-        # Vectorized distance
-        # d_ij = sqrt((xi-xj)^2 + ...)
+        for a in active_agents:
+            # Check if arrived
+            if a["pos"] >= len(a["path"]) - 1:
+                a["active"] = False
+                a["arrival_time"] = t
+                total_completed += 1
+                continue
+                
+            # Current Edge
+            u = a["path"][a["pos"]]
+            v = a["path"][a["pos"]+1]
+            
+            # Register occupancy
+            if u < v: edge = (u,v)
+            else: edge = (v,u)
+            edge_occupancy[edge] = edge_occupancy.get(edge, 0) + 1
+            
+            # Advance logic: Probabilistic jump based on edge congestion
+            # capacity check
+            capacity = G[u][v]['capacity'] * 0.1
+            current_jam = edge_occupancy[edge]
+            
+            # Probability to move to next node
+            # P_move ~ SpeedFactor
+            # If jammed, P_move -> low
+            density = current_jam / capacity
+            prob_move = max(0.05, 1.0 - density)
+            
+            if rng.random() < prob_move:
+                a["pos"] += 1
+                # Re-routing chance if jammed?
+                if density > 0.8 and rng.random() < 0.2:
+                    # Re-calc path from current v to dest
+                    try:
+                        new_path = nx.shortest_path(G, source=v, target=a["dest"], weight="weight")
+                        a["path"] = a["path"][:a["pos"]+1] + new_path[1:]
+                    except:
+                        pass
+                        
+        # Emergent Metric: Total Flow (Active Agents moving)
+        # Or Network Flux.
+        # Let's track Total Active Agents (Density) vs Total Completed (Flow)?
+        # Or just number of active agents (Density proxy).
+        series_flow.append(len(active_agents))
         
-        # Simplification: Only interactions with 'Attractors' (Top K cities)?
-        # Or just compute aggregate scaling: Flow ~ sum(Pi*Pj/d)
+        # Grid visual (Density Heatmap)
+        grid_size = params.get("grid_size", 20)
+        grid = np.zeros((grid_size, grid_size))
         
-        # Let's start with a random subset of flows if N is large.
-        # For grid_size=20 (400 agents), full matrix is heavy for Python loop.
-        # But we verify scaling laws: Flow vs TotalPop.
+        # Aggregate active agent positions
+        for a in active_agents:
+            u = a["path"][a["pos"]]
+            v = a["path"][min(len(a["path"])-1, a["pos"]+1)]
+            
+            # Interpolate position? Assume at node u for simplicity
+            try:
+                # Use node u position
+                px, py = G.nodes[u]['pos']
+                # Map to grid
+                gx = int(px * (grid_size - 1))
+                gy = int(py * (grid_size - 1))
+                grid[gx, gy] += 1
+            except KeyError:
+                pass
+                
+        series_grid.append(grid)
         
-        # Let's simulate a simplified "Commuting" flow.
-        # Agents travel to the nearest 'Center' (High Pop).
-        
-        # Emergent Metric: Total Mobility (V)
-        # V = K * sum(Flows) * Noise
-        
-        # Let's assume Flow is proportional to Total Population ^ Beta (Scaling Law)
-        # plus some network structure effect.
-        
-        total_pop = np.sum(current_pops)
-        # Bettencourt: Interaction ~ N^1.15
-        scaling_flow = (total_pop ** 1.15) * 0.001
-        
-        # Add "Gravity" nuance:
-        # If zones are clustered, flow is higher.
-        # We use a crude "Clustering Factor" based on random positions?
-        # Simulation:
-        noise = rng.normal(0, 0.05 * scaling_flow)
-        v = scaling_flow + noise
-        
-        series_v.append(v)
-        series_grid.append(current_pops.reshape((grid_size, grid_size)))
-        
-    return {"v": series_v, "grid": series_grid, "forcing": forcing}
+    return {"v": series_flow, "forcing": forcing}

@@ -1,78 +1,105 @@
-"""
-data.py — 12_caso_paradigmas
-OpenAlex (papers/citations) + R&D funding (World Bank).
-"""
-
 import os
 import sys
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-
-from enhanced_data_fetchers import fetch_openalex_citations
-from worldbank_universal_fetcher import fetch_worldbank_indicator
-
-
-def _synthetic_fallback(start_date, end_date, seed=42):
+def make_synthetic(start_date, end_date, seed=101):
+    """
+    Generates synthetic "Consensus" data based on Landau-Ginzburg Phase Transition.
+    
+    The system (Scientific Community) has an Order Parameter M (Consensus).
+    M ~ 1 (Strong Consensus / Paradigm A)
+    M ~ -1 (Strong Consensus / Paradigm B)
+    M ~ 0 (Crisis / Pre-Paradigm)
+    
+    We simulate a "Revolution" where the potential barrier collapses due to accumulation of anomalies.
+    """
     rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
-    if len(dates) < 6:
-        dates = pd.date_range(start=start_date, end=end_date, freq="YS")
+    dates = pd.date_range(start=start_date, end=end_date, freq="h") # Hourly resolution roughly
     steps = len(dates)
-    trend = np.linspace(0.0, 1.0, steps)
-    seasonal = 0.2 * np.sin(np.linspace(0, 4 * np.pi, steps))
-    noise = rng.normal(0, 0.3, steps)
-    values = trend + seasonal + noise
-    return pd.DataFrame({"date": dates, "value": values}), {"source": "synthetic_fallback"}
+    
+    # "Anomalies" or "Temperature" forcing
+    # Rises linearly, causing a phase transition, then resets (New Paradigm established).
+    # Triangle wave for anomalies?
+    # Let's simulate TWO revolutions.
+    
+    period = steps // 2
+    anomalies = np.zeros(steps)
+    for t in range(steps):
+        phase_t = t % period
+        # Anomalies accumulate: 0 -> Tc -> 0
+        # When anomalies > Tc, system becomes disordered (Crisis).
+        # We want to drive a transition.
+        # Let's say: 
+        # T < Tc: Ordered (M = +/- 1)
+        # T increases... approaching Tc.
+        # At Tc, M -> 0.
+        # Then T decreases (New Paradigm solves anomalies), M -> +/- 1 (Randomly?)
+        
+        # Simpler: Forcing drives the PREFERENCE for +1 or -1.
+        # Field H(t) flips.
+        pass
 
-
-def _annual_to_monthly(df, cols):
-    df = df.copy()
-    df["date"] = pd.to_datetime(df["date"])
-    df = df.sort_values("date").set_index("date")
-    monthly = df[cols].resample("MS").interpolate("linear")
-    return monthly.reset_index()
-
-
-def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
-    start_date = start_date or "1990-01-01"
-    end_date = end_date or "2023-12-31"
-
-    if cache_path and not refresh and os.path.exists(cache_path):
-        df = pd.read_csv(cache_path, parse_dates=["date"])
-        return df, {"source": "cache", "case": "12_caso_paradigmas"}
-
-    cache_dir = os.path.dirname(cache_path) if cache_path else None
-    oa_cache = os.path.join(cache_dir, "openalex_citations.csv") if cache_dir else None
-    rd_cache = os.path.join(cache_dir, "rd_expenditure.csv") if cache_dir else None
-
-    try:
-        oa, _ = fetch_openalex_citations(
-            concept_id="C41008148",
-            start_year=int(start_date[:4]),
-            end_year=int(end_date[:4]),
-            cache_path=oa_cache,
-        )
-        if oa.empty:
-            raise RuntimeError("No OpenAlex data")
-        oa = oa.rename(columns={"works_count": "works", "cited_by_count": "citations"})
-        oa_m = _annual_to_monthly(oa, ["works", "citations"])
-
-        rd, err = fetch_worldbank_indicator("GB.XPD.RSDV.GD.ZS")
-        if rd is not None:
-            rd = rd.rename(columns={"value": "rd_expenditure"})
-            rd_m = _annual_to_monthly(rd, ["rd_expenditure"])
+    # Let's use MEAN FIELD ISING dynamic for the "True" Macro Process
+    # dm/dt = -m + tanh(beta * (J*m + H))
+    
+    beta_series = [] # Inverse Temperature (1/Anomalies)
+    h_series = []    # External Field (Evidence Bias)
+    
+    m = 1.0 # Initial consensus
+    series_m = []
+    
+    cycle_period = steps // 3
+    
+    for t in range(steps):
+        # 1. Temperature / Anomalies
+        # Normal Science: Low Temp (High Beta).
+        # Crisis: High Temp (Low Beta).
+        # We model a "Crisis" every cycle_period.
+        progress = (t % cycle_period) / cycle_period
+        
+        if progress < 0.7:
+            # Normal Science
+            temp = 0.5 + 0.1 * rng.random() # Low temp (below Tc ~ 2.26)
         else:
-            rd_m = pd.DataFrame(columns=["date", "rd_expenditure"])
+            # Crisis (Anomalies accumulate)
+            temp = 2.5 + rng.random() # High temp (above Tc)
+            
+        beta = 1.0 / temp
+        
+        # 2. External Field (Evidence)
+        # Bias shifts slowly: Paradigm A (+1) -> Paradigm B (-1)
+        # Cycle 0: +bias, Cycle 1: -bias, Cycle 2: +bias
+        cycle_idx = t // cycle_period
+        bias_dir = 1.0 if cycle_idx % 2 == 0 else -1.0
+        
+        # During Crisis (High Temp), the field flips?
+        # Or the field is always present, but only wins when Temp lowers?
+        h = 0.05 * bias_dir 
+        
+        # Mean Field Dynamics
+        # m_new = tanh(beta * (m + h))
+        # Add some inertia/noise
+        effective_field = m + h
+        m_target = np.tanh(beta * effective_field)
+        
+        dm = (m_target - m) * 0.1 + rng.normal(0, 0.05)
+        m += dm
+        m = np.clip(m, -1.0, 1.0)
+        
+        series_m.append(m)
+        beta_series.append(beta)
+        h_series.append(h)
+        
+    # Consensus Index usually positive [0, 1]? 
+    # Or -1 to 1?
+    # Let's keep it signed: +1 (Paradigm A), -1 (Paradigm B).
+    obs = np.array(series_m)
+    
+    df = pd.DataFrame({"date": dates, "value": obs})
+    meta = {"model": "Mean Field Ising", "Tc": 1.0} # Tc=1 for J=1 in MF
+    return df, meta
 
-        df = oa_m.merge(rd_m, on="date", how="left")
-        df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
-        df = df.rename(columns={"citations": "value"})
-
-        if cache_path:
-            os.makedirs(os.path.dirname(cache_path), exist_ok=True)
-            df.to_csv(cache_path, index=False)
-        return df, {"source": "OpenAlex+WorldBank", "note": err or ""}
-    except Exception:
-        return _synthetic_fallback(start_date, end_date)
+def load_real_data(start_date, end_date):
+    # Fallback only for now
+    return make_synthetic(start_date, end_date)[0]
