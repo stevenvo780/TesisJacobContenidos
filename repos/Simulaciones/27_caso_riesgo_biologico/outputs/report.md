@@ -1,60 +1,60 @@
 # Reporte de Validación — Riesgo Biológico Global (Woolhouse Zoonotic)
 
-- generated_at: 2026-02-09T01:46:25.646309Z
+- generated_at: 2026-02-09T01:53:15.230539Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.7931
-- bootstrap_mean: -0.8021
-- CI 95%: [-1.0585, -0.5886]
-- weighted_value (LoE factor 0.80): -0.6345
+- valor: -0.5678
+- bootstrap_mean: -0.5683
+- CI 95%: [-0.6096, -0.5347]
+- weighted_value (LoE factor 0.80): -0.4543
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 1.0000
-- external: 0.2802
-- CR: 3.5695
-- CR indicador (>2.0 = frontera nítida): True
+- internal: 0.9998
+- external: 0.9981
+- CR: 1.0017
+- CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
-- c4_validity: False
+- c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.5562
-- rmse_abm_no_ode: 0.8679
-- rmse_ode: nan
-- rmse_reduced: 1.5562
-- threshold: 0.2518
+- rmse_abm: 1.5117
+- rmse_abm_no_ode: 0.9642
+- rmse_ode: 2.6121
+- rmse_reduced: 1.2349
+- threshold: 0.2291
 
 ### Calibración
-- forcing_scale: 0.7158
-- macro_coupling: 0.7819
-- damping: 0.7006
-- ode_alpha: 0.0536
+- forcing_scale: 0.9501
+- macro_coupling: 0.4622
+- damping: 0.9500
+- ode_alpha: 0.0398
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2331
+- calibration_rmse: 0.2784
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.9767
-- bootstrap_mean: -1.1169
-- CI 95%: [-2.6545, -0.3351]
-- weighted_value (LoE factor 0.80): -0.7814
+- valor: -3.4443
+- bootstrap_mean: -3.8828
+- CI 95%: [-7.1335, -1.7416]
+- weighted_value (LoE factor 0.80): -2.7555
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: -0.7623
-- external: 0.2146
-- CR: 3.5530
+- internal: -0.8470
+- external: 0.1388
+- CR: 6.1018
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,9 +65,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.8422
+- rmse_abm: 1.8936
 - rmse_abm_no_ode: 0.4261
-- rmse_ode: 1.6405
+- rmse_ode: 3.8579
 - rmse_reduced: 2.0986
 - threshold: 0.2617
 
