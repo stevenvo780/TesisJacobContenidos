@@ -84,11 +84,17 @@ def make_synthetic(start_date, end_date, seed=301):
 
 
 def load_real_data(start_date, end_date):
-    """Fallback to synthetic."""
-    return make_synthetic(start_date, end_date)[0]
+    """Carga datos reales de World Bank (Urban population %)."""
+    csv_path = os.path.join(os.path.dirname(__file__), "..", "data", "wb_urbanization.csv")
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"Datos reales no encontrados: {csv_path}")
+    df = pd.read_csv(csv_path, parse_dates=["date"])
+    df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    df = df[["date", "value"]].dropna(subset=["date", "value"]).reset_index(drop=True)
+    return df
 
 
 def fetch_urbanization(cache_path, start_year, end_year):
-    """Legacy wrapper."""
-    df, meta = make_synthetic(f"{start_year}-01-01", f"{end_year}-12-31")
-    return df, meta
+    """Legacy wrapper — ahora carga datos reales."""
+    df = load_real_data(f"{start_year}-01-01", f"{end_year}-12-31")
+    return df, {"source": "worldbank_cache"}

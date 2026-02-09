@@ -1,6 +1,6 @@
 # Reporte de Validación — Finanzas (SPY)
 
-- generated_at: 2026-02-09T05:10:34.052477Z
+- generated_at: 2026-02-09T14:20:01.328980Z
 
 ## Fase synthetic
 - **overall_pass**: False

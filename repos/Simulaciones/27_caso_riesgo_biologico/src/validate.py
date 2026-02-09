@@ -32,8 +32,13 @@ def make_synthetic(start_date, end_date, seed=101):
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
 
-    # Forcing: presión zoonótica creciente (Woolhouse 2005)
+    # Forcing: presión zoonótica con tendencia + shock COVID (Woolhouse 2005)
     forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
+    # Shock pandémico tardío (step 20/25 → 80% del rango)
+    shock_t = int(0.80 * steps)
+    for i in range(shock_t, min(shock_t + 3, steps)):
+        forcing[i] += 0.18 * (1 - 0.3 * (i - shock_t))
+
     true_params = {
         "p0": 0.0, "ode_alpha": 0.06, "ode_beta": 0.02,
         "ode_gamma_bio": 0.03,
@@ -44,23 +49,23 @@ def make_synthetic(start_date, end_date, seed=101):
     obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.06, "beta": 0.02, "gamma_bio": 0.02}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"alpha": 0.06, "beta": 0.02, "gamma_bio": 0.03}, "measurement_noise": 0.05}
     return df, meta
 
 
 def main():
     config = CaseConfig(
-        case_name="Riesgo Biológico Global (Woolhouse Zoonotic)",
+        case_name="Riesgo Biológico Global (TB Incidence — Woolhouse)",
         value_col="value",
         series_key="b",
         grid_size=25,
-        persistence_window=8,
-        synthetic_start="1960-01-01",
-        synthetic_end="2023-01-01",
-        synthetic_split="2005-01-01",
-        real_start="1960-01-01",
-        real_end="2023-01-01",
-        real_split="2005-01-01",
+        persistence_window=5,
+        synthetic_start="2000-01-01",
+        synthetic_end="2024-01-01",
+        synthetic_split="2019-01-01",
+        real_start="2000-01-01",
+        real_end="2024-01-01",
+        real_split="2019-01-01",
         corr_threshold=0.60,
         ode_noise=0.02,
         base_noise=0.004,
@@ -69,9 +74,10 @@ def main():
         ode_calibration=True,
         extra_base_params={
             "ode_gamma_bio": 0.03,   # Bio-amplificación bilineal (Woolhouse cascade)
-            "forcing_scale": 0.12,
-            "macro_coupling": 0.30,
+            "forcing_scale": 0.20,
+            "macro_coupling": 0.40,
         },
+        driver_cols=["hiv_incidence", "immunization_coverage"],  # Drivers reales WB
     )
 
     results = run_full_validation(

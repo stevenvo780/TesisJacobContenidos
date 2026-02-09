@@ -30,9 +30,9 @@ def main():
         synthetic_start="2015-01-01",
         synthetic_end="2023-01-01", # 8 years weekly
         synthetic_split="2020-01-01",
-        real_start="2015-01-01",
+        real_start="2005-01-01",
         real_end="2023-01-01",
-        real_split="2020-01-01",
+        real_split="2016-01-01",
         corr_threshold=0.5,
         extra_base_params={
             "n_agents": 100,
@@ -41,7 +41,7 @@ def main():
             "ode_beta": 0.3,
             "ode_gamma": 0.15
         },
-        driver_cols=["virality"],
+        driver_cols=["mobile_subs"],  # Suscripciones móviles WB
     )
 
     results = run_full_validation(

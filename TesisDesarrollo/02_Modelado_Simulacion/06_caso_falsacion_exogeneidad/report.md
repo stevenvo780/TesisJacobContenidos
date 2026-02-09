@@ -1,78 +1,43 @@
 # Reporte de Validación — Falsación: Exogeneidad
 
-- generated_at: 2026-02-07T08:05:16.862529Z
-
-## Fase synthetic
-- **overall_pass**: True
-
-### EDI
-- valor: 0.7041
-- bootstrap_mean: 0.7074
-- CI 95%: [0.6355, 0.7754]
-- válido (0.30-0.90): True
-
-### Symploké y CR
-- internal: 1.0000
-- external: 0.9999
-- CR: 1.0001
-- CR válido (>2.0): False
-
-### Criterios C1-C5
-- c1_convergence: True
-- c2_robustness: True
-- c3_replication: True
-- c4_validity: True
-- c5_uncertainty: True
-
-### Errores
-- rmse_abm: 0.8958
-- rmse_ode: 0.8802
-- rmse_reduced: 3.0272
-- threshold: 1.1951
-
-### Calibración
-- forcing_scale: 0.5916
-- macro_coupling: 0.1000
-- damping: 0.9500
-- ode_alpha: 0.3976
-- ode_beta: 1.0000
-- assimilation_strength: 0.0000
-- calibration_rmse: 0.6965
+- generated_at: 2026-02-09T09:19:58.446888
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.7315
-- bootstrap_mean: -0.7342
-- CI 95%: [-0.8425, -0.6276]
+- valor: -0.1908
+- bootstrap_mean: -0.1912
+- CI 95%: [-0.2020, -0.1822]
+- weighted_value (LoE factor 0.20): -0.0382
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: -0.9990
-- external: 0.0220
-- CR: 45.3082
-- CR válido (>2.0): True
+- internal: 0.9986
+- external: 0.3548
+- CR: 2.8148
+- CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: False
+- c2_robustness: True
 - c3_replication: True
-- c4_validity: True
-- c5_uncertainty: False
+- c4_validity: False
+- c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.8609
-- rmse_ode: 0.8036
-- rmse_reduced: 0.4972
-- threshold: 0.4904
+- rmse_abm: 7.3134
+- rmse_abm_no_ode: 6.1418
+- rmse_ode: 7.4406
+- rmse_reduced: 6.1740
+- threshold: 4.5214
 
 ### Calibración
-- forcing_scale: 1.3437
-- macro_coupling: 0.7410
-- damping: 0.8685
-- ode_alpha: 0.0337
-- ode_beta: 1.0000
+- forcing_scale: 0.0500
+- macro_coupling: 0.2000
+- damping: 0.0200
+- ode_alpha: 0.0500
+- ode_beta: 0.0200
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.3740
+- calibration_rmse: 0.0000
 

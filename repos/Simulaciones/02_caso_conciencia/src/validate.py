@@ -68,7 +68,7 @@ def main():
             "ode_beta": 0.8,  # Fast decay (short attention span)
         },
         ode_calibration=False, # Use physical Attention-Decay model parameters
-        driver_cols=[], # Uses 'global news' keywords internally via data_universal
+        driver_cols=["suicide_rate"],  # World Bank suicide rate como proxy de malestar social
     )
 
     results = run_full_validation(

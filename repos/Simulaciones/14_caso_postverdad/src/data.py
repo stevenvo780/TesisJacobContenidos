@@ -88,5 +88,11 @@ def make_synthetic(start_date, end_date, seed=101):
 
 
 def load_real_data(start_date, end_date):
-    """Fallback to synthetic."""
-    return make_synthetic(start_date, end_date)[0]
+    """Carga datos reales de World Bank (Usuarios de Internet %)."""
+    csv_path = os.path.join(os.path.dirname(__file__), "..", "data", "dataset.csv")
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"Datos reales no encontrados: {csv_path}")
+    df = pd.read_csv(csv_path, parse_dates=["date"])
+    df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    df = df[["date", "value"]].dropna(subset=["date", "value"]).reset_index(drop=True)
+    return df

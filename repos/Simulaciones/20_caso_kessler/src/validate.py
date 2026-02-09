@@ -46,7 +46,7 @@ def main():
             "ode_beta": 0.02,
             "ode_frag_mult": 500
         },
-        driver_cols=["launches"],
+        driver_cols=[],  # CSV solo tiene date, value
     )
 
     results = run_full_validation(

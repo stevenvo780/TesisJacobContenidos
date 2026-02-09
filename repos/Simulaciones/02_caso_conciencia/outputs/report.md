@@ -1,21 +1,21 @@
 # Reporte de Validación — Conciencia Colectiva
 
-- generated_at: 2026-02-09T05:10:33.241111Z
+- generated_at: 2026-02-09T14:19:57.642617Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0748
-- bootstrap_mean: 0.0755
-- CI 95%: [0.0653, 0.0858]
-- weighted_value (LoE factor 0.20): 0.0150
+- valor: 0.0481
+- bootstrap_mean: 0.0484
+- CI 95%: [0.0440, 0.0528]
+- weighted_value (LoE factor 0.20): 0.0096
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.6181
-- external: 0.7198
-- CR: 0.8586
+- internal: 0.5871
+- external: 0.6931
+- CR: 0.8470
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,35 +26,35 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.7894
-- rmse_abm_no_ode: 0.8532
-- rmse_ode: 0.6818
-- rmse_reduced: 0.5677
-- threshold: 0.5474
+- rmse_abm: 0.9007
+- rmse_abm_no_ode: 0.9462
+- rmse_ode: 0.5084
+- rmse_reduced: 0.6097
+- threshold: 0.4691
 
 ### Calibración
-- forcing_scale: 0.2776
-- macro_coupling: 0.1511
-- damping: 0.0000
+- forcing_scale: 0.2104
+- macro_coupling: 0.1000
+- damping: 0.1016
 - ode_alpha: 0.5000
 - ode_beta: 0.8000
 - assimilation_strength: 0.0000
-- calibration_rmse: 1.1656
+- calibration_rmse: 1.1410
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0298
-- bootstrap_mean: -0.0298
-- CI 95%: [-0.0480, -0.0108]
-- weighted_value (LoE factor 0.20): -0.0060
+- valor: -0.0634
+- bootstrap_mean: -0.0662
+- CI 95%: [-0.1056, -0.0193]
+- weighted_value (LoE factor 0.20): -0.0127
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.6173
-- external: 0.7152
-- CR: 0.8632
+- internal: 0.7455
+- external: 0.8032
+- CR: 0.9281
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -65,18 +65,18 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.0664
-- rmse_abm_no_ode: 1.0355
-- rmse_ode: 1.6419
-- rmse_reduced: 1.2949
-- threshold: 1.0562
+- rmse_abm: 0.7633
+- rmse_abm_no_ode: 0.7177
+- rmse_ode: 1.7921
+- rmse_reduced: 1.3440
+- threshold: 0.6211
 
 ### Calibración
-- forcing_scale: 0.8023
-- macro_coupling: 0.2133
-- damping: 0.0482
+- forcing_scale: 0.4355
+- macro_coupling: 0.1225
+- damping: 0.1736
 - ode_alpha: 0.5000
 - ode_beta: 0.8000
 - assimilation_strength: 0.0000
-- calibration_rmse: 1.2788
+- calibration_rmse: 0.8698
 

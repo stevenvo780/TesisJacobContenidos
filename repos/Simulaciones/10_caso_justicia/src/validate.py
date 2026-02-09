@@ -59,12 +59,12 @@ def main():
         synthetic_start="2005-01-01",
         synthetic_end="2023-12-01",
         synthetic_split="2016-01-01",
-        real_start="2005-01-01",
-        real_end="2023-12-01",
-        real_split="2016-01-01",
+        real_start="1963-01-01",
+        real_end="2023-01-01",
+        real_split="2005-01-01",
         corr_threshold=0.6,
         extra_base_params={"abm_epsilon": 0.2, "abm_mu": 0.3},
-        driver_cols=["corruption_control", "gini"],
+        driver_cols=[],  # CSV solo tiene date, value
     )
 
     results = run_full_validation(

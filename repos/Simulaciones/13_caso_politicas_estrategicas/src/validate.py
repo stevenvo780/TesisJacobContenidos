@@ -30,8 +30,8 @@ def main():
         synthetic_start="1990-01-01",
         synthetic_end="2020-01-01", # 30 years monthly
         synthetic_split="2010-01-01",
-        real_start="1990-01-01",
-        real_end="2020-01-01",
+        real_start="1980-01-01",
+        real_end="2022-01-01",
         real_split="2010-01-01",
         corr_threshold=0.5,
         extra_base_params={
@@ -42,7 +42,7 @@ def main():
             "ode_beta": 0.3,
             "ode_gamma": 0.1
         },
-        driver_cols=["stringency"], # Policy Stringency as Driver
+        driver_cols=[],  # CSV solo tiene date, value
     )
 
     results = run_full_validation(

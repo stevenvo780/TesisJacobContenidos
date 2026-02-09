@@ -43,7 +43,7 @@ def main():
             "ode_K": 0.9,
             "ode_gamma": 2.0
         },
-        driver_cols=["gdp_growth"],
+        driver_cols=[],  # CSV solo tiene date, value
     )
 
     results = run_full_validation(

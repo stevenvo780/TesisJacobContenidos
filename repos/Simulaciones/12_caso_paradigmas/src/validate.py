@@ -20,9 +20,9 @@ def main():
         synthetic_start="2000-01-01",
         synthetic_end="2000-02-01", # 1 month hourly (744 steps)
         synthetic_split="2000-01-20",
-        real_start="2000-01-01",
-        real_end="2000-02-01",
-        real_split="2000-01-20",
+        real_start="1996-01-01",
+        real_end="2022-01-01",
+        real_split="2012-01-01",
         corr_threshold=0.5,
         extra_base_params={
             "n_agents": 50, # Reduced size
@@ -30,7 +30,7 @@ def main():
             "ode_alpha": 1.0,
             "ode_beta": 1.0
         },
-        driver_cols=["evidence"], # Use the noisy evidence column
+        driver_cols=["journal_articles"],  # Publicaciones científicas WB
     )
 
     results = run_full_validation(

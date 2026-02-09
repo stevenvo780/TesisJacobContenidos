@@ -95,8 +95,17 @@ def make_synthetic(start_date, end_date, seed=101):
 
 
 def load_real_data(start_date, end_date):
-    """Fallback to synthetic."""
-    return make_synthetic(start_date, end_date)[0]
+    """Carga datos reales de Wikimedia (atención mensual a 'Climate change')."""
+    csv_path = os.path.join(os.path.dirname(__file__), "..", "data", "wiki_climate.csv")
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"Datos reales no encontrados: {csv_path}")
+    df = pd.read_csv(csv_path, parse_dates=["date"])
+    # Renombrar columna 'attention' a 'value' si existe
+    if "attention" in df.columns and "value" not in df.columns:
+        df = df.rename(columns={"attention": "value"})
+    df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    df = df[["date", "value"]].dropna(subset=["date", "value"]).reset_index(drop=True)
+    return df
 
 
 def fetch_wikipedia_monthly(start_date, end_date, cache_path=None):

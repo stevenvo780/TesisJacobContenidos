@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: Observabilidad Escasa",
-  "generated_at": "2026-02-09T00:10:29.268244",
+  "generated_at": "2026-02-09T09:19:56.191604",
   "git": {
     "commit": "falsification_confounder",
     "dirty": false
@@ -13,8 +13,8 @@
         "start": "2005-01-01",
         "end": "2023-01-01",
         "split": "2015-01-01",
-        "obs_mean_raw": 5.43874446489916,
-        "obs_std_raw": 3.411011239093111,
+        "obs_mean_raw": 5.43162316885067,
+        "obs_std_raw": 3.412005664292623,
         "steps": 217,
         "val_steps": 97,
         "coverage": 11.421052631578947
@@ -34,7 +34,7 @@
             "insufficient_driver"
           ],
           "weights": [
-            0.7688130607150337
+            0.7738038642393518
           ],
           "reg": 0.001
         },
@@ -42,23 +42,23 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 3.4831106894396466,
-        "rmse_abm_no_ode": 0.6963606932210428,
-        "rmse_ode": 3.963801274132415,
-        "rmse_reduced": 2.5686149267463905,
-        "threshold": 0.9131970429015183
+        "rmse_abm": 3.40784121581985,
+        "rmse_abm_no_ode": 0.7030391967353247,
+        "rmse_ode": 3.8901521395284755,
+        "rmse_reduced": 2.525244706825987,
+        "threshold": 0.9162421902459142
       },
       "correlations": {
-        "abm_obs": 0.722387832643903,
-        "ode_obs": -0.26177507516124565
+        "abm_obs": 0.7198944972934362,
+        "ode_obs": -0.2534066619385844
       },
       "edi": {
-        "value": -4.001877221599608,
-        "bootstrap_mean": -4.026674713344983,
-        "ci_lo": -4.5902698045261126,
-        "ci_hi": -3.5386845206470756,
+        "value": -3.8472990291931195,
+        "bootstrap_mean": -3.870233178335857,
+        "ci_lo": -4.412660496892742,
+        "ci_hi": -3.3584007670030003,
         "valid": false,
-        "weighted_value": -0.8003754443199217,
+        "weighted_value": -0.769459805838624,
         "loe_factor": 0.2
       },
       "viscosity": {
@@ -70,27 +70,27 @@
           "recovered": true
         }
       },
-      "effective_information": -0.21845650979578868,
+      "effective_information": -0.1993756668782718,
       "symploke": {
-        "internal": 0.9981380749068777,
-        "external": 0.8025430633176996,
-        "cr": 1.2437190233513347,
+        "internal": 0.9981466228254819,
+        "external": 0.8137903470412627,
+        "cr": 1.2265402587466074,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0025161685967491345,
+        "dominance_share": 0.0025156333697879236,
         "pass": true
       },
       "persistence": {
-        "model": 2.0196755058272644e-06,
-        "obs": 0.06696088058653497,
+        "model": 4.66068173539293e-06,
+        "obs": 0.113729039696851,
         "pass": true
       },
       "emergence": {
-        "err_reduced": 0.6963606932210428,
-        "err_abm": 3.4831106894396466,
-        "threshold": 0.18263940858030367,
+        "err_reduced": 0.7030391967353247,
+        "err_abm": 3.40784121581985,
+        "threshold": 0.18324843804918287,
         "pass": false,
         "significance": "computed"
       },
@@ -102,33 +102,33 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 3.4831106894396466,
-        "rmse_ode": 3.963801274132415,
-        "corr_abm": 0.722387832643903,
-        "corr_ode": -0.26177507516124565,
-        "threshold": 0.9131970429015183
+        "rmse_abm": 3.40784121581985,
+        "rmse_ode": 3.8901521395284755,
+        "corr_abm": 0.7198944972934362,
+        "corr_ode": -0.2534066619385844,
+        "threshold": 0.9162421902459142
       },
       "c2_detail": {
-        "mean_delta": 0.008470289456892367,
-        "var_delta": 0.0004757538454737628,
-        "relative_mean": 0.008470289456892367,
-        "relative_var": 0.0004757538454737628
+        "mean_delta": 0.008488923718876152,
+        "var_delta": 0.0004886512664761953,
+        "relative_mean": 0.008488923718876152,
+        "relative_var": 0.0004886512664761953
       },
       "c3_detail": {
-        "persistence_1": 2.0196755058272644e-06,
-        "persistence_2": 2.073541930294097e-06
+        "persistence_1": 4.66068173539293e-06,
+        "persistence_2": 4.7442044503670804e-06
       },
       "c4_detail": {
-        "diff": 0.06945761400086115
+        "diff": 0.07034664666954005
       },
       "c5_detail": {
-        "sensitivity_min": -1.0157982521233855,
-        "sensitivity_max": -0.9670042692457601,
-        "range": 0.048793982877625375,
-        "relative_range": 0.008971552753127936
+        "sensitivity_min": -0.9857663922979147,
+        "sensitivity_max": -0.936393864028282,
+        "range": 0.04937252826963279,
+        "relative_range": 0.00908982945517555
       }
     }
   },
   "falsification_success": true,
-  "driver_correlation": 0.9109071619939924
+  "driver_correlation": 0.9076532822215059
 }

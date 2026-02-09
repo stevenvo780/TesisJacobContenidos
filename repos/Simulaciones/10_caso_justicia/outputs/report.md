@@ -1,6 +1,6 @@
 # Reporte de Validación — Justicia Algorítmica
 
-- generated_at: 2026-02-09T05:10:39.327594Z
+- generated_at: 2026-02-09T14:20:00.828522Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -45,38 +45,38 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.2139
-- bootstrap_mean: -0.2180
-- CI 95%: [-0.2547, -0.1799]
-- weighted_value (LoE factor 0.20): -0.0428
+- valor: 0.0000
+- bootstrap_mean: 0.0000
+- CI 95%: [0.0000, 0.0000]
+- weighted_value (LoE factor 0.20): 0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9854
-- external: 0.8164
-- CR: 1.2069
+- internal: 0.9666
+- external: 0.9073
+- CR: 1.0654
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
-- c4_validity: True
+- c4_validity: False
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.7492
-- rmse_abm_no_ode: 1.4409
-- rmse_ode: 1.9336
-- rmse_reduced: 1.4396
-- threshold: 1.0981
+- rmse_abm: 1.8889
+- rmse_abm_no_ode: 1.8889
+- rmse_ode: 1.5598
+- rmse_reduced: 1.8889
+- threshold: 0.3262
 
 ### Calibración
 - forcing_scale: 0.0010
 - macro_coupling: 0.1000
 - damping: 0.0000
-- ode_alpha: 0.4568
+- ode_alpha: 0.1330
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.9610
+- calibration_rmse: 0.8940
 

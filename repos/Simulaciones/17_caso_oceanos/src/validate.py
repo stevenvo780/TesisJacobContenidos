@@ -30,9 +30,9 @@ def main():
         synthetic_start="1980-01-01",
         synthetic_end="2023-01-01",
         synthetic_split="2005-01-01",
-        real_start="1980-01-01",
+        real_start="1990-01-01",
         real_end="2023-01-01",
-        real_split="2005-01-01",
+        real_split="2010-01-01",
         corr_threshold=0.5,
         extra_base_params={
             "grid_size": 15,
@@ -41,7 +41,7 @@ def main():
             "ode_eta1": 3.0,
             "ode_eta2": 1.0
         },
-        driver_cols=["forcing"],
+        driver_cols=[],  # CSV solo tiene date, value
     )
 
     results = run_full_validation(

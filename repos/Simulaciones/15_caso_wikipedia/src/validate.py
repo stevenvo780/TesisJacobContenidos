@@ -30,9 +30,9 @@ def main():
         synthetic_start="2005-01-01",
         synthetic_end="2023-01-01", # ~18 years weekly
         synthetic_split="2015-01-01",
-        real_start="2005-01-01",
-        real_end="2023-01-01",
-        real_split="2015-01-01",
+        real_start="2015-07-01",
+        real_end="2024-12-01",
+        real_split="2021-01-01",
         corr_threshold=0.5,
         extra_base_params={
             "n_agents": 50,
@@ -43,7 +43,7 @@ def main():
             "ode_beta": 0.2,
             "ode_gamma": 0.1
         },
-        driver_cols=["controversy"],
+        driver_cols=[],  # Datos Wikimedia sin driver externo
     )
 
     results = run_full_validation(

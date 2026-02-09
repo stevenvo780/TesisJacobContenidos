@@ -1,71 +1,96 @@
 {
   "case": "Falsaci\u00f3n: Observabilidad Escasa",
-  "generated_at": "2026-02-07T14:21:55.893042Z",
+  "generated_at": "2026-02-09T09:19:56.191604",
   "git": {
-    "commit": "7b9c9837f057bb3b5f3082a26dc9472277ae6e93",
-    "dirty": true
+    "commit": "falsification_confounder",
+    "dirty": false
   },
   "phases": {
-    "synthetic": {
-      "phase": "synthetic",
+    "real": {
+      "phase": "real",
       "overall_pass": false,
       "data": {
         "start": "2005-01-01",
         "end": "2023-01-01",
         "split": "2015-01-01",
-        "obs_mean_raw": 0.051692966530251364,
-        "obs_std_raw": 0.06455814416231336,
-        "steps": 19,
-        "val_steps": 9,
-        "coverage": 1.0
+        "obs_mean_raw": 5.43162316885067,
+        "obs_std_raw": 3.412005664292623,
+        "steps": 217,
+        "val_steps": 97,
+        "coverage": 11.421052631578947
       },
       "calibration": {
-        "forcing_scale": 0.5825308673135268,
-        "macro_coupling": 0.12012725206687416,
-        "damping": 0.95,
-        "ode_alpha": 0.26312924275188754,
-        "ode_beta": 1.0,
+        "forcing_scale": 0.05,
+        "macro_coupling": 0.2,
+        "damping": 0.02,
+        "ode_alpha": 0.05,
+        "ode_beta": 0.02,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.6414811866643364
+        "calibration_rmse": 0.0
+      },
+      "forcing": {
+        "driver_meta": {
+          "cols": [
+            "insufficient_driver"
+          ],
+          "weights": [
+            0.7738038642393518
+          ],
+          "reg": 0.001
+        },
+        "feedback_strength": 0.0,
+        "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 1.447126023118484,
-        "rmse_ode": 1.2675934157957955,
-        "rmse_reduced": 1.1575211806123058,
-        "threshold": 0.9375271634827442
+        "rmse_abm": 3.40784121581985,
+        "rmse_abm_no_ode": 0.7030391967353247,
+        "rmse_ode": 3.8901521395284755,
+        "rmse_reduced": 2.525244706825987,
+        "threshold": 0.9162421902459142
       },
       "correlations": {
-        "abm_obs": 0.3858998463739275,
-        "ode_obs": 0.5025333240393721
+        "abm_obs": 0.7198944972934362,
+        "ode_obs": -0.2534066619385844
       },
       "edi": {
-        "value": -0.2501939898438687,
-        "bootstrap_mean": -0.4092592418827948,
-        "ci_lo": -1.6996622247185575,
-        "ci_hi": 0.37859340961864846,
-        "valid": false
+        "value": -3.8472990291931195,
+        "bootstrap_mean": -3.870233178335857,
+        "ci_lo": -4.412660496892742,
+        "ci_hi": -3.3584007670030003,
+        "valid": false,
+        "weighted_value": -0.769459805838624,
+        "loe_factor": 0.2
       },
-      "effective_information": 0.04608296058297112,
+      "viscosity": {
+        "pass": true,
+        "detail": {
+          "relaxation_time": 13,
+          "peak_impact": 2.0,
+          "shock_step": 168,
+          "recovered": true
+        }
+      },
+      "effective_information": -0.1993756668782718,
       "symploke": {
-        "internal": 0.9999537102401816,
-        "external": 0.9998334314935058,
-        "cr": 1.0001202987846647,
+        "internal": 0.9981466228254819,
+        "external": 0.8137903470412627,
+        "cr": 1.2265402587466074,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0025000564345389743,
+        "dominance_share": 0.0025156333697879236,
         "pass": true
       },
       "persistence": {
-        "model": 0.24478225752771454,
-        "obs": 0.5279427534715436,
+        "model": 4.66068173539293e-06,
+        "obs": 0.113729039696851,
         "pass": true
       },
       "emergence": {
-        "err_reduced": 1.1575211806123058,
-        "err_abm": 1.447126023118484,
-        "threshold": 0.18750543269654885,
+        "err_reduced": 0.7030391967353247,
+        "err_abm": 3.40784121581985,
+        "threshold": 0.18324843804918287,
         "pass": false,
         "significance": "computed"
       },
@@ -77,60 +102,33 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 1.447126023118484,
-        "rmse_ode": 1.2675934157957955,
-        "corr_abm": 0.3858998463739275,
-        "corr_ode": 0.5025333240393721,
-        "threshold": 0.9375271634827442
+        "rmse_abm": 3.40784121581985,
+        "rmse_ode": 3.8901521395284755,
+        "corr_abm": 0.7198944972934362,
+        "corr_ode": -0.2534066619385844,
+        "threshold": 0.9162421902459142
       },
       "c2_detail": {
-        "mean_delta": 0.11881896908452272,
-        "var_delta": 0.03843867591268536,
-        "relative_mean": 0.06552380385057252,
-        "relative_var": 0.03843867591268536
+        "mean_delta": 0.008488923718876152,
+        "var_delta": 0.0004886512664761953,
+        "relative_mean": 0.008488923718876152,
+        "relative_var": 0.0004886512664761953
       },
       "c3_detail": {
-        "persistence_1": 0.24478225752771454,
-        "persistence_2": 0.2448056120293561
+        "persistence_1": 4.66068173539293e-06,
+        "persistence_2": 4.7442044503670804e-06
       },
       "c4_detail": {
-        "diff": 0.36266398646642206
+        "diff": 0.07034664666954005
       },
       "c5_detail": {
-        "sensitivity_min": 1.5105540906994825,
-        "sensitivity_max": 2.1079304194890858,
-        "range": 0.5973763287896032,
-        "relative_range": 0.33801303364438384
-      },
-      "synthetic_meta": {
-        "ode_true": {
-          "alpha": 0.08,
-          "beta": 0.03
-        },
-        "measurement_noise": 0.05
+        "sensitivity_min": -0.9857663922979147,
+        "sensitivity_max": -0.936393864028282,
+        "range": 0.04937252826963279,
+        "relative_range": 0.00908982945517555
       }
-    },
-    "real": {
-      "phase": "real",
-      "overall_pass": false,
-      "error": "Datos insuficientes",
-      "data": {
-        "start": "2005-01-01",
-        "end": "2023-01-01",
-        "split": "2015-01-01"
-      },
-      "edi": {
-        "value": 0.0,
-        "bootstrap_mean": 0.0,
-        "ci_lo": 0.0,
-        "ci_hi": 0.0,
-        "valid": false
-      },
-      "c1_convergence": false,
-      "c2_robustness": false,
-      "c3_replication": false,
-      "c4_validity": false,
-      "c5_uncertainty": false
     }
-  }
+  },
+  "falsification_success": true,
+  "driver_correlation": 0.9076532822215059
 }

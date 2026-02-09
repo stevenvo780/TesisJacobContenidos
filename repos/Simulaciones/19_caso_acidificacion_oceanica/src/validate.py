@@ -35,9 +35,9 @@ def main():
         synthetic_start="1980-01-01",
         synthetic_end="2023-01-01",
         synthetic_split="2005-01-01",
-        real_start="1980-01-01",
-        real_end="2023-01-01",
-        real_split="2005-01-01",
+        real_start="1990-01-01",
+        real_end="2020-01-01",
+        real_split="2010-01-01",
         corr_threshold=0.5,
         extra_base_params={
             "grid_size": 20,
@@ -46,7 +46,7 @@ def main():
             "abm_stress_thresh": 1.0,
             "ode_gamma": 0.5
         },
-        driver_cols=["pCO2"],
+        driver_cols=[],  # CSV solo tiene date, value
     )
 
     results = run_full_validation(

@@ -28,12 +28,12 @@ def main():
         synthetic_start="2023-01-01 00:00:00",
         synthetic_end="2023-01-07 23:00:00", # 1 week hourly
         synthetic_split="2023-01-05 00:00:00",
-        real_start="2023-01-01 00:00:00",
-        real_end="2023-01-07 23:00:00",
-        real_split="2023-01-05 00:00:00",
+        real_start="1970-01-01",
+        real_end="2023-01-01",
+        real_split="2005-01-01",
         corr_threshold=0.6,
         extra_base_params={"n_nodes": 50, "n_agents": 200},
-        driver_cols=["gas_price"],
+        driver_cols=["gdp_per_capita"],  # World Bank GDP per capita
     )
 
     results = run_full_validation(
