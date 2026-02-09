@@ -1,21 +1,60 @@
 # Reporte de Validación — Microplásticos Oceánicos (Jambeck Persistent Accumulation)
 
-- generated_at: 2026-02-09T02:13:49.100368Z
+- generated_at: 2026-02-09T02:21:26.955996Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -2.7593
-- bootstrap_mean: -2.7648
-- CI 95%: [-2.9295, -2.6298]
-- weighted_value (LoE factor 0.80): -2.2074
-- válido (0.30-0.90): False
+- valor: 0.6768
+- bootstrap_mean: 0.6760
+- CI 95%: [0.6361, 0.7071]
+- weighted_value (LoE factor 0.80): 0.5414
+- válido (0.30-0.90): True
+
+### Symploké y CR
+- internal: 0.6103
+- external: 0.8477
+- CR: 0.7200
+- CR indicador (>2.0 = frontera nítida): False
+
+### Criterios C1-C5
+- c1_convergence: False
+- c2_robustness: False
+- c3_replication: False
+- c4_validity: True
+- c5_uncertainty: True
+
+### Errores
+- rmse_abm: 0.5037
+- rmse_abm_no_ode: 1.5583
+- rmse_ode: 2.8335
+- rmse_reduced: 0.9659
+- threshold: 0.1000
+
+### Calibración
+- forcing_scale: 0.9469
+- macro_coupling: 0.6115
+- damping: 0.9500
+- ode_alpha: 0.0010
+- ode_beta: 0.0010
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.2170
+
+## Fase real
+- **overall_pass**: False
+
+### EDI
+- valor: 0.5906
+- bootstrap_mean: 0.5917
+- CI 95%: [0.5738, 0.6208]
+- weighted_value (LoE factor 0.80): 0.4725
+- válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9663
-- CR: 1.0349
+- external: 0.9966
+- CR: 1.0034
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,48 +65,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 5.1871
-- rmse_abm_no_ode: 1.3798
-- rmse_ode: 13.3819
-- rmse_reduced: 1.3171
-- threshold: 0.1000
-
-### Calibración
-- forcing_scale: 0.5174
-- macro_coupling: 0.2414
-- damping: 0.5077
-- ode_alpha: 0.0010
-- ode_beta: 0.8643
-- assimilation_strength: 0.0000
-- calibration_rmse: 0.1281
-
-## Fase real
-- **overall_pass**: False
-
-### EDI
-- valor: -1.2206
-- bootstrap_mean: -1.2263
-- CI 95%: [-1.4632, -1.0430]
-- weighted_value (LoE factor 0.80): -0.9764
-- válido (0.30-0.90): False
-
-### Symploké y CR
-- internal: 1.0000
-- external: 0.9848
-- CR: 1.0154
-- CR indicador (>2.0 = frontera nítida): False
-
-### Criterios C1-C5
-- c1_convergence: False
-- c2_robustness: False
-- c3_replication: True
-- c4_validity: True
-- c5_uncertainty: True
-
-### Errores
-- rmse_abm: 40.0085
+- rmse_abm: 7.3764
 - rmse_abm_no_ode: 18.0173
-- rmse_ode: 47.4102
+- rmse_ode: 2.5599
 - rmse_reduced: 4.5301
 - threshold: 1.4633
 

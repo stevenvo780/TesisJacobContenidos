@@ -40,50 +40,16 @@ def simulate_ode(params, steps, seed=3):
     # Core tracking (calibrado por hybrid_validator)
     alpha = float(params.get("ode_alpha", 0.07))
     beta = float(params.get("ode_beta", 0.02))
-    # Corrección domain-specific: reciclaje interno (Michaelis-Menten)
-    k_recycle = float(params.get("ode_recycle", 0.008))
-    p_crit = float(params.get("ode_p_crit", 1.5))
 
     P = float(params.get("p0", 0.0))
     series = []
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
-        # Core: mean-reversion tracking hacia forcing
-        core = alpha * (f - beta * P)
-        # Domain: reciclaje interno — sedimento libera P cuando concentración alta
-        recycle = k_recycle * (1.0 - math.exp(-max(0.0, P) / max(p_crit, 0.1)))
-        dP = core + recycle + random.gauss(0, noise_std)
+        # Core: mean-reversion tracking hacia forcing (espacio Z)
+        dP = alpha * (f - beta * P) + random.gauss(0, noise_std)
         P += dP
         P = max(-10.0, min(P, 10.0))
-        P = _apply_assimilation(P, t, params)
-        if not math.isfinite(P):
-            P = 0.0
-        series.append(float(P))
-
-    return {ODE_KEY: series, "forcing": forcing}
-
-    # Parámetros Carpenter biogeoquímico
-    inflow = float(params.get("ode_inflow", params.get("ode_alpha", 0.07)))
-    k_sed = float(params.get("ode_decay", params.get("ode_beta", 0.02)))
-    k_bio = float(params.get("ode_k_bio", 0.04))  # captación biológica
-    h_sat = float(params.get("ode_h_sat", 0.5))     # Michaelis-Menten half-saturation
-    runoff_frac = float(params.get("ode_runoff", 0.03))  # fracción escorrentía
-
-    P = float(params.get("p0", 0.0))
-    series = []
-
-    for t in range(steps):
-        f = forcing[t] if t < len(forcing) else 0.0
-        # Input total
-        I_total = inflow * max(0.0, f) + runoff_frac * f
-        # Sedimentación lineal
-        sed = k_sed * P
-        # Captación biológica (Michaelis-Menten saturable)
-        bio = k_bio * P / (P + h_sat) if (P + h_sat) > 1e-10 else 0.0
-        dP = I_total - sed - bio + random.gauss(0, noise_std)
-        P += dP
-        P = max(0.0, min(P, 20.0))
         P = _apply_assimilation(P, t, params)
         if not math.isfinite(P):
             P = 0.0

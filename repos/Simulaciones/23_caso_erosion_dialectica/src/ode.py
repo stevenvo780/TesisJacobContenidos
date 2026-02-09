@@ -40,33 +40,27 @@ def simulate_ode(params, steps, seed=3):
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.015))
 
-    # Parámetros Abrams-Strogatz
-    r = float(params.get("ode_r", params.get("ode_alpha", 0.03)))
-    K = float(params.get("ode_k", 1.0))
-    gamma = float(params.get("ode_gamma", 0.15))
-    delta = float(params.get("ode_delta", params.get("ode_beta", 0.01)))
-    # Volatility parameter (Strogatz): prestige asymmetry
-    prestige = float(params.get("ode_prestige", 1.2))
-    # Tracking hacia forcing
-    tracking = float(params.get("ode_tracking", 0.10))
+    # Core tracking (calibrado por hybrid_validator)
+    alpha = float(params.get("ode_alpha", 0.03))
+    beta = float(params.get("ode_beta", 0.01))
+    # Domain: asimetría de prestigio (lengua dominante empuja más)
+    prestige = float(params.get("ode_prestige", 0.008))
 
-    x = float(params.get("p0", 0.1))
+    x = float(params.get("p0", 0.0))
     series = []
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
-        # Logístico con prestige-weighted forcing
-        growth = r * x * (1.0 - x / max(K, 1e-6))
-        media_pressure = gamma * f * prestige
-        # Tracking hacia forcing (mean-reversion suave)
-        track = tracking * (f - x)
-        resistance = delta * x
-        dx = growth + media_pressure + track - resistance + random.gauss(0, noise_std)
+        # Core: mean-reversion tracking hacia forcing
+        core = alpha * (f - beta * x)
+        # Domain: presión mediática asimétrica (más fuerte cuando forcing alto)
+        media = prestige * max(0.0, f) * (1.0 + 0.3 * abs(x))
+        dx = core + media + random.gauss(0, noise_std)
         x += dx
-        x = max(0.0, min(x, K * 2.0))
+        x = max(-10.0, min(x, 10.0))
         x = _apply_assimilation(x, t, params)
         if not math.isfinite(x):
-            x = 0.1
+            x = 0.0
         series.append(float(x))
 
     return {ODE_KEY: series, "forcing": forcing}

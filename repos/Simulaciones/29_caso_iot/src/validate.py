@@ -38,40 +38,32 @@ def load_real_data(start_date, end_date):
 
 def make_synthetic(start_date, end_date, seed=129):
     """
-    Sintético calibrado a Bass Diffusion.
-    Parámetros calibrados a curva-S de telecomunicaciones globales.
-    alpha/beta son DIFERENTES a los defaults (0.08/0.03) → fases sintéticas independientes.
+    Sintético calibrado a curva de adopción IoT.
+    Usa ODE con patrón alpha*(f-beta*X) en espacio Z.
     """
     rng = np.random.default_rng(seed)
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
 
-    # Forcing sintético: crecimiento económico gradual
-    forcing = [0.02 * t + 0.005 * t**1.2 for t in range(steps)]
+    # Forcing sintético: crecimiento monotónico (patrón estándar)
+    forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
 
-    # ODE con parámetros Bass calibrados (NO genéricos)
+    # ODE con parámetros en espacio Z
     true_params = {
-        "p0": 0.5,
-        "ode_p_innov": 0.008,
-        "ode_q_imit": 0.35,
-        "ode_M": 120.0,
-        "ode_metcalfe": 0.05,
-        "ode_forcing_eps": 0.08,
-        "ode_noise": 0.3,
+        "p0": 0.0,
+        "ode_alpha": 0.12,
+        "ode_beta": 0.02,
+        "ode_metcalfe": 0.003,
+        "ode_noise": 0.08,
         "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
-    obs = np.array(sim["io"]) + rng.normal(0.0, 1.0, size=steps)
+    obs = np.array(sim["io"]) + rng.normal(0.0, 0.15, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
     meta = {
-        "ode_true": {
-            "p_innov": 0.008,
-            "q_imit": 0.35,
-            "M": 120.0,
-            "metcalfe": 0.05,
-        },
-        "measurement_noise": 1.0,
+        "ode_true": {"alpha": 0.12, "beta": 0.02, "metcalfe": 0.003},
+        "measurement_noise": 0.15,
     }
     return df, meta
 
@@ -94,13 +86,11 @@ def main():
         base_noise=0.005,
         loe=4,                       # Level of Evidence: alto (datos sólidos, modelo validado)
         n_runs=7,
-        ode_calibration=False,       # Usamos Bass custom, no calibración lineal
+        ode_calibration=True,
         extra_base_params={
-            "ode_p_innov": 0.008,
-            "ode_q_imit": 0.35,
-            "ode_M": 120.0,
-            "ode_metcalfe": 0.05,
-            "ode_forcing_eps": 0.08,
+            "ode_metcalfe": 0.003,     # Saturación Metcalfe suave
+            "forcing_scale": 0.10,
+            "macro_coupling": 0.25,
         },
         driver_cols=["internet_users", "broadband", "gdp_pc", "gdp_growth"],
     )

@@ -65,10 +65,8 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_inflow": 0.05,    # Salinización por evapotranspiración
-            "ode_decay": 0.015,    # Lavado por lluvia/drenaje
             "forcing_scale": 0.10,
-            "macro_coupling": 0.25,
+            "macro_coupling": 0.30,
         },
     )
 

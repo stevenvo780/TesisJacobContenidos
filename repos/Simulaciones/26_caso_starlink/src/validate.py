@@ -67,8 +67,7 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_inflow": 0.18,   # Tasa de despliegue satelital
-            "ode_decay": 0.015,   # De-orbit programado (~5 años)
+            "ode_saturation": 0.002,  # Saturación orbital cuadrática
             "forcing_scale": 0.12,
             "macro_coupling": 0.28,
         },

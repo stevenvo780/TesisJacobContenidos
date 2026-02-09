@@ -1,21 +1,21 @@
 # Reporte de Validación — Depleción de Acuíferos (Darcy-Theis)
 
-- generated_at: 2026-02-09T02:14:02.133384Z
+- generated_at: 2026-02-09T02:21:42.175211Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.9526
-- bootstrap_mean: -0.9548
-- CI 95%: [-1.0232, -0.8987]
-- weighted_value (LoE factor 0.60): -0.5716
-- válido (0.30-0.90): False
+- valor: 0.4870
+- bootstrap_mean: 0.4875
+- CI 95%: [0.4722, 0.5062]
+- weighted_value (LoE factor 0.60): 0.2922
+- válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9685
-- CR: 1.0325
+- external: 0.9927
+- CR: 1.0073
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,48 +26,48 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.9880
-- rmse_abm_no_ode: 1.5303
-- rmse_ode: 4.8407
-- rmse_reduced: 1.0188
+- rmse_abm: 0.6830
+- rmse_abm_no_ode: 1.3314
+- rmse_ode: 0.5715
+- rmse_reduced: 1.3952
 - threshold: 0.1000
 
 ### Calibración
-- forcing_scale: 0.7843
-- macro_coupling: 0.6272
-- damping: 0.7603
-- ode_alpha: 0.0010
-- ode_beta: 0.0010
+- forcing_scale: 0.3174
+- macro_coupling: 0.5721
+- damping: 0.3078
+- ode_alpha: 0.0055
+- ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2102
+- calibration_rmse: 0.1427
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -1.4786
-- bootstrap_mean: -1.4753
-- CI 95%: [-1.8456, -1.1527]
-- weighted_value (LoE factor 0.60): -0.8872
+- valor: -0.2711
+- bootstrap_mean: -0.2709
+- CI 95%: [-0.2940, -0.2468]
+- weighted_value (LoE factor 0.60): -0.1627
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.7905
-- external: 0.8286
-- CR: 0.9540
+- internal: -0.0829
+- external: 0.6052
+- CR: 0.1370
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: False
+- c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 46.4166
+- rmse_abm: 23.8038
 - rmse_abm_no_ode: 18.7266
-- rmse_ode: 102.1861
+- rmse_ode: 29.3864
 - rmse_reduced: 35.7618
 - threshold: 14.8563
 

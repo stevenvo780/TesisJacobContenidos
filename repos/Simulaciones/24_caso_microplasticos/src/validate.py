@@ -70,8 +70,7 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_inflow": 0.09,   # Ingreso de microplásticos desde ríos y costas
-            "ode_decay": 0.003,   # Degradación ultra-lenta (persistencia ~450 años)
+            "ode_burial": 0.002,    # Sedimentación marina (persistencia ultra-alta)
             "forcing_scale": 0.10,
             "macro_coupling": 0.25,
         },

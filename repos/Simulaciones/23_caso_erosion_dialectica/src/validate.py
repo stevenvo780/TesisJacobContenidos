@@ -71,11 +71,7 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_r": 0.03,       # Tasa de sustitución lingüística
-            "ode_k": 1.0,       # Capacidad: dominio completo
-            "ode_delta": 0.01,   # Attrition dialectal
-            "ode_gamma": 0.15,   # Sensibilidad a presión mediática (↑ forcing-led)
-            "ode_tracking": 0.10, # Tracking hacia forcing
+            "ode_prestige": 0.008,  # Asimetría de prestigio lingüístico
             "forcing_scale": 0.15,
             "macro_coupling": 0.30,
         },

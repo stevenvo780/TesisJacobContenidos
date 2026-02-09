@@ -70,8 +70,7 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_recharge": 0.08,    # Recarga por precipitación/infiltración (↑)
-            "ode_extraction": 0.03,  # Extracción agrícola (↓ para evitar divergencia)
+            "ode_extraction": 0.01,  # Extracción antrópica suave
             "forcing_scale": 0.12,
             "macro_coupling": 0.28,
         },

@@ -1,6 +1,6 @@
 # Reporte de Validación — Finanzas (SPY)
 
-- generated_at: 2026-02-08T23:29:13.223262Z
+- generated_at: 2026-02-09T02:17:52.222364Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -28,7 +28,7 @@
 ### Errores
 - rmse_abm: 11558.3879
 - rmse_abm_no_ode: 11558.3879
-- rmse_ode: 11561.2871
+- rmse_ode: 11578.0384
 - rmse_reduced: 11558.3001
 - threshold: 10261.8656
 
@@ -39,7 +39,7 @@
 - ode_alpha: 0.0014
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 7.5811
+- calibration_rmse: 6.7094
 
 ## Fase real
 - **overall_pass**: False
@@ -67,7 +67,7 @@
 ### Errores
 - rmse_abm: 37.9317
 - rmse_abm_no_ode: 37.9317
-- rmse_ode: 29.7012
+- rmse_ode: 30.5774
 - rmse_reduced: 37.5564
 - threshold: 1.1814
 
@@ -78,5 +78,5 @@
 - ode_alpha: 0.0017
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 11.0602
+- calibration_rmse: 10.2667
 

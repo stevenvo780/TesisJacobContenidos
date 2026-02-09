@@ -64,11 +64,3 @@ def simulate_ode(params, steps, seed=4):
         series.append(float(H))
 
     return {ODE_KEY: series, "forcing": forcing}
-        H += dH
-        H = max(-5.0, min(H, 5.0))
-        H = _apply_assimilation(H, t, params)
-        if not math.isfinite(H):
-            H = 0.0
-        series.append(float(H))
-
-    return {ODE_KEY: series, "forcing": forcing}

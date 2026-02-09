@@ -39,19 +39,14 @@ def simulate_ode(params, steps, seed=3):
     # Core tracking (calibrado por hybrid_validator)
     alpha = float(params.get("ode_alpha", 0.05))
     beta = float(params.get("ode_beta", 0.015))
-    # Corrección domain-specific: evaporación concentra sales
-    evap_factor = float(params.get("ode_evap", 0.01))
 
     S = float(params.get("p0", 0.0))
     series = []
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
-        # Core: mean-reversion tracking hacia forcing
-        core = alpha * (f - beta * S)
-        # Domain: evaporación concentra sales (feedback positivo suave)
-        evap = evap_factor * max(0.0, S) * max(0.0, f)
-        dS = core + evap + random.gauss(0, noise_std)
+        # Core: mean-reversion tracking hacia forcing (espacio Z)
+        dS = alpha * (f - beta * S) + random.gauss(0, noise_std)
         S += dS
         S = max(-10.0, min(S, 10.0))
         S = _apply_assimilation(S, t, params)

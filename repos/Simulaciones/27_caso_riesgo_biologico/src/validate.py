@@ -71,12 +71,8 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_r": 0.06,       # Tasa de emergencia zoonótica
-            "ode_k": 2.0,       # Techo de riesgo biológico global
-            "ode_delta": 0.025,  # Contención/respuesta sanitaria
-            "ode_gamma": 0.10,   # Sensibilidad a forcing zoonótico
             "forcing_scale": 0.10,
-            "macro_coupling": 0.25,
+            "macro_coupling": 0.30,
         },
     )
 

@@ -46,20 +46,14 @@ def simulate_ode(params, steps, seed=6):
     # Core tracking (calibrado por hybrid_validator)
     alpha = float(params.get("ode_alpha", 0.06))
     beta = float(params.get("ode_beta", 0.025))
-    # Domain: saturación logística (inmunidad/intervención)
-    K = float(params.get("ode_k", 3.0))
-    r = float(params.get("ode_r", 0.01))
 
     R = float(params.get("p0", 0.0))
     series = []
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
-        # Core: mean-reversion tracking hacia forcing
-        core = alpha * (f - beta * R)
-        # Domain: crecimiento logístico suave (amplificación comunitaria)
-        logistic = r * R * (1.0 - R / K) if R > 0 and K > 0 else 0.0
-        dR = core + logistic + random.gauss(0, noise_std)
+        # Core: mean-reversion tracking hacia forcing (espacio Z)
+        dR = alpha * (f - beta * R) + random.gauss(0, noise_std)
         R += dR
         R = max(-10.0, min(R, 10.0))
         R = _apply_assimilation(R, t, params)

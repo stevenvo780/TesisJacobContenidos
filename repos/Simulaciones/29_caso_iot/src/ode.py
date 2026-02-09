@@ -36,27 +36,18 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common")
 
 def simulate_ode(params, steps, seed=42):
     """
-    Bass Diffusion + Metcalfe Network Effects.
+    Bass Diffusion simplificado operando en espacio Z.
 
-    Parámetros esperados:
-      p0             : condición inicial N(0)
-      ode_p_innov    : coeficiente de innovación (default 0.008)
-      ode_q_imit     : coeficiente de imitación (default 0.35)
-      ode_M          : mercado potencial (default 120)
-      ode_metcalfe   : intensidad network externalities (default 0.05)
-      ode_forcing_eps: sensibilidad a forcing (default 0.1)
-      ode_noise      : amplitud de ruido estocástico
-      forcing_series : lista de forcing externo
-      assimilation_series/strength: para nudging
+    Usa alpha*(f - beta*N) como core tracking (calibrado por hybrid_validator)
+    con corrección de saturación suave (Metcalfe).
     """
     rng = np.random.default_rng(seed)
 
-    # Parámetros Bass
-    p_innov = float(params.get("ode_p_innov", 0.008))
-    q_imit = float(params.get("ode_q_imit", 0.35))
-    M = float(params.get("ode_M", 120.0))
-    metcalfe = float(params.get("ode_metcalfe", 0.05))
-    forcing_eps = float(params.get("ode_forcing_eps", 0.1))
+    # Core tracking (calibrado por hybrid_validator)
+    alpha = float(params.get("ode_alpha", 0.10))
+    beta = float(params.get("ode_beta", 0.02))
+    # Domain: saturación por efecto red (cuadrático suave)
+    metcalfe = float(params.get("ode_metcalfe", 0.003))
     noise_std = float(params.get("ode_noise", 0.5))
 
     # Forcing
@@ -73,26 +64,18 @@ def simulate_ode(params, steps, seed=42):
     N = float(params.get("p0", 0.5))
 
     series = []
-    dt = 1.0  # Paso temporal unitario (1 año o 1 mes según datos)
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
 
-        # Bass clásico: dN/dt = [p + q*(N/M)] * (M - N)
-        bass_term = (p_innov + q_imit * N / max(M, 1e-6)) * max(M - N, 0.0)
-
-        # Metcalfe network effect: valor crece con N² → acelera adopción
-        metcalfe_term = metcalfe * (N / max(M, 1e-6)) ** 2 * max(M - N, 0.0)
-
-        # Forcing exógeno (economía, infraestructura)
-        forcing_term = forcing_eps * f * max(M - N, 0.0) / max(M, 1e-6)
-
-        # Saturación: cerca de M, el crecimiento se frena naturalmente
-        dN = (bass_term + metcalfe_term + forcing_term) * dt
-        dN += rng.normal(0, noise_std)
+        # Core: mean-reversion tracking hacia forcing (espacio Z)
+        core = alpha * (f - beta * N)
+        # Domain: saturación suave (Metcalfe network effect)
+        sat = metcalfe * N * abs(N)
+        dN = core - sat + rng.normal(0, noise_std)
 
         N += dN
-        N = np.clip(N, 0.0, M * 1.15)  # Permitir leve sobreimpulso (multi-SIM)
+        N = np.clip(N, -10.0, 10.0)
 
         # Assimilation (nudging)
         if assim_series is not None and t < len(assim_series):

@@ -1,73 +1,73 @@
 # Reporte de Validación — Ciclo del Fósforo (Carpenter Biogeoquímico)
 
-- generated_at: 2026-02-09T02:13:22.974695Z
+- generated_at: 2026-02-09T02:21:02.795692Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -1.5858
-- bootstrap_mean: -1.6243
-- CI 95%: [-2.2304, -1.1452]
-- weighted_value (LoE factor 0.60): -0.9515
+- valor: 0.1670
+- bootstrap_mean: 0.1682
+- CI 95%: [0.1509, 0.1910]
+- weighted_value (LoE factor 0.60): 0.1002
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9999
-- external: 0.9480
-- CR: 1.0547
+- internal: 0.9998
+- external: 0.9990
+- CR: 1.0008
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: False
+- c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.0268
-- rmse_abm_no_ode: 0.7838
-- rmse_ode: 10.1577
-- rmse_reduced: 2.7961
-- threshold: 0.7146
+- rmse_abm: 0.9371
+- rmse_abm_no_ode: 1.1250
+- rmse_ode: 0.5140
+- rmse_reduced: 3.2930
+- threshold: 0.8072
 
 ### Calibración
-- forcing_scale: 0.9351
-- macro_coupling: 0.3008
+- forcing_scale: 0.9465
+- macro_coupling: 0.3435
 - damping: 0.9500
-- ode_alpha: 0.3090
+- ode_alpha: 0.1841
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2793
+- calibration_rmse: 0.2314
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -9.1397
-- bootstrap_mean: -9.2519
-- CI 95%: [-12.1888, -7.1539]
-- weighted_value (LoE factor 0.60): -5.4838
+- valor: -3.6125
+- bootstrap_mean: -3.6565
+- CI 95%: [-4.3298, -3.0948]
+- weighted_value (LoE factor 0.60): -2.1675
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9990
-- external: 0.9185
-- CR: 1.0876
+- internal: 0.9914
+- external: 0.9932
+- CR: 0.9983
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: False
+- c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.3171
+- rmse_abm: 1.5089
 - rmse_abm_no_ode: 0.3271
-- rmse_ode: 8.2638
+- rmse_ode: 3.4114
 - rmse_reduced: 2.3362
 - threshold: 0.4564
 
