@@ -1,21 +1,21 @@
 # Reporte de Validación — Salinización de Suelos (Richards-Solute)
 
-- generated_at: 2026-02-09T02:20:57.759330Z
+- generated_at: 2026-02-09T02:27:30.228586Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.2633
-- bootstrap_mean: 0.2583
-- CI 95%: [-0.0216, 0.4875]
-- weighted_value (LoE factor 0.60): 0.1580
-- válido (0.30-0.90): False
+- valor: 0.3453
+- bootstrap_mean: 0.3415
+- CI 95%: [0.1661, 0.4856]
+- weighted_value (LoE factor 0.60): 0.2072
+- válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.9997
-- external: 0.9991
-- CR: 1.0005
+- internal: 0.9998
+- external: 0.9988
+- CR: 1.0011
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,35 +26,35 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.4284
-- rmse_abm_no_ode: 0.5816
-- rmse_ode: 0.8824
-- rmse_reduced: 2.6843
-- threshold: 0.7133
+- rmse_abm: 0.4710
+- rmse_abm_no_ode: 0.7195
+- rmse_ode: 1.0744
+- rmse_reduced: 2.8625
+- threshold: 0.7810
 
 ### Calibración
-- forcing_scale: 0.9505
-- macro_coupling: 0.4046
+- forcing_scale: 0.9529
+- macro_coupling: 0.3091
 - damping: 0.9500
-- ode_alpha: 0.3447
+- ode_alpha: 0.3333
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.3684
+- calibration_rmse: 0.3621
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.9775
-- bootstrap_mean: -0.9931
-- CI 95%: [-2.3527, -0.1354]
-- weighted_value (LoE factor 0.60): -0.5865
+- valor: -1.5836
+- bootstrap_mean: -1.5911
+- CI 95%: [-3.5192, -0.3256]
+- weighted_value (LoE factor 0.60): -0.9501
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: -0.9099
-- external: 0.1143
-- CR: 7.9587
+- internal: -0.9269
+- external: 0.0516
+- CR: 17.9695
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,9 +65,9 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 1.7290
+- rmse_abm: 2.2590
 - rmse_abm_no_ode: 0.8744
-- rmse_ode: 3.0444
+- rmse_ode: 4.4630
 - rmse_reduced: 1.0780
 - threshold: 0.1357
 

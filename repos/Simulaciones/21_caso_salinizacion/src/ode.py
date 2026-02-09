@@ -39,6 +39,8 @@ def simulate_ode(params, steps, seed=3):
     # Core tracking (calibrado por hybrid_validator)
     alpha = float(params.get("ode_alpha", 0.05))
     beta = float(params.get("ode_beta", 0.015))
+    # Corrección bilineal: evaporación amplifica salinización (no-lineal)
+    gamma = float(params.get("ode_gamma", 0.02))
 
     S = float(params.get("p0", 0.0))
     series = []
@@ -46,7 +48,10 @@ def simulate_ode(params, steps, seed=3):
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
         # Core: mean-reversion tracking hacia forcing (espacio Z)
-        dS = alpha * (f - beta * S) + random.gauss(0, noise_std)
+        core = alpha * (f - beta * S)
+        # Bilineal: interacción forcing × estado (info no-lineal)
+        bilinear = gamma * f * S
+        dS = core + bilinear + random.gauss(0, noise_std)
         S += dS
         S = max(-10.0, min(S, 10.0))
         S = _apply_assimilation(S, t, params)

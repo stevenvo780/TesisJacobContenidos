@@ -120,8 +120,8 @@ def simulate_abm(params, steps, seed=42):
             capacity[i, chosen_tech] += investment
             
             # Retirement: Remove some capacity from expensive tech
-            retirement_prob = total_cost / total_cost.max()
-            retirement_prob = retirement_prob / retirement_prob.sum()
+            retirement_prob = np.maximum(0.01, total_cost / (total_cost.max() + 1e-6))
+            retirement_prob = retirement_prob / retirement_prob.sum()  # Normalize to 1.0
             retired_tech = rng.choice(n_tech, p=retirement_prob)
             capacity[i, retired_tech] = max(0, capacity[i, retired_tech] - investment * 0.5)
             

@@ -82,15 +82,15 @@ def main():
         real_end="2022-01-01",
         real_split="2005-01-01",
         corr_threshold=0.65,
-        ode_noise=0.3,
+        ode_noise=0.03,
         base_noise=0.005,
         loe=4,                       # Level of Evidence: alto (datos sólidos, modelo validado)
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_metcalfe": 0.003,     # Saturación Metcalfe suave
+            "ode_metcalfe": 0.015,   # Bilineal: efecto red × adopción
             "forcing_scale": 0.10,
-            "macro_coupling": 0.25,
+            "macro_coupling": 0.35,
         },
         driver_cols=["internet_users", "broadband", "gdp_pc", "gdp_growth"],
     )

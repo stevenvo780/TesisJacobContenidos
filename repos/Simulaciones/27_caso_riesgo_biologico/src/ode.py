@@ -46,6 +46,8 @@ def simulate_ode(params, steps, seed=6):
     # Core tracking (calibrado por hybrid_validator)
     alpha = float(params.get("ode_alpha", 0.06))
     beta = float(params.get("ode_beta", 0.025))
+    # Corrección: amplificación no-lineal del forcing (spillover zoonótico)
+    gamma = float(params.get("ode_gamma", 0.015))
 
     R = float(params.get("p0", 0.0))
     series = []
@@ -53,14 +55,15 @@ def simulate_ode(params, steps, seed=6):
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
         # Core: mean-reversion tracking hacia forcing (espacio Z)
-        dR = alpha * (f - beta * R) + random.gauss(0, noise_std)
+        core = alpha * (f - beta * R)
+        # No-lineal: amplificación cuadrática del forcing (high-f events)
+        amplif = gamma * f * abs(f)
+        dR = core + amplif + random.gauss(0, noise_std)
         R += dR
         R = max(-10.0, min(R, 10.0))
         R = _apply_assimilation(R, t, params)
         if not math.isfinite(R):
             R = 0.0
         series.append(float(R))
-
-    return {ODE_KEY: series, "forcing": forcing}
 
     return {ODE_KEY: series, "forcing": forcing}

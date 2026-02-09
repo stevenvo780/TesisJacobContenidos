@@ -81,7 +81,7 @@ def simulate_abm(params, steps, seed=42):
         
         # 1. Bottom-up activation (stimulus + noise)
         # Different modules respond to different stimuli
-        stimulus_response = rng.uniform(0, stimulus, size=n_modules)
+        stimulus_response = rng.uniform(0, max(0.01, stimulus), size=n_modules)
         activations += 0.1 * stimulus_response
         
         # 2. Decay

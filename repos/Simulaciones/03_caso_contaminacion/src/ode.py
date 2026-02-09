@@ -78,7 +78,7 @@ def simulate_ode(params, steps, seed=42):
         loss_term = (k_dep + k_rxn + k_dilution) * C
         
         dC = emission_term - loss_term
-        dC += rng.normal(0, noise_std * C)
+        dC += rng.normal(0, noise_std * max(0.01, abs(C)))
         
         C += dC * dt
         C = max(0, C)

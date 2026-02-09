@@ -65,8 +65,9 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
+            "ode_gamma": 0.02,       # Bilineal: evaporación × salinidad
             "forcing_scale": 0.10,
-            "macro_coupling": 0.30,
+            "macro_coupling": 0.35,
         },
     )
 

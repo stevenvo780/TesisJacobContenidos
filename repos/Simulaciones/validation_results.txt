@@ -1,0 +1,24 @@
+Validation Results - 2026-02-08 21:30:29
+============================================================
+
+02_caso_conciencia: FAIL | EDI=None | 0.3s
+  Error:      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/02_caso_conciencia/src/../../common/hybrid_validator.py", line 309, in calibrate_abm
+    sim = simulate_abm_fn(params, steps, seed=seed)
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/02_caso_conciencia/src/abm.py", line 129, in simulate_abm
+    grid = activations.reshape((grid_size, grid_size))
+ValueError: cannot reshape array of size 16 into shape (20,20)
+
+03_caso_contaminacion: OK | EDI=None | 38.7s
+04_caso_energia: FAIL | EDI=None | 1.9s
+  Error: aso_energia/src/../../common/hybrid_validator.py", line 309, in calibrate_abm
+    sim = simulate_abm_fn(params, steps, seed=seed)
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/04_caso_energia/src/abm.py", line 125, in simulate_abm
+    retired_tech = rng.choice(n_tech, p=retirement_prob)
+  File "numpy/random/_generator.pyx", line 891, in numpy.random._generator.Generator.choice
+ValueError: Probabilities do not sum to 1. See Notes section of docstring for more information.
+
+
+Total: 1/3 OK

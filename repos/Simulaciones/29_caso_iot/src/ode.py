@@ -48,7 +48,7 @@ def simulate_ode(params, steps, seed=42):
     beta = float(params.get("ode_beta", 0.02))
     # Domain: saturación por efecto red (cuadrático suave)
     metcalfe = float(params.get("ode_metcalfe", 0.003))
-    noise_std = float(params.get("ode_noise", 0.5))
+    noise_std = float(params.get("ode_noise", 0.03))
 
     # Forcing
     forcing = params.get("forcing_series")
@@ -70,9 +70,9 @@ def simulate_ode(params, steps, seed=42):
 
         # Core: mean-reversion tracking hacia forcing (espacio Z)
         core = alpha * (f - beta * N)
-        # Domain: saturación suave (Metcalfe network effect)
-        sat = metcalfe * N * abs(N)
-        dN = core - sat + rng.normal(0, noise_std)
+        # Bilineal: efecto red × adopción (Metcalfe)
+        bilinear = metcalfe * f * N
+        dN = core + bilinear + rng.normal(0, noise_std)
 
         N += dN
         N = np.clip(N, -10.0, 10.0)
