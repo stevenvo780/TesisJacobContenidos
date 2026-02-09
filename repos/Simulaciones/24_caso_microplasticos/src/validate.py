@@ -35,19 +35,18 @@ def make_synthetic(start_date, end_date, seed=101):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    # Forcing: producción plástica con tendencia y ciclo (Jambeck et al. 2015)
-    forcing = [0.5 * np.tanh(0.02 * t) + 0.3 * np.sin(2 * np.pi * t / 36) for t in range(steps)]
+    # Forcing: producción plástica creciente (Jambeck et al. 2015)
+    forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
     true_params = {
         "p0": 0.0, "ode_inflow": 0.09, "ode_decay": 0.003,
-        "ode_tracking": 0.08,
         "ode_noise": 0.025, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.04, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"inflow": 0.09, "decay": 0.003}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"inflow": 0.09, "decay": 0.003}, "measurement_noise": 0.04}
     return df, meta
 
 

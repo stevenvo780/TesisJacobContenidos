@@ -36,18 +36,17 @@ def make_synthetic(start_date, end_date, seed=101):
         steps = len(dates)
 
     # Forcing: precipitación con variabilidad interanual (proxy recarga)
-    forcing = [0.5 * np.sin(2 * np.pi * t / 24) + 0.3 * np.sin(2 * np.pi * t / 12) for t in range(steps)]
+    forcing = [0.008 * t + 0.0003 * t**1.2 for t in range(steps)]
     true_params = {
         "p0": 0.0, "ode_recharge": 0.08, "ode_extraction": 0.03,
-        "ode_tracking": 0.08,
         "ode_noise": 0.02, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.04, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"recharge": 0.08, "extraction": 0.03}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"recharge": 0.08, "extraction": 0.03}, "measurement_noise": 0.04}
     return df, meta
 
 
@@ -73,7 +72,6 @@ def main():
         extra_base_params={
             "ode_recharge": 0.08,    # Recarga por precipitación/infiltración (↑)
             "ode_extraction": 0.03,  # Extracción agrícola (↓ para evitar divergencia)
-            "ode_tracking": 0.08,    # Tracking hacia forcing
             "forcing_scale": 0.12,
             "macro_coupling": 0.28,
         },

@@ -43,10 +43,8 @@ def simulate_ode(params, steps, seed=5):
     # Parámetros orbitales
     launch_rate = float(params.get("ode_inflow", params.get("ode_alpha", 0.18)))
     deorbit = float(params.get("ode_decay", params.get("ode_beta", 0.015)))
-    # Tracking: ODE sigue al forcing (despliegue planificado)
-    tracking = float(params.get("ode_tracking", 0.10))
-    # Saturación orbital suave (no N²)
-    saturation = float(params.get("ode_saturation", 0.005))
+    # Saturación orbital suave (limita crecimiento)
+    saturation = float(params.get("ode_saturation", 0.003))
 
     N = float(params.get("p0", 0.0))
     series = []
@@ -55,16 +53,14 @@ def simulate_ode(params, steps, seed=5):
         f = forcing[t] if t < len(forcing) else 0.0
         # Lanzamientos: proporcional al forcing (planes de despliegue)
         L = launch_rate * max(0.0, f)
-        # Tracking hacia trayectoria de despliegue
-        track = tracking * (f - N)
         # Desorbitado controlado (decay lineal)
         deorb = deorbit * N
-        # Saturación: resistencia al crecimiento en densidad alta
+        # Saturación: resistencia suave al crecimiento
         sat_loss = saturation * N * abs(N)
 
-        dN = L + track - deorb - sat_loss + random.gauss(0, noise_std)
+        dN = L - deorb - sat_loss + random.gauss(0, noise_std)
         N += dN
-        N = max(-5.0, min(N, 20.0))
+        N = max(0.0, min(N, 20.0))
         N = _apply_assimilation(N, t, params)
         if not math.isfinite(N):
             N = 0.0

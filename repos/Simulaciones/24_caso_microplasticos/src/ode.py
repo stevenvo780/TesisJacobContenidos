@@ -41,8 +41,6 @@ def simulate_ode(params, steps, seed=3):
     # Jambeck parameters
     inflow = float(params.get("ode_inflow", params.get("ode_alpha", 0.09)))
     decay = float(params.get("ode_decay", params.get("ode_beta", 0.003)))  # Ultra-lento
-    # Tracking: ODE tiende a seguir el forcing (mean-reversion hacia F)
-    tracking = float(params.get("ode_tracking", 0.08))
     # Ingestion/burial: pérdida por biota y sedimentación
     burial_rate = float(params.get("ode_burial", 0.002))
 
@@ -53,13 +51,11 @@ def simulate_ode(params, steps, seed=3):
         f = forcing[t] if t < len(forcing) else 0.0
         # Input desde tierra: proporcional a forcing
         I_land = inflow * max(0.0, f)
-        # Tracking hacia forcing (mean-reversion suave)
-        track = tracking * (f - M)
         # Pérdidas: degradación UV + burial (muy lentas para plásticos)
         loss = (decay + burial_rate) * M
-        dM = I_land + track - loss + random.gauss(0, noise_std)
+        dM = I_land - loss + random.gauss(0, noise_std)
         M += dM
-        M = max(-5.0, min(M, 15.0))
+        M = max(0.0, min(M, 15.0))
         M = _apply_assimilation(M, t, params)
         if not math.isfinite(M):
             M = 0.0

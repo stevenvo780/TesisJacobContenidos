@@ -50,8 +50,6 @@ def simulate_ode(params, steps, seed=6):
     gamma = float(params.get("ode_gamma", 0.10))
     # Mitigación (respuesta sanitaria)
     delta = float(params.get("ode_delta", 0.025))
-    # Tracking: ODE sigue la señal de forcing
-    tracking = float(params.get("ode_tracking", 0.08))
 
     R = float(params.get("p0", 0.0))
     series = []
@@ -62,14 +60,12 @@ def simulate_ode(params, steps, seed=6):
         growth = r * R * (1.0 - R / K) if K > 0 and R > 0 else 0.0
         # Spillover zoonótico desde interfaz (forcing-led)
         spillover = gamma * max(0.0, f)
-        # Tracking hacia forcing
-        track = tracking * (f - R)
         # Mitigación sanitaria
         mitigation = delta * R
 
-        dR = growth + spillover + track - mitigation + random.gauss(0, noise_std)
+        dR = growth + spillover - mitigation + random.gauss(0, noise_std)
         R += dR
-        R = max(-3.0, min(R, 3.0 * K))
+        R = max(0.0, min(R, 3.0 * K))
         R = _apply_assimilation(R, t, params)
         if not math.isfinite(R):
             R = 0.0

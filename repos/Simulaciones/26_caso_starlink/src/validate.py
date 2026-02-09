@@ -33,18 +33,17 @@ def make_synthetic(start_date, end_date, seed=129):
         steps = len(dates)
 
     # Forcing: despliegue satelital con ramp-up suave
-    forcing = [0.5 * np.tanh(0.03 * t) + 0.3 * np.sin(2 * np.pi * t / 36) for t in range(steps)]
+    forcing = [0.012 * t + 0.0004 * t**1.3 for t in range(steps)]
     true_params = {
         "p0": 0.0, "ode_inflow": 0.18, "ode_decay": 0.015,
-        "ode_tracking": 0.10,
         "ode_noise": 0.03, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.10, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"inflow": 0.18, "decay": 0.015}, "measurement_noise": 0.10}
+    meta = {"ode_true": {"inflow": 0.18, "decay": 0.015}, "measurement_noise": 0.05}
     return df, meta
 
 

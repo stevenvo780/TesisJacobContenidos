@@ -45,8 +45,6 @@ def simulate_ode(params, steps, seed=4):
     extraction = float(params.get("ode_extraction", params.get("ode_beta", 0.03)))
     # Evapotranspiración: más alta cuando nivel freático cercano a superficie
     evapotransp = float(params.get("ode_evapotransp", 0.01))
-    # Tracking hacia forcing
-    tracking = float(params.get("ode_tracking", 0.08))
     # Umbral de subsidencia irreversible
     h_critical = float(params.get("ode_h_critical", -1.5))
 
@@ -57,8 +55,6 @@ def simulate_ode(params, steps, seed=4):
         f = forcing[t] if t < len(forcing) else 0.0
         # Recarga: proporcional a precipitación (forcing), con infiltración Horton
         R = recharge_coeff * max(0.0, f)
-        # Tracking hacia forcing (mean-reversion)
-        track = tracking * (f - H)
         # Evapotranspiración: decrece con profundidad (exponencial)
         ET = evapotransp * math.exp(-0.5 * max(0.0, -H))
         # Extracción suave
@@ -66,7 +62,7 @@ def simulate_ode(params, steps, seed=4):
         # Subsidencia irreversible bajo umbral
         subsidence = 0.01 * max(0.0, h_critical - H) if H < h_critical else 0.0
 
-        dH = R + track - ET - Q - subsidence + random.gauss(0, noise_std)
+        dH = R - ET - Q - subsidence + random.gauss(0, noise_std)
         H += dH
         H = max(-5.0, min(H, 5.0))
         H = _apply_assimilation(H, t, params)
