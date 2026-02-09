@@ -62,143 +62,105 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 
 ## Resultados Consolidados (Matriz de Validación Técnica)
 
-> **Estado actual (2026-07-11):** Tras la implementación de Bias Correction, taxonomía de emergencia diferenciada, C1 relativo (v2.0), noise sensitivity test y rolling ODE, el resultado bajo criterios estrictos (overall_pass = conjunción de 13+ condiciones) sigue siendo **0/29**. Sin embargo, **C1 convergence mejora de 2/29 a 14/29** gracias al criterio relativo. La taxonomía diferenciada revela: **2 casos con emergencia fuerte**, **1 con emergencia débil**, **4 con señal sugestiva**, y **3 falsificaciones correctamente rechazadas**. La hipótesis H1 queda **parcialmente confirmada** en dominios específicos.
+| Caso | EDI | p-perm | sig | CR | Cat | Pass | Reporte |
+| :--- | ---: | ---: | :---: | ---: | :--- | :---: | :--- |
+| 01_caso_clima | 0.010 | 0.591 | ❌ | 1.000 | trend | ❌ | `01_caso_clima/report.md` |
+| 02_caso_conciencia | -0.024 | 0.938 | ❌ | 0.919 | null | ❌ | `02_caso_conciencia/report.md` |
+| 03_caso_contaminacion | -0.000 | 0.474 | ❌ | 2.780 | null | ❌ | `03_caso_contaminacion/report.md` |
+| 04_caso_energia | -0.003 | 0.937 | ❌ | 1.096 | null | ❌ | `04_caso_energia/report.md` |
+| 05_caso_epidemiologia | 0.000 | 1.000 | ❌ | 0.000 | null | ❌ | `05_caso_epidemiologia/report.md` |
+| 06_caso_falsacion_exogeneidad | 0.055 | 1.000 | ❌ | 1.006 | falsification | ❌ | `06_caso_falsacion_exogeneidad/report.md` |
+| 07_caso_falsacion_no_estacionariedad | -1.000 | 1.000 | ❌ | 1.004 | falsification | ❌ | `07_caso_falsacion_no_estacionariedad/report.md` |
+| 08_caso_falsacion_observabilidad | -1.000 | 1.000 | ❌ | 1.005 | falsification | ❌ | `08_caso_falsacion_observabilidad/report.md` |
+| 09_caso_finanzas | 0.040 | 0.000 | ✅ | 0.000 | suggestive | ❌ | `09_caso_finanzas/report.md` |
+| 10_caso_justicia | 0.000 | 1.000 | ❌ | 1.053 | null | ❌ | `10_caso_justicia/report.md` |
+| 11_caso_movilidad | 0.003 | 0.361 | ❌ | 0.000 | trend | ❌ | `11_caso_movilidad/report.md` |
+| 12_caso_paradigmas | 0.000 | 1.000 | ❌ | 0.000 | null | ❌ | `12_caso_paradigmas/report.md` |
+| 13_caso_politicas_estrategicas | 0.011 | 0.719 | ❌ | 1.626 | trend | ❌ | `13_caso_politicas_estrategicas/report.md` |
+| 14_caso_postverdad | 0.001 | 0.030 | ❌ | 1.054 | trend | ❌ | `14_caso_postverdad/report.md` |
+| 15_caso_wikipedia | 0.000 | 1.000 | ❌ | 1.158 | null | ❌ | `15_caso_wikipedia/report.md` |
+| 16_caso_deforestacion | 0.633 | 0.000 | ✅ | 1.017 | strong | ✅ | `16_caso_deforestacion/report.md` |
+| 17_caso_oceanos | 0.053 | 0.000 | ✅ | 1.334 | suggestive | ❌ | `17_caso_oceanos/report.md` |
+| 18_caso_urbanizacion | 0.000 | 0.220 | ❌ | 30.069 | trend | ❌ | `18_caso_urbanizacion/report.md` |
+| 19_caso_acidificacion_oceanica | -0.000 | 0.000 | ❌ | 1.211 | null | ❌ | `19_caso_acidificacion_oceanica/report.md` |
+| 20_caso_kessler | -0.420 | 1.000 | ❌ | 1.204 | null | ❌ | `20_caso_kessler/report.md` |
+| 21_caso_salinizacion | 0.027 | 0.724 | ❌ | ∞ | trend | ❌ | `21_caso_salinizacion/report.md` |
+| 22_caso_fosforo | -1.000 | 1.000 | ❌ | 1.065 | null | ❌ | `22_caso_fosforo/report.md` |
+| 23_caso_erosion_dialectica | -1.000 | 1.000 | ❌ | 1.001 | null | ❌ | `23_caso_erosion_dialectica/report.md` |
+| 24_caso_microplasticos | 0.427 | 0.000 | ✅ | 1.002 | strong | ✅ | `24_caso_microplasticos/report.md` |
+| 25_caso_acuiferos | -0.179 | 1.000 | ❌ | 1.001 | null | ❌ | `25_caso_acuiferos/report.md` |
+| 26_caso_starlink | -1.000 | 1.000 | ❌ | ∞ | null | ❌ | `26_caso_starlink/report.md` |
+| 27_caso_riesgo_biologico | 0.105 | 0.365 | ❌ | 1.002 | trend | ❌ | `27_caso_riesgo_biologico/report.md` |
+| 28_caso_fuga_cerebros | 0.183 | 0.001 | ✅ | 1.008 | weak | ❌ | `28_caso_fuga_cerebros/report.md` |
+| 29_caso_iot | 0.020 | 0.000 | ✅ | 1.053 | suggestive | ❌ | `29_caso_iot/report.md` |
 
-### Taxonomía de Emergencia Diferenciada
-
-El protocolo clasifica cada caso en una de seis categorías basándose en el EDI, su significancia estadística (permutation test, p<0.05) y los umbrales del marco:
-
-| Categoría | Criterio | Interpretación |
-|-----------|----------|----------------|
-| **strong** | EDI ∈ [0.325, 0.90] + significativo | Constricción macro efectiva: la eliminación del nivel macro degrada irreversiblemente la predicción micro |
-| **weak** | EDI ∈ (0.10, 0.325) + significativo | Señal macro detectable pero por debajo del umbral robusto H1 |
-| **suggestive** | EDI ∈ (0, 0.10] + significativo | Señal estadísticamente significativa pero de magnitud insuficiente para claims ontológicos |
-| **trend** | EDI > 0 + no significativo | Tendencia positiva sin confirmación estadística |
-| **null** | EDI ≤ 0 o no significativo | Sin evidencia de constricción macro efectiva |
-| **falsification** | Caso diseñado para fallar | Control negativo: rechazo esperado por violación intencional del marco |
-
-### Bias Correction del ODE Target
-
-La corrección de sesgo (BC) del target ODE es una transformación afín que elimina el sesgo de nivel/escala del ODE antes del coupling con el ABM. El ODE puede capturar la FORMA de la dinámica (alta correlación) pero operar en una escala diferente a las observaciones. Sin BC, el nudging ODE→ABM empuja al ABM hacia valores sesgados, empeorando la predicción incluso con correlación alta. La BC se aplica condicionalmente:
-
-| Modo BC | Condición | Efecto |
-|---------|-----------|--------|
-| **full** | corr_train > 0.5 y scale ∈ [0.2, 5.0] | Centrado + reescalado: `ode_bc[t] = obs_mean + (ode[t] - ode_mean) × (obs_std / ode_std)` |
-| **bias_only** | corr_train > 0.5 y scale fuera de [0.2, 5.0] | Solo centrado: `ode_bc[t] = ode[t] - ode_mean + obs_mean` |
-| **none** | corr_train ≤ 0.5 | Sin corrección |
-
-**Impacto principal:** El caso 16 (Deforestación) pasó de EDI=-0.294 a EDI=+0.629 (categoría: **strong**) gracias al BC full. El ODE tenía correlación 0.84 con los datos pero un sesgo de escala ×1.96 que destruía la señal de coupling.
-
-### Tabla de Resultados por Caso
-
-| Caso | EDI_real | sig | ODE corr | ODE qual. | BC | Categoría | c1 | CR |
-| :--- | ---: | :---: | ---: | :--- | :--- | :--- | :---: | ---: |
-| 01_clima | -0.015 | — | -0.019 | poor | none | null | ✗ | 1.00 |
-| 02_conciencia | -0.046 | — | 0.234 | poor | bias_only | null | ✗ | 0.94 |
-| 03_contaminacion | -0.000 | — | 0.318 | moderate | none | null | ✗ | 2.78 |
-| 04_energia | -0.003 | — | -0.374 | moderate | none | null | ✗ | 1.10 |
-| 05_epidemiologia | 0.000 | — | 0.623 | moderate | none | null | ✗ | 0.00 |
-| 06_falsacion_exo | 0.055 | — | 0.128 | poor | bias_only | falsification | ✗ | 1.01 |
-| 07_falsacion_noest | -4.924 | — | -0.647 | moderate | bias_only | falsification | ✗ | 1.00 |
-| 08_falsacion_obs | -2.144 | — | -0.257 | poor | bias_only | falsification | ✗ | 1.00 |
-| 09_finanzas | 0.026 | ✓ | 0.981 | good | none | suggestive | ✗ | 0.00 |
-| 10_justicia | 0.000 | — | 0.026 | poor | bias_only | null | ✗ | 1.05 |
-| 11_movilidad | 0.003 | — | 0.175 | poor | none | trend | ✗ | 0.00 |
-| 12_paradigmas | 0.000 | — | -0.960 | good | none | null | ✗ | 0.00 |
-| 13_politicas | 0.011 | — | 0.000 | poor | full | trend | ✗ | 1.63 |
-| 14_postverdad | 0.001 | ✓ | 0.541 | moderate | bias_only | suggestive | ✗ | 1.05 |
-| 15_wikipedia | 0.000 | — | -0.588 | moderate | none | null | ✗ | 1.16 |
-| **16_deforestacion** | **0.629** | **✓** | **0.878** | **good** | **full** | **strong** | **✓** | **1.02** |
-| 17_oceanos | 0.053 | ✓ | -0.792 | good | bias_only | suggestive | ✗ | 1.33 |
-| 18_urbanizacion | 0.000 | — | -0.000 | poor | full | trend | ✗ | 30.07 |
-| 19_acidificacion | -0.002 | ✓ | 0.000 | poor | none | null | ✗ | 1.17 |
-| 20_kessler | -0.161 | ✓ | 0.918 | good | bias_only | null | ✗ | 1.51 |
-| 21_salinizacion | 0.088 | — | -0.754 | good | none | trend | ✗ | 1.05 |
-| 22_fosforo | -3.069 | — | -0.806 | good | full | null | ✗ | 1.09 |
-| 23_erosion | -5.931 | — | 0.985 | good | none | null | ✗ | 1.00 |
-| **24_microplasticos** | **0.439** | **✓** | **0.979** | **good** | **none** | **strong** | ✗ | **1.00** |
-| 25_acuiferos | -0.182 | — | 0.967 | good | none | null | ✗ | 1.00 |
-| 26_starlink | -545.736 | — | 0.000 | poor | none | null | ✗ | ∞ |
-| 27_riesgo_bio | -0.077 | — | 0.137 | poor | full | null | ✗ | 1.00 |
-| **28_fuga_cerebros** | **0.190** | **✓** | **0.814** | **good** | **bias_only** | **weak** | **✓** | **1.01** |
-| 29_iot | 0.007 | ✓ | 0.916 | good | none | suggestive | ✗ | 1.06 |
-
-### Resumen Taxonómico
-
-| Categoría | N | Casos | Interpretación |
-|-----------|---|-------|----------------|
-| **strong** | 2 | Deforestación (0.629), Microplásticos (0.439) | Emergencia macro confirmada — el hiperobjeto constriñe la dinámica micro |
-| **weak** | 1 | Fuga de Cerebros (0.190) | Señal macro detectable pero sub-umbral H1 |
-| **suggestive** | 4 | Finanzas, Postverdad, Océanos, IoT | Señal estadística sin magnitud suficiente |
-| **trend** | 4 | Movilidad, Políticas, Urbanización, Salinización | Tendencia positiva sin confirmación |
-| **null** | 15 | Clima, Conciencia, Contaminación, Energía, Epidemiología, Justicia, Paradigmas, Wikipedia, Acidificación, Kessler, Fósforo, Erosión, Acuíferos, Starlink, Riesgo Bio. | Sin evidencia de emergencia |
-| **falsification** | 3 | Exogeneidad, No-estacionariedad, Observabilidad | Rechazos por diseño ✓ |
+Para recalcular este reporte de forma automatica, usar:
+`python3 scripts/actualizar_tablas_002.py`
 ## Análisis de Evidencia y Hallazgos
 
-Los 29 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella. Tras la implementación de Bias Correction y emergencia diferenciada, el espectro de resultados es más informativo que el binario "pasa/no pasa" anterior.
+Los 29 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella. El espectro de resultados bajo la taxonomía de emergencia diferenciada es más informativo que el binario "pasa/no pasa".
 
 ### Estado Actual: H1 Parcialmente Confirmada (Emergencia Diferenciada)
 
-**overall_pass = 0/29** bajo el criterio estricto de 11 condiciones simultáneas. Sin embargo, la taxonomía diferenciada revela:
+**overall_pass = 2/29** (Deforestación EDI=0.633, Microplásticos EDI=0.427). La taxonomía diferenciada revela:
 
-- **3 casos con emergencia** (strong + weak): Deforestación, Microplásticos, Fuga de Cerebros
-- **4 con señal sugestiva**: Finanzas, Postverdad, Océanos, IoT
+- **2 casos con emergencia fuerte** (strong): Deforestación, Microplásticos
+- **1 caso con emergencia débil** (weak): Fuga de Cerebros (EDI=0.183)
+- **3 con señal sugestiva**: Finanzas, Océanos, IoT
+- **7 con tendencia no significativa**: Clima, Movilidad, Políticas, Postverdad, Urbanización, Salinización, Riesgo Biológico
+- **13 sin evidencia** (null): sin constricción macro detectable
 - **3 falsificaciones correctamente rechazadas**: Exogeneidad, No-estacionariedad, Observabilidad
-- **19 sin evidencia**: null + trend
+
+**Significancia estadística (p<0.05 + EDI>0.01):** 6/29 casos (09, 16, 17, 24, 28, 29)
+**Estabilidad numérica:** 25/29 (fallan: 05, 12, 13, 18)
+**Persistencia (std<5×):** 27/29 (fallan: 11, 20)
 
 La tesis se reformula desde "todos los hiperobjetos muestran emergencia" hacia "el protocolo discrimina, y ciertos fenómenos muestran constricción macro genuina que resiste eliminación".
 
 ### Casos con Emergencia Fuerte (strong)
 
-**Deforestación Global** (EDI=0.629, p=0.000, ODE corr=0.878):
-El modelo ODE (von Thünen Frontier) captura la dinámica de la frontera agrícola con alta correlación. Tras Bias Correction (scale=1.96), el ABM acoplado reduce el RMSE en 63% respecto al ABM aislado. Este es el caso más robusto del corpus: ODE de buena calidad, BC efectivo, EDI significativo y c1=True.
+**Deforestación Global** (EDI=0.633, p=0.000, overall_pass=True):
+El modelo ODE (von Thünen Frontier) captura la dinámica de la frontera agrícola. Tras Bias Correction full, el ABM acoplado reduce el RMSE en 63% respecto al ABM aislado. Este es el caso más robusto del corpus: EDI significativo, C1=True, persistencia estable.
 
-**Microplásticos Oceánicos** (EDI=0.439, p=0.000, ODE corr=0.979):
-El modelo Jambeck de acumulación persistente tiene correlación casi perfecta con los datos OWID. El ABM sin ODE pierde 44% de precisión. Notablemente, este caso NO requiere Bias Correction (corr_train<0.5) — la señal macro emerge directamente del acoplamiento.
+**Microplásticos Oceánicos** (EDI=0.427, p=0.000, overall_pass=True):
+El modelo Jambeck de acumulación persistente. El ABM sin ODE pierde 43% de precisión. Este caso NO requiere Bias Correction — la señal macro emerge directamente del acoplamiento.
 
 ### Caso con Emergencia Débil (weak)
 
-**Fuga de Cerebros** (EDI=0.190, p=0.000, ODE corr=0.814):
-El modelo Docquier-Rapoport captura la migración de capital humano con correlación 0.81. El EDI es significativo pero sub-umbral (0.19 < 0.325). BC bias_only preservó la señal sin amplificación excesiva (scale=5.4 → fuera del rango [0.2, 5.0]).
+**Fuga de Cerebros** (EDI=0.183, p=0.001):
+El modelo Docquier-Rapoport captura la migración de capital humano. El EDI es significativo pero sub-umbral (0.183 < 0.325). BC bias_only preservó la señal sin amplificación excesiva.
 
 ### Casos con Señal Sugestiva (suggestive)
 
-Finanzas (EDI=0.026, p=0.000), Postverdad (0.001, p=0.035), Océanos (0.053, p=0.000), IoT (0.007, p=0.000): señal estadísticamente significativa pero de magnitud insuficiente para afirmaciones ontológicas. Estos casos sugieren que existe estructura macro pero el modelo ABM+ODE actual no la captura con suficiente resolución.
+Finanzas (EDI=0.040, p=0.000), Océanos (0.053, p=0.000), IoT (0.020, p=0.000): señal estadísticamente significativa pero de magnitud insuficiente para afirmaciones ontológicas. Postverdad (EDI=0.001, p=0.030) no alcanza el umbral EDI>0.01 para significancia combinada.
 
 ### Falsificaciones Correctas
 
-Los 3 controles negativos (Exogeneidad, No-estacionariedad, Observabilidad) son clasificados como `falsification` con EDI negativo. El protocolo los rechaza correctamente, confirmando su **selectividad**: no todo sistema produce emergencia positiva.
+Los 3 controles negativos (Exogeneidad, No-estacionariedad, Observabilidad) son clasificados como `falsification` con EDI negativo. El protocolo los rechaza correctamente, confirmando su **selectividad**.
 
 ### Anti-emergencia: ODE de Alta Correlación con EDI Negativo
 
-Un hallazgo central es que varios casos con ODE de alta correlación en validación (>0.85) presentan EDI negativo:
-
-| Caso | ODE corr (val) | ODE corr (train) | EDI | Diagnóstico |
-|------|:-:|:-:|---:|---|
-| Erosión | 0.985 | 0.088 | -5.931 | Corr train/val invertida — ODE no generaliza |
-| Acuíferos | 0.967 | -1.000 | -0.182 | Anticorrelación en training |
-| Fósforo | -0.806 | 0.952 | -3.069 | Correlación se invierte train→val |
-| Kessler | 0.918 | 0.998 | -0.161 | ODE opera en escala absurda (×10¹⁵) |
-
-Esto revela que **alta correlación ODE-obs no implica emergencia**. La correlación puede ser espuria (ajuste en training que no generaliza) o el acoplamiento puede destruir información útil que el ABM aislado captura por sí solo. Estos casos constituyen evidencia en contra de reduccionismos ingenuos que equiparan "buen modelo macro = emergencia".
+Varios casos presentan EDI negativo a pesar de buenos modelos ODE. Esto revela que **alta correlación ODE-obs no implica emergencia**. La correlación puede ser espuria o el acoplamiento puede destruir información útil que el ABM aislado captura por sí solo.
 
 ### Composición del universo de 29 casos
 
-| Categoría | Casos | Función | Conteo |
-|-----------|-------|---------|--------|
-| **Emergencia confirmada** | 16, 24 (strong), 28 (weak) | Evidencia positiva de H1 | 3 |
-| **Señal sugestiva** | 09, 14, 17, 29 | Señal detectable, resolución insuficiente | 4 |
-| **Sin evidencia** | 01-05, 10-13, 15, 18-27 (excl. 16, 24, 28) | H1 no confirmada | 19 |
-| **Falsaciones** | 06, 07, 08 | Controles negativos correctos | 3 |
-| **Total** | | | **29** |
+| Categoría | Conteo | Función |
+|-----------|--------|---------|
+| **strong** | 2 | Evidencia positiva de H1 (overall_pass=True) |
+| **weak** | 1 | Señal macro sub-umbral H1 |
+| **suggestive** | 3 | Señal estadística, resolución insuficiente |
+| **trend** | 7 | Tendencia positiva sin confirmación |
+| **null** | 13 | Sin evidencia de constricción macro |
+| **falsification** | 3 | Controles negativos correctos |
+| **Total** | **29** | |
 
 ### Diagnóstico: ¿Por Qué la Mayoría No Muestra Emergencia?
 
-1. **Modelos ODE inadecuados (15 casos, ODE quality poor/moderate):** El ODE no captura la dinámica macro, por lo que no puede generar constricción útil. Esto no refuta H1 — indica que el modelo ODE necesita mejoras específicas por dominio.
+1. **Modelos ODE inadecuados:** El ODE no captura la dinámica macro, por lo que no puede generar constricción útil. Esto no refuta H1 — indica que el modelo ODE necesita mejoras específicas por dominio.
 
-2. **No-estacionariedad del ODE (5 casos, ODE quality good pero EDI<0):** El ODE se ajusta bien en training pero la correlación se invierte o degrada en validation. Esto refleja cambios estructurales en el fenómeno que el modelo estacionario no captura.
+2. **No-estacionariedad del ODE:** El ODE se ajusta bien en training pero la correlación se invierte o degrada en validation. Esto refleja cambios estructurales en el fenómeno.
 
-3. **Coupling destructivo (3 casos pre-BC):** El sesgo del ODE destruía información útil en el ABM. El Bias Correction resolvió esto para Deforestación; Kessler y otros persisten por problemas de escala o no-estacionariedad.
+3. **Coupling destructivo:** El sesgo del ODE destruye información útil en el ABM. El Bias Correction resolvió esto para Deforestación; otros casos persisten por problemas de escala.
 
 4. **Señal real demasiado ruidosa (4 casos suggestive):** La señal macro existe (EDI significativo) pero el ruido domina, produciendo EDI < 0.10. Esto es un límite del SNR de los datos reales, no del marco.
 
@@ -398,4 +360,3 @@ python3 repos/scripts/tesis.py audit
 ```
 
 Este comando verifica presencia de archivos requeridos, sincronización de timestamps, y rangos válidos de métricas (EDI, CR).
-

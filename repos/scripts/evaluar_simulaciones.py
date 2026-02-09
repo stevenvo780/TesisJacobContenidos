@@ -9,6 +9,7 @@ Opcional:
 """
 from pathlib import Path
 import json
+import math
 import argparse
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -29,18 +30,16 @@ def compute_metrics(metrics_obj):
     ph = metrics_obj.get('phases', {}).get('real') or metrics_obj.get('phases', {}).get('synthetic')
     if not ph:
         return None
-    errors = ph.get('errors', {})
+    # EDI: leer valor directo (calculado por hybrid_validator)
+    edi = ph.get('edi', {}).get('value')
+    # CR: usar campo 'cr' de symploké (abs(internal/external))
     symploke = ph.get('symploke', {})
-    rmse_reduced = errors.get('rmse_reduced')
-    rmse_abm = errors.get('rmse_abm')
-    edi = None
-    if rmse_reduced and rmse_abm is not None and rmse_reduced != 0:
-        edi = (rmse_reduced - rmse_abm) / rmse_reduced
-    internal = symploke.get('internal')
-    external = symploke.get('external')
-    cr = None
-    if internal is not None and external not in (None, 0):
-        cr = internal / external
+    cr = symploke.get('cr')
+    if cr is None:
+        internal = symploke.get('internal')
+        external = symploke.get('external')
+        if internal is not None and external not in (None, 0):
+            cr = abs(internal / external)
     return {
         'edi': edi,
         'cr': cr,
@@ -51,6 +50,11 @@ def compute_metrics(metrics_obj):
 def fmt(x):
     if x is None:
         return 'n/a'
+    if isinstance(x, float):
+        if math.isinf(x):
+            return '∞'
+        if math.isnan(x):
+            return 'NaN'
     return f"{x:.3f}"
 
 

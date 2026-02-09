@@ -1,33 +1,33 @@
 # Reporte General de Simulaciones
 
-| Caso | EDI | CR | Estado | Reporte |
-| :--- | ---: | ---: | :--- | :--- |
-| 01_caso_clima | -0.225 | 1.000 | False | `01_caso_clima/report.md` |
-| 02_caso_conciencia | 0.447 | 0.936 | False | `02_caso_conciencia/report.md` |
-| 03_caso_contaminacion | -0.000 | 2.780 | False | `03_caso_contaminacion/report.md` |
-| 04_caso_energia | -0.012 | -1.096 | False | `04_caso_energia/report.md` |
-| 05_caso_epidemiologia | 0.674 | -0.000 | False | `05_caso_epidemiologia/report.md` |
-| 06_caso_falsacion_exogeneidad | 0.005 | 1.006 | False | `06_caso_falsacion_exogeneidad/report.md` |
-| 07_caso_falsacion_no_estacionariedad | 0.148 | 1.004 | False | `07_caso_falsacion_no_estacionariedad/report.md` |
-| 08_caso_falsacion_observabilidad | 0.140 | 1.005 | False | `08_caso_falsacion_observabilidad/report.md` |
-| 09_caso_finanzas | 0.030 | 0.000 | False | `09_caso_finanzas/report.md` |
-| 10_caso_justicia | 0.000 | 1.053 | False | `10_caso_justicia/report.md` |
-| 11_caso_movilidad | -1.069 | n/a | False | `11_caso_movilidad/report.md` |
-| 12_caso_paradigmas | -0.167 | n/a | False | `12_caso_paradigmas/report.md` |
-| 13_caso_politicas_estrategicas | 0.021 | -1.626 | False | `13_caso_politicas_estrategicas/report.md` |
-| 14_caso_postverdad | 0.003 | 1.054 | False | `14_caso_postverdad/report.md` |
-| 15_caso_wikipedia | 0.000 | -1.158 | False | `15_caso_wikipedia/report.md` |
-| 16_caso_deforestacion | 0.879 | 1.017 | True | `16_caso_deforestacion/report.md` |
-| 17_caso_oceanos | 0.058 | -1.334 | False | `17_caso_oceanos/report.md` |
-| 18_caso_urbanizacion | -0.001 | -30.069 | False | `18_caso_urbanizacion/report.md` |
-| 19_caso_acidificacion_oceanica | -0.021 | 1.211 | False | `19_caso_acidificacion_oceanica/report.md` |
-| 20_caso_kessler | -0.351 | 1.204 | False | `20_caso_kessler/report.md` |
-| 21_caso_salinizacion | 0.396 | 1.047 | False | `21_caso_salinizacion/report.md` |
-| 22_caso_fosforo | 0.481 | 1.065 | False | `22_caso_fosforo/report.md` |
-| 23_caso_erosion_dialectica | 0.747 | 1.000 | False | `23_caso_erosion_dialectica/report.md` |
-| 24_caso_microplasticos | -1.302 | 1.002 | False | `24_caso_microplasticos/report.md` |
-| 25_caso_acuiferos | 0.383 | 1.001 | False | `25_caso_acuiferos/report.md` |
-| 26_caso_starlink | -576.760 | n/a | False | `26_caso_starlink/report.md` |
-| 27_caso_riesgo_biologico | 0.659 | 1.002 | False | `27_caso_riesgo_biologico/report.md` |
-| 28_caso_fuga_cerebros | 0.437 | 1.008 | False | `28_caso_fuga_cerebros/report.md` |
-| 29_caso_iot | 0.169 | 1.053 | False | `29_caso_iot/report.md` |
+| Caso | EDI | p-perm | sig | CR | Cat | Pass | Reporte |
+| :--- | ---: | ---: | :---: | ---: | :--- | :---: | :--- |
+| 01_caso_clima | 0.010 | 0.591 | ❌ | 1.000 | trend | ❌ | `01_caso_clima/report.md` |
+| 02_caso_conciencia | -0.024 | 0.938 | ❌ | 0.919 | null | ❌ | `02_caso_conciencia/report.md` |
+| 03_caso_contaminacion | -0.000 | 0.474 | ❌ | 2.780 | null | ❌ | `03_caso_contaminacion/report.md` |
+| 04_caso_energia | -0.003 | 0.937 | ❌ | 1.096 | null | ❌ | `04_caso_energia/report.md` |
+| 05_caso_epidemiologia | 0.000 | 1.000 | ❌ | 0.000 | null | ❌ | `05_caso_epidemiologia/report.md` |
+| 06_caso_falsacion_exogeneidad | 0.055 | 1.000 | ❌ | 1.006 | falsification | ❌ | `06_caso_falsacion_exogeneidad/report.md` |
+| 07_caso_falsacion_no_estacionariedad | -1.000 | 1.000 | ❌ | 1.004 | falsification | ❌ | `07_caso_falsacion_no_estacionariedad/report.md` |
+| 08_caso_falsacion_observabilidad | -1.000 | 1.000 | ❌ | 1.005 | falsification | ❌ | `08_caso_falsacion_observabilidad/report.md` |
+| 09_caso_finanzas | 0.040 | 0.000 | ✅ | 0.000 | suggestive | ❌ | `09_caso_finanzas/report.md` |
+| 10_caso_justicia | 0.000 | 1.000 | ❌ | 1.053 | null | ❌ | `10_caso_justicia/report.md` |
+| 11_caso_movilidad | 0.003 | 0.361 | ❌ | 0.000 | trend | ❌ | `11_caso_movilidad/report.md` |
+| 12_caso_paradigmas | 0.000 | 1.000 | ❌ | 0.000 | null | ❌ | `12_caso_paradigmas/report.md` |
+| 13_caso_politicas_estrategicas | 0.011 | 0.719 | ❌ | 1.626 | trend | ❌ | `13_caso_politicas_estrategicas/report.md` |
+| 14_caso_postverdad | 0.001 | 0.030 | ❌ | 1.054 | trend | ❌ | `14_caso_postverdad/report.md` |
+| 15_caso_wikipedia | 0.000 | 1.000 | ❌ | 1.158 | null | ❌ | `15_caso_wikipedia/report.md` |
+| 16_caso_deforestacion | 0.633 | 0.000 | ✅ | 1.017 | strong | ✅ | `16_caso_deforestacion/report.md` |
+| 17_caso_oceanos | 0.053 | 0.000 | ✅ | 1.334 | suggestive | ❌ | `17_caso_oceanos/report.md` |
+| 18_caso_urbanizacion | 0.000 | 0.220 | ❌ | 30.069 | trend | ❌ | `18_caso_urbanizacion/report.md` |
+| 19_caso_acidificacion_oceanica | -0.000 | 0.000 | ❌ | 1.211 | null | ❌ | `19_caso_acidificacion_oceanica/report.md` |
+| 20_caso_kessler | -0.420 | 1.000 | ❌ | 1.204 | null | ❌ | `20_caso_kessler/report.md` |
+| 21_caso_salinizacion | 0.027 | 0.724 | ❌ | ∞ | trend | ❌ | `21_caso_salinizacion/report.md` |
+| 22_caso_fosforo | -1.000 | 1.000 | ❌ | 1.065 | null | ❌ | `22_caso_fosforo/report.md` |
+| 23_caso_erosion_dialectica | -1.000 | 1.000 | ❌ | 1.001 | null | ❌ | `23_caso_erosion_dialectica/report.md` |
+| 24_caso_microplasticos | 0.427 | 0.000 | ✅ | 1.002 | strong | ✅ | `24_caso_microplasticos/report.md` |
+| 25_caso_acuiferos | -0.179 | 1.000 | ❌ | 1.001 | null | ❌ | `25_caso_acuiferos/report.md` |
+| 26_caso_starlink | -1.000 | 1.000 | ❌ | ∞ | null | ❌ | `26_caso_starlink/report.md` |
+| 27_caso_riesgo_biologico | 0.105 | 0.365 | ❌ | 1.002 | trend | ❌ | `27_caso_riesgo_biologico/report.md` |
+| 28_caso_fuga_cerebros | 0.183 | 0.001 | ✅ | 1.008 | weak | ❌ | `28_caso_fuga_cerebros/report.md` |
+| 29_caso_iot | 0.020 | 0.000 | ✅ | 1.053 | suggestive | ❌ | `29_caso_iot/report.md` |

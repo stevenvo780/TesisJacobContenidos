@@ -18,11 +18,19 @@ from datetime import datetime
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(BASE)
 
-CASO_MAP = {
-    "caso_clima": "01_caso_clima",
-    "caso_contaminacion": "03_caso_contaminacion",
-    "caso_movilidad": "13_caso_movilidad",
-}
+CASO_MAP = {}  # Se construye dinámicamente desde las carpetas
+
+
+def _build_caso_map():
+    """Construye mapa Simulaciones → TesisDesarrollo (nombres idénticos tras renumerado)."""
+    sim_base = os.path.join(BASE, "Simulaciones")
+    tesis_base = os.path.join(ROOT, "TesisDesarrollo", "02_Modelado_Simulacion")
+    for d in sorted(os.listdir(sim_base)):
+        if '_caso_' in d:
+            sim_out = os.path.join(sim_base, d, "outputs", "metrics.json")
+            tesis_out = os.path.join(tesis_base, d, "metrics.json")
+            if os.path.isfile(sim_out) or os.path.isfile(tesis_out):
+                CASO_MAP[d] = d
 
 errors = []
 warnings = []
@@ -45,6 +53,7 @@ def ok(msg):
 def check_metrics_sync():
     """Verifica que metrics.json en TesisDesarrollo == outputs en Simulaciones."""
     print("\n=== 1. SINCRONIZACIÓN metrics.json (Simulaciones ↔ TesisDesarrollo) ===")
+    _build_caso_map()
     for sim_name, tesis_name in CASO_MAP.items():
         sim_path = os.path.join(BASE, "Simulaciones", sim_name, "outputs", "metrics.json")
         tesis_path = os.path.join(ROOT, "TesisDesarrollo", "02_Modelado_Simulacion", tesis_name, "metrics.json")
