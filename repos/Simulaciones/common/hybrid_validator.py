@@ -912,9 +912,51 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     ode = simulate_ode_fn(ode_params_1, steps, seed=3)
     ode_series = ode[ode_key]
 
+    # ── Bias Correction del ODE target (Fix Cat.B) ──
+    # El ODE puede capturar la FORMA de la dinámica (alta correlación) pero tener
+    # sesgo en nivel/escala. Sin corrección, el nudging ODE→ABM empuja al ABM
+    # hacia valores sesgados, empeorando RMSE incluso con correlación alta.
+    # Solución: transformación afín que mantiene correlación pero elimina sesgo.
+    # Solo se aplica cuando el ODE tiene correlación positiva útil (>0.5) en training.
+    # El scale factor se limita a [0.2, 5.0] para evitar amplificación excesiva.
+    ode_arr_full = np.asarray(ode_series, dtype=np.float64)
+    ode_train_seg = ode_arr_full[:val_start]
+    obs_train_seg = np.asarray(obs[:val_start], dtype=np.float64)
+    ode_obs_corr_train = correlation(ode_train_seg.tolist(), obs_train_seg.tolist())
+
+    if ode_obs_corr_train > 0.5 and len(ode_train_seg) > 2:
+        ode_m = float(ode_train_seg.mean())
+        ode_s = float(max(ode_train_seg.std(), 1e-10))
+        obs_m_bc = float(obs_train_seg.mean())
+        obs_s_bc = float(max(obs_train_seg.std(), 1e-10))
+        raw_scale = obs_s_bc / ode_s
+        # Limitar scale factor: si es excesivo, solo corregir bias (centrar)
+        if 0.2 <= raw_scale <= 5.0:
+            # BC completo: bias + scale
+            ode_series_bc = [
+                float(obs_m_bc + (v - ode_m) * raw_scale)
+                for v in ode_series
+            ]
+            bc_mode = "full"
+        else:
+            # BC solo bias: centrar sin reescalar (evita amplificación peligrosa)
+            ode_series_bc = [
+                float(v - ode_m + obs_m_bc)
+                for v in ode_series
+            ]
+            bc_mode = "bias_only"
+            raw_scale = 1.0  # Report: no reescalado
+        bias_corrected = True
+    else:
+        ode_series_bc = list(ode_series)
+        bias_corrected = False
+        bc_mode = "none"
+        raw_scale = None
+
     # ABM acoplado a ODE (versión final con ODE bidireccional)
+    # Usa serie BC para coupling (elimina sesgo), pero mantiene serie original para evaluación
     eval_params_ode = dict(eval_params)
-    eval_params_ode["macro_target_series"] = ode_series
+    eval_params_ode["macro_target_series"] = ode_series_bc
     abm = simulate_abm_fn(eval_params_ode, steps, seed=2)
 
     # ABM sin ODE (baseline para EDI)
@@ -972,7 +1014,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     ei = effective_information(obs_val, abm_val, abm_no_ode_val)
 
     base_params_ode = dict(base_params)
-    base_params_ode["macro_target_series"] = ode_series
+    base_params_ode["macro_target_series"] = ode_series_bc
 
     # C1-C5 (sobre modelo acoplado)
     c1, c1_detail = evaluate_c1(abm_val, ode_val, obs_val, obs_std,
@@ -1019,6 +1061,41 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
 
     overall = all([c1, c2, c3, c4, c5, sym_ok, non_local_ok, persist_ok,
                    emergence_ok, coupling_ok, not rmse_fraud, edi_valid, cr_valid])
+
+    # ── Taxonomía de emergencia diferenciada ──
+    # Clasifica el resultado en categorías que permiten interpretar QUÉ falla:
+    # la ontología del hiperobjeto, el modelo técnico, o nada (emergencia genuina).
+    ode_obs_corr = c1_detail["corr_ode"]
+    if abs(ode_obs_corr) > 0.7:
+        ode_quality = "good"
+    elif abs(ode_obs_corr) > 0.3:
+        ode_quality = "moderate"
+    else:
+        ode_quality = "poor"
+
+    is_falsification = any(w in config.case_name.lower() for w in ["falsacion", "falsación"])
+    if is_falsification:
+        emergence_category = "falsification"
+    elif edi_valid and edi_significant:
+        emergence_category = "strong"
+    elif edi_val > 0.10 and edi_significant:
+        emergence_category = "weak"
+    elif edi_val > 0 and edi_significant:
+        emergence_category = "suggestive"
+    elif edi_val > 0 and not edi_significant:
+        emergence_category = "trend"
+    else:
+        emergence_category = "null"
+
+    # Interpretación automática
+    _interp_map = {
+        "strong": "Emergencia macro fuerte: el ODE reduce significativamente la incertidumbre del ABM",
+        "weak": "Emergencia débil: señal macro significativa pero bajo umbral robusto",
+        "suggestive": "Señal sugestiva: EDI positivo y significativo pero muy bajo",
+        "trend": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma",
+        "null": "Emergencia nula: sin evidencia de constricción macro efectiva",
+        "falsification": "Caso de falsificación: rechazo esperado por diseño experimental",
+    }
 
     results = {
         "phase": phase_name,
@@ -1112,6 +1189,20 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         "c3_detail": c3_detail,
         "c4_detail": c4_detail,
         "c5_detail": c5_detail,
+        "bias_correction": {
+            "applied": bias_corrected,
+            "mode": bc_mode,
+            "ode_obs_corr_train": ode_obs_corr_train,
+            "ode_mean_train": float(ode_train_seg.mean()) if bias_corrected else None,
+            "obs_mean_train": float(obs_train_seg.mean()) if bias_corrected else None,
+            "scale_factor": raw_scale,
+        },
+        "emergence_taxonomy": {
+            "category": emergence_category,
+            "ode_quality": ode_quality,
+            "ode_obs_corr": ode_obs_corr,
+            "interpretation": _interp_map.get(emergence_category, ""),
+        },
     }
 
     if synthetic_meta:
@@ -1134,6 +1225,8 @@ def _empty_phase(phase_name, start, end, split, reason):
         "error": reason,
         "data": {"start": start, "end": end, "split": split},
         "edi": {"value": 0.0, "bootstrap_mean": 0.0, "ci_lo": 0.0, "ci_hi": 0.0, "valid": False},
+        "emergence_taxonomy": {"category": "null", "ode_quality": "unknown", "ode_obs_corr": 0.0, "interpretation": "Fase fallida"},
+        "bias_correction": {"applied": False},
         "c1_convergence": False, "c2_robustness": False,
         "c3_replication": False, "c4_validity": False, "c5_uncertainty": False,
     }

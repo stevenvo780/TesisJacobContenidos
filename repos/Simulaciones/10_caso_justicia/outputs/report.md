@@ -1,6 +1,6 @@
 # Reporte de Validación — Justicia Algorítmica
 
-- generated_at: 2026-02-09T17:03:45.697191Z
+- generated_at: 2026-02-09T17:51:54.641673Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -54,9 +54,9 @@
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9728
-- external: 0.9246
-- CR: 1.0521
+- internal: 0.9726
+- external: 0.9238
+- CR: 1.0527
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5

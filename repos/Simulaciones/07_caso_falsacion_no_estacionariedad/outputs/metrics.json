@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: No-Estacionariedad",
-  "generated_at": "2026-02-09T12:03:41.649904",
+  "generated_at": "2026-02-09T12:51:48.923745",
   "git": {
     "commit": "falsification_trend",
     "dirty": false
@@ -44,57 +44,57 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 4.705231402911597,
+        "rmse_abm": 3.154118865230018,
         "rmse_abm_no_ode": 0.532450689416462,
         "rmse_ode": 5.379355823407406,
         "rmse_reduced": 3.675785646264575,
         "threshold": 1.0297291523794263
       },
       "correlations": {
-        "abm_obs": 0.9948604674083807,
+        "abm_obs": 0.9948604674083315,
         "ode_obs": -0.6466926329542886
       },
       "edi": {
-        "value": -7.836933628667629,
-        "bootstrap_mean": -7.861117024330798,
-        "ci_lo": -8.920844613063636,
-        "ci_hi": -6.890136443855305,
+        "value": -4.923776469679787,
+        "bootstrap_mean": -4.9405363363374795,
+        "ci_lo": -5.68385656774138,
+        "ci_hi": -4.212563063966706,
         "valid": false,
-        "weighted_value": -1.5673867257335259,
+        "weighted_value": -0.9847552939359574,
         "loe_factor": 0.2,
         "permutation_pvalue": 1.0,
-        "permutation_null_95": -1.3946680363706594,
+        "permutation_null_95": -0.6208046155986392,
         "permutation_significant": false
       },
       "viscosity": {
         "pass": true,
         "detail": {
           "relaxation_time": 13,
-          "peak_impact": 1.9999999999999998,
+          "peak_impact": 2.0,
           "shock_step": 157,
           "recovered": true
         }
       },
-      "effective_information": -0.593296617276103,
+      "effective_information": -0.5932966172753423,
       "symploke": {
-        "internal": 0.9989425188254026,
-        "external": 0.8487103472050249,
-        "cr": 1.1770123012110347,
+        "internal": 0.99887252738129,
+        "external": 0.9955876149215811,
+        "cr": 1.0032994709962997,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.002511903162490406,
+        "dominance_share": 0.002503489779758531,
         "pass": true
       },
       "persistence": {
-        "model": 9.23066612877867e-05,
+        "model": 9.230666128778669e-05,
         "obs": 0.024497364429204416,
         "pass": true
       },
       "emergence": {
         "err_reduced": 0.532450689416462,
-        "err_abm": 4.705231402911597,
+        "err_abm": 3.154118865230018,
         "threshold": 0.20594583047588527,
         "pass": false,
         "significance": "computed"
@@ -107,30 +107,44 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 4.705231402911597,
+        "rmse_abm": 3.154118865230018,
         "rmse_ode": 5.379355823407406,
-        "corr_abm": 0.9948604674083807,
+        "corr_abm": 0.9948604674083315,
         "corr_ode": -0.6466926329542886,
         "threshold": 1.0297291523794263
       },
       "c2_detail": {
-        "mean_delta": 0.011539812289526986,
-        "var_delta": 0.0012332679318055935,
-        "relative_mean": 0.010564086869508982,
-        "relative_var": 0.0012332679318055935
+        "mean_delta": 0.013313439007073668,
+        "var_delta": 0.001233267931854453,
+        "relative_mean": 0.013313439007073668,
+        "relative_var": 0.001233267931854453
       },
       "c3_detail": {
-        "persistence_1": 9.23066612877867e-05,
-        "persistence_2": 9.280198031247691e-05
+        "persistence_1": 9.230666128778669e-05,
+        "persistence_2": 9.28019803124761e-05
       },
       "c4_detail": {
         "diff": 0.09989382572493333
       },
       "c5_detail": {
-        "sensitivity_min": -1.1494875833732405,
-        "sensitivity_max": -1.0796370677560883,
-        "range": 0.06985051561715228,
-        "relative_range": 9.548136350126264e-05
+        "sensitivity_min": 0.4398435895763499,
+        "sensitivity_max": 0.5079066368119646,
+        "range": 0.06806304723561468,
+        "relative_range": 9.303800403889247e-05
+      },
+      "bias_correction": {
+        "applied": true,
+        "mode": "bias_only",
+        "ode_obs_corr_train": 0.9186717588889404,
+        "ode_mean_train": -1.7520226547011086,
+        "obs_mean_train": 7.259150545626024e-17,
+        "scale_factor": 1.0
+      },
+      "emergence_taxonomy": {
+        "category": "falsification",
+        "ode_quality": "moderate",
+        "ode_obs_corr": -0.6466926329542886,
+        "interpretation": "Caso de falsificaci\u00f3n: rechazo esperado por dise\u00f1o experimental"
       }
     }
   },

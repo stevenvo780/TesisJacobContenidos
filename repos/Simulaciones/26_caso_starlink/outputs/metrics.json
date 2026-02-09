@@ -1,8 +1,8 @@
 {
   "case": "Constelaciones Satelitales Starlink (Mega-Constellation)",
-  "generated_at": "2026-02-09T17:04:28.104252Z",
+  "generated_at": "2026-02-09T17:52:13.761304Z",
   "git": {
-    "commit": "519fa3a5696be700191dea054045014c5b428b71",
+    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
     "dirty": true
   },
   "phases": {
@@ -36,59 +36,59 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 0.6096573956857513,
+        "rmse_abm": 1.3434995300874022,
         "rmse_abm_no_ode": 1.276528135235274,
         "rmse_ode": 0.9059103859556391,
         "rmse_reduced": 0.8072117554037793,
         "threshold": 0.1
       },
       "correlations": {
-        "abm_obs": 0.08671412603538797,
+        "abm_obs": 0.08510210573072194,
         "ode_obs": 0.06635186946849768
       },
       "edi": {
-        "value": 0.5224097465165648,
-        "bootstrap_mean": 0.5228889899004295,
-        "ci_lo": 0.5107717711175611,
-        "ci_hi": 0.536717562884586,
-        "valid": true,
-        "weighted_value": 0.41792779721325185,
+        "value": -0.052463704483712674,
+        "bootstrap_mean": -0.05175157667405643,
+        "ci_lo": -0.06793812017246975,
+        "ci_hi": -0.03501444438261539,
+        "valid": false,
+        "weighted_value": -0.04197096358697014,
         "loe_factor": 0.8,
-        "permutation_pvalue": 0.15,
-        "permutation_null_95": 0.5226083462559044,
+        "permutation_pvalue": 0.525,
+        "permutation_null_95": -0.05226696512960444,
         "permutation_significant": false
       },
       "viscosity": {
         "pass": true,
         "detail": {
           "relaxation_time": 4,
-          "peak_impact": 1.9999999999999998,
+          "peak_impact": 2.0,
           "shock_step": 312,
           "recovered": true
         }
       },
-      "effective_information": 0.13839052330659068,
+      "effective_information": -0.023417639072559948,
       "symploke": {
-        "internal": 0.9998357829846823,
-        "external": 0.995210735276677,
-        "cr": 1.004647304881332,
+        "internal": 0.9998587007295499,
+        "external": 0.990016123421726,
+        "cr": 1.0099418353650702,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.001600321226322865,
+        "dominance_share": 0.0016003792408885535,
         "pass": true
       },
       "persistence": {
-        "model": 0.0008462334067336445,
+        "model": 0.0019825308919286895,
         "obs": 0.00012680725292686147,
         "pass": true
       },
       "emergence": {
         "err_reduced": 1.276528135235274,
-        "err_abm": 0.6096573956857513,
+        "err_abm": 1.3434995300874022,
         "threshold": 0.0026791689158411833,
-        "pass": true,
+        "pass": false,
         "significance": "computed"
       },
       "coupling_check": true,
@@ -99,30 +99,44 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 0.6096573956857513,
+        "rmse_abm": 1.3434995300874022,
         "rmse_ode": 0.9059103859556391,
-        "corr_abm": 0.08671412603538797,
+        "corr_abm": 0.08510210573072194,
         "corr_ode": 0.06635186946849768,
         "threshold": 0.1
       },
       "c2_detail": {
-        "mean_delta": 0.053151361527030705,
-        "var_delta": 0.007671527373764753,
-        "relative_mean": 0.04030574258228168,
-        "relative_var": 0.007671527373764753
+        "mean_delta": 0.0666503925404676,
+        "var_delta": 0.01005875693917262,
+        "relative_mean": 0.031900231876507486,
+        "relative_var": 0.01005875693917262
       },
       "c3_detail": {
-        "persistence_1": 0.0008462334067336445,
-        "persistence_2": 0.0008430603826344162
+        "persistence_1": 0.0019825308919286895,
+        "persistence_2": 0.0019775622700399934
       },
       "c4_detail": {
-        "diff": 0.2660231804109101
+        "diff": 0.2660231804109099
       },
       "c5_detail": {
-        "sensitivity_min": 1.1819883977676642,
-        "sensitivity_max": 1.4604951884897779,
-        "range": 0.2785067907221137,
-        "relative_range": 0.03412548007658828
+        "sensitivity_min": 1.8967440803878857,
+        "sensitivity_max": 2.2832379738295416,
+        "range": 0.38649389344165597,
+        "relative_range": 0.04735715644910852
+      },
+      "bias_correction": {
+        "applied": true,
+        "mode": "full",
+        "ode_obs_corr_train": 0.7361125277046274,
+        "ode_mean_train": -1.3180859344182783,
+        "obs_mean_train": -1.1842378929335003e-16,
+        "scale_factor": 1.7145931549121232
+      },
+      "emergence_taxonomy": {
+        "category": "null",
+        "ode_quality": "poor",
+        "ode_obs_corr": 0.06635186946849768,
+        "interpretation": "Emergencia nula: sin evidencia de constricci\u00f3n macro efectiva"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -259,6 +273,20 @@
         "sensitivity_max": 0.07221512731223667,
         "range": 0.01553209095058393,
         "relative_range": 5.1912026937816175e-05
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": 0.0,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "null",
+        "ode_quality": "poor",
+        "ode_obs_corr": 0.0,
+        "interpretation": "Emergencia nula: sin evidencia de constricci\u00f3n macro efectiva"
       }
     }
   }

@@ -1,21 +1,21 @@
 # Reporte de Validación — Energía (OPSD GB Grid)
 
-- generated_at: 2026-02-09T17:04:55.899255Z
+- generated_at: 2026-02-09T17:53:04.469912Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0600
-- bootstrap_mean: 0.0601
-- CI 95%: [0.0510, 0.0692]
-- weighted_value (LoE factor 0.20): 0.0120
+- valor: 0.0478
+- bootstrap_mean: 0.0478
+- CI 95%: [0.0404, 0.0555]
+- weighted_value (LoE factor 0.20): 0.0096
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9221
-- external: 0.9174
-- CR: 1.0052
+- internal: 0.9136
+- external: 0.9039
+- CR: 1.0107
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,7 +26,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.3974
+- rmse_abm: 0.4025
 - rmse_abm_no_ode: 0.4228
 - rmse_ode: 0.4601
 - rmse_reduced: 0.4390

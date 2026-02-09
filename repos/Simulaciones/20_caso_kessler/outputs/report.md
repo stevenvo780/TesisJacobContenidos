@@ -1,6 +1,6 @@
 # Reporte de Validación — Síndrome de Kessler (NASA LEGEND + ORDEM)
 
-- generated_at: 2026-02-09T17:04:05.369196Z
+- generated_at: 2026-02-09T17:51:57.564027Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -47,16 +47,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -3.4195
-- bootstrap_mean: -3.4153
-- CI 95%: [-3.5327, -3.2693]
-- weighted_value (LoE factor 0.20): -0.6839
+- valor: -0.1612
+- bootstrap_mean: -0.1568
+- CI 95%: [-0.2500, -0.0355]
+- weighted_value (LoE factor 0.20): -0.0322
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.8212
-- external: 0.6999
-- CR: 1.1733
+- internal: 0.7883
+- external: 0.5222
+- CR: 1.5095
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -67,7 +67,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2532219.3887
+- rmse_abm: 665319.2883
 - rmse_abm_no_ode: 572967.3112
 - rmse_ode: 2073629760066926.7500
 - rmse_reduced: 627284.2745

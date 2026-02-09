@@ -1,8 +1,8 @@
 {
   "case": "Wikipedia (Axelrod + Lotka-Volterra)",
-  "generated_at": "2026-02-09T14:45:58.770818Z",
+  "generated_at": "2026-02-09T17:52:01.440279Z",
   "git": {
-    "commit": "e313d6d9a12bf0dd3aa1ae30712028efd95cfd36",
+    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
     "dirty": true
   },
   "phases": {
@@ -21,7 +21,9 @@
       },
       "calibration": {
         "forcing_scale": 0.001,
-        "macro_coupling": 0.1,
+        "macro_coupling": 0.05,
+        "ode_coupling_strength": 0.04000000000000001,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.0,
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
@@ -34,24 +36,27 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 1.890433344123006,
+        "rmse_abm": 1.972243722045405,
         "rmse_abm_no_ode": 2.768287425139756,
         "rmse_ode": 1.8746500831862782,
         "rmse_reduced": 2.768287425139756,
         "threshold": 1.0224007974784388
       },
       "correlations": {
-        "abm_obs": 0.07740152233880096,
+        "abm_obs": 0.16745341359934393,
         "ode_obs": 0.5106430847448289
       },
       "edi": {
-        "value": 0.317110887057702,
-        "bootstrap_mean": 0.3171743174583635,
-        "ci_lo": 0.30790009977856364,
-        "ci_hi": 0.32741011797326036,
+        "value": 0.28755818339714595,
+        "bootstrap_mean": 0.28758620992403916,
+        "ci_lo": 0.27965181320714877,
+        "ci_hi": 0.296667822579935,
         "valid": false,
-        "weighted_value": 0.06342217741154041,
-        "loe_factor": 0.2
+        "weighted_value": 0.05751163667942919,
+        "loe_factor": 0.2,
+        "permutation_pvalue": 0.0,
+        "permutation_null_95": 0.2863540794279711,
+        "permutation_significant": true
       },
       "viscosity": {
         "pass": false,
@@ -60,7 +65,7 @@
           "peak_impact": 0.0
         }
       },
-      "effective_information": -0.000620634248768015,
+      "effective_information": 0.0039820844118705345,
       "symploke": {
         "internal": 0.4620942003590093,
         "external": 0.28739876680095666,
@@ -73,49 +78,63 @@
         "pass": true
       },
       "persistence": {
-        "model": 1.3336906359819317e-08,
+        "model": 4.62129431736277e-07,
         "obs": 0.005436422861995027,
         "pass": true
       },
       "emergence": {
         "err_reduced": 2.768287425139756,
-        "err_abm": 1.890433344123006,
+        "err_abm": 1.972243722045405,
         "threshold": 0.20448015949568776,
         "pass": true,
         "significance": "computed"
       },
-      "coupling_check": true,
+      "coupling_check": false,
       "rmse_fraud_check": true,
       "c1_convergence": false,
-      "c2_robustness": false,
+      "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
       "c5_uncertainty": false,
       "c1_detail": {
-        "rmse_abm": 1.890433344123006,
+        "rmse_abm": 1.972243722045405,
         "rmse_ode": 1.8746500831862782,
-        "corr_abm": 0.07740152233880096,
+        "corr_abm": 0.16745341359934393,
         "corr_ode": 0.5106430847448289,
         "threshold": 1.0224007974784388
       },
       "c2_detail": {
-        "mean_delta": 0.5348567959234554,
-        "var_delta": 0.07281377106591369,
-        "relative_mean": 0.5251914332262988,
-        "relative_var": 0.07281377106591369
+        "mean_delta": 0.5381528143933177,
+        "var_delta": 0.03993468953598418,
+        "relative_mean": 0.4806575601275331,
+        "relative_var": 0.03993468953598418
       },
       "c3_detail": {
-        "persistence_1": 1.3336906359819317e-08,
-        "persistence_2": 1.638581340520135e-08
+        "persistence_1": 4.62129431736277e-07,
+        "persistence_2": 5.79152423056502e-07
       },
       "c4_detail": {
-        "diff": 0.45188153603998327
+        "diff": 0.3144420957350731
       },
       "c5_detail": {
-        "sensitivity_min": 1.0303646535819748,
+        "sensitivity_min": 1.1508490297373513,
         "sensitivity_max": 2.0,
-        "range": 0.9696353464180252,
-        "relative_range": 0.6079085564940077
+        "range": 0.8491509702626487,
+        "relative_range": 0.5037965785772955
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": 0.28649465566897114,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "weak",
+        "ode_quality": "moderate",
+        "ode_obs_corr": 0.5106430847448289,
+        "interpretation": "Emergencia d\u00e9bil: se\u00f1al macro significativa pero bajo umbral robusto"
       },
       "synthetic_meta": {
         "model": "Edit Wars (Yasseri)",
@@ -138,7 +157,9 @@
       },
       "calibration": {
         "forcing_scale": 0.001,
-        "macro_coupling": 0.1,
+        "macro_coupling": 0.05,
+        "ode_coupling_strength": 0.04000000000000001,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.0,
         "ode_alpha": 0.09849384267615878,
         "ode_beta": 1.0,
@@ -168,7 +189,10 @@
         "ci_hi": 0.0,
         "valid": false,
         "weighted_value": 0.0,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 1.0,
+        "permutation_null_95": 0.0,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": false,
@@ -201,7 +225,7 @@
         "pass": false,
         "significance": "computed"
       },
-      "coupling_check": true,
+      "coupling_check": false,
       "rmse_fraud_check": true,
       "c1_convergence": false,
       "c2_robustness": true,
@@ -234,7 +258,20 @@
         "range": 0.0,
         "relative_range": 0.0
       },
-      "gated_by_synthetic": true
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": -0.2789762455840818,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "null",
+        "ode_quality": "moderate",
+        "ode_obs_corr": -0.5878469955118516,
+        "interpretation": "Emergencia nula: sin evidencia de constricci\u00f3n macro efectiva"
+      }
     }
   }
 }

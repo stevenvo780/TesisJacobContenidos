@@ -1,8 +1,8 @@
 {
   "case": "Movilidad Urbana (Traffic)",
-  "generated_at": "2026-02-09T14:46:51.033925Z",
+  "generated_at": "2026-02-09T17:52:56.071094Z",
   "git": {
-    "commit": "e313d6d9a12bf0dd3aa1ae30712028efd95cfd36",
+    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
     "dirty": true
   },
   "phases": {
@@ -21,7 +21,9 @@
       },
       "calibration": {
         "forcing_scale": 0.805220044232213,
-        "macro_coupling": 0.1255690494921665,
+        "macro_coupling": 0.07556904949216649,
+        "ode_coupling_strength": 0.060455239593733195,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.10048108427017431,
         "ode_alpha": 0.2695108305890248,
         "ode_beta": 1.0,
@@ -51,7 +53,10 @@
         "ci_hi": 0.040939839323572196,
         "valid": false,
         "weighted_value": 0.003915239682132563,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 0.4,
+        "permutation_null_95": 0.01973723407914016,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": false,
@@ -84,7 +89,7 @@
         "pass": true,
         "significance": "computed"
       },
-      "coupling_check": true,
+      "coupling_check": false,
       "rmse_fraud_check": true,
       "c1_convergence": false,
       "c2_robustness": true,
@@ -117,6 +122,20 @@
         "range": 6.305555555555557,
         "relative_range": 0.12296933251538945
       },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": -0.08349277360038253,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "trend",
+        "ode_quality": "good",
+        "ode_obs_corr": -0.840858542328574,
+        "interpretation": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma"
+      },
       "synthetic_meta": {
         "mfd_true": {
           "vf": 60.0,
@@ -139,7 +158,9 @@
       },
       "calibration": {
         "forcing_scale": 0.1433898023854741,
-        "macro_coupling": 0.1951012380581568,
+        "macro_coupling": 0.14510123805815683,
+        "ode_coupling_strength": 0.11608099044652548,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.029094375366395628,
         "ode_alpha": 0.09098248373489348,
         "ode_beta": 0.7527563305433328,
@@ -177,7 +198,10 @@
         "ci_hi": 0.00925298897657654,
         "valid": false,
         "weighted_value": 0.000597827924064869,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 0.425,
+        "permutation_null_95": 0.003044066013280906,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": false,
@@ -242,6 +266,20 @@
         "sensitivity_max": 186.94736842105263,
         "range": 33.57894736842104,
         "relative_range": 1.9676037094947343e-08
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": -0.02576846091304835,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "trend",
+        "ode_quality": "poor",
+        "ode_obs_corr": 0.17524787304750894,
+        "interpretation": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma"
       },
       "gated_by_synthetic": true
     }

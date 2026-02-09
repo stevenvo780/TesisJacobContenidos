@@ -1,8 +1,8 @@
 {
   "case": "Movilidad Urbana (Traffic)",
-  "generated_at": "2026-02-09T17:04:48.272627Z",
+  "generated_at": "2026-02-09T17:52:56.071094Z",
   "git": {
-    "commit": "519fa3a5696be700191dea054045014c5b428b71",
+    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
     "dirty": true
   },
   "phases": {
@@ -121,6 +121,20 @@
         "sensitivity_max": 34.02777777777778,
         "range": 6.305555555555557,
         "relative_range": 0.12296933251538945
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": -0.08349277360038253,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "trend",
+        "ode_quality": "good",
+        "ode_obs_corr": -0.840858542328574,
+        "interpretation": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma"
       },
       "synthetic_meta": {
         "mfd_true": {
@@ -252,6 +266,20 @@
         "sensitivity_max": 186.94736842105263,
         "range": 33.57894736842104,
         "relative_range": 1.9676037094947343e-08
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": -0.02576846091304835,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "trend",
+        "ode_quality": "poor",
+        "ode_obs_corr": 0.17524787304750894,
+        "interpretation": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma"
       },
       "gated_by_synthetic": true
     }

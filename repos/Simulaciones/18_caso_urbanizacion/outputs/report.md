@@ -1,21 +1,21 @@
 # Reporte de Validación — Urbanización (Bettencourt + Preferential Attachment)
 
-- generated_at: 2026-02-09T17:04:12.004910Z
+- generated_at: 2026-02-09T17:52:07.176237Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0000
-- bootstrap_mean: -0.0000
-- CI 95%: [-0.0000, -0.0000]
-- weighted_value (LoE factor 0.20): -0.0000
+- valor: 0.0000
+- bootstrap_mean: 0.0000
+- CI 95%: [0.0000, 0.0000]
+- weighted_value (LoE factor 0.20): 0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.0037
-- external: -0.0019
-- CR: 1.8744
+- internal: 0.0014
+- external: 0.0013
+- CR: 1.1008
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -47,16 +47,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0000
-- bootstrap_mean: -0.0000
-- CI 95%: [-0.0000, -0.0000]
-- weighted_value (LoE factor 0.20): -0.0000
+- valor: 0.0000
+- bootstrap_mean: 0.0000
+- CI 95%: [0.0000, 0.0000]
+- weighted_value (LoE factor 0.20): 0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.0045
-- external: -0.0020
-- CR: 2.2418
+- internal: 0.0040
+- external: -0.0001
+- CR: 30.0686
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -67,7 +67,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.6844
+- rmse_abm: 2.6843
 - rmse_abm_no_ode: 2.6844
 - rmse_ode: 2.6832
 - rmse_reduced: 2.6812

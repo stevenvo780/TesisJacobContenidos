@@ -1,8 +1,8 @@
 {
   "case": "Micropl\u00e1sticos Oce\u00e1nicos (Jambeck Persistent Accumulation)",
-  "generated_at": "2026-02-09T17:04:18.728716Z",
+  "generated_at": "2026-02-09T17:52:05.118735Z",
   "git": {
-    "commit": "519fa3a5696be700191dea054045014c5b428b71",
+    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
     "dirty": true
   },
   "phases": {
@@ -123,6 +123,20 @@
         "sensitivity_max": 1.5824282079873067,
         "range": 0.32610248574696876,
         "relative_range": 0.040998681061029954
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": 0.46344842270600184,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "trend",
+        "ode_quality": "poor",
+        "ode_obs_corr": 0.0019859201888595777,
+        "interpretation": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -259,6 +273,20 @@
         "sensitivity_max": 14.054689306537565,
         "range": 2.531391524093012,
         "relative_range": 1.148556802422524e-08
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": -0.04317279069423411,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "strong",
+        "ode_quality": "good",
+        "ode_obs_corr": 0.9791847725997865,
+        "interpretation": "Emergencia macro fuerte: el ODE reduce significativamente la incertidumbre del ABM"
       }
     }
   }

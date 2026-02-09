@@ -1,8 +1,8 @@
 {
   "case": "Epidemiolog\u00eda (COVID-19 SEIR)",
-  "generated_at": "2026-02-09T14:46:09.786224Z",
+  "generated_at": "2026-02-09T17:52:11.861486Z",
   "git": {
-    "commit": "e313d6d9a12bf0dd3aa1ae30712028efd95cfd36",
+    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
     "dirty": true
   },
   "phases": {
@@ -21,7 +21,9 @@
       },
       "calibration": {
         "forcing_scale": 1.0,
-        "macro_coupling": 0.1,
+        "macro_coupling": 0.05,
+        "ode_coupling_strength": 0.04000000000000001,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.0,
         "ode_alpha": 0.006827556262592877,
         "ode_beta": 0.8095327215224352,
@@ -51,7 +53,10 @@
         "ci_hi": 0.514492628382541,
         "valid": true,
         "weighted_value": 0.08914602879884054,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 0.165,
+        "permutation_null_95": 0.4457302108286214,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": false,
@@ -62,14 +67,14 @@
       },
       "effective_information": 0.5567479110972469,
       "symploke": {
-        "internal": 0.3948644656685157,
-        "external": 0.2630343471130693,
-        "cr": 1.501189749560643,
+        "internal": 0.3931382559453435,
+        "external": 0.26069687919527956,
+        "cr": 1.508028240149574,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0034007257147554743,
+        "dominance_share": 0.003421236385574794,
         "pass": true
       },
       "persistence": {
@@ -84,11 +89,11 @@
         "pass": true,
         "significance": "computed"
       },
-      "coupling_check": true,
+      "coupling_check": false,
       "rmse_fraud_check": true,
       "c1_convergence": false,
       "c2_robustness": false,
-      "c3_replication": false,
+      "c3_replication": true,
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
@@ -99,23 +104,37 @@
         "threshold": 0.1
       },
       "c2_detail": {
-        "mean_delta": 2.3636363636363638,
-        "var_delta": 6.343939012385248,
-        "relative_mean": 1.9839357429718876,
-        "relative_var": 2.269009563736408
+        "mean_delta": 2.1483253588516744,
+        "var_delta": 5.8391703486641795,
+        "relative_mean": 1.803212851405622,
+        "relative_var": 2.0884711122756454
       },
       "c3_detail": {
         "persistence_1": 0.0,
-        "persistence_2": 2.609375
+        "persistence_2": 0.0
       },
       "c4_detail": {
-        "diff": 0.4688995215311005
+        "diff": 0.4545454545454546
       },
       "c5_detail": {
-        "sensitivity_min": 0.9569377990430622,
-        "sensitivity_max": 4.196172248803828,
-        "range": 3.2392344497607657,
-        "relative_range": 0.0008527468339013951
+        "sensitivity_min": 1.2057416267942584,
+        "sensitivity_max": 3.708133971291866,
+        "range": 2.5023923444976077,
+        "relative_range": 0.0006587689721276657
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": 0.0459663957114477,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "trend",
+        "ode_quality": "poor",
+        "ode_obs_corr": 0.11815308922030167,
+        "interpretation": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -140,7 +159,9 @@
       },
       "calibration": {
         "forcing_scale": 0.1,
-        "macro_coupling": 0.1,
+        "macro_coupling": 0.05,
+        "ode_coupling_strength": 0.04000000000000001,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.0,
         "ode_alpha": 0.001,
         "ode_beta": 1.0,
@@ -170,7 +191,10 @@
         "ci_hi": 0.0,
         "valid": false,
         "weighted_value": 0.0,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 1.0,
+        "permutation_null_95": 0.0,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": false,
@@ -203,7 +227,7 @@
         "pass": false,
         "significance": "computed"
       },
-      "coupling_check": true,
+      "coupling_check": false,
       "rmse_fraud_check": true,
       "c1_convergence": false,
       "c2_robustness": false,
@@ -218,23 +242,37 @@
         "threshold": 4.367975317169036
       },
       "c2_detail": {
-        "mean_delta": 13.892307692307693,
-        "var_delta": 24.08953402366864,
-        "relative_mean": 13.892307692307693,
-        "relative_var": 24.08953402366864
+        "mean_delta": 13.901923076923078,
+        "var_delta": 23.76251849112426,
+        "relative_mean": 13.901923076923078,
+        "relative_var": 23.76251849112426
       },
       "c3_detail": {
         "persistence_1": 0.0,
-        "persistence_2": 42.75
+        "persistence_2": 55.1875
       },
       "c4_detail": {
-        "diff": 0.3365384615384617
+        "diff": 0.29807692307692335
       },
       "c5_detail": {
-        "sensitivity_min": 13.35576923076923,
-        "sensitivity_max": 14.528846153846153,
-        "range": 1.1730769230769234,
-        "relative_range": 1.6157984880659437e-06
+        "sensitivity_min": 13.346153846153847,
+        "sensitivity_max": 14.538461538461538,
+        "range": 1.1923076923076916,
+        "relative_range": 1.6422869878703023e-06
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": 0.466647206373487,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "null",
+        "ode_quality": "moderate",
+        "ode_obs_corr": 0.6233670173205177,
+        "interpretation": "Emergencia nula: sin evidencia de constricci\u00f3n macro efectiva"
       },
       "gated_by_synthetic": true
     }

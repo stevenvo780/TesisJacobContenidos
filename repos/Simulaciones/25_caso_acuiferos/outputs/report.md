@@ -1,21 +1,21 @@
 # Reporte de Validación — Depleción de Acuíferos (Darcy-Theis)
 
-- generated_at: 2026-02-09T17:04:16.603482Z
+- generated_at: 2026-02-09T17:52:02.386118Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.3866
-- bootstrap_mean: 0.3874
-- CI 95%: [0.3723, 0.4062]
-- weighted_value (LoE factor 0.60): 0.2320
-- válido (0.30-0.90): True
+- valor: -0.5337
+- bootstrap_mean: -0.5334
+- CI 95%: [-0.5402, -0.5264]
+- weighted_value (LoE factor 0.60): -0.3202
+- válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9953
-- CR: 1.0047
+- external: 0.9932
+- CR: 1.0069
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,7 +26,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.8061
+- rmse_abm: 2.0154
 - rmse_abm_no_ode: 1.3141
 - rmse_ode: 0.6268
 - rmse_reduced: 1.4367

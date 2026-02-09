@@ -1,21 +1,21 @@
 # Reporte de Validación — Salinización de Suelos (Richards-Solute)
 
-- generated_at: 2026-02-09T17:04:03.910955Z
+- generated_at: 2026-02-09T17:51:55.058315Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.4810
-- bootstrap_mean: 0.4820
-- CI 95%: [0.3537, 0.5999]
-- weighted_value (LoE factor 0.60): 0.2886
+- valor: 0.3288
+- bootstrap_mean: 0.3330
+- CI 95%: [0.2733, 0.4037]
+- weighted_value (LoE factor 0.60): 0.1973
 - válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 0.9998
-- external: 0.9980
-- CR: 1.0018
+- external: 0.9984
+- CR: 1.0013
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,7 +26,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.3741
+- rmse_abm: 0.4838
 - rmse_abm_no_ode: 0.7207
 - rmse_ode: 1.1240
 - rmse_reduced: 2.9446

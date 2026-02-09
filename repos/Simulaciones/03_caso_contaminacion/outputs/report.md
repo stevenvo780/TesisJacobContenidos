@@ -1,21 +1,21 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-09T17:03:43.759141Z
+- generated_at: 2026-02-09T17:51:52.432624Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
+- valor: -0.0000
+- bootstrap_mean: -0.0000
 - CI 95%: [-0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): 0.0000
+- weighted_value (LoE factor 0.20): -0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.1124
-- external: 0.0705
-- CR: 1.5938
+- internal: 0.1215
+- external: 0.1105
+- CR: 1.0991
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5

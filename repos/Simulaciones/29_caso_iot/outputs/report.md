@@ -1,21 +1,21 @@
 # Reporte de Validación — Ecosistema IoT Global (Bass-Metcalfe)
 
-- generated_at: 2026-02-09T17:04:13.144448Z
+- generated_at: 2026-02-09T17:51:52.872718Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.3892
-- bootstrap_mean: 0.3929
-- CI 95%: [0.3417, 0.4536]
-- weighted_value (LoE factor 0.80): 0.3113
-- válido (0.30-0.90): True
+- valor: 0.3076
+- bootstrap_mean: 0.3103
+- CI 95%: [0.2697, 0.3575]
+- weighted_value (LoE factor 0.80): 0.2460
+- válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9997
-- external: 0.9782
-- CR: 1.0220
+- internal: 0.9996
+- external: 0.9809
+- CR: 1.0191
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,7 +26,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.5808
+- rmse_abm: 2.9255
 - rmse_abm_no_ode: 4.2250
 - rmse_ode: 1.4341
 - rmse_reduced: 6.3551

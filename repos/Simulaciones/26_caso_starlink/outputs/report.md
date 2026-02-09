@@ -1,21 +1,21 @@
 # Reporte de Validación — Constelaciones Satelitales Starlink (Mega-Constellation)
 
-- generated_at: 2026-02-09T17:04:28.104252Z
+- generated_at: 2026-02-09T17:52:13.761304Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.5224
-- bootstrap_mean: 0.5229
-- CI 95%: [0.5108, 0.5367]
-- weighted_value (LoE factor 0.80): 0.4179
-- válido (0.30-0.90): True
+- valor: -0.0525
+- bootstrap_mean: -0.0518
+- CI 95%: [-0.0679, -0.0350]
+- weighted_value (LoE factor 0.80): -0.0420
+- válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9998
-- external: 0.9952
-- CR: 1.0046
+- internal: 0.9999
+- external: 0.9900
+- CR: 1.0099
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,7 +26,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.6097
+- rmse_abm: 1.3435
 - rmse_abm_no_ode: 1.2765
 - rmse_ode: 0.9059
 - rmse_reduced: 0.8072

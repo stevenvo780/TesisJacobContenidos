@@ -1,8 +1,8 @@
 {
   "case": "Ecosistema IoT Global (Bass-Metcalfe)",
-  "generated_at": "2026-02-09T17:04:13.144448Z",
+  "generated_at": "2026-02-09T17:51:52.872718Z",
   "git": {
-    "commit": "519fa3a5696be700191dea054045014c5b428b71",
+    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
     "dirty": true
   },
   "phases": {
@@ -36,26 +36,26 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 2.580751614884339,
+        "rmse_abm": 2.925541379897207,
         "rmse_abm_no_ode": 4.224971803349195,
         "rmse_ode": 1.4340666920908953,
         "rmse_reduced": 6.355148178058371,
         "threshold": 2.4845323696694206
       },
       "correlations": {
-        "abm_obs": 0.936351269977802,
+        "abm_obs": 0.9371734777099088,
         "ode_obs": 0.9330166467749118
       },
       "edi": {
-        "value": 0.389167138857935,
-        "bootstrap_mean": 0.39287958989884525,
-        "ci_lo": 0.34169157479315515,
-        "ci_hi": 0.4536045834532339,
-        "valid": true,
-        "weighted_value": 0.31133371108634805,
+        "value": 0.30755954925472195,
+        "bootstrap_mean": 0.3102637859919588,
+        "ci_lo": 0.2697166190445665,
+        "ci_hi": 0.35746948251011573,
+        "valid": false,
+        "weighted_value": 0.24604763940377758,
         "loe_factor": 0.8,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.2878550007788093,
+        "permutation_null_95": 0.2327327624006458,
         "permutation_significant": true
       },
       "viscosity": {
@@ -67,26 +67,26 @@
           "recovered": true
         }
       },
-      "effective_information": 0.3211036715545823,
+      "effective_information": 0.2520223735765361,
       "symploke": {
-        "internal": 0.9997110220837588,
-        "external": 0.9781999175030205,
-        "cr": 1.0219904992791742,
+        "internal": 0.9996411117926179,
+        "external": 0.9809084740722815,
+        "cr": 1.0190972330400685,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0016005657734022504,
+        "dominance_share": 0.0016006614813235244,
         "pass": true
       },
       "persistence": {
-        "model": 0.12118846801522278,
+        "model": 0.0961209066017066,
         "obs": 1.8646855432865732,
         "pass": true
       },
       "emergence": {
         "err_reduced": 4.224971803349195,
-        "err_abm": 2.580751614884339,
+        "err_abm": 2.925541379897207,
         "threshold": 0.49690647393388415,
         "pass": true,
         "significance": "computed"
@@ -99,30 +99,44 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 2.580751614884339,
+        "rmse_abm": 2.925541379897207,
         "rmse_ode": 1.4340666920908953,
-        "corr_abm": 0.936351269977802,
+        "corr_abm": 0.9371734777099088,
         "corr_ode": 0.9330166467749118,
         "threshold": 2.4845323696694206
       },
       "c2_detail": {
-        "mean_delta": 0.10068686150759705,
-        "var_delta": 0.05525765521967809,
-        "relative_mean": 0.026665603336502895,
-        "relative_var": 0.04905675450937844
+        "mean_delta": 0.09460617724044322,
+        "var_delta": 0.04421930034277457,
+        "relative_mean": 0.02760021915627907,
+        "relative_var": 0.04421930034277457
       },
       "c3_detail": {
-        "persistence_1": 0.12118846801522278,
-        "persistence_2": 0.12116194810355599
+        "persistence_1": 0.0961209066017066,
+        "persistence_2": 0.0960969523928572
       },
       "c4_detail": {
         "diff": 0.30017049633452064
       },
       "c5_detail": {
-        "sensitivity_min": 3.4398931818111724,
-        "sensitivity_max": 4.14689503927649,
-        "range": 0.7070018574653179,
-        "relative_range": 0.1863766913504874
+        "sensitivity_min": 3.119563415927828,
+        "sensitivity_max": 3.762942106736648,
+        "range": 0.6433786908088202,
+        "relative_range": 0.1870164726550949
+      },
+      "bias_correction": {
+        "applied": true,
+        "mode": "full",
+        "ode_obs_corr_train": 0.8656470929094583,
+        "ode_mean_train": -0.06430597793631396,
+        "obs_mean_train": 3.552713678800501e-17,
+        "scale_factor": 0.8393214882266619
+      },
+      "emergence_taxonomy": {
+        "category": "weak",
+        "ode_quality": "good",
+        "ode_obs_corr": 0.9330166467749118,
+        "interpretation": "Emergencia d\u00e9bil: se\u00f1al macro significativa pero bajo umbral robusto"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -264,6 +278,20 @@
         "sensitivity_max": 6.356032353493218,
         "range": 0.9292182004400704,
         "relative_range": 0.020886441595828215
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": 0.22952346017307737,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "suggestive",
+        "ode_quality": "good",
+        "ode_obs_corr": 0.9160918279457153,
+        "interpretation": "Se\u00f1al sugestiva: EDI positivo y significativo pero muy bajo"
       }
     }
   }

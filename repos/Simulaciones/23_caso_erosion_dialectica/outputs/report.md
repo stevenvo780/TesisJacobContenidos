@@ -1,20 +1,20 @@
 # Reporte de Validación — Erosión Dialéctica (Abrams-Strogatz)
 
-- generated_at: 2026-02-09T17:04:12.724187Z
+- generated_at: 2026-02-09T17:52:01.472462Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0424
-- bootstrap_mean: 0.0425
-- CI 95%: [0.0418, 0.0432]
-- weighted_value (LoE factor 0.60): 0.0255
+- valor: 0.0491
+- bootstrap_mean: 0.0491
+- CI 95%: [0.0479, 0.0505]
+- weighted_value (LoE factor 0.60): 0.0294
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9991
+- external: 0.9992
 - CR: 1.0008
 - CR indicador (>2.0 = frontera nítida): False
 
@@ -26,7 +26,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.9709
+- rmse_abm: 3.9434
 - rmse_abm_no_ode: 4.1468
 - rmse_ode: 1.7962
 - rmse_reduced: 6.8364

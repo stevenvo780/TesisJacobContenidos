@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: Observabilidad Escasa",
-  "generated_at": "2026-02-09T12:03:41.660091",
+  "generated_at": "2026-02-09T12:51:48.913083",
   "git": {
     "commit": "falsification_confounder",
     "dirty": false
@@ -44,26 +44,26 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 3.349950819672961,
+        "rmse_abm": 2.2072807781727217,
         "rmse_abm_no_ode": 0.7020798563899637,
         "rmse_ode": 3.8161329729047186,
         "rmse_reduced": 2.5511869070516195,
         "threshold": 0.9158465070483048
       },
       "correlations": {
-        "abm_obs": 0.7148261738632742,
+        "abm_obs": 0.7148261738632922,
         "ode_obs": -0.256921178709256
       },
       "edi": {
-        "value": -3.7714669338301907,
-        "bootstrap_mean": -3.7894198283423037,
-        "ci_lo": -4.319258527657753,
-        "ci_hi": -3.3089089545535266,
+        "value": -2.143916974804513,
+        "bootstrap_mean": -2.1537720357733043,
+        "ci_lo": -2.5255044572173455,
+        "ci_hi": -1.8154416226470125,
         "valid": false,
-        "weighted_value": -0.7542933867660382,
+        "weighted_value": -0.4287833949609026,
         "loe_factor": 0.2,
         "permutation_pvalue": 1.0,
-        "permutation_null_95": -1.393689944846394,
+        "permutation_null_95": -0.5902823763033148,
         "permutation_significant": false
       },
       "viscosity": {
@@ -75,26 +75,26 @@
           "recovered": true
         }
       },
-      "effective_information": -0.21410595320932857,
+      "effective_information": -0.21410595320931947,
       "symploke": {
-        "internal": 0.9979980160994034,
-        "external": 0.8289984790660148,
-        "cr": 1.2038598879262008,
+        "internal": 0.9977221845089798,
+        "external": 0.994163453523287,
+        "cr": 1.0035796236253511,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.002515251644596369,
+        "dominance_share": 0.00250706743663885,
         "pass": true
       },
       "persistence": {
-        "model": 2.9480407976617335e-06,
+        "model": 2.9480407976619372e-06,
         "obs": 0.10810369943788213,
         "pass": true
       },
       "emergence": {
         "err_reduced": 0.7020798563899637,
-        "err_abm": 3.349950819672961,
+        "err_abm": 2.2072807781727217,
         "threshold": 0.18316930140966098,
         "pass": false,
         "significance": "computed"
@@ -107,30 +107,44 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 3.349950819672961,
+        "rmse_abm": 2.2072807781727217,
         "rmse_ode": 3.8161329729047186,
-        "corr_abm": 0.7148261738632742,
+        "corr_abm": 0.7148261738632922,
         "corr_ode": -0.256921178709256,
         "threshold": 0.9158465070483048
       },
       "c2_detail": {
-        "mean_delta": 0.008188069361945693,
-        "var_delta": 0.0004650323560437316,
-        "relative_mean": 0.008188069361945693,
-        "relative_var": 0.0004650323560437316
+        "mean_delta": 0.009206144049920262,
+        "var_delta": 0.0004650323560442409,
+        "relative_mean": 0.009206144049920262,
+        "relative_var": 0.0004650323560442409
       },
       "c3_detail": {
-        "persistence_1": 2.9480407976617335e-06,
-        "persistence_2": 3.019029261817696e-06
+        "persistence_1": 2.9480407976619372e-06,
+        "persistence_2": 3.0190292618178484e-06
       },
       "c4_detail": {
         "diff": 0.06905939885616708
       },
       "c5_detail": {
-        "sensitivity_min": -0.896993628494314,
-        "sensitivity_max": -0.8486045065424035,
-        "range": 0.048389121951910474,
-        "relative_range": 0.008948381976913845
+        "sensitivity_min": 0.3035458036751213,
+        "sensitivity_max": 0.3505847185007569,
+        "range": 0.0470389148256356,
+        "relative_range": 0.00869869426557521
+      },
+      "bias_correction": {
+        "applied": true,
+        "mode": "bias_only",
+        "ode_obs_corr_train": 0.6716406651803548,
+        "ode_mean_train": -1.3234323461479864,
+        "obs_mean_train": 1.295260195396016e-16,
+        "scale_factor": 1.0
+      },
+      "emergence_taxonomy": {
+        "category": "falsification",
+        "ode_quality": "poor",
+        "ode_obs_corr": -0.256921178709256,
+        "interpretation": "Caso de falsificaci\u00f3n: rechazo esperado por dise\u00f1o experimental"
       }
     }
   },

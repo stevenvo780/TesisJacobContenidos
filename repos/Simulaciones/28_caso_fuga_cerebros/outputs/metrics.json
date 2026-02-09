@@ -1,8 +1,8 @@
 {
   "case": "Fuga de Cerebros Global (Docquier-Rapoport)",
-  "generated_at": "2026-02-09T17:04:10.291672Z",
+  "generated_at": "2026-02-09T17:51:52.131042Z",
   "git": {
-    "commit": "519fa3a5696be700191dea054045014c5b428b71",
+    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
     "dirty": true
   },
   "phases": {
@@ -36,93 +36,107 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 1.7473201281471802,
+        "rmse_abm": 0.6857612119465828,
         "rmse_abm_no_ode": 2.7838431741328167,
         "rmse_ode": 0.7834180286567357,
         "rmse_reduced": 5.39903612963605,
         "threshold": 1.714742732045627
       },
       "correlations": {
-        "abm_obs": 0.9780382872466102,
+        "abm_obs": 0.9747581922161955,
         "ode_obs": 0.9690996014420463
       },
       "edi": {
-        "value": 0.3723352865624406,
-        "bootstrap_mean": 0.3740732084737996,
-        "ci_lo": 0.33777959404746644,
-        "ci_hi": 0.4142639117904568,
+        "value": 0.7536638492000537,
+        "bootstrap_mean": 0.7593952509273664,
+        "ci_lo": 0.6913378495820173,
+        "ci_hi": 0.8428263680898371,
         "valid": true,
-        "weighted_value": 0.22340117193746434,
+        "weighted_value": 0.4521983095200322,
         "loe_factor": 0.6,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.2579952365868978,
+        "permutation_null_95": 0.41181105268392276,
         "permutation_significant": true
       },
       "viscosity": {
         "pass": true,
         "detail": {
           "relaxation_time": 3,
-          "peak_impact": 2.0000000000000004,
+          "peak_impact": 2.000000000000001,
           "shock_step": 34,
           "recovered": true
         }
       },
-      "effective_information": 0.36771470639473325,
+      "effective_information": 0.9116493757142505,
       "symploke": {
-        "internal": 0.9997679271451074,
-        "external": 0.9811093787676826,
-        "cr": 1.0190178065577773,
+        "internal": 0.9998750446585772,
+        "external": 0.9682610579601871,
+        "cr": 1.0326502717820651,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0016006320575342862,
+        "dominance_share": 0.0016004819778028662,
         "pass": true
       },
       "persistence": {
-        "model": 0.17099339783283785,
+        "model": 0.3478438865066268,
         "obs": 1.0423955650755485,
         "pass": true
       },
       "emergence": {
         "err_reduced": 2.7838431741328167,
-        "err_abm": 1.7473201281471802,
+        "err_abm": 0.6857612119465828,
         "threshold": 0.3429485464091254,
         "pass": true,
         "significance": "computed"
       },
       "coupling_check": true,
       "rmse_fraud_check": true,
-      "c1_convergence": false,
+      "c1_convergence": true,
       "c2_robustness": true,
       "c3_replication": true,
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 1.7473201281471802,
+        "rmse_abm": 0.6857612119465828,
         "rmse_ode": 0.7834180286567357,
-        "corr_abm": 0.9780382872466102,
+        "corr_abm": 0.9747581922161955,
         "corr_ode": 0.9690996014420463,
         "threshold": 1.714742732045627
       },
       "c2_detail": {
-        "mean_delta": 0.1083706790362183,
-        "var_delta": 0.04455127736451718,
-        "relative_mean": 0.030074632495713377,
-        "relative_var": 0.04455127736451718
+        "mean_delta": 0.12785390936450494,
+        "var_delta": 0.08753561238178112,
+        "relative_mean": 0.027286648346278416,
+        "relative_var": 0.0515231531868719
       },
       "c3_detail": {
-        "persistence_1": 0.17099339783283785,
-        "persistence_2": 0.17096901994918115
+        "persistence_1": 0.3478438865066268,
+        "persistence_2": 0.34780901751561755
       },
       "c4_detail": {
         "diff": 0.3732591726729746
       },
       "c5_detail": {
-        "sensitivity_min": 3.2640115041079314,
-        "sensitivity_max": 3.966285785543531,
-        "range": 0.7022742814355998,
-        "relative_range": 0.19444520815215605
+        "sensitivity_min": 4.257048131283839,
+        "sensitivity_max": 5.163688340844937,
+        "range": 0.9066402095610977,
+        "relative_range": 0.1924866375848028
+      },
+      "bias_correction": {
+        "applied": true,
+        "mode": "full",
+        "ode_obs_corr_train": 0.887605069552006,
+        "ode_mean_train": 0.4312710116945915,
+        "obs_mean_train": 7.01660951563099e-16,
+        "scale_factor": 1.7529912575552913
+      },
+      "emergence_taxonomy": {
+        "category": "strong",
+        "ode_quality": "good",
+        "ode_obs_corr": 0.9690996014420463,
+        "interpretation": "Emergencia macro fuerte: el ODE reduce significativamente la incertidumbre del ABM"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -178,57 +192,57 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 3.7797287877033763,
+        "rmse_abm": 3.7398550752148796,
         "rmse_abm_no_ode": 4.618767961674912,
         "rmse_ode": 3.4862828696355708,
         "rmse_reduced": 6.700988558084506,
         "threshold": 5.645458513092422
       },
       "correlations": {
-        "abm_obs": 0.7985952587358764,
+        "abm_obs": 0.7985952676729995,
         "ode_obs": 0.8140480883091674
       },
       "edi": {
-        "value": 0.181658654631196,
-        "bootstrap_mean": 0.1797629910537126,
-        "ci_lo": 0.03443359748748615,
-        "ci_hi": 0.291399856944205,
+        "value": 0.19029163052852538,
+        "bootstrap_mean": 0.18752628226493273,
+        "ci_lo": 0.035948874313632806,
+        "ci_hi": 0.297098841802005,
         "valid": false,
-        "weighted_value": 0.1089951927787176,
+        "weighted_value": 0.11417497831711522,
         "loe_factor": 0.6,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.14062117922589865,
+        "permutation_null_95": 0.14330867139072878,
         "permutation_significant": true
       },
       "viscosity": {
         "pass": true,
         "detail": {
           "relaxation_time": 2,
-          "peak_impact": 2.0,
+          "peak_impact": 1.9999999999999982,
           "shock_step": 18,
           "recovered": true
         }
       },
-      "effective_information": 0.21987609154720467,
+      "effective_information": 0.21987615214820933,
       "symploke": {
-        "internal": 0.9995356498663894,
-        "external": 0.9908837387496382,
-        "cr": 1.0087315098415772,
+        "internal": 0.9995359895606801,
+        "external": 0.9908819825439896,
+        "cr": 1.0087336405032536,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0016009596560931628,
+        "dominance_share": 0.0016009587267422994,
         "pass": true
       },
       "persistence": {
-        "model": 5.96994660899607,
+        "model": 5.969946229925089,
         "obs": 31.05385291808802,
         "pass": true
       },
       "emergence": {
         "err_reduced": 4.618767961674912,
-        "err_abm": 3.7797287877033763,
+        "err_abm": 3.7398550752148796,
         "threshold": 1.1290917026184846,
         "pass": false,
         "significance": "computed"
@@ -241,30 +255,44 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 3.7797287877033763,
+        "rmse_abm": 3.7398550752148796,
         "rmse_ode": 3.4862828696355708,
-        "corr_abm": 0.7985952587358764,
+        "corr_abm": 0.7985952676729995,
         "corr_ode": 0.8140480883091674,
         "threshold": 5.645458513092422
       },
       "c2_detail": {
-        "mean_delta": 0.18193467848041855,
-        "var_delta": 2.7968992134928667,
-        "relative_mean": 0.03831245722501741,
-        "relative_var": 0.08577597569412147
+        "mean_delta": 0.17750829277235242,
+        "var_delta": 2.7969057738916687,
+        "relative_mean": 0.03851826650853262,
+        "relative_var": 0.08577619689838077
       },
       "c3_detail": {
-        "persistence_1": 5.96994660899607,
-        "persistence_2": 5.969829545006337
+        "persistence_1": 5.969946229925089,
+        "persistence_2": 5.969829165927632
       },
       "c4_detail": {
-        "diff": 0.6032774552158005
+        "diff": 0.6032774552158013
       },
       "c5_detail": {
-        "sensitivity_min": 4.241709697597246,
-        "sensitivity_max": 5.200594768100164,
-        "range": 0.9588850705029177,
-        "relative_range": 0.2035936885032628
+        "sensitivity_min": 4.114726626723662,
+        "sensitivity_max": 5.053370802612822,
+        "range": 0.9386441758891593,
+        "relative_range": 0.20527734320877025
+      },
+      "bias_correction": {
+        "applied": true,
+        "mode": "bias_only",
+        "ode_obs_corr_train": 0.5916896964892093,
+        "ode_mean_train": 0.32573543802001254,
+        "obs_mean_train": -7.7222179268372e-15,
+        "scale_factor": 1.0
+      },
+      "emergence_taxonomy": {
+        "category": "weak",
+        "ode_quality": "good",
+        "ode_obs_corr": 0.8140480883091674,
+        "interpretation": "Emergencia d\u00e9bil: se\u00f1al macro significativa pero bajo umbral robusto"
       }
     }
   }

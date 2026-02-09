@@ -1,6 +1,6 @@
 # Reporte de Validación — Postverdad (SIS Infodemic)
 
-- generated_at: 2026-02-09T17:03:54.626571Z
+- generated_at: 2026-02-09T17:51:59.948033Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -47,16 +47,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0018
-- bootstrap_mean: 0.0016
-- CI 95%: [0.0000, 0.0034]
-- weighted_value (LoE factor 0.20): 0.0004
+- valor: 0.0012
+- bootstrap_mean: 0.0011
+- CI 95%: [0.0000, 0.0020]
+- weighted_value (LoE factor 0.20): 0.0002
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.7931
-- external: 0.7547
-- CR: 1.0509
+- internal: 0.7932
+- external: 0.7522
+- CR: 1.0544
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -67,7 +67,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.9604
+- rmse_abm: 2.9622
 - rmse_abm_no_ode: 2.9658
 - rmse_ode: 2.9096
 - rmse_reduced: 2.9720

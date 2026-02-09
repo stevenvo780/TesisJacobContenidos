@@ -1,8 +1,8 @@
 {
   "case": "Paradigmas Cientificos (Ising)",
-  "generated_at": "2026-02-09T17:03:47.248526Z",
+  "generated_at": "2026-02-09T17:51:54.567630Z",
   "git": {
-    "commit": "519fa3a5696be700191dea054045014c5b428b71",
+    "commit": "5530c06901f71bbd7e23a589f491798f7aa0bc3a",
     "dirty": true
   },
   "phases": {
@@ -104,10 +104,10 @@
         "threshold": 0.1
       },
       "c2_detail": {
-        "mean_delta": 0.0010242214532875105,
-        "var_delta": 5.754720369727372e-05,
-        "relative_mean": 0.0010242214532875105,
-        "relative_var": 5.754720369727372e-05
+        "mean_delta": 0.0010519031141871694,
+        "var_delta": 5.856634858299109e-05,
+        "relative_mean": 0.0010519031141871694,
+        "relative_var": 5.856634858299109e-05
       },
       "c3_detail": {
         "persistence_1": 0.0003000000000000005,
@@ -121,6 +121,20 @@
         "sensitivity_max": 0.9984775086505192,
         "range": 0.0009688581314881706,
         "relative_range": 0.000966924265766722
+      },
+      "bias_correction": {
+        "applied": true,
+        "mode": "full",
+        "ode_obs_corr_train": 0.8151308941462415,
+        "ode_mean_train": -0.2392920667610844,
+        "obs_mean_train": -1.246566203087895e-16,
+        "scale_factor": 1.1506596209380202
+      },
+      "emergence_taxonomy": {
+        "category": "trend",
+        "ode_quality": "poor",
+        "ode_obs_corr": -0.030507747201578245,
+        "interpretation": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma"
       },
       "synthetic_meta": {
         "model": "Catastrophe",
@@ -242,6 +256,20 @@
         "sensitivity_max": 0.9527272727272728,
         "range": 1.9418181818181819,
         "relative_range": 0.9245949611497315
+      },
+      "bias_correction": {
+        "applied": false,
+        "mode": "none",
+        "ode_obs_corr_train": -0.0756390802148227,
+        "ode_mean_train": null,
+        "obs_mean_train": null,
+        "scale_factor": null
+      },
+      "emergence_taxonomy": {
+        "category": "null",
+        "ode_quality": "good",
+        "ode_obs_corr": -0.9599628679535136,
+        "interpretation": "Emergencia nula: sin evidencia de constricci\u00f3n macro efectiva"
       }
     }
   }
