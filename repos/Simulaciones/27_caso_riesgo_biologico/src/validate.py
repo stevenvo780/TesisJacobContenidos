@@ -86,8 +86,7 @@ def main():
             "forcing_scale": 0.20,   # Sensibilidad ABM a driver zoonótico
             "macro_coupling": 0.40,  # Acoplamiento macro→micro alto
         },
-        driver_cols=["hiv_incidence", "immunization_coverage",
-                     "tb_incidence", "health_expenditure", "crude_death_rate"],  # WB multi-driver
+        driver_cols=["hiv_incidence", "immunization_coverage"],
     )
 
     results = run_full_validation(
