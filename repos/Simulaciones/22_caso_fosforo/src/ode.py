@@ -37,6 +37,32 @@ def simulate_ode(params, steps, seed=3):
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.018))
 
+    # Core tracking (calibrado por hybrid_validator)
+    alpha = float(params.get("ode_alpha", 0.07))
+    beta = float(params.get("ode_beta", 0.02))
+    # Corrección domain-specific: reciclaje interno (Michaelis-Menten)
+    k_recycle = float(params.get("ode_recycle", 0.008))
+    p_crit = float(params.get("ode_p_crit", 1.5))
+
+    P = float(params.get("p0", 0.0))
+    series = []
+
+    for t in range(steps):
+        f = forcing[t] if t < len(forcing) else 0.0
+        # Core: mean-reversion tracking hacia forcing
+        core = alpha * (f - beta * P)
+        # Domain: reciclaje interno — sedimento libera P cuando concentración alta
+        recycle = k_recycle * (1.0 - math.exp(-max(0.0, P) / max(p_crit, 0.1)))
+        dP = core + recycle + random.gauss(0, noise_std)
+        P += dP
+        P = max(-10.0, min(P, 10.0))
+        P = _apply_assimilation(P, t, params)
+        if not math.isfinite(P):
+            P = 0.0
+        series.append(float(P))
+
+    return {ODE_KEY: series, "forcing": forcing}
+
     # Parámetros Carpenter biogeoquímico
     inflow = float(params.get("ode_inflow", params.get("ode_alpha", 0.07)))
     k_sed = float(params.get("ode_decay", params.get("ode_beta", 0.02)))

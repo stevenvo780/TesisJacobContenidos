@@ -1,34 +1,34 @@
 # Reporte de Validación — Salinización de Suelos (Richards-Solute)
 
-- generated_at: 2026-02-09T02:06:00.581082Z
+- generated_at: 2026-02-09T02:13:18.635279Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -1.0606
-- bootstrap_mean: -1.1099
-- CI 95%: [-1.6621, -0.6845]
-- weighted_value (LoE factor 0.60): -0.6364
+- valor: -5.0574
+- bootstrap_mean: -5.1738
+- CI 95%: [-6.4295, -4.1629]
+- weighted_value (LoE factor 0.60): -3.0345
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 0.9999
-- external: 0.9666
-- CR: 1.0344
+- external: 0.9420
+- CR: 1.0615
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: True
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.0666
+- rmse_abm: 3.1354
 - rmse_abm_no_ode: 0.5176
-- rmse_ode: 4.7795
+- rmse_ode: 12.3242
 - rmse_reduced: 2.6779
 - threshold: 0.6478
 
@@ -45,16 +45,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -2.5647
-- bootstrap_mean: -2.5359
-- CI 95%: [-2.7816, -2.1012]
-- weighted_value (LoE factor 0.60): -1.5388
+- valor: -2.3907
+- bootstrap_mean: -2.3713
+- CI 95%: [-2.6973, -1.9605]
+- weighted_value (LoE factor 0.60): -1.4344
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: -0.7107
-- external: 0.2503
-- CR: 2.8397
+- internal: -0.7968
+- external: 0.2000
+- CR: 3.9834
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,9 +65,9 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 3.1168
+- rmse_abm: 2.9647
 - rmse_abm_no_ode: 0.8744
-- rmse_ode: 4.5003
+- rmse_ode: 2.6820
 - rmse_reduced: 1.0780
 - threshold: 0.1357
 

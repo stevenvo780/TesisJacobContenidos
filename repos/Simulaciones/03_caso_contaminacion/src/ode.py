@@ -1,46 +1,88 @@
+"""
+ode.py — 03_caso_contaminacion (Top-Tier)
+
+Model: EPA Box Model for Urban Air Quality
+
+The Box Model is used by EPA for estimating urban pollutant concentrations.
+Based on mass balance: inputs, outputs, and chemical reactions.
+
+Reference:
+- Seinfeld & Pandis (2016): "Atmospheric Chemistry and Physics"
+- EPA Box Model for urban air quality
+- CALPUFF for long-range transport
+
+Equations:
+  dC/dt = (E + A_in) / V - (k_dep + k_rxn + A_out/V) * C
+
+Where:
+- E: Emission rate
+- A_in, A_out: Advection in/out
+- V: Box volume (mixing height * area)
+- k_dep: Deposition rate
+- k_rxn: Chemical reaction rate
+"""
+
 import os
 import sys
+import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
-from ode_models import simulate_ode_model
-
-ODE_MODEL = "accumulation_dissipation"
-ODE_KEY = "p" # Pollution
-
-
-def simulate_ode(params, steps, seed):
+def simulate_ode(params, steps, seed=42):
     """
-    Accumulation-Dissipation Model:
-    dP/dt = alpha * E(t) - beta * P
+    EPA Box Model ODE for Urban Air Pollution.
     
-    P: Pollution Accumulation
-    E(t): Emissions (Forcing)
-    alpha: Emmission Factor
-    beta: Dissipation Rate (Wind/Rain)
+    Single-box model with emissions, deposition, and advection.
     """
-    alpha = float(params.get("ode_alpha", 0.5))
-    beta = float(params.get("ode_beta", 0.2)) # moderate cleaning
-    noise_amp = float(params.get("ode_noise", 0.05))
+    rng = np.random.default_rng(seed)
     
-    P = float(params.get("p0", 0.0))
-    forcing = params.get("forcing_series") or [0.0]*steps
+    # Parameters
+    k_dep = params.get("ode_k_dep", 0.02)     # Deposition rate (1/h)
+    k_rxn = params.get("ode_k_rxn", 0.01)     # Chemical reaction rate (1/h)
+    k_adv = params.get("ode_k_adv", 0.1)      # Advection rate (1/h)
+    noise_std = params.get("ode_noise", 0.05)
     
-    series = []
-    import random
+    # Mixing layer height (diurnal variation)
+    H_day = params.get("mixing_height_day", 1500)    # m
+    H_night = params.get("mixing_height_night", 300)  # m
+    
+    # Forcing: Industrial emissions index
+    forcing = params.get("forcing_series")
+    if forcing is None:
+        forcing = np.ones(steps)
+        
+    # Initial State
+    C = params.get("p0", 50.0)  # Initial concentration (ug/m3)
+    
+    series_C = []
+    
+    dt = 1.0  # Hourly
     
     for t in range(steps):
-        E = max(0, forcing[t])
+        E = list(forcing)[t] if t < len(forcing) else 1.0
         
-        # dP = Emission - Dissipation
-        dP = alpha * E - beta * P
+        # Diurnal mixing height (low at night, high during day)
+        hour_of_day = t % 24
+        if 8 <= hour_of_day <= 18:
+            H = H_day
+        else:
+            H = H_night
+            
+        # Effective dilution rate
+        k_dilution = k_adv / H * 500  # Normalize
         
-        P += dP
+        # Box Model equation
+        # dC/dt = E/H - (k_dep + k_rxn + k_dilution) * C
         
-        # Noise
-        P += random.uniform(-noise_amp, noise_amp)
-        P = max(0.0, P) # Pollution cannot be negative
+        emission_term = E * 100 / H  # Scale emission by mixing height
+        loss_term = (k_dep + k_rxn + k_dilution) * C
         
-        series.append(P)
+        dC = emission_term - loss_term
+        dC += rng.normal(0, noise_std * C)
         
-    return {ODE_KEY: series, "forcing": forcing}
+        C += dC * dt
+        C = max(0, C)
+        
+        series_C.append(C)
+        
+    return {"p": series_C, "forcing": forcing}

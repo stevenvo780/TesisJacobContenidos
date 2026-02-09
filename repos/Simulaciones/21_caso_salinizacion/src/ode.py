@@ -36,26 +36,24 @@ def simulate_ode(params, steps, seed=3):
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.015))
 
-    # Parámetros del dominio
-    alpha_irr = float(params.get("ode_inflow", params.get("ode_alpha", 0.05)))  # tasa salinización
-    beta_drain = float(params.get("ode_decay", params.get("ode_beta", 0.015)))  # lavado/drenaje
-    gamma_expand = float(params.get("ode_gamma_expand", 0.03))  # expansión agrícola
-    evap_factor = float(params.get("ode_evap", 0.02))  # concentración por evaporación
+    # Core tracking (calibrado por hybrid_validator)
+    alpha = float(params.get("ode_alpha", 0.05))
+    beta = float(params.get("ode_beta", 0.015))
+    # Corrección domain-specific: evaporación concentra sales
+    evap_factor = float(params.get("ode_evap", 0.01))
 
     S = float(params.get("p0", 0.0))
     series = []
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
-        # Salinización por irrigación (proporcional al forcing)
-        salinization = alpha_irr * max(0.0, f) * (1.0 + evap_factor * S)
-        # Drenaje natural (rain washing)
-        drainage = beta_drain * S
-        # Expansión agrícola
-        expansion = gamma_expand * f
-        dS = salinization - drainage + expansion + random.gauss(0, noise_std)
+        # Core: mean-reversion tracking hacia forcing
+        core = alpha * (f - beta * S)
+        # Domain: evaporación concentra sales (feedback positivo suave)
+        evap = evap_factor * max(0.0, S) * max(0.0, f)
+        dS = core + evap + random.gauss(0, noise_std)
         S += dS
-        S = max(0.0, min(S, 20.0))
+        S = max(-10.0, min(S, 10.0))
         S = _apply_assimilation(S, t, params)
         if not math.isfinite(S):
             S = 0.0

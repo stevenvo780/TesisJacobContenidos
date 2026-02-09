@@ -43,32 +43,30 @@ def simulate_ode(params, steps, seed=6):
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.025))
 
-    # Parámetros epidemiológicos/ecológicos
-    r = float(params.get("ode_r", params.get("ode_alpha", 0.06)))
-    K = float(params.get("ode_k", params.get("ode_beta", 2.0)))
-    # Tasa de spillover zoonótico (forcing-led)
-    gamma = float(params.get("ode_gamma", 0.10))
-    # Mitigación (respuesta sanitaria)
-    delta = float(params.get("ode_delta", 0.025))
+    # Core tracking (calibrado por hybrid_validator)
+    alpha = float(params.get("ode_alpha", 0.06))
+    beta = float(params.get("ode_beta", 0.025))
+    # Domain: saturación logística (inmunidad/intervención)
+    K = float(params.get("ode_k", 3.0))
+    r = float(params.get("ode_r", 0.01))
 
     R = float(params.get("p0", 0.0))
     series = []
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
-        # Crecimiento logístico basal (suave)
-        growth = r * R * (1.0 - R / K) if K > 0 and R > 0 else 0.0
-        # Spillover zoonótico desde interfaz (forcing-led)
-        spillover = gamma * max(0.0, f)
-        # Mitigación sanitaria
-        mitigation = delta * R
-
-        dR = growth + spillover - mitigation + random.gauss(0, noise_std)
+        # Core: mean-reversion tracking hacia forcing
+        core = alpha * (f - beta * R)
+        # Domain: crecimiento logístico suave (amplificación comunitaria)
+        logistic = r * R * (1.0 - R / K) if R > 0 and K > 0 else 0.0
+        dR = core + logistic + random.gauss(0, noise_std)
         R += dR
-        R = max(0.0, min(R, 3.0 * K))
+        R = max(-10.0, min(R, 10.0))
         R = _apply_assimilation(R, t, params)
         if not math.isfinite(R):
             R = 0.0
         series.append(float(R))
+
+    return {ODE_KEY: series, "forcing": forcing}
 
     return {ODE_KEY: series, "forcing": forcing}

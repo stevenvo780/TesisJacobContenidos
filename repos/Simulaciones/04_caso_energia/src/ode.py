@@ -1,62 +1,91 @@
+"""
+ode.py — 04_caso_energia (Top-Tier)
+
+Model: Lotka-Volterra Fuel Competition ODE
+
+Energy sources compete like species in an ecosystem.
+Renewables "prey" on fossil fuels' market share.
+
+Reference:
+- Grubler et al. (1999): "Dynamics of Energy Technologies and Global Change"
+- Wilson & Grübler (2011): "Lessons from the Energy Technology Revolution"
+- Marchetti-Nakicenovic: Energy system substitution dynamics
+
+Equations:
+  dF/dt = r_F * F * (1 - F/K_F) - alpha * F * R
+  dR/dt = r_R * R * (1 - R/K_R) + beta * F * R
+
+Where:
+- F: Fossil fuel share
+- R: Renewable share
+- r: Growth rates
+- K: Carrying capacities
+- alpha, beta: Competition coefficients
+"""
+
 import os
 import sys
+import numpy as np
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
-from ode_models import simulate_ode_model
-
-ODE_MODEL = "swing_equation"
-ODE_KEY = "f" # Frequency deviation
-
-
-def simulate_ode(params, steps, seed):
+def simulate_ode(params, steps, seed=42):
     """
-    Swing Equation (Grid Frequency Stability):
-    df/dt = (P_mech - P_elec - D * f) / (2 * H)
+    Lotka-Volterra Fuel Competition ODE.
     
-    f: Frequency deviation (p.u.)
-    P_mech: Generation (Forcing + Base)
-    P_elec: Load (Demand)
-    D: Damping constant
-    H: Inertia constant (seconds)
+    Models the transition from fossil fuels to renewables.
     """
-    import random
+    rng = np.random.default_rng(seed)
     
-    # Physics Parameters
-    H = float(params.get("ode_H", 5.0))   # Inertia (s)
-    D = float(params.get("ode_D", 1.0))   # Damping
-    K = float(params.get("ode_K", 0.0))   # Droop control (optional)
-    noise_amp = float(params.get("ode_noise", 0.001))
+    # Parameters (calibrated to historical energy transitions)
+    r_F = params.get("ode_r_F", 0.02)       # Fossil growth rate
+    r_R = params.get("ode_r_R", 0.15)       # Renewable growth rate (faster)
+    K_F = params.get("ode_K_F", 0.8)        # Fossil carrying capacity
+    K_R = params.get("ode_K_R", 0.9)        # Renewable carrying capacity
+    alpha = params.get("ode_alpha", 0.1)    # Fossil-Renewable competition
+    beta = params.get("ode_beta", 0.05)     # Renewable benefit from fossil decline
+    noise_std = params.get("ode_noise", 0.01)
     
-    f = float(params.get("f0", 0.0))
-    forcing = params.get("forcing_series") or [0.0]*steps
+    # Forcing: Policy stringency (accelerates renewable growth)
+    forcing = params.get("forcing_series")
+    if forcing is None:
+        forcing = np.ones(steps)
+        
+    # Initial State
+    F = params.get("F0", 0.7)   # Initial fossil share
+    R = params.get("R0", 0.1)   # Initial renewable share
     
-    # Load profile (if not provided, assume constant or derived from forcing)
-    # Ideally, P_elec should come from data, but here we might wrap it in 'forcing'
-    # or separate it. Let's assume forcing = (Gen - Load) imbalance for simplicity
-    # unless 'load_series' is in params.
+    series_R = []
     
-    series = []
+    dt = 1.0  # Yearly
     
     for t in range(steps):
-        # Net Power Imbalance (Generation - Load)
-        # forcing[t] represents the mismatch (e.g. wind drop or load spike)
-        P_net = forcing[t] 
+        policy = list(forcing)[t] if t < len(forcing) else 1.0
         
-        # Power correction from frequency response (Governor/Droop)
-        # P_response = -K * f
+        # Policy accelerates renewable growth
+        r_R_eff = r_R * (1 + 0.5 * (policy - 1))
         
-        # Swing Equation:
-        # 2H * df/dt = P_net - D*f
-        # df = (P_net - D*f) / (2H) * dt  (dt=1 step)
+        # Lotka-Volterra dynamics
+        dF = r_F * F * (1 - F / K_F) - alpha * F * R
+        dR = r_R_eff * R * (1 - R / K_R) + beta * F * R
         
-        df = (P_net - D * f) / (2.0 * H)
+        # Add noise
+        dF += rng.normal(0, noise_std * F)
+        dR += rng.normal(0, noise_std * R)
         
-        f += df
+        F += dF * dt
+        R += dR * dt
         
-        # Noise (Grid jitter)
-        f += random.uniform(-noise_amp, noise_amp)
+        # Constraints
+        F = np.clip(F, 0.01, 1.0)
+        R = np.clip(R, 0.01, 1.0)
         
-        series.append(f)
+        # Normalize so F + R + Other = 1
+        total = F + R
+        if total > 1:
+            F = F / total
+            R = R / total
+            
+        series_R.append(R)
         
-    return {ODE_KEY: series, "forcing": forcing}
+    return {"e": series_R, "forcing": forcing}

@@ -40,27 +40,24 @@ def simulate_ode(params, steps, seed=5):
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.02))
 
-    # Parámetros orbitales
-    launch_rate = float(params.get("ode_inflow", params.get("ode_alpha", 0.18)))
-    deorbit = float(params.get("ode_decay", params.get("ode_beta", 0.015)))
-    # Saturación orbital suave (limita crecimiento)
-    saturation = float(params.get("ode_saturation", 0.003))
+    # Core tracking (calibrado por hybrid_validator)
+    alpha = float(params.get("ode_alpha", 0.18))
+    beta = float(params.get("ode_beta", 0.015))
+    # Domain: saturación orbital (densidad máxima)
+    saturation = float(params.get("ode_saturation", 0.002))
 
     N = float(params.get("p0", 0.0))
     series = []
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
-        # Lanzamientos: proporcional al forcing (planes de despliegue)
-        L = launch_rate * max(0.0, f)
-        # Desorbitado controlado (decay lineal)
-        deorb = deorbit * N
-        # Saturación: resistencia suave al crecimiento
-        sat_loss = saturation * N * abs(N)
-
-        dN = L - deorb - sat_loss + random.gauss(0, noise_std)
+        # Core: mean-reversion tracking hacia forcing
+        core = alpha * (f - beta * N)
+        # Domain: saturación cuadrática suave
+        sat = saturation * N * abs(N)
+        dN = core - sat + random.gauss(0, noise_std)
         N += dN
-        N = max(0.0, min(N, 20.0))
+        N = max(-10.0, min(N, 10.0))
         N = _apply_assimilation(N, t, params)
         if not math.isfinite(N):
             N = 0.0
