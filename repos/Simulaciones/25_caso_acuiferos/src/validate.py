@@ -36,10 +36,10 @@ def make_synthetic(start_date, end_date, seed=101):
         steps = len(dates)
 
     # Forcing: precipitación con variabilidad interanual (proxy recarga)
-    forcing = [0.008 * t + 0.5 * np.sin(2 * np.pi * t / 24) for t in range(steps)]
+    forcing = [0.5 * np.sin(2 * np.pi * t / 24) + 0.3 * np.sin(2 * np.pi * t / 12) for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.04, "ode_beta": 0.06,  # Acuíferos: recarga < extracción = depleción
-        "ode_recharge": 0.04, "ode_extraction": 0.06,
+        "p0": 0.0, "ode_recharge": 0.08, "ode_extraction": 0.03,
+        "ode_tracking": 0.08,
         "ode_noise": 0.02, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
@@ -47,7 +47,7 @@ def make_synthetic(start_date, end_date, seed=101):
     obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"recharge": 0.04, "extraction": 0.06}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"recharge": 0.08, "extraction": 0.03}, "measurement_noise": 0.05}
     return df, meta
 
 

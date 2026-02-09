@@ -1,21 +1,21 @@
 # Reporte de Validación — Depleción de Acuíferos (Darcy-Theis)
 
-- generated_at: 2026-02-09T01:56:50.394785Z
+- generated_at: 2026-02-09T01:59:10.249507Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -1.3854
-- bootstrap_mean: -1.3814
-- CI 95%: [-1.5113, -1.2584]
-- weighted_value (LoE factor 0.60): -0.8312
+- valor: -2.1932
+- bootstrap_mean: -2.1930
+- CI 95%: [-2.2758, -2.1104]
+- weighted_value (LoE factor 0.60): -1.3159
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.1915
-- external: 0.6425
-- CR: 0.2980
+- internal: -0.3114
+- external: 0.3828
+- CR: 0.8136
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,20 +26,20 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 75.5249
-- rmse_abm_no_ode: 31.6618
-- rmse_ode: 1.6632
-- rmse_reduced: 3.7675
-- threshold: 1.0535
+- rmse_abm: 128.9778
+- rmse_abm_no_ode: 40.3918
+- rmse_ode: 1.2416
+- rmse_reduced: 1.0216
+- threshold: 1.0214
 
 ### Calibración
-- forcing_scale: 0.8872
-- macro_coupling: 0.6453
-- damping: 0.8862
-- ode_alpha: 0.0707
+- forcing_scale: 0.9900
+- macro_coupling: 0.9190
+- damping: 0.5900
+- ode_alpha: 0.0010
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1805
+- calibration_rmse: 0.6358
 
 ## Fase real
 - **overall_pass**: False

@@ -35,19 +35,20 @@ def make_synthetic(start_date, end_date, seed=101):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    # Forcing: presión zoonótica creciente (Woolhouse 2005, urbanización/deforestación)
-    forcing = [0.006 * t + 0.3 * (1.0 if t % 48 < 6 else 0.0) for t in range(steps)]  # Brotes periódicos
+    # Forcing: presión zoonótica con ciclos estacionales y tendencia suave
+    forcing = [0.004 * t + 0.5 * np.sin(2 * np.pi * t / 24) + 0.2 * np.sin(2 * np.pi * t / 6) for t in range(steps)]
     true_params = {
-        "p0": 0.1, "ode_r": 0.06, "ode_k": 2.0,  # Riesgo biológico: logístico con techo
+        "p0": 0.1, "ode_r": 0.06, "ode_k": 2.0,
         "ode_delta": 0.025, "ode_gamma": 0.10,
-        "ode_noise": 0.03, "forcing_series": forcing,
+        "ode_tracking": 0.08,
+        "ode_noise": 0.025, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.06, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"r": 0.06, "K": 2.0, "delta": 0.025, "gamma": 0.10}, "measurement_noise": 0.06}
+    meta = {"ode_true": {"r": 0.06, "K": 2.0, "delta": 0.025, "gamma": 0.10}, "measurement_noise": 0.05}
     return df, meta
 
 

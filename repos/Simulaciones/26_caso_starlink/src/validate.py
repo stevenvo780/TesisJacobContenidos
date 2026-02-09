@@ -32,19 +32,19 @@ def make_synthetic(start_date, end_date, seed=129):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    # Forcing: lanzamientos masivos post-2019 (SpaceX mega-constelación)
-    forcing = [0.03 * t + 0.002 * t**1.6 for t in range(steps)]
+    # Forcing: despliegue satelital con ramp-up suave
+    forcing = [0.5 * np.tanh(0.03 * t) + 0.3 * np.sin(2 * np.pi * t / 36) for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.18, "ode_beta": 0.015,  # Starlink: despliegue agresivo, de-orbit controlado
-        "ode_inflow": 0.18, "ode_decay": 0.015,
-        "ode_noise": 0.07, "forcing_series": forcing,
+        "p0": 0.0, "ode_inflow": 0.18, "ode_decay": 0.015,
+        "ode_tracking": 0.10,
+        "ode_noise": 0.03, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.20, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.10, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"inflow": 0.18, "decay": 0.015}, "measurement_noise": 0.20}
+    meta = {"ode_true": {"inflow": 0.18, "decay": 0.015}, "measurement_noise": 0.10}
     return df, meta
 
 
