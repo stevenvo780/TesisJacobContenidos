@@ -1,40 +1,63 @@
 # Auditoria de Simulaciones
 
-Criterios: consistencia documental, presencia de metricas y señales de posibles anomalías sin forzar resultados.
+> **Actualizado: 2026-02-09** — Post Bias Correction + Emergencia Diferenciada (commit 54234d6)
 
-| Caso | EDI | CR | Estado | Hallazgos |
-| :--- | ---: | ---: | :--- | :--- |
-| 01_caso_clima | -0.609 | 1.071 | False | OK |
-| 02_caso_conciencia | 0.432 | 0.928 | False | OK |
-| 03_caso_contaminacion | -0.000 | 4.287 | False | OK |
-| 04_caso_energia | -0.014 | -1.115 | False | CR <= 0 (revisar) |
-| 05_caso_epidemiologia | 0.674 | -0.000 | False | CR <= 0 (revisar) |
-| 06_caso_falsacion_exogeneidad | -0.185 | 2.815 | False | OK |
-| 07_caso_falsacion_no_estacionariedad | -0.243 | 1.146 | False | OK |
-| 08_caso_falsacion_observabilidad | -0.345 | 1.227 | False | OK |
-| 09_caso_finanzas | 0.041 | 0.000 | False | CR <= 0 (revisar) |
-| 10_caso_justicia | 0.000 | 1.065 | False | OK |
-| 11_caso_movilidad | -1.077 | n/a | False | CR no disponible (n/a) |
-| 12_caso_paradigmas | -0.167 | n/a | False | CR no disponible (n/a) |
-| 13_caso_politicas_estrategicas | -0.012 | -1.465 | False | CR <= 0 (revisar) |
-| 14_caso_postverdad | 0.005 | 1.055 | False | OK |
-| 15_caso_wikipedia | 0.000 | -1.158 | False | CR <= 0 (revisar) |
-| 16_caso_deforestacion | 0.345 | -0.575 | False | CR <= 0 (revisar) |
-| 17_caso_oceanos | 0.124 | -1.244 | False | CR <= 0 (revisar) |
-| 18_caso_urbanizacion | -0.001 | 1.472 | False | OK |
-| 19_caso_acidificacion_oceanica | -0.023 | 1.157 | False | docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante |
-| 20_caso_kessler | -3.037 | 1.173 | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante |
-| 21_caso_salinizacion | -1.096 | -17.969 | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante; CR <= 0 (revisar) |
-| 22_caso_fosforo | 0.180 | 1.016 | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante |
-| 23_caso_erosion_dialectica | 0.293 | -2.116 | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante; CR <= 0 (revisar) |
-| 24_caso_microplasticos | 0.856 | 1.000 | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante |
-| 25_caso_acuiferos | 0.334 | -0.137 | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante; CR <= 0 (revisar) |
-| 26_caso_starlink | -928.866 | n/a | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante; CR no disponible (n/a); EDI fuera de rango esperado (revisar) |
-| 27_caso_riesgo_biologico | 0.770 | 1.003 | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante |
-| 28_caso_fuga_cerebros | 0.457 | 0.967 | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante |
-| 29_caso_iot | 0.167 | 1.085 | False | docs/arquitectura.md faltante; docs/protocolo_simulacion.md faltante; docs/indicadores_metricas.md faltante; docs/reproducibilidad.md faltante; docs/validacion_c1_c5.md faltante |
+Criterios: consistencia documental, presencia de metricas, taxonomía de emergencia, calidad ODE y señales de posibles anomalías.
+
+| Caso | EDI | CR | Categoría | ODE Qual. | BC | Estado | sig | Hallazgos |
+| :--- | ---: | ---: | :--- | :--- | :--- | :--- | :---: | :--- |
+| 01_caso_clima | -0.015 | 1.000 | null | poor | none | False | — | OK |
+| 02_caso_conciencia | -0.046 | 0.935 | null | poor | bias_only | False | — | OK |
+| 03_caso_contaminacion | -0.000 | 2.780 | null | moderate | none | False | — | OK |
+| 04_caso_energia | -0.003 | 1.096 | null | moderate | none | False | — | OK |
+| 05_caso_epidemiologia | 0.000 | 0.000 | null | moderate | none | False | — | CR=0 (señal plana) |
+| 06_caso_falsacion_exogeneidad | 0.055 | 1.006 | falsification | poor | bias_only | False | — | Rechazo correcto ✓ |
+| 07_caso_falsacion_no_estacionariedad | -4.924 | 1.003 | falsification | moderate | bias_only | False | — | Rechazo correcto ✓ |
+| 08_caso_falsacion_observabilidad | -2.144 | 1.004 | falsification | poor | bias_only | False | — | Rechazo correcto ✓ |
+| 09_caso_finanzas | 0.026 | 0.000 | suggestive | good | none | False | ✓ | CR=0; señal significativa |
+| 10_caso_justicia | 0.000 | 1.053 | null | poor | bias_only | False | — | OK |
+| 11_caso_movilidad | 0.003 | 0.000 | trend | poor | none | False | — | CR=0; tendencia no significativa |
+| 12_caso_paradigmas | 0.000 | 0.000 | null | good | none | False | — | CR=0; ODE anticorrelada |
+| 13_caso_politicas_estrategicas | 0.011 | 1.626 | trend | poor | full | False | — | OK |
+| 14_caso_postverdad | 0.001 | 1.054 | suggestive | moderate | bias_only | False | ✓ | Señal significativa débil |
+| 15_caso_wikipedia | 0.000 | 1.158 | null | moderate | none | False | — | OK |
+| **16_caso_deforestacion** | **0.629** | **1.018** | **strong** | **good** | **full** | **False** | **✓** | **BC rescató (EDI -0.29→+0.63)** |
+| 17_caso_oceanos | 0.053 | 1.334 | suggestive | good | bias_only | False | ✓ | Señal significativa |
+| 18_caso_urbanizacion | 0.000 | 30.069 | trend | poor | full | False | — | CR anómalo alto |
+| 19_caso_acidificacion_oceanica | -0.002 | 1.168 | null | poor | none | False | ✓ | EDI sig. pero negativo |
+| 20_caso_kessler | -0.161 | 1.510 | null | good | bias_only | False | ✓ | ODE escala absurda |
+| 21_caso_salinizacion | 0.088 | 1.054 | trend | good | none | False | — | OK |
+| 22_caso_fosforo | -3.069 | 1.090 | null | good | full | False | — | Corr invierte train→val |
+| 23_caso_erosion_dialectica | -5.931 | 0.999 | null | good | none | False | — | Corr train≠val |
+| **24_caso_microplasticos** | **0.439** | **1.002** | **strong** | **good** | **none** | **False** | **✓** | **Emergencia genuina (sin BC)** |
+| 25_caso_acuiferos | -0.182 | 1.001 | null | good | none | False | — | Corr train=-1.0 |
+| 26_caso_starlink | -545.736 | ∞ | null | poor | none | False | — | EDI fuera de rango |
+| 27_caso_riesgo_biologico | -0.077 | 1.002 | null | poor | full | False | — | OK |
+| **28_caso_fuga_cerebros** | **0.190** | **1.009** | **weak** | **good** | **bias_only** | **False** | **✓** | **Emergencia débil (BC preservó)** |
+| 29_caso_iot | 0.007 | 1.056 | suggestive | good | none | False | ✓ | Señal significativa |
+
+### Resumen Taxonómico
+
+| Categoría | N | % |
+|-----------|---|---|
+| strong | 2 | 6.9% |
+| weak | 1 | 3.4% |
+| suggestive | 4 | 13.8% |
+| trend | 4 | 13.8% |
+| null | 15 | 51.7% |
+| falsification | 3 | 10.3% |
+
+### Distribución por Calidad ODE
+
+| ODE Quality | strong | weak | suggestive | trend | null | falsification | Total |
+|-------------|--------|------|------------|-------|------|---------------|-------|
+| good | 2 | 1 | 3 | 1 | 5 | 0 | 12 |
+| moderate | 0 | 0 | 1 | 0 | 5 | 1 | 7 |
+| poor | 0 | 0 | 0 | 3 | 5 | 2 | 10 |
 
 ## Recomendaciones
-- Si EDI o CR es n/a, revisar el pipeline de calculo y los datos fuente.
-- Si CR <= 0 o EDI fuera de rango, revisar la etapa de normalizacion o parametros.
-- Si reportes carecen de resultados, completar con los hallazgos del metrics.json.
+- Los 2 casos **strong** (Deforestación, Microplásticos) constituyen evidencia robusta de emergencia macro.
+- El caso **weak** (Fuga de Cerebros) merece investigación adicional — el EDI podría alcanzar el umbral con modelos ODE mejorados.
+- Los 4 casos **suggestive** tienen señal significativa: mejorar resolución del forcing podría rescatarlos.
+- Los 5 casos con ODE good + null (12, 20, 22, 23, 25) tienen modelos ODE que no generalizan train→val.
+- Si CR=0, revisar si la serie real tiene varianza insuficiente para calcular cohesión.

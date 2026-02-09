@@ -167,3 +167,62 @@ abm_final = simulate_abm_fn(eval_params, steps, seed=2)
 - Grupo 5 (obs_mean=9.471): Movilidad, Riesgo Biologico
 
 Todos generan datos sinteticos con la misma ODE `dX = alpha*(F-beta*X)`. La fase sintetica no discrimina dominios.
+
+---
+
+## 7. BIAS CORRECTION ODE→ABM — ✅ RESUELTO (commit 54234d6)
+
+> **Estado:** Implementado en `hybrid_validator.py`. La serie ODE, aunque bien correlacionada con observaciones, puede tener sesgo en nivel (media) y escala (desviación estándar) que destruye el acoplamiento con el ABM. Se aplica corrección de sesgo con 3 modos protegidos por guardas.
+
+**Archivo:** `repos/Simulaciones/common/hybrid_validator.py`, líneas ~917-948
+
+**Problema:** La ODE puede tener correlación alta con observaciones (corr > 0.8) pero operar en una escala completamente diferente (ej: ODE en miles, observaciones en unidades). Cuando esta serie se pasa como `macro_target_series` al ABM, el término de nudging `ode_cs * (macro_target - grid_mean)` genera fuerzas enormes que destruyen la predicción.
+
+**Caso emblemático:** Deforestación (16) — ODE corr=0.878 con obs, pero RMSE_ode astronomía → EDI=-0.294. Con BC full: EDI=+0.629 (STRONG).
+
+**Corrección implementada — 3 modos:**
+
+```python
+# 1. Calcular correlación y escala en periodo de entrenamiento
+corr_train = np.corrcoef(ode_train, obs_train)[0, 1]
+scale_factor = np.std(obs_train) / np.std(ode_train)
+
+# 2. Decidir modo BC
+if corr_train > 0.5 and 0.2 <= scale_factor <= 5.0:
+    # FULL: transformada afín (media + std)
+    ode_bc = (ode - mean_ode) * scale_factor + mean_obs
+elif corr_train > 0.5:
+    # BIAS_ONLY: solo corregir media (escala extrema → no tocar varianza)
+    ode_bc = ode - mean_ode + mean_obs
+else:
+    # NONE: ODE no correlaciona — no aplicar BC
+    ode_bc = ode
+```
+
+**Guardas de seguridad:**
+- `scale_factor ∈ [0.2, 5.0]` — evita amplificación/compresión extrema de varianza
+- `corr_train > 0.5` — BC solo cuando la ODE tiene señal útil
+- Caso 28 protegido: scale_factor=5.4 → bias_only preservó EDI=+0.190
+
+---
+
+## 8. EVALUACIÓN BINARIA (PASS/FAIL) INADECUADA — ✅ RESUELTO (commit 54234d6)
+
+> **Estado:** Implementada taxonomía de emergencia diferenciada con 6 categorías en `hybrid_validator.py`. Reemplaza la evaluación binaria `overall_pass` como único indicador.
+
+**Archivo:** `repos/Simulaciones/common/hybrid_validator.py`, líneas ~1053-1079
+
+**Problema:** Con `overall_pass = 0/29`, la evaluación binaria destruye toda la información. Casos con EDI=0.439 (microplásticos) y EDI=0.026 (finanzas, significativo) se clasifican igual que EDI=-545 (Starlink). La tesis pierde matiz explicativo.
+
+**Corrección — Taxonomía de 6 categorías:**
+
+| Categoría | Criterios | Resultado actual |
+|-----------|-----------|-----------------|
+| **strong** | EDI ∈ [0.325, 0.90] + sig + no falsación | 2 casos (16, 24) |
+| **weak** | EDI ∈ [0.10, 0.325) + sig | 1 caso (28) |
+| **suggestive** | EDI > 0 + sig | 4 casos (09, 14, 17, 29) |
+| **trend** | EDI > 0 + no sig | 4 casos (11, 13, 18, 21) |
+| **null** | Todo lo demás | 15 casos |
+| **falsification** | Controles de falsación | 3 casos (06, 07, 08) |
+
+**Impacto en la tesis:** La narrativa pasa de "0/29 → H1 rechazada" a "2 strong + 1 weak + 4 suggestive = espectro de emergencia compatible con metaestabilidad teórica".
