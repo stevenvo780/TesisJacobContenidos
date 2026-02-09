@@ -1,21 +1,21 @@
 # Reporte de Validación — Riesgo Biológico Global (Woolhouse Zoonotic)
 
-- generated_at: 2026-02-09T02:52:00.180717Z
+- generated_at: 2026-02-09T02:57:34.163679Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -1.8928
-- bootstrap_mean: -1.8946
-- CI 95%: [-1.9960, -1.8029]
-- weighted_value (LoE factor 0.80): -1.5142
+- valor: -1.2982
+- bootstrap_mean: -1.2970
+- CI 95%: [-1.5139, -1.0578]
+- weighted_value (LoE factor 0.80): -1.0386
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9671
-- CR: 1.0340
+- external: 0.9922
+- CR: 1.0079
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,35 +26,35 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.0151
-- rmse_abm_no_ode: 1.0423
-- rmse_ode: 6.9474
-- rmse_reduced: 1.5555
-- threshold: 0.1000
+- rmse_abm: 0.9138
+- rmse_abm_no_ode: 0.3976
+- rmse_ode: 4.2706
+- rmse_reduced: 2.6869
+- threshold: 0.1694
 
 ### Calibración
-- forcing_scale: 0.4177
-- macro_coupling: 0.2059
-- damping: 0.4064
-- ode_alpha: 0.0123
+- forcing_scale: 0.4669
+- macro_coupling: 0.1000
+- damping: 0.4557
+- ode_alpha: 0.0171
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1287
+- calibration_rmse: 0.1125
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -2.3035
-- bootstrap_mean: -2.6511
-- CI 95%: [-5.4396, -0.9373]
-- weighted_value (LoE factor 0.80): -1.8428
+- valor: -1.8857
+- bootstrap_mean: -2.1841
+- CI 95%: [-4.6323, -0.7053]
+- weighted_value (LoE factor 0.80): -1.5085
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: -0.8161
-- external: 0.1683
-- CR: 4.8503
+- internal: -0.8088
+- external: 0.1762
+- CR: 4.5909
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,9 +65,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.4075
+- rmse_abm: 1.2295
 - rmse_abm_no_ode: 0.4261
-- rmse_ode: 2.8847
+- rmse_ode: 2.4825
 - rmse_reduced: 2.0986
 - threshold: 0.2617
 

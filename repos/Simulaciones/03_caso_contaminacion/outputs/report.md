@@ -1,6 +1,6 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-09T02:32:01.647959Z
+- generated_at: 2026-02-09T02:54:42.902861Z
 
 ## Fase synthetic
 - **overall_pass**: False

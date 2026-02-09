@@ -39,7 +39,7 @@ def load_real_data(start_date, end_date):
 def make_synthetic(start_date, end_date, seed=129):
     """
     Sintético calibrado a curva de adopción IoT.
-    Usa ODE con alpha*(f-beta*N) + gamma*f en espacio Z.
+    Usa ODE con alpha*(f-beta*N) + saturación en espacio Z.
     """
     rng = np.random.default_rng(seed)
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
@@ -48,13 +48,12 @@ def make_synthetic(start_date, end_date, seed=129):
     # Forcing sintético: crecimiento monotónico (patrón estándar)
     forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
 
-    # ODE con parámetros en espacio Z + gamma forcing
+    # ODE con parámetros en espacio Z
     true_params = {
         "p0": 0.0,
         "ode_alpha": 0.10,
         "ode_beta": 0.02,
-        "ode_gamma": 0.05,
-        "ode_saturation": 0.003,
+        "ode_saturation": 0.005,
         "ode_noise": 0.03,
         "forcing_series": forcing,
     }
@@ -63,7 +62,7 @@ def make_synthetic(start_date, end_date, seed=129):
 
     df = pd.DataFrame({"date": dates, "value": obs})
     meta = {
-        "ode_true": {"alpha": 0.10, "beta": 0.02, "gamma": 0.05, "saturation": 0.003},
+        "ode_true": {"alpha": 0.10, "beta": 0.02, "saturation": 0.005},
         "measurement_noise": 0.08,
     }
     return df, meta
@@ -89,8 +88,7 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_gamma": 0.05,          # Tech push directo (bypassa alpha aplastado)
-            "ode_saturation": 0.003,    # Saturación mercado finito
+            "ode_saturation": 0.005,    # Saturación mercado finito
             "forcing_scale": 0.10,
             "macro_coupling": 0.25,
         },
