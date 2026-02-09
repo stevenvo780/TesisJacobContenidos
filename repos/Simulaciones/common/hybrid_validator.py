@@ -813,6 +813,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     if config.ode_calibration:
         print("DEBUG: Running ODE calibration...")
         alpha, beta = calibrate_ode(obs[:val_start], forcing_series[:val_start])
+        print(f"DEBUG_CAL: alpha={alpha:.6f}, beta={beta:.6f}, val_start={val_start}, steps={steps}")
         base_params["ode_alpha"] = alpha
         base_params["ode_beta"] = beta
     else:

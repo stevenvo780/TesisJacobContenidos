@@ -39,7 +39,7 @@ def make_synthetic(start_date, end_date, seed=101):
     forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
     true_params = {
         "p0": 0.0, "ode_alpha": 0.06, "ode_beta": 0.02,
-        "ode_containment": 0.015,
+        "ode_gamma_bio": 0.0,
         "ode_noise": 0.02, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
@@ -47,7 +47,7 @@ def make_synthetic(start_date, end_date, seed=101):
     obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.06, "beta": 0.02, "containment": 0.015}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"alpha": 0.06, "beta": 0.02, "gamma_bio": 0.0}, "measurement_noise": 0.05}
     return df, meta
 
 
@@ -69,9 +69,11 @@ def main():
         base_noise=0.004,
         loe=4,
         n_runs=7,
-        ode_calibration=True,
+        ode_calibration=False,
         extra_base_params={
-            "ode_containment": 0.015,   # Contención sanitaria fuerte (Woolhouse response)
+            "ode_alpha": 0.10,
+            "ode_beta": 1.40,
+            "ode_gamma_bio": 0.0,   # Tracking puro (Woolhouse baseline)
             "forcing_scale": 0.10,
             "macro_coupling": 0.25,
         },

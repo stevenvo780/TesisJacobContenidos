@@ -1,25 +1,14 @@
 """
-ode.py — 27_caso_riesgo_biologico (Top-Tier)
+ode.py — 27_caso_riesgo_biologico
 
-Modelo: Riesgo Zoonótico Woolhouse-Spillover
+Modelo bilineal: Riesgo Biológico Global (Woolhouse Zoonotic Cascade)
+  dR/dt = alpha*(f - beta*R) + gamma_bio * f * R + noise
 
-  dR/dt = α*(F - β*R) - δ*max(0,R) + noise
+El riesgo existente amplifica la presión de forzamiento
+(bio-amplificación: R multiplica f → cascada de riesgo interconectado).
+Parámetros en Z-space (hybrid_validator normaliza las observaciones).
 
-Donde:
-  R = nivel de riesgo biológico agregado (zoonosis, AMR) en espacio Z
-  α*(F - β*R) = core tracking hacia forcing (calibrado por hybrid_validator)
-  δ*max(0,R) = contención sanitaria: respuesta institucional proporcional
-               al riesgo. Frena acumulación sobre la media histórica.
-               δ ≈ 0.015 refleja la eficacia combinada de vigilancia
-               epidemiológica + cuarentena + respuesta farmacéutica.
-
-La contención fuerte es la dinámica dominante: el core tracking se
-amortigua por regularización Tikhonov en calibrate_ode (α≈0.01),
-pero la contención proporciona una fuerza restauradora que ancla
-el ODE cerca de las observaciones reales.
-
-Ref: Woolhouse & Gowtage-Sequeria (2005) "Host range and emerging pathogens"
-     Jones et al. (2008) "Global trends in emerging infectious diseases"
+Ref: Woolhouse & Gaunt (2007) "Ecological origins of novel pathogens"
 """
 import os, sys, math, random
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
@@ -38,16 +27,17 @@ def _apply_assimilation(value, t, params):
     return value + strength * (target - value)
 
 
-def simulate_ode(params, steps, seed=6):
+def simulate_ode(params, steps, seed=3):
     random.seed(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
-    noise_std = float(params.get("ode_noise", 0.025))
+    noise_std = float(params.get("ode_noise", 0.015))
 
     # Core tracking (calibrado por hybrid_validator)
-    alpha = float(params.get("ode_alpha", 0.06))
+    alpha = float(params.get("ode_alpha", 0.05))
     beta = float(params.get("ode_beta", 0.02))
-    # Contención sanitaria: fuerza restauradora proporcional al riesgo
-    containment = float(params.get("ode_containment", 0.015))
+    # Corrección bilineal: contención sanitaria ∝ riesgo × presión zoonótica
+    # gamma_bio < 0 → a mayor riesgo y presión, mayor respuesta de contención
+    gamma_bio = float(params.get("ode_gamma_bio", -0.003))
 
     R = float(params.get("p0", 0.0))
     series = []
@@ -56,9 +46,9 @@ def simulate_ode(params, steps, seed=6):
         f = forcing[t] if t < len(forcing) else 0.0
         # Core: mean-reversion tracking hacia forcing (espacio Z)
         core = alpha * (f - beta * R)
-        # Contención: freno proporcional al riesgo sobre la media
-        contain = containment * max(0.0, R)
-        dR = core - contain + random.gauss(0, noise_std)
+        # Bilineal: contención sanitaria (damping proporcional a riesgo×forcing)
+        bilinear = gamma_bio * f * R
+        dR = core + bilinear + random.gauss(0, noise_std)
         R += dR
         R = max(-10.0, min(R, 10.0))
         R = _apply_assimilation(R, t, params)
