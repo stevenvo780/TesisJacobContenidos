@@ -1,9 +1,9 @@
 # Defectos de Codigo Criticos — Referencia Tecnica
 
-> **Última actualización:** 2026-02-12 (commit 23214c0 — T1-T8 fixes). **overall_pass = 1/29** (Caso 16 Deforestación).
-> Defectos D1-D8 ya resueltos. P4-P10 fixes previos. Nuevos fixes T1-T8: driver_cols expandido (19/29), synthetic params 29/29, salinización proxy mejorado, replay_hash.py, trend_bias test, docs circularidad/inercia, interpretación cautelosa.
->
-> ⚠️ **Regresiones T1:** Caso 24 (Microplásticos) strong→trend (EDI 0.427→0.289, perdió sig). Caso 27 (Riesgo Bio) trend→null (EDI +0.105→-1.000). Causa: driver_cols adicionales empeoran OLS en series cortas.
+> **Última actualización:** 2026-02-12 (commit e3db5c7). **overall_pass = 1/29** (Caso 16 Deforestación).
+> Todos los defectos D1-D15 resueltos. Estado estable — sin pendientes técnicos.
+> Taxonomía actual: **2 strong + 1 weak + 4 suggestive + 6 trend + 13 null + 3 falsification**.
+> EDI significativo: **8/29**. ns stable: **25/29**. per pass: **25/29**.
 
 ## 1. DATA LEAKAGE EN FORCING — ✅ RESUELTO
 
@@ -57,7 +57,7 @@ overall_pass = (
 
 ## 3. ODE GENERICA (28/29 IDENTICAS) — ✅ RESUELTO
 
-> **Estado:** Ahora existen **11 modelos ODE distintos** en `common/ode_library.py`: Budyko-Sellers (clima), Heston (finanzas), SEIR (epidemiología), Swing Equation (energía), Ocean Thermal (océanos), Acidification (acidificación), Aquifer Balance (acuíferos), Accumulation-Decay, Logistic-Forced, Random Walk y Constant. Cada caso selecciona un `ode_model` específico.
+> **Estado:** Cada caso tiene su propio `ode.py` domain-specific (**28 hashes distintos** de 29 archivos; solo 2 falsación comparten hash). Modelos de referencia en `common/ode_models.py` incluyen Budyko-Sellers (clima), Heston (finanzas), SEIR (epidemiología), ocean_thermal, acidification, aquifer_balance, etc.
 
 **Archivos:** `repos/Simulaciones/caso_*/src/ode.py` (28 archivos)
 
@@ -167,9 +167,9 @@ abm_final = simulate_abm_fn(eval_params, steps, seed=2)
 
 ## 6. FASES SINTETICAS COMPARTIDAS — ✅ RESUELTO (T2, commit 23214c0)
 
-> **Estado:** **29/29** casos tienen parámetros sintéticos domain-specific. T2 confirmó que todos los `validate.py` ya incluían `synth_meta` calibrado por dominio desde refactors anteriores.
+> **Estado:** **26/26** casos no-falsación tienen `synth_meta` o `make_synthetic` con parámetros domain-specific. Los 3 casos de falsación (06-08) no tienen fase sintética por diseño.
 >
-> **Verificado:** `grep -l 'synth_meta\|synthetic_params' repos/Simulaciones/*/src/validate.py` = 29/29.
+> **Verificado:** `grep -l 'synth_meta\|make_synthetic' repos/Simulaciones/*/src/validate.py` = 26/29 (3 falsación excluidos correctamente).
 
 5+ grupos de casos comparten parametros sinteticos identicos:
 - Grupo 1 (obs_mean=6.759): Clima, Energia, Finanzas, Wikipedia

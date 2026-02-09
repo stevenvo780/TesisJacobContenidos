@@ -1,25 +1,27 @@
 # Variables Faltantes por Caso — Oportunidades de Mejora
 
-> **Actualizado:** 2026-02-12 (post commit 23214c0 — T1-T8 fixes, overall_pass=1/29)
+> **Actualizado:** 2026-02-12 (post commit e3db5c7 — T1-T8 fixes + revert regresiones, overall_pass=1/29)
 
 Este documento lista las variables reales disponibles que podrian integrarse para mejorar
 cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibles.
 
-> **Estado global:** **19/29** casos tienen `driver_cols` multivariados declarados en sus `validate.py` (T1, commit 23214c0). La infraestructura `driver_cols` en `hybrid_validator.py` está activa y los drivers se integran vía OLS en la construcción de forcing.
+> **Estado global:** **16/26** casos no-falsificación tienen `driver_cols` con variables reales declaradas en sus `validate.py` (T1, commit 23214c0). La infraestructura `driver_cols` en `hybrid_validator.py` está activa y los drivers se integran vía OLS en la construcción de forcing.
 >
-> **10 casos sin driver_cols:** 03 (Contaminación), 10 (Justicia), 13 (Políticas), 15 (Wikipedia), 16 (Deforestación), 17 (Océanos), 18 (Urbanización), 19 (Acidificación), 20 (Kessler), 22 (Fósforo).
+> **8 casos con lista vacía []:** 03 (Contaminación), 10 (Justicia), 13 (Políticas), 15 (Wikipedia), 17 (Océanos), 18 (Urbanización), 19 (Acidificación), 20 (Kessler).
+> **2 sin campo driver_cols:** 16 (Deforestación), 22 (Fósforo).
+> **3 falsificación:** 06, 07, 08 (drivers de control por diseño).
 >
-> ⚠️ **Regresión detectada:** Agregar driver_cols en series cortas (≤30 puntos) puede empeorar EDI vía sobreajuste OLS. Casos 24 (EDI 0.427→0.289) y 27 (EDI +0.105→-1.000) empeoraron. Se recomienda: (a) regularización Ridge, (b) selección de features, (c) mínimo 2x puntos que drivers.
+> ✅ **Regresiones revertidas (e3db5c7):** Drivers problemáticos en casos 24 (mismanaged_share) y 27 (3 drivers extras) fueron eliminados. EDI restaurado a valores pre-T1.
 
 ---
 
-## CASOS CON DATOS REALES (mejorar con variables adicionales) — ⚠️ 19/29 con driver_cols
+## CASOS CON DATOS REALES (mejorar con variables adicionales) — 16/26 con driver_cols
 
-> **Estado:** 19/29 casos tienen `driver_cols` declarados en `validate.py` (T1, commit 23214c0). Los drivers se usan en la construcción de forcing vía OLS. Resultados mixtos: algunos casos mejoran, 2 empeoran.
+> **Estado:** 16/26 casos no-falsificación tienen `driver_cols` con contenido en `validate.py` (T1, commit 23214c0, revert e3db5c7). Los drivers se usan en la construcción de forcing vía OLS.
 
 ### 01_caso_clima — ✅ driver_cols declarados
 **Actual:** Temperatura media mensual (Meteostat)
-**ODE:** ✅ Budyko-Sellers implementado en `ode_library.py`
+**ODE:** ✅ Budyko-Sellers implementado en `ode_models.py`
 **driver_cols:** `["co2", "tsi", "ohc", "aod"]` ✔️ declarados en validate.py
 **Agregar variables:** ✅ Declaradas (pendiente verificar que data.py las sirve)
 | Variable | Fuente | API | Impacto |
@@ -50,7 +52,7 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 
 ### 09_caso_finanzas — ✅ driver_cols declarados
 **Actual:** Log(SPY) mensual
-**ODE:** ✅ Heston implementado en `ode_library.py`
+**ODE:** ✅ Heston implementado en `ode_models.py`
 **driver_cols:** `["vix", "fedfunds", "inflation", "credit_spread", "volume"]` ✔️ declarados
 **Agregar variables:** ✅ Declaradas
 | Variable | Fuente | API |

@@ -1,6 +1,6 @@
 # Tabla Maestra de Métricas — 29 Casos
 
-Actualizado: 2026-02-12 (datos de metrics.json post T1-T8 fixes — commit 23214c0)
+Actualizado: 2026-02-12 (datos de metrics.json post T1-T8 fixes + revert regresiones — commit e3db5c7)
 
 ## Estado de Resolución de Defectos
 
@@ -8,10 +8,10 @@ Actualizado: 2026-02-12 (datos de metrics.json post T1-T8 fixes — commit 23214
 |---------|--------|---------|
 | D1: Data leakage en forcing | ✅ Resuelto | Persistence en validación, tendencia solo con train |
 | D2: overall_pass vs EDI>0.90 | ✅ Resuelto | `edi_valid` incluido en conjunción `overall_pass` |
-| D3: ODE genérica (28/29 iguales) | ✅ Resuelto | 11 modelos ODE domain-specific en `ode_library.py` |
+| D3: ODE genérica (28/29 iguales) | ✅ Resuelto | 28 ODEs distintas (ode.py por caso) + 11 modelos compartidos en `ode_models.py` |
 | D4: ABM sin heterogeneidad | ✅ Resuelto | 3 capas: forcing_gradient + heterogeneity_strength + topología |
 | D5: ABM y ODE no acoplados | ✅ Resuelto | Bidireccional 2-iter + Fix C13-b: nudging post-integración `ode[t] += γ·(abm_mean[t] - ode[t])` con γ=0.05 |
-| D6: Fases sintéticas compartidas | ✅ Resuelto | 29/29 con synth_meta domain-specific (T2, commit 23214c0) |
+| D6: Fases sintéticas compartidas | ✅ Resuelto | 26/26 con synth_meta domain-specific (3 falsificación excluidas por diseño) |
 | D7: EDI sin significancia estadística | ✅ Resuelto | Permutation test (200 perms), 8/29 significativos (p<0.05) en fase real |
 | D8: mc > 0.5 (esclavización) | ✅ Resuelto | Grid [0.05, 0.45], refinement cap 0.50. 29/29 mc ≤ 0.50 |
 | D9: EDI umbral mágico 0.30 | ✅ Resuelto | edi_min=0.325 (derivado de GPU null distribution 0.3248) |
@@ -24,7 +24,7 @@ Actualizado: 2026-02-12 (datos de metrics.json post T1-T8 fixes — commit 23214
 | Datos sintéticos → reales | ⚠️ Parcial | 9/12 código real listo, 6 caen a fallback por APIs |
 | Proxies inadecuados | ⚠️ Parcial | 2/3 corregidos (Kessler ✅, Starlink ✅, Salinización ⚠️) |
 | Grid escalado | ✅ Resuelto | Run GPU 470x470 ejecutado |
-| Variables multivariadas (driver_cols) | ⚠️ Parcial | 19/29 con driver_cols declarados (T1, commit 23214c0). ⚠️ 2 regresiones: caso 24 (strong→trend), caso 27 (trend→null) |
+| Variables multivariadas (driver_cols) | ⚠️ Parcial | 16/26 no-falsificación con driver_cols con contenido (T1). 8 con lista vacía, 2 sin campo. Regresiones en 24/27 revertidas (e3db5c7) |
 | Trend bias test | ✅ Resuelto | T6: detrended_edi, trend_ratio, trend_r2. 0/29 warnings |
 | Docs formales (circularidad, inercia) | ✅ Resuelto | T5: inercia_vs_ontologia.md, T7: circularidad_formal.md |
 | Replay hashes | ✅ Resuelto | T4: replay_hash.py con --save/--verify, baseline 29/29 sync |
@@ -86,57 +86,52 @@ La serie ODE, aunque bien correlacionada con observaciones, puede tener sesgo en
 | 20 | Síndrome de Kessler | -0.420 | no | none | 0.000 | null | . | . | F |ok |
 | 21 | Salinización de Suelos | +0.027 | no | bias_only | 0.013 | trend | . | ✓ | F |ok |
 | 22 | Ciclo del Fósforo | -1.000 | no | full | -0.802 | null | . | ✓ | F |ok |
-| 23 | Erosión Dialéctica | -1.000 | no | bias_only | 0.986 | null | . | ✓ | F |ok |
-| 24 | Contam. Microplásticos | +0.289 | no | none | -0.944 | trend | . | . | F |ok |
+| 23 | Erosión Dialéctica | -1.000 | no | bias_only | 0.988 | null | . | ✓ | F |ok |
+| 24 | **Contam. Microplásticos** | **+0.427** | **YES** | none | 0.981 | **strong** | . | . | F |ok |
 | 25 | Nivel Freático Acuíferos | -0.179 | no | none | 0.968 | null | . | ✓ | F |ok |
 | 26 | Constelaciones (Starlink) | -1.000 | no | none | 0.000 | null | . | ✓ | F |ok |
-| 27 | Riesgo Biológico Global | -1.000 | no | bias_only | 0.197 | null | . | ✓ | F |ok |
+| 27 | Riesgo Biológico Global | +0.105 | no | bias_only | 0.137 | trend | . | ✓ | F |ok |
 | 28 | **Fuga de Cerebros Global** | **+0.183** | **YES** | bias_only | 0.819 | **weak** | . | ✓ | F |ok |
 | 29 | Ecosistema IoT Global | +0.020 | **YES** | bias_only | 0.917 | suggestive | . | ✓ | F |ok |
 
-> **Cambios clave vs commit c0bf312 (post T1-T8):**
-> - **⚠️ Caso 24 (Microplásticos): strong→trend** — EDI 0.427→0.289, perdió significancia. Causa: driver_col `mismanaged_share` empeoró OLS.
-> - **⚠️ Caso 27 (Riesgo Bio): trend→null** — EDI +0.105→-1.000. Causa: 3 drivers adicionales sobreajustaron.
-> - **⚠️ Caso 21 (Salinización):** EDI 0.154→0.027 (sigue trend). Causa: T3 cambió proxy + driver.
-> - Caso 02: EDI -0.036→-0.024 (leve mejora).
-> - Caso 11: EDI 0.007→0.003 (leve regresión).
-> - ns ahora reportado como `stable` (clave diferente en metrics.json). 25/29 stable.
-> - per: 25→26/29 (+1).
-> - trend_bias: 0/29 warnings (nueva métrica T6).
-> - EDI sig: 8→7 (perdió caso 24).
+> **Estado post-revert (commit e3db5c7):**
+> - Regresiones de T1 (driver_cols) en casos 24 y 27 **revertidas**. Drivers problemáticos eliminados.
+> - Caso 24 restaurado: EDI 0.289→0.427, strong recuperado, sig=YES.
+> - Caso 27 restaurado: EDI -1.000→+0.105, trend recuperado.
+> - ns: 25/29 stable. per: 25/29 pass. EDI sig: 8/29.
 
-## Conteos por Taxonomía de Emergencia (post T1-T8, commit 23214c0)
+## Conteos por Taxonomía de Emergencia (post revert — commit e3db5c7)
 
 | Categoría | Real | Casos Real |
 |-----------|------|------------|
-| **strong** | 1 | 16-Deforestación (0.633) |
+| **strong** | 2 | 16-Deforestación (0.633), 24-Microplásticos (0.427) |
 | **weak** | 1 | 28-Fuga Cerebros (0.183) |
 | **suggestive** | 4 | 09-Finanzas, 14-Postverdad, 17-Océanos, 29-IoT |
-| **trend** | 6 | 01-Clima, 11-Movilidad, 13-Políticas, 18-Urbanización, 21-Salinización, 24-Microplásticos |
-| **null** | 14 | 02-05, 10, 12, 15, 19-20, 22-23, 25-27 |
+| **trend** | 6 | 01-Clima, 11-Movilidad, 13-Políticas, 18-Urbanización, 21-Salinización, 27-Riesgo Biológico |
+| **null** | 13 | 02-05, 10, 12, 15, 19-20, 22-23, 25-26 |
 | **falsification** | 3 | 06, 07, 08 (controles correctamente rechazados) |
 
-> **Cambios vs c0bf312:** Caso 24 (strong→trend, EDI 0.427→0.289). Caso 27 (trend→null, EDI +0.105→-1.000). null subió de 13 a 14. strong bajó de 2 a 1.
+> **Estado estable:** Regresiones de T1 revertidas en commit e3db5c7. Resultados equivalentes a commit c0bf312 con adición de driver_cols funcionales + trend_bias + docs formales.
 
 ## Conteos Técnicos
 
-| Métrica | Valor (23214c0) | Cambio vs c0bf312 |
+| Métrica | Valor (e3db5c7) | Cambio vs c0bf312 |
 |---------|-----------------|--------------------|
-| EDI_real en rango [0.325-0.90] | 1 (caso 16: 0.633) | ↓ de 2 (caso 24 bajó a 0.289) |
-| EDI_real significativo (perm p<0.05) | **7/29** (09, 14, 16, 17, 19, 28, 29) | ↓ de 8 (perdió caso 24) |
+| EDI_real en rango [0.325-0.90] | 2 (caso 16: 0.633, caso 24: 0.427) | = (revert restauró caso 24) |
+| EDI_real significativo (perm p<0.05) | **8/29** (09, 14, 16, 17, 19, 24, 28, 29) | = |
 | Noise sensitivity (ns stable) | **25/29** | = |
-| Persistence (per) | **26/29** | ↑ de 25 (+1) |
+| Persistence (per) | **25/29** | = |
 | Symploké (sym) | **~27/29** | = |
 | Non-locality (nl) | **~24/29** | = |
-| driver_cols declarados | **19/29** | 🆕 T1: +19 (era 0) |
+| driver_cols con contenido (no-falsif) | **16/26** | 🆕 T1: +16 (era 0). 8 vacíos, 2 sin campo |
 | Trend bias warnings | **0/29** | 🆕 T6: nuevo test |
-| Synthetic params domain-specific | **29/29** | 🆕 T2: era 6 → 29 |
+| Synthetic params domain-specific | **26/26** | 🆕 T2: 3 falsificación excluidas por diseño |
 | Criteria en metrics.json | **29/29** | = |
 | EDI clamped [-1, 1] | **29/29** | = |
 | Bias Correction modo `full` | 5 (05, 13, 16, 18, 22) | = |
-| Bias Correction modo `bias_only` | 11 (01, 06-08, 10, 14, 17, 19, 21, 23, 27-29) | Δ: 21 y 27 cambiaron a bias_only |
+| Bias Correction modo `bias_only` | 11 (01, 06-08, 10, 14, 17, 19, 21, 23, 27-29) | = |
 | Bias Correction modo `none` | 10 (03-04, 09, 11-12, 15, 20, 24-26) | = |
-| Bias Correction modo `reverted` | 1 (02) | ↓ de 3 (21 y 27 ya no reverted) |
+| Bias Correction modo `reverted` | 3 (02, 21, 27) | = |
 | mc ≤ 0.50 | 29/29 | = |
 | **overall_pass = true** | **1/29** (Caso 16 Deforestación) | = |
 | Falsaciones correctas | 3/3 | = |
@@ -144,8 +139,8 @@ La serie ODE, aunque bien correlacionada con observaciones, puede tener sesgo en
 
 ## Cambios Clave: commit c0bf312 → commit 23214c0 (T1-T8 fixes)
 
-### T1 — driver_cols expandidos (19/29 casos)
-Variables multivariadas declaradas en validate.py. Los drivers se integran vía OLS en la construcción de forcing. Casos con driver_cols:
+### T1 — driver_cols expandidos (16/26 no-falsificación con contenido)
+Variables multivariadas declaradas en validate.py. Los drivers se integran vía OLS en la construcción de forcing. Casos con driver_cols con contenido:
 - 01 Clima: `["co2", "tsi", "ohc", "aod"]`
 - 02 Conciencia: `["suicide_rate", "tertiary_enrollment"]`
 - 04 Energía: `["tavg", "price"]`
@@ -156,15 +151,15 @@ Variables multivariadas declaradas en validate.py. Los drivers se integran vía 
 - 14 Postverdad: `["mobile_subs", "literacy"]`
 - 21 Salinización: `["freshwater_withdrawal"]`
 - 23 Erosión: `["literacy"]`
-- 24 Microplásticos: `["mismanaged_waste", "river_discharge", "mismanaged_share"]`
+- 24 Microplásticos: `["mismanaged_waste", "river_discharge"]` ← revertido mismanaged_share (e3db5c7)
 - 25 Acuíferos: `["precip", "extraction_usgs", "withdrawal"]`
 - 26 Starlink: `["launches", "collision_events", "debris_new"]`
-- 27 Riesgo Bio: `["hiv_incidence", "immunization_coverage", "tb_incidence", "health_expenditure", "crude_death_rate"]`
+- 27 Riesgo Bio: `["hiv_incidence", "immunization_coverage"]` ← revertidos 3 drivers extras (e3db5c7)
 - 28 Fuga Cerebros: `["researchers", "enrollment", "remittances", "gdp_pc", "net_migration"]`
 - 29 IoT: `["internet_users", "broadband", "gdp_pc", "gdp_growth", "secure_servers"]`
 - 06-08 Falsación: drivers de control
 
-**⚠️ Regresiones:** Caso 24 (EDI 0.427→0.289), Caso 27 (EDI +0.105→-1.000), Caso 21 (EDI 0.154→0.027).
+**Regresiones revertidas (e3db5c7):** Caso 24 (mismanaged_share eliminado, EDI restaurado 0.289→0.427) y Caso 27 (3 drivers eliminados, EDI restaurado -1.000→+0.105).
 
 ### T2 — Synthetic params 29/29 domain-specific
 Confirmado que todos los validate.py ya tenían synth_meta calibrado por dominio.
@@ -187,12 +182,12 @@ Documento formal del protocolo de separación train/eval para refutar la objeci�
 ### T8 — Interpretación cautelosa
 Report.md ahora incluye advertencia por categoría de emergencia (ej: "trend: dirección correcta sin respaldo estadístico, no constituye evidencia de emergencia").
 
-### Movimientos clave (real phase, T1-T8)
+### Movimientos clave (real phase, T1-T8 + revert e3db5c7)
 
-| Caso | Antes (c0bf312) | Ahora (23214c0) | Causa |
-|------|-----------------|-----------------|-------|
-| **24 Microplásticos** | **strong** (EDI=0.427, sig=YES) | **trend** (EDI=0.289, sig=no) | T1: mismanaged_share empeoró OLS |
-| **27 Riesgo Bio** | **trend** (EDI=+0.105) | **null** (EDI=-1.000) | T1: 3 drivers sobreajustaron |
-| 21 Salinización | trend (EDI=0.154) | trend (EDI=0.027) | T3: nuevo proxy + driver |
-| 02 Conciencia | null (EDI=-0.036) | null (EDI=-0.024) | T1: tertiary_enrollment |
-| 11 Movilidad | trend (EDI=0.007) | trend (EDI=0.003) | T1: air_departures |
+| Caso | Pre-T1 (c0bf312) | Post-T1 (23214c0) | Post-revert (e3db5c7) |
+|------|-------------------|--------------------|-----------------------|
+| **24 Microplásticos** | **strong** (EDI=0.427, sig=YES) | trend (EDI=0.289, sig=no) | **strong** (EDI=0.427, sig=YES) ✅ restaurado |
+| **27 Riesgo Bio** | **trend** (EDI=+0.105) | null (EDI=-1.000) | **trend** (EDI=+0.105) ✅ restaurado |
+| 21 Salinización | trend (EDI=0.154) | trend (EDI=0.027) | trend (EDI=0.027) — T3 cambio de proxy |
+| 02 Conciencia | null (EDI=-0.036) | null (EDI=-0.024) | null (EDI=-0.024) — leve mejora |
+| 11 Movilidad | trend (EDI=0.007) | trend (EDI=0.003) | trend (EDI=0.003) — leve cambio |
