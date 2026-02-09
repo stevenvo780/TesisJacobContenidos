@@ -1,6 +1,6 @@
 # Reporte de Validación — Urbanización (Bettencourt + Preferential Attachment)
 
-- generated_at: 2026-02-09T02:54:35.964860Z
+- generated_at: 2026-02-09T03:04:45.289912Z
 
 ## Fase synthetic
 - **overall_pass**: False
