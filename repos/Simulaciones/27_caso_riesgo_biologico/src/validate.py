@@ -71,8 +71,9 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "forcing_scale": 0.12,
-            "macro_coupling": 0.45,
+            "ode_delta": 0.005,     # Damping cuadrático: autorregulación
+            "forcing_scale": 0.15,
+            "macro_coupling": 0.40,
         },
     )
 

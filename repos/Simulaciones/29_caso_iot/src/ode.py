@@ -45,6 +45,8 @@ def simulate_ode(params, steps, seed=42):
     # Core tracking (calibrado por hybrid_validator)
     alpha = float(params.get("ode_alpha", 0.10))
     beta = float(params.get("ode_beta", 0.02))
+    # Damping cuadrático: saturación de adopción (Metcalfe inverso)
+    delta = float(params.get("ode_delta", 0.005))
     noise_std = float(params.get("ode_noise", 0.03))
 
     # Forcing
@@ -65,8 +67,11 @@ def simulate_ode(params, steps, seed=42):
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
 
-        # Core puro: mean-reversion tracking hacia forcing (espacio Z)
-        dN = alpha * (f - beta * N) + rng.normal(0, noise_std)
+        # Core: mean-reversion tracking hacia forcing (espacio Z)
+        core = alpha * (f - beta * N)
+        # No-lineal: saturación cuadrática (límite de mercado)
+        damping = delta * N * abs(N)
+        dN = core - damping + rng.normal(0, noise_std)
 
         N += dN
         N = np.clip(N, -10.0, 10.0)

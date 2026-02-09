@@ -88,8 +88,9 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "forcing_scale": 0.12,
-            "macro_coupling": 0.45,
+            "ode_delta": 0.005,     # Damping cuadrático: saturación
+            "forcing_scale": 0.15,
+            "macro_coupling": 0.40,
         },
         driver_cols=["internet_users", "broadband", "gdp_pc", "gdp_growth"],
     )
