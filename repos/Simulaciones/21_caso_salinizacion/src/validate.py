@@ -63,6 +63,7 @@ def main():
         ode_noise=0.015,
         loe=3,
         n_runs=7,
+        ode_calibration=False,
         extra_base_params={
             "ode_inflow": 0.05,    # Salinización por evapotranspiración
             "ode_decay": 0.015,    # Lavado por lluvia/drenaje

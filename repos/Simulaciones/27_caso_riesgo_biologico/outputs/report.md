@@ -1,61 +1,61 @@
-# Reporte de Validación — Riesgo Biológico Global
+# Reporte de Validación — Riesgo Biológico Global (Woolhouse Zoonotic)
 
-- generated_at: 2026-02-08T20:54:32.824741Z
+- generated_at: 2026-02-09T01:41:31.715455Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.4370
-- bootstrap_mean: 0.4362
-- CI 95%: [0.3851, 0.4821]
-- weighted_value (LoE factor 0.20): 0.0874
-- válido (0.30-0.90): True
+- valor: -0.7931
+- bootstrap_mean: -0.8021
+- CI 95%: [-1.0585, -0.5886]
+- weighted_value (LoE factor 0.80): -0.6345
+- válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9997
-- external: 0.9994
-- CR: 1.0002
-- CR indicador (>2.0 = frontera nítida): False
+- internal: 1.0000
+- external: 0.2802
+- CR: 3.5695
+- CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
 - c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
-- c4_validity: True
+- c4_validity: False
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.3972
-- rmse_abm_no_ode: 0.7055
-- rmse_ode: 1.2300
-- rmse_reduced: 1.5734
-- threshold: 0.2563
+- rmse_abm: 1.5562
+- rmse_abm_no_ode: 0.8679
+- rmse_ode: nan
+- rmse_reduced: 1.5562
+- threshold: 0.2518
 
 ### Calibración
-- forcing_scale: 0.6300
-- macro_coupling: 0.7804
-- damping: 0.6092
-- ode_alpha: 0.0517
-- ode_beta: 1.0000
+- forcing_scale: 0.7158
+- macro_coupling: 0.7819
+- damping: 0.7006
+- ode_alpha: 0.0500
+- ode_beta: 0.0200
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2637
+- calibration_rmse: 0.2331
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.7691
-- bootstrap_mean: -0.8887
-- CI 95%: [-2.4886, 0.0391]
-- weighted_value (LoE factor 0.20): -0.1538
+- valor: -0.9767
+- bootstrap_mean: -1.1169
+- CI 95%: [-2.6545, -0.3351]
+- weighted_value (LoE factor 0.80): -0.7814
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9579
-- external: 0.9567
-- CR: 1.0012
-- CR indicador (>2.0 = frontera nítida): False
+- internal: -0.7623
+- external: 0.2146
+- CR: 3.5530
+- CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
 - c1_convergence: False
@@ -65,18 +65,18 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.7581
-- rmse_abm_no_ode: 0.4285
-- rmse_ode: 2.1957
-- rmse_reduced: 2.0985
+- rmse_abm: 0.8422
+- rmse_abm_no_ode: 0.4261
+- rmse_ode: 1.6405
+- rmse_reduced: 2.0986
 - threshold: 0.2617
 
 ### Calibración
-- forcing_scale: 0.9559
-- macro_coupling: 0.7322
+- forcing_scale: 0.9195
+- macro_coupling: 0.9739
 - damping: 0.9500
-- ode_alpha: 0.0010
-- ode_beta: 0.0010
+- ode_alpha: 0.0500
+- ode_beta: 0.0200
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1135
+- calibration_rmse: 0.1210
 

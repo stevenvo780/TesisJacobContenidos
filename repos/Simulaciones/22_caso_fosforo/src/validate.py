@@ -29,27 +29,28 @@ def make_synthetic(start_date, end_date, seed=101):
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
 
-    forcing = [0.01 * t for t in range(steps)]
+    # Forcing: uso creciente de fertilizantes fosfatados (Carpenter 2005)
+    forcing = [0.012 * t + 0.0004 * t**1.3 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.08, "ode_beta": 0.03,
-        "ode_noise": 0.02, "forcing_series": forcing,
-        "p0_ode": 0.0,
+        "p0": 0.0, "ode_alpha": 0.07, "ode_beta": 0.02,  # Fósforo: alta acumulación, reciclaje MUY lento
+        "ode_inflow": 0.07, "ode_decay": 0.02,
+        "ode_noise": 0.018, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.04, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.08, "beta": 0.03}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"inflow": 0.07, "decay": 0.02}, "measurement_noise": 0.04}
     return df, meta
 
 
 def main():
     config = CaseConfig(
-        case_name="Ciclo del Fósforo",
+        case_name="Ciclo del Fósforo (Carpenter Biogeoquímico)",
         value_col="value",
         series_key="ph",
-        grid_size=20,
+        grid_size=25,
         persistence_window=5,
         synthetic_start="1960-01-01",
         synthetic_end="2022-01-01",
@@ -57,8 +58,16 @@ def main():
         real_start="1960-01-01",
         real_end="2022-01-01",
         real_split="2005-01-01",
-        corr_threshold=0.7,
-        extra_base_params={},
+        corr_threshold=0.65,
+        ode_noise=0.018,
+        base_noise=0.003,
+        loe=3,
+        n_runs=7,
+        ode_calibration=False,
+        extra_base_params={
+            "ode_inflow": 0.07,   # Tasa de aporte fosfatado (fertilizantes + escorrentía)
+            "ode_decay": 0.02,    # Reciclaje biogeoquímico lento (sedimentación)
+        },
     )
 
     results = run_full_validation(

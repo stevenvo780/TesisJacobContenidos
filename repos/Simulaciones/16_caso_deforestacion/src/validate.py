@@ -68,6 +68,7 @@ def main():
         base_noise=0.003,
         loe=3,
         n_runs=7,
+        ode_calibration=False,
         extra_base_params={
             "ode_inflow": 0.06,   # Tasa de conversión forestal
             "ode_decay": 0.008,   # Regeneración natural (muy lenta: décadas)

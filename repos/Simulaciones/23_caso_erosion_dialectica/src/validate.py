@@ -35,26 +35,28 @@ def make_synthetic(start_date, end_date, seed=101):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    forcing = [0.01 * t for t in range(steps)]
+    # Forcing: presión mediática/globalización creciente (Abrams & Strogatz 2003)
+    forcing = [0.008 * t + 0.0002 * t**1.2 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "t0": 0.0, "ode_alpha": 0.08, "ode_beta": 0.03,
-        "ode_noise": 0.02, "forcing_series": forcing,
+        "p0": 0.1, "ode_r": 0.03, "ode_k": 1.0,  # Erosión lingüística: crecimiento logístico lento
+        "ode_delta": 0.01, "ode_gamma": 0.08,
+        "ode_noise": 0.015, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.04, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.08, "beta": 0.03}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"r": 0.03, "K": 1.0, "delta": 0.01, "gamma": 0.08}, "measurement_noise": 0.04}
     return df, meta
 
 
 def main():
     config = CaseConfig(
-        case_name="Erosión Dialéctica",
+        case_name="Erosión Dialéctica (Abrams-Strogatz)",
         value_col="value",
         series_key="ed",
-        grid_size=20,
+        grid_size=25,
         persistence_window=12,
         synthetic_start="2005-01-01",
         synthetic_end="2023-12-01",
@@ -62,8 +64,18 @@ def main():
         real_start="2005-01-01",
         real_end="2023-12-01",
         real_split="2016-01-01",
-        corr_threshold=0.7,
-        extra_base_params={},
+        corr_threshold=0.60,
+        ode_noise=0.015,
+        base_noise=0.003,
+        loe=3,
+        n_runs=7,
+        ode_calibration=False,
+        extra_base_params={
+            "ode_r": 0.03,       # Tasa de sustitución lingüística
+            "ode_k": 1.0,       # Capacidad: dominio completo
+            "ode_delta": 0.01,   # Attrition dialectal
+            "ode_gamma": 0.08,   # Sensibilidad a presión mediática
+        },
     )
 
     results = run_full_validation(

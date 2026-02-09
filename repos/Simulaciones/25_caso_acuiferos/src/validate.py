@@ -35,9 +35,11 @@ def make_synthetic(start_date, end_date, seed=101):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    forcing = [0.01 * t for t in range(steps)]
+    # Forcing: precipitación con variabilidad interanual (proxy recarga)
+    forcing = [0.008 * t + 0.5 * np.sin(2 * np.pi * t / 24) for t in range(steps)]
     true_params = {
-        "p0": 0.0, "t0": 0.0, "ode_alpha": 0.08, "ode_beta": 0.03,
+        "p0": 0.0, "ode_alpha": 0.04, "ode_beta": 0.06,  # Acuíferos: recarga < extracción = depleción
+        "ode_recharge": 0.04, "ode_extraction": 0.06,
         "ode_noise": 0.02, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
@@ -45,16 +47,16 @@ def make_synthetic(start_date, end_date, seed=101):
     obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.08, "beta": 0.03}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"recharge": 0.04, "extraction": 0.06}, "measurement_noise": 0.05}
     return df, meta
 
 
 def main():
     config = CaseConfig(
-        case_name="Nivel Freático de Acuíferos",
+        case_name="Depleción de Acuíferos (Darcy-Theis)",
         value_col="value",
         series_key="aq",
-        grid_size=20,
+        grid_size=25,
         persistence_window=12,
         synthetic_start="1980-01-01",
         synthetic_end="2020-12-01",
@@ -62,8 +64,16 @@ def main():
         real_start="1980-01-01",
         real_end="2020-12-01",
         real_split="2002-01-01",
-        corr_threshold=0.7,
-        extra_base_params={},
+        corr_threshold=0.60,
+        ode_noise=0.02,
+        base_noise=0.003,
+        loe=3,
+        n_runs=7,
+        ode_calibration=False,
+        extra_base_params={
+            "ode_recharge": 0.04,    # Recarga por precipitación/infiltración
+            "ode_extraction": 0.06,  # Extracción agrícola > recarga = depleción
+        },
         driver_cols=["grace_gws", "precip", "extraction_usgs", "withdrawal"],
     )
 

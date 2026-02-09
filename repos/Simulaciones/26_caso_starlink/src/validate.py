@@ -32,27 +32,28 @@ def make_synthetic(start_date, end_date, seed=129):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    forcing = [0.04 * t for t in range(steps)]
+    # Forcing: lanzamientos masivos post-2019 (SpaceX mega-constelación)
+    forcing = [0.03 * t + 0.002 * t**1.6 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.15, "ode_beta": 0.025,
-        "ode_noise": 0.06, "forcing_series": forcing,
-        "p0_ode": 0.0,
+        "p0": 0.0, "ode_alpha": 0.18, "ode_beta": 0.015,  # Starlink: despliegue agresivo, de-orbit controlado
+        "ode_inflow": 0.18, "ode_decay": 0.015,
+        "ode_noise": 0.07, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.18, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.20, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.15, "beta": 0.025}, "measurement_noise": 0.18}
+    meta = {"ode_true": {"inflow": 0.18, "decay": 0.015}, "measurement_noise": 0.20}
     return df, meta
 
 
 def main():
     config = CaseConfig(
-        case_name="Constelaciones Satelitales (Starlink)",
+        case_name="Constelaciones Satelitales Starlink (Mega-Constellation)",
         value_col="value",
         series_key="st",
-        grid_size=20,
+        grid_size=25,
         persistence_window=5,
         synthetic_start="1990-01-01",
         synthetic_end="2022-01-01",
@@ -60,8 +61,16 @@ def main():
         real_start="1990-01-01",
         real_end="2022-01-01",
         real_split="2010-01-01",
-        corr_threshold=0.7,
-        extra_base_params={},
+        corr_threshold=0.60,
+        ode_noise=0.07,
+        base_noise=0.005,
+        loe=4,
+        n_runs=7,
+        ode_calibration=False,
+        extra_base_params={
+            "ode_inflow": 0.18,   # Tasa de despliegue satelital
+            "ode_decay": 0.015,   # De-orbit programado (~5 años)
+        },
         driver_cols=["launches", "collision_events"],
     )
 

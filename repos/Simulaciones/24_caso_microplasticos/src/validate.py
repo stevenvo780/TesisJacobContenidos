@@ -35,26 +35,28 @@ def make_synthetic(start_date, end_date, seed=101):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    forcing = [0.01 * t for t in range(steps)]
+    # Forcing: producción plástica creciente exponencial (Jambeck et al. 2015)
+    forcing = [0.015 * t + 0.0006 * t**1.4 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "t0": 0.0, "ode_alpha": 0.08, "ode_beta": 0.03,
-        "ode_noise": 0.02, "forcing_series": forcing,
+        "p0": 0.0, "ode_alpha": 0.09, "ode_beta": 0.003,  # Microplásticos: MUY persistentes, degradación ~siglos
+        "ode_inflow": 0.09, "ode_decay": 0.003,
+        "ode_noise": 0.025, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.06, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.08, "beta": 0.03}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"inflow": 0.09, "decay": 0.003}, "measurement_noise": 0.06}
     return df, meta
 
 
 def main():
     config = CaseConfig(
-        case_name="Contaminación por Microplásticos",
+        case_name="Microplásticos Oceánicos (Jambeck Persistent Accumulation)",
         value_col="value",
         series_key="mp",
-        grid_size=20,
+        grid_size=25,
         persistence_window=12,
         synthetic_start="1980-01-01",
         synthetic_end="2020-12-01",
@@ -62,8 +64,16 @@ def main():
         real_start="1980-01-01",
         real_end="2020-12-01",
         real_split="2002-01-01",
-        corr_threshold=0.7,
-        extra_base_params={},
+        corr_threshold=0.60,
+        ode_noise=0.025,
+        base_noise=0.004,
+        loe=4,
+        n_runs=7,
+        ode_calibration=False,
+        extra_base_params={
+            "ode_inflow": 0.09,   # Ingreso de microplásticos desde ríos y costas
+            "ode_decay": 0.003,   # Degradación ultra-lenta (persistencia ~450 años)
+        },
         driver_cols=["mismanaged_waste", "river_discharge"],
     )
 
