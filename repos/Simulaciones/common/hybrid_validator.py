@@ -859,9 +859,20 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     ode_key = _get_ode_key(ode)
     ode_series = ode[ode_key]
 
-    # ABM acoplado a ODE
+    # Z-normalizar la serie ODE para que esté en la misma escala que las
+    # observaciones Z-normalizadas.  El ABM usa nudging absoluto
+    # (mc * (macro_target - grid)), así que la escala importa.
+    _ode_arr = np.asarray(ode_series, dtype=np.float64)
+    _ode_train = _ode_arr[:val_start]
+    _ode_mu = float(np.mean(_ode_train)) if len(_ode_train) > 0 else 0.0
+    _ode_sd = float(np.std(_ode_train)) if len(_ode_train) > 0 else 1.0
+    if _ode_sd < 1e-10:
+        _ode_sd = 1.0
+    ode_series_z = ((_ode_arr - _ode_mu) / _ode_sd).tolist()
+
+    # ABM acoplado a ODE (serie Z-normalizada)
     eval_params_ode = dict(eval_params)
-    eval_params_ode["macro_target_series"] = ode_series
+    eval_params_ode["macro_target_series"] = ode_series_z
     abm = simulate_abm_fn(eval_params_ode, steps, seed=2)
 
     # ABM sin ODE (baseline para EDI)
@@ -889,7 +900,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
 
     abm_val = _reduce_to_1d(abm[sk][val_start:])
     abm_no_ode_val = _reduce_to_1d(abm_no_ode[sk][val_start:])
-    ode_val = _reduce_to_1d(ode[ode_key][val_start:])
+    ode_val = np.asarray(ode_series_z[val_start:], dtype=np.float64)
     reduced_val = _reduce_to_1d(abm_reduced[sk][val_start:])
 
     # Errores
