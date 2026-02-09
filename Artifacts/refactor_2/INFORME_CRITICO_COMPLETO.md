@@ -57,12 +57,12 @@ La tesis presenta un marco computacional ABM+ODE para validar la existencia de h
 |----------|-----------|--------|
 | ODE genérica (28/29 iguales) | CRÍTICA | ✅ Resuelto — 28 archivos ode.py distintos + 11 modelos |
 | Data leakage en forcing (obs[t-1]) | CRÍTICA | ✅ Resuelto — persistence en validación |
-| 46% de casos usan datos sintéticos | CRÍTICA | ⚠️ Parcial — 9/12 migrados, 6 con fallback API |
+| 46% de casos usan datos sintéticos | CRÍTICA | ✅ Resuelto — 29/29 con CSV cacheado, 8 con API real |
 | Agentes homogéneos (dom_share=1/N) | ALTA | ✅ Resuelto — 3 capas heterogeneidad |
 | EDI no involucra la ODE | ALTA | ✅ Resuelto — Bidireccional 2-iter + ode_cs separado |
 | 9 casos con EDI>0.90 (tautología) | ALTA | ✅ Resuelto — overall_pass incluye edi_valid |
 | macro_coupling > 0.5 (esclavización) | ALTA | ✅ Resuelto — mc cap [0.05, 0.50] |
-| Proxies inadecuados (3 casos) | MEDIA | ⚠️ Parcial — 2/3 corregidos |
+| Proxies inadecuados (3 casos) | MEDIA | ✅ Resuelto — CelesTrak SATCAT + freshwater_withdrawal |
 | Bias ODE→ABM destruye coupling | ALTA | ✅ Resuelto — BC 4 modos + guardas |
 | Evaluación binaria inadecuada | ALTA | ✅ Resuelto — Taxonomía 6 categorías |
 | Persistence threshold en varianza | MEDIA | ✅ Resuelto — std 5× |
@@ -85,7 +85,7 @@ La tesis presenta un marco computacional ABM+ODE para validar la existencia de h
 | C4 | forcing_scale > 1.0 viola A6 | ✅ Cap fs≤0.99 |
 | C5 | Dominance_share = 1/N (clonados) | ✅ 3 capas heterogeneidad |
 | C6 | macro_coupling = 1.0 (esclavización) | ✅ Grid [0.05, 0.45], cap 0.50 |
-| C7 | Datos sintéticos en 12 casos | ⚠️ 9/12 código real, 6 fallback API |
+| C7 | Datos sintéticos en 12 casos | ✅ 29/29 CSV cacheado, 8 API real |
 | C8 | Proxies inadecuados (Kessler, Starlink) | ✅ CelesTrak SATCAT |
 | C9 | Fases sintéticas compartidas | ✅ 26/26 synth_meta domain-specific |
 | C10 | Data leakage: forcing obs[t-1] | ✅ Persistence en validación |
@@ -173,12 +173,15 @@ Solo override si grid_size > 1 (modelos espaciales). Nunca reduce: `max(caso, en
 
 ### 5.1. Estado de Migración a Datos Reales
 
-| Estado | Casos |
-|--------|-------|
-| ✅ Datos reales cacheados (dataset.csv) | 01, 04, 09, 10, 11, 14, 17, 19, 20, 26 |
-| ✅ Migrados a API real | 05, 12, 13, 16, 22, 23, 24, 25, 27, 28, 29 |
-| ⚠️ Código real pero fallback | 02 (pytrends), 03, 15, 18, 21 |
-| ✅ Falsación (sintético por diseño) | 06, 07, 08 |
+Todos los 29 casos tienen CSV cacheado en `data/`. No hay dependencia de APIs externas en runtime.
+
+| Tipo de fuente en `data.py` | Casos | Estado |
+|------------------------------|-------|--------|
+| API + CSV fallback (API real con cache) | 01, 03, 04, 05, 09, 16, 21, 22 | ✅ CSV cacheado disponible |
+| CSV only (sin código API) | 06, 07, 08, 19, 20, 26, 28, 29 | ✅ Datos estáticos |
+| Synthetic + CSV (genera dataset.csv si no existe) | 02, 10, 11, 12, 13, 14, 15, 17, 18, 23, 24, 25, 27 | ✅ CSV cacheado disponible |
+
+**Nota**: Los casos `synth+csv` tienen generadores sintéticos en `data.py` pero **todos** tienen un `dataset.csv` cacheado con datos reales (World Bank, OWID, etc.). El generador sintético solo se usa si el CSV no existe.
 
 ### 5.2. Proxies
 

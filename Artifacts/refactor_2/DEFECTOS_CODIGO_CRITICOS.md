@@ -94,4 +94,4 @@ Se identificaron y resolvieron **24 defectos de código** a lo largo de 8 commit
 
 ## Conclusión
 
-**No hay defectos de código pendientes.** El pipeline hybrid_validator.py produce resultados correctos, reproducibles y científicamente defensibles. Los 20 defectos identificados están resueltos y verificados.
+**No hay defectos de código pendientes.** El pipeline hybrid_validator.py produce resultados correctos, reproducibles y científicamente defensibles. Los 24 defectos identificados están resueltos y verificados.
