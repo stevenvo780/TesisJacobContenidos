@@ -1,12 +1,15 @@
 import math
 
 
+
 def mean(xs):
-    return sum(xs) / len(xs) if xs else 0.0
+    if len(xs) == 0:
+        return 0.0
+    return sum(xs) / len(xs)
 
 
 def variance(xs):
-    if not xs:
+    if len(xs) == 0:
         return 0.0
     m = mean(xs)
     return sum((x - m) ** 2 for x in xs) / len(xs)
@@ -91,3 +94,31 @@ def dominance_share(grid_series):
     total = sum(scores) if scores else 1.0
     max_share = max(scores) / total if scores else 1.0
     return max_share
+
+
+def kurtosis(xs):
+    """Excess Kurtosis (Normal = 0.0, >0 is Fat Tailed)."""
+    if len(xs) < 4:
+        return 0.0
+    m = mean(xs)
+    v = variance(xs)
+    if v < 1e-12:
+        return 0.0
+    fourth_moment = sum((x - m) ** 4 for x in xs) / len(xs)
+    return (fourth_moment / (v ** 2)) - 3.0
+
+
+def volatility_clustering(xs, lag=1):
+    """Autocorrelation of absolute returns."""
+    if len(xs) < lag + 2:
+        return 0.0
+    
+    # Calculate returns: r_t = x_t - x_{t-1}
+    returns = [xs[i] - xs[i-1] for i in range(1, len(xs))]
+    abs_returns = [abs(r) for r in returns]
+    
+    # Autocorrelation of abs returns
+    n = len(abs_returns)
+    series_a = abs_returns[:-lag]
+    series_b = abs_returns[lag:]
+    return correlation(series_a, series_b)

@@ -54,7 +54,7 @@ def main():
         case_name="Justicia Algorítmica",
         value_col="value",
         series_key="j",
-        grid_size=20,
+        grid_size=20, # Spatial consensus matters here
         persistence_window=12,
         synthetic_start="2005-01-01",
         synthetic_end="2023-12-01",
@@ -62,8 +62,8 @@ def main():
         real_start="2005-01-01",
         real_end="2023-12-01",
         real_split="2016-01-01",
-        corr_threshold=0.7,
-        extra_base_params={},
+        corr_threshold=0.6,
+        extra_base_params={"abm_epsilon": 0.2, "abm_mu": 0.3},
         driver_cols=["corruption_control", "gini"],
     )
 

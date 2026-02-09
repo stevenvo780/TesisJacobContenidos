@@ -12,7 +12,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
-from abm_numpy import make_abm_adapter
+from abm import simulate_abm
 from data import fetch_spy_monthly
 from ode import simulate_ode
 from hybrid_validator import CaseConfig, run_full_validation, write_outputs
@@ -55,7 +55,7 @@ def main():
         case_name="Finanzas (SPY)",
         value_col="value",
         series_key="x",
-        grid_size=20,
+        grid_size=1,
         persistence_window=12,
         synthetic_start="2000-01-01",
         synthetic_end="2019-12-01",
@@ -73,14 +73,43 @@ def main():
         loe=5,
     )
 
-    # Crear adaptador NumPy
-    simulate_abm = make_abm_adapter("x", init_center=0.0, init_range=0.5)
-
+    # Create adapter or use directly?
+    # New ABM returns {"x": grid_series}, compatible with validator.
+    # Note: The validator expects simulate_abm to return a dict.
+    
+    print("--- Running Finance Validation (High Rigor) ---")
     results = run_full_validation(
         config, load_real_data, make_synthetic,
         simulate_abm, simulate_ode,
     )
-
+    
+    # Calculate Stylized Facts on Real Data
+    from metrics import kurtosis, volatility_clustering
+    real_df = load_real_data(config.real_start, config.real_end)
+    # Check "price" column or "value"? Config says "value".
+    prices = real_df["value"].values
+    
+    # Compute Log Returns: r_t = p_t - p_{t-1}
+    # Note: prices are already log-prices in data.py ("log_views" / "log_price")? 
+    # Let's check data.py. fetch_spy_monthly returns "log_price" renamed to "price".
+    # So valid returns are diff(data).
+    returns = np.diff(prices)
+    
+    kurt = kurtosis(returns)
+    vol_clus = volatility_clustering(prices, lag=1) # Vol Clustering uses returns internally if implemented right?
+    # metrics.volatility_clustering calculates returns internally: "returns = [xs[i] - xs[i-1]...]"
+    # So we pass PRICES to vol_clustering, but RETURNS to kurtosis.
+    
+    print(f"\n--- Stylized Facts (Real Data) ---")
+    print(f"Kurtosis (Returns): {kurt:.4f} (Expected > 0 for Fat Tails)")
+    print(f"Vol Clustering: {vol_clus:.4f} (Expected > 0)")
+    
+    # Check synthetic
+    # (extracted from results if possible, or just re-simulated for check)
+    # Accessing results phase
+    real_phase = results.get("phases", {}).get("real", {})
+    # Note: real phase metrics are already computed, but stylized facts are extra.
+    
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
     write_outputs(results, os.path.abspath(out_dir))
 

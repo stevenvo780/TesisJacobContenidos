@@ -2,6 +2,21 @@
 
 Actualizado: 2026-02-08
 
+## Estado de Resolución de Defectos
+
+| Defecto | Estado | Detalle |
+|---------|--------|---------|
+| D1: Data leakage en forcing | ✅ Resuelto | Persistence en validación, tendencia solo con train |
+| D2: overall_pass vs EDI>0.90 | ✅ Resuelto | `edi_valid` incluido en conjunción `overall_pass` |
+| D3: ODE genérica (28/29 iguales) | ✅ Resuelto | 11 modelos ODE domain-specific en `ode_library.py` |
+| D4: ABM sin heterogeneidad | ✅ Resuelto | 3 capas: forcing_gradient + heterogeneity_strength + topología |
+| D5: ABM y ODE no acoplados | ⚠️ Parcial | ODE→ABM top-down ok, falta bidireccional simultáneo |
+| D6: Fases sintéticas compartidas | ❌ No resuelto | 25/29 con alpha=0.08, beta=0.03 idénticos |
+| Datos sintéticos → reales | ⚠️ Parcial | 9/12 código real listo, 6 caen a fallback por APIs |
+| Proxies inadecuados | ⚠️ Parcial | 2/3 corregidos (Kessler ✅, Starlink ✅, Salinización ⚠️) |
+| macro_coupling > 0.5 | ❌ No resuelto | 23/29 con mc>0.5, sin restricción en calibración |
+| Grid escalado | ✅ Resuelto | Run GPU 470x470 ejecutado |
+
 | # | Caso | EDI | EDI valid | ODE corr | ABM corr | mc | fs | Tipo Dato | C1 | Pass | Flags |
 |---|------|-----|-----------|----------|----------|-----|-----|-----------|-----|------|-------|
 | 01 | Clima Regional (CONUS) | 0.000 | false | -0.021 | 0.008 | 0.10 | 0.99 | REAL | false | false | ODE fantasma |
@@ -37,12 +52,12 @@ Actualizado: 2026-02-08
 
 ## Conteos
 
-| Métrica | Valor |
-|---------|-------|
-| EDI válido (0.30-0.90) | 1 |
-| EDI > 0.90 (tautológico) | 0 |
-| Datos sintéticos (fallback) | 2 |
-| Datos con proxy (REAL*) | 7 |
-| mc > 0.5 | 19 |
-| ODE corr negativa | 5 |
-| overall_pass = true | 0 |
+| Métrica | Valor | Estado |
+|---------|-------|--------|
+| EDI válido (0.30-0.90) | 1 | ❌ Solo caso 06 (falsación) |
+| EDI > 0.90 (tautológico) | 0 | ✅ Corregido — antes eran 9 |
+| Datos sintéticos (fallback) | 2 (+ 4 por fallo API) | ⚠️ 6 total caen a fallback |
+| Datos con proxy (REAL*) | 7 | ⚠️ 2/3 proxies corregidos |
+| mc > 0.5 | 19 (real: 23) | ❌ Sin restricción |
+| ODE corr negativa | 5 | ⚠️ Budyko-Sellers implementado para clima |
+| overall_pass = true | 0 | ✅ Consistente con reglas |

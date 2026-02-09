@@ -1,82 +1,43 @@
 # Reporte de Validación — Falsación: No-Estacionariedad
 
-- generated_at: 2026-02-08T20:47:05.184232Z
-
-## Fase synthetic
-- **overall_pass**: False
-
-### EDI
-- valor: 0.0122
-- bootstrap_mean: 0.0119
-- CI 95%: [-0.0315, 0.0488]
-- weighted_value (LoE factor 0.20): 0.0024
-- válido (0.30-0.90): False
-
-### Symploké y CR
-- internal: 0.6211
-- external: -0.1416
-- CR: 4.3871
-- CR indicador (>2.0 = frontera nítida): True
-
-### Criterios C1-C5
-- c1_convergence: False
-- c2_robustness: True
-- c3_replication: True
-- c4_validity: False
-- c5_uncertainty: True
-
-### Errores
-- rmse_abm: 1.2712
-- rmse_abm_no_ode: 1.2869
-- rmse_ode: 1.4274
-- rmse_reduced: 1.2869
-- threshold: 1.2689
-
-### Calibración
-- forcing_scale: 0.0010
-- macro_coupling: 0.1000
-- damping: 0.5304
-- ode_alpha: 0.0010
-- ode_beta: 1.0000
-- assimilation_strength: 0.0000
-- calibration_rmse: 0.9993
+- generated_at: 2026-02-08T18:17:53.189045
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.2110
-- bootstrap_mean: -0.2191
-- CI 95%: [-0.3198, -0.1484]
-- weighted_value (LoE factor 0.20): -0.0422
+- valor: -7.4914
+- bootstrap_mean: -7.5338
+- CI 95%: [-8.5013, -6.6138]
+- weighted_value (LoE factor 0.20): -1.4983
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: -0.9999
-- external: -0.0000
-- CR: 110517.7795
-- CR indicador (>2.0 = frontera nítida): True
+- internal: 0.9989
+- external: 0.8718
+- CR: 1.1459
+- CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: False
-- c3_replication: False
+- c2_robustness: True
+- c3_replication: True
 - c4_validity: True
-- c5_uncertainty: False
+- c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 173.2925
-- rmse_abm_no_ode: 143.1016
-- rmse_ode: 0.6478
-- rmse_reduced: 0.8170
-- threshold: 0.6482
+- rmse_abm: 4.5808
+- rmse_abm_no_ode: 0.5395
+- rmse_ode: 5.2502
+- rmse_reduced: 3.6841
+- threshold: 1.0417
 
 ### Calibración
-- forcing_scale: 0.7870
-- macro_coupling: 1.0000
-- damping: 0.6968
-- ode_alpha: 0.0797
-- ode_beta: 1.0000
+- forcing_scale: 0.0500
+- macro_coupling: 0.2000
+- damping: 0.0200
+- ode_alpha: 0.0500
+- ode_beta: 0.0200
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.3956
+- calibration_rmse: 0.0000
 

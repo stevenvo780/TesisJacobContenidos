@@ -36,37 +36,38 @@ def _fetch_article_daily(article, start, end, user_agent):
     return rows
 
 
+
 def fetch_crypto_daily(start_date, end_date, articles=None, cache_path=None):
+    """
+    Generates Synthetic 'Trend vs Trend' data to test Spurious Regression.
+    Target: Linear Trend + Noise.
+    Driver: Linear Trend + Noise.
+    Correlation: High (>0.9).
+    Causality: None (Independent generation).
+    """
     if cache_path and os.path.exists(cache_path):
         df = pd.read_csv(cache_path, parse_dates=["date"])
         return df
 
-    articles = articles or DEFAULT_ARTICLES
-    start = datetime.strptime(start_date, "%Y-%m-%d")
-    end = datetime.strptime(end_date, "%Y-%m-%d")
-    start_ts = start.strftime("%Y%m%d00")
-    end_ts = end.strftime("%Y%m%d00")
-
-    user_agent = os.environ.get(
-        "WIKIMEDIA_USER_AGENT",
-        "Hiperobjetos/1.0 (contact: local@example.com)",
-    )
-
-    all_rows = []
-    for article in articles:
-        all_rows.extend(_fetch_article_daily(article, start_ts, end_ts, user_agent))
-        time.sleep(0.2)
-
-    df = pd.DataFrame(all_rows)
-    if df.empty:
-        raise RuntimeError("No pageviews data returned")
-
-    daily = df.groupby("date", as_index=False)["views"].sum().sort_values("date")
-    daily["log_views"] = daily["views"].apply(lambda x: float(np.log(max(x, 1.0))))
-    out = daily[["date", "log_views"]].rename(columns={"log_views": "attention"})
-
+    dates = pd.date_range(start=start_date, end=end_date, freq="D")
+    n = len(dates)
+    t = np.arange(n)
+    
+    # 1. Independent Trends
+    # Target: y = t + noise
+    s1 = t + np.random.normal(0, 50, n)
+    
+    # Driver: x = t + noise (Correlated due to time, but not causal)
+    s2 = t + np.random.normal(0, 50, n)
+    
+    # Scale to typical attention values (0-100ish logarithmic proxy)
+    # Using raw values directly as 'value' and 'driver'
+    
+    df = pd.DataFrame({"date": dates, "value": s1, "spurious_trend": s2})
+    
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)
-        out.to_csv(cache_path, index=False)
+        df.to_csv(cache_path, index=False)
 
-    return out
+    return df
+

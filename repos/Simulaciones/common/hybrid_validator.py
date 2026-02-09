@@ -45,8 +45,9 @@ def variance(xs):
     return float(a.var())
 
 
+
 def rmse(a, b):
-    if len(a) != len(b) or not a:
+    if len(a) != len(b) or len(a) == 0:
         return float("inf")
     aa = np.asarray(a, dtype=np.float64)
     bb = np.asarray(b, dtype=np.float64)
@@ -278,7 +279,14 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
 
     def _score(pred_arr):
         """Objetivo combinado: RMSE + penalización por baja correlación."""
+        # Ensure dimensionality match
+        if pred_arr.ndim == 3 and obs_arr.ndim == 1:
+            pred_arr = pred_arr.mean(axis=(1, 2))
+        elif pred_arr.ndim == 3 and pred_arr.shape[1] == 1 and pred_arr.shape[2] == 1:
+            pred_arr = pred_arr.ravel()
+            
         err = float(np.sqrt(np.mean((pred_arr - obs_arr) ** 2)))
+        
         # Correlación
         if len(pred_arr) > 1 and np.std(pred_arr) > 1e-10:
             corr = float(np.corrcoef(pred_arr, obs_arr)[0, 1])
@@ -304,6 +312,11 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
                 sim = simulate_abm_fn(params, steps, seed=seed)
                 key = _get_series_key(sim)
                 pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
+                
+                # Spatial Reduction: If pred is 3D (Grid) and obs is 1D (Scalar), take the mean
+                if pred.ndim == 3 and obs_arr.ndim == 1:
+                    pred = pred.mean(axis=(1, 2))
+                
                 score = _score(pred)
                 err = float(np.sqrt(np.mean((pred - obs_arr) ** 2)))
                 candidates.append((score, fs, mc, dmp, err))
@@ -347,6 +360,11 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
             sim = simulate_abm_fn(params, steps, seed=seed)
             key = _get_series_key(sim)
             pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
+            
+            # Spatial Reduction: If pred is 3D (Grid) and obs is 1D (Scalar), take the mean
+            if pred.ndim == 3 and obs_arr.ndim == 1:
+                pred = pred.mean(axis=(1, 2))
+                
             score = _score(pred)
             err = float(np.sqrt(np.mean((pred - obs_arr) ** 2)))
             del sim
@@ -861,10 +879,21 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     abm_reduced = simulate_abm_fn(reduced_params, steps, seed=4)
 
     sk = config.series_key
-    abm_val = abm[sk][val_start:]
-    abm_no_ode_val = abm_no_ode[sk][val_start:]
-    ode_val = ode[ode_key][val_start:]
-    reduced_val = abm_reduced[sk][val_start:]
+    
+    def _reduce_to_1d(arr):
+        arr = np.asarray(arr)
+        # Case 1: 0D Grid (T, 1, 1) -> Flatten
+        if arr.ndim == 3 and arr.shape[1] == 1 and arr.shape[2] == 1:
+            return arr.ravel()
+        # Case 2: Spatial Grid (T, N, N) -> Mean Field (T,)
+        if arr.ndim == 3:
+            return arr.mean(axis=(1, 2))
+        return arr
+
+    abm_val = _reduce_to_1d(abm[sk][val_start:])
+    abm_no_ode_val = _reduce_to_1d(abm_no_ode[sk][val_start:])
+    ode_val = _reduce_to_1d(ode[ode_key][val_start:])
+    reduced_val = _reduce_to_1d(abm_reduced[sk][val_start:])
 
     # Errores
     err_abm = rmse(abm_val, obs_val)

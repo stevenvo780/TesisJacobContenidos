@@ -39,15 +39,15 @@
 
 La tesis presenta un marco computacional ABM+ODE para validar la existencia de hiperobjetos. Tras 20 rondas de debate adversarial y auditoria tecnica profunda del codigo, se identifican **7 problemas criticos** que debilitan la tesis, de los cuales **5 son solucionables tecnicamente**:
 
-| Problema | Severidad | Solucionable? | Esfuerzo |
-|----------|-----------|---------------|----------|
-| ODE generica (28/29 iguales) | CRITICA | SI | ALTO |
-| Data leakage en forcing (obs[t-1]) | CRITICA | SI | MEDIO |
-| 46% de casos usan datos sinteticos | CRITICA | SI | ALTO |
-| Agentes homogeneos (dom_share=1/N) | ALTA | SI | MEDIO |
-| EDI no involucra la ODE | ALTA | SI | MEDIO |
-| 9 casos con EDI>0.90 (tautologia) | ALTA | PARCIAL | MEDIO |
-| Proxies inadecuados (3 casos) | MEDIA | SI | BAJO |
+| Problema | Severidad | Solucionable? | Esfuerzo | Estado |
+|----------|-----------|---------------|----------|--------|
+| ODE generica (28/29 iguales) | CRITICA | SI | ALTO | ✅ Resuelto — 11 modelos ODE distintos |
+| Data leakage en forcing (obs[t-1]) | CRITICA | SI | MEDIO | ✅ Resuelto — persistence en validación |
+| 46% de casos usan datos sinteticos | CRITICA | SI | ALTO | ⚠️ Parcial — 9/12 migrados, 6 con fallback |
+| Agentes homogeneos (dom_share=1/N) | ALTA | SI | MEDIO | ✅ Resuelto — 3 capas heterogeneidad |
+| EDI no involucra la ODE | ALTA | SI | MEDIO | ⚠️ Parcial — ODE→ABM ok, no bidireccional |
+| 9 casos con EDI>0.90 (tautologia) | ALTA | PARCIAL | MEDIO | ✅ Resuelto — overall_pass=0/29 ahora |
+| Proxies inadecuados (3 casos) | MEDIA | SI | BAJO | ⚠️ Parcial — 2/3 corregidos (Kessler+Starlink) |
 
 **Si se resuelven estos problemas, la tesis pasa de "aprobacion muy condicionada" a potencialmente solida.**
 
@@ -57,27 +57,27 @@ La tesis presenta un marco computacional ABM+ODE para validar la existencia de h
 
 ### GRUPO A: SOLUCIONABLES TECNICAMENTE (mejorando simulaciones)
 
-| # | Critica | Iteracion | Solucion Propuesta |
-|---|---------|-----------|-------------------|
-| C1 | **EDI > 0.30 es numero magico** | R1, Brutal | Derivar umbral de distribucion nula (bootstrap de EDI bajo ruido puro). Ya existe parcialmente con `edi_null_distribution_analysis.py`. Ejecutar y publicar la distribucion. |
-| C2 | **EI = 0.0 en todos los casos** | R3 | Bug ya corregido (KDE). Verificar que EI > 0 en ejecucion actual. |
-| C3 | **ODE tiene correlacion nula en Clima (-0.027)** | R15 | La ODE de Clima tiene alpha=0.001 (casi inerte). Implementar ODE con balance radiativo real usando CO2 como forcing en lugar de obs[t-1]. |
-| C4 | **forcing_scale > 1.0 viola A6** | R13, R17 | Ya corregido: cap en 0.99. Verificar en todos los metrics.json actuales (CONFIRMADO: ningun caso viola A6 actualmente). |
-| C5 | **Dominance_share = 1/N (agentes clonados)** | R19, R20 | Existe `abm_gpu_v3.py` con forcing_gradient pero NO se usa. Integrar en validaciones: topologias no regulares, forzamiento espacial heterogeneo, parametros locales. |
-| C6 | **macro_coupling = 1.0 (esclavizacion)** | R11, R17 | 22/29 casos tienen mc > 0.5. Recalibrar con restriccion mc < 0.5 y reportar cual es el mc minimo que mantiene EDI > 0.30. |
-| C7 | **Datos sinteticos en 12 casos** | R11, Brutal | Implementar fuentes de datos reales para al menos 8 de los 12 casos sinteticos (ver Seccion 5). |
-| C8 | **Proxies inadecuados** (Kessler=vuelos, Starlink=internet) | Nueva | Reemplazar con datos de CelesTrak (objetos orbitales) para Kessler y Starlink. |
-| C9 | **Fases sinteticas compartidas entre casos** | Nueva | Al menos 5 grupos de casos comparten parametros sinteticos identicos. Cada caso debe tener parametros de ODE sintetica calibrados a su dominio. |
-| C10 | **Data leakage: forcing contiene obs[t-1]** | Nueva | En `hybrid_validator.py:646-647`, `lag_forcing = obs[t-1]` contamina la validacion. El forcing debe construirse SOLO con datos del periodo de entrenamiento. |
+| # | Critica | Iteracion | Solucion Propuesta | Estado |
+|---|---------|-----------|-------------------|--------|
+| C1 | **EDI > 0.30 es numero magico** | R1, Brutal | Derivar umbral de distribucion nula (bootstrap de EDI bajo ruido puro). Ya existe parcialmente con `edi_null_distribution_analysis.py`. Ejecutar y publicar la distribucion. | ⚠️ Parcial — distribución GPU calculada (umbral 0.3248) pero no integrada en validator |
+| C2 | **EI = 0.0 en todos los casos** | R3 | Bug ya corregido (KDE). Verificar que EI > 0 en ejecucion actual. | ✅ Resuelto — KDE corregido |
+| C3 | **ODE tiene correlacion nula en Clima (-0.027)** | R15 | La ODE de Clima tiene alpha=0.001 (casi inerte). Implementar ODE con balance radiativo real usando CO2 como forcing en lugar de obs[t-1]. | ✅ Resuelto — Clima usa Budyko-Sellers |
+| C4 | **forcing_scale > 1.0 viola A6** | R13, R17 | Ya corregido: cap en 0.99. Verificar en todos los metrics.json actuales (CONFIRMADO: ningun caso viola A6 actualmente). | ✅ Resuelto — cap fs≤0.99 |
+| C5 | **Dominance_share = 1/N (agentes clonados)** | R19, R20 | Existe `abm_gpu_v3.py` con forcing_gradient pero NO se usa. Integrar en validaciones: topologias no regulares, forzamiento espacial heterogeneo, parametros locales. | ✅ Resuelto — 3 capas heterogeneidad en abm_core.py |
+| C6 | **macro_coupling = 1.0 (esclavizacion)** | R11, R17 | 22/29 casos tienen mc > 0.5. Recalibrar con restriccion mc < 0.5 y reportar cual es el mc minimo que mantiene EDI > 0.30. | ❌ No resuelto — 23/29 con mc>0.5, sin restricción en calibración |
+| C7 | **Datos sinteticos en 12 casos** | R11, Brutal | Implementar fuentes de datos reales para al menos 8 de los 12 casos sinteticos (ver Seccion 5). | ⚠️ Parcial — 9/12 tienen código real, pero 6 caen a fallback sintético en ejecución |
+| C8 | **Proxies inadecuados** (Kessler=vuelos, Starlink=internet) | Nueva | Reemplazar con datos de CelesTrak (objetos orbitales) para Kessler y Starlink. | ✅ Resuelto — Kessler y Starlink usan CelesTrak SATCAT |
+| C9 | **Fases sinteticas compartidas entre casos** | Nueva | Al menos 5 grupos de casos comparten parametros sinteticos identicos. Cada caso debe tener parametros de ODE sintetica calibrados a su dominio. | ❌ No resuelto — 25/29 con alpha=0.08, beta=0.03 |
+| C10 | **Data leakage: forcing contiene obs[t-1]** | Nueva | En `hybrid_validator.py:646-647`, `lag_forcing = obs[t-1]` contamina la validacion. El forcing debe construirse SOLO con datos del periodo de entrenamiento. | ✅ Resuelto — persistence en validación |
 
 ### GRUPO B: REQUIEREN REFACTOR ARQUITECTURAL
 
-| # | Critica | Iteracion | Solucion Propuesta |
-|---|---------|-----------|-------------------|
-| C11 | **ODE generica (28/29 usan la misma ecuacion)** | R15, R19 | Implementar ODEs domain-specific: balance radiativo (clima), Heston/GBM (finanzas), Darcy (acuiferos), SEIR (epidemio ya lo tiene). Minimo 5 ODEs distintas. |
-| C12 | **EDI compara ABM_completo vs ABM_nulo (umbral trivial)** | R20, Nueva | Redisenar EDI para comparar ABM+ODE_acoplado vs ABM_solo. Requiere implementar acoplamiento bidireccional ABM-ODE real. |
-| C13 | **No hay acoplamiento ABM-ODE en el codigo** | Nueva | ABM y ODE corren independientemente. Implementar paso de informacion ODE->ABM (estado macro guia agentes) y ABM->ODE (estadisticas micro informan parametros macro). |
-| C14 | **Grid 20x20 (400 agentes) es toy-model** | R5, Pendientes | Escalar a 100x100 (10,000 agentes) o usar GPU v3 existente con grids mayores. Reportar sensibilidad al tamano de grid. |
+| # | Critica | Iteracion | Solucion Propuesta | Estado |
+|---|---------|-----------|-------------------|--------|
+| C11 | **ODE generica (28/29 usan la misma ecuacion)** | R15, R19 | Implementar ODEs domain-specific: balance radiativo (clima), Heston/GBM (finanzas), Darcy (acuiferos), SEIR (epidemio ya lo tiene). Minimo 5 ODEs distintas. | ✅ Resuelto — 11 modelos distintos en ode_library.py |
+| C12 | **EDI compara ABM_completo vs ABM_nulo (umbral trivial)** | R20, Nueva | Redisenar EDI para comparar ABM+ODE_acoplado vs ABM_solo. Requiere implementar acoplamiento bidireccional ABM-ODE real. | ⚠️ Parcial — ODE→ABM implementado, pero EDI sigue midiendo ABM_full vs ABM_nulo |
+| C13 | **No hay acoplamiento ABM-ODE en el codigo** | Nueva | ABM y ODE corren independientemente. Implementar paso de informacion ODE->ABM (estado macro guia agentes) y ABM->ODE (estadisticas micro informan parametros macro). | ⚠️ Parcial — ODE→ABM top-down ok, feedback micro→macro opcional existe pero no es bidireccional simultáneo |
+| C14 | **Grid 20x20 (400 agentes) es toy-model** | R5, Pendientes | Escalar a 100x100 (10,000 agentes) o usar GPU v3 existente con grids mayores. Reportar sensibilidad al tamano de grid. | ✅ Resuelto — Run GPU mega-escala 470x470 ejecutado (outputs_gpu/) |
 
 ### GRUPO C: CRITICAS ONTOLOGICAS (no solucionables con codigo)
 
@@ -94,7 +94,9 @@ La tesis presenta un marco computacional ABM+ODE para validar la existencia de h
 
 ## 3. HALLAZGOS CRITICOS NUEVOS (Auditoria Tecnica)
 
-### 3.1. DATA LEAKAGE EN EL FORCING (SEVERIDAD: CRITICA)
+### 3.1. DATA LEAKAGE EN EL FORCING (SEVERIDAD: CRITICA) — ✅ RESUELTO
+
+> **Fix aplicado:** `lag_forcing` ahora usa persistencia (`last_known = obs[val_start-1]`) para el periodo de validación. Tendencia ajustada solo con datos de entrenamiento.
 
 **Archivo:** `common/hybrid_validator.py`, lineas 644-647
 
@@ -115,7 +117,9 @@ lag_forcing = [obs[0]] + obs[:val_start-1]  # Solo entrenamiento
 # Para validacion: extrapolar con ultimo valor o tendencia
 ```
 
-### 3.2. LA ODE NO PARTICIPA EN EL EDI (SEVERIDAD: ALTA)
+### 3.2. LA ODE NO PARTICIPA EN EL EDI (SEVERIDAD: ALTA) — ⚠️ PARCIALMENTE RESUELTO
+
+> **Estado:** La ODE ahora alimenta al ABM vía `macro_target_series`, pero el cálculo del EDI sigue comparando ABM_completo vs ABM_nulo, no ABM+ODE vs ABM_solo.
 
 **Archivo:** `common/hybrid_validator.py`, lineas 696-720
 
@@ -130,7 +134,9 @@ Donde:
 
 La ODE se ejecuta y reporta, pero **no entra en el calculo del EDI**. El EDI mide "cuanto ayuda tener forcing" vs "no tener nada", no "cuanto ayuda la ODE".
 
-### 3.3. ABM y ODE CORREN INDEPENDIENTEMENTE (SEVERIDAD: ALTA)
+### 3.3. ABM y ODE CORREN INDEPENDIENTEMENTE (SEVERIDAD: ALTA) — ⚠️ PARCIALMENTE RESUELTO
+
+> **Estado:** Implementado acoplamiento ODE→ABM top-down (`macro_target_series`). Falta acoplamiento bidireccional simultáneo paso-a-paso.
 
 ```python
 abm = simulate_abm_fn(eval_params, steps, seed=2)   # Independiente
@@ -139,7 +145,9 @@ ode = simulate_ode_fn(eval_params, steps, seed=3)    # Independiente
 
 No hay acoplamiento bidireccional. El `macro_coupling` dentro del ABM acopla cada celda al **promedio de la propia grilla**, NO a la salida de la ODE. Esto contradice la narrativa de "acoplamiento hiperobjeto-materia".
 
-### 3.4. HOMOGENIZACION RAPIDA DE AGENTES (SEVERIDAD: ALTA)
+### 3.4. HOMOGENIZACION RAPIDA DE AGENTES (SEVERIDAD: ALTA) — ✅ RESUELTO
+
+> **Fix aplicado:** `abm_core.py` ahora incluye `forcing_gradient` (radial/linear/random_hubs), `heterogeneity_strength=0.15` (parámetros varían por celda) y topología opcional (small-world/scale-free). Los parámetros se inyectan por defecto en `hybrid_validator.py`.
 
 Simulacion directa del ABM con parametros tipicos:
 
@@ -152,7 +160,9 @@ Simulacion directa del ABM con parametros tipicos:
 
 La varianza cae un **99.7%** en 10 pasos. La combinacion de difusion isotopica + macro_coupling homogeniza la grilla casi instantaneamente. La GPU v3 con `forcing_gradient` fue creada para resolver esto, pero **no se usa en ninguna validacion**.
 
-### 3.5. 9 CASOS CON EDI > 0.90 REPORTAN overall_pass=true (INCONSISTENCIA)
+### 3.5. 9 CASOS CON EDI > 0.90 REPORTAN overall_pass=true (INCONSISTENCIA) — ✅ RESUELTO
+
+> **Fix aplicado:** `edi_valid` (rango 0.30–0.90) ahora incluido en la conjunción `overall_pass`. Resultado actual: **overall_pass = 0/29** — ningún caso reporta pass=true con EDI tautológico.
 
 Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 casos en fase real superan este umbral y aun reportan `overall_pass: true`:
 
@@ -234,28 +244,28 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 
 ### 5.1. Casos Sinteticos que PUEDEN Migrar a Datos Reales
 
-| Caso | Variable Real Disponible | API/Fuente | Esfuerzo |
-|------|-------------------------|------------|----------|
-| **17 Oceanos** | SST (Sea Surface Temp) | NOAA ERSST v5 | BAJO |
-| **19 Acidificacion** | pH oceanico | Hawaii Ocean Time-series (HOT) | BAJO |
-| **25 Acuiferos** | GRACE water storage | NASA GRACE-FO | MEDIO |
-| **12 Paradigmas** | Citations/papers por campo | OpenAlex API | MEDIO |
-| **28 Fuga Cerebros** | R&D gasto % PIB | World Bank GB.XPD.RSDV.GD.ZS | BAJO |
-| **29 IoT** | Suscripciones moviles | World Bank IT.CEL.SETS.P2 | BAJO |
-| **13 Politicas** | Gasto militar % PIB | World Bank MS.MIL.XPND.GD.ZS | BAJO |
-| **27 Riesgo Biol** | Mortalidad infantil | World Bank SH.DYN.MORT | BAJO |
-| **11 Movilidad** | Vehiculos per capita | World Bank IS.VEH.NVEH.P3 | BAJO |
-| **24 Microplasticos** | Produccion de plasticos | PlasticsEurope (manual) | MEDIO |
-| **14 Postverdad** | Google Trends "fake news" | Google Trends API | BAJO |
-| **10 Justicia** | Rule of Law Index | World Bank RL.EST | BAJO |
+| Caso | Variable Real Disponible | API/Fuente | Esfuerzo | Estado |
+|------|-------------------------|------------|----------|--------|
+| **17 Oceanos** | SST (Sea Surface Temp) | NOAA ERSST v5 | BAJO | ⚠️ Código real listo pero API WMO falla → cae a fallback |
+| **19 Acidificacion** | pH oceanico | Hawaii Ocean Time-series (HOT) | BAJO | ⚠️ Código real listo pero API PMEL falla → cae a fallback |
+| **25 Acuiferos** | GRACE water storage | NASA GRACE-FO | MEDIO | ✅ Migrado — GRAVIS+USGS+WB (obs_mean=85.74) |
+| **12 Paradigmas** | Citations/papers por campo | OpenAlex API | MEDIO | ✅ Migrado — OpenAlex citations + WorldBank R&D |
+| **28 Fuga Cerebros** | R&D gasto % PIB | World Bank GB.XPD.RSDV.GD.ZS | BAJO | ✅ Migrado — WorldBank (obs_mean=2.10) |
+| **29 IoT** | Suscripciones moviles | World Bank IT.CEL.SETS.P2 | BAJO | ✅ Migrado — WorldBank (obs_mean=36.88) |
+| **13 Politicas** | Gasto militar % PIB | World Bank MS.MIL.XPND.GD.ZS | BAJO | ✅ Migrado — WorldBank (obs_mean=2.75) |
+| **27 Riesgo Biol** | Mortalidad infantil | World Bank SH.DYN.MORT | BAJO | ✅ Migrado — WorldBank (obs_mean=52.03) |
+| **11 Movilidad** | Vehiculos per capita | World Bank IS.VEH.NVEH.P3 | BAJO | ⚠️ Código real listo pero WorldBank falla → cae a fallback |
+| **24 Microplasticos** | Produccion de plasticos | PlasticsEurope (manual) | MEDIO | ✅ Migrado — OWID plastic production (obs_mean=42.23) |
+| **14 Postverdad** | Google Trends "fake news" | Google Trends API | BAJO | ⚠️ pytrends no instalado → fallback sintético |
+| **10 Justicia** | Rule of Law Index | World Bank RL.EST | BAJO | ⚠️ Código real listo pero WorldBank falla → cae a fallback |
 
 ### 5.2. Proxies Inadecuados que Deben Reemplazarse
 
-| Caso | Proxy Actual | Reemplazo Recomendado | API |
-|------|-------------|----------------------|-----|
-| 20 Kessler | Salidas aereas | Objetos en orbita | CelesTrak TLE |
-| 26 Starlink | Usuarios internet | Satelites activos | CelesTrak TLE |
-| 21 Salinizacion | Tierra arable % | Conductividad suelo | FAO GLOSIS |
+| Caso | Proxy Actual | Reemplazo Recomendado | API | Estado |
+|------|-------------|----------------------|-----|--------|
+| 20 Kessler | ~~Salidas aereas~~ | Objetos en orbita | CelesTrak TLE | ✅ Resuelto — CelesTrak SATCAT (obs_mean=7187) |
+| 26 Starlink | ~~Usuarios internet~~ | Satelites activos | CelesTrak TLE | ✅ Resuelto — CelesTrak SATCAT filtrado STARLINK (obs_mean=4774) |
+| 21 Salinizacion | Tierra arable % | Conductividad suelo | FAO GLOSIS | ⚠️ Parcial — Cambiado a tierra irrigada % (AG.LND.IRIG.AG.ZS), proxy menos malo |
 
 ### 5.3. Variables Faltantes para Casos con Datos Reales
 
@@ -285,32 +295,32 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 
 ### PRIORIDAD 1: CRITICA (sin esto la tesis NO pasa)
 
-| Accion | Archivo(s) | Descripcion |
-|--------|-----------|-------------|
-| **P1.1** Corregir data leakage | `common/hybrid_validator.py:646-647` | El `lag_forcing` no debe incluir obs del periodo de validacion. Truncar a entrenamiento y extrapolar. |
-| **P1.2** Implementar ODEs domain-specific | `caso_*/src/ode.py` | Al menos para los 5 casos bandera: clima (balance radiativo), finanzas (volatilidad estocastica), epidemiologia (ya tiene SEIR), oceanos (difusion termica), acuiferos (Darcy). |
-| **P1.3** Migrar 8+ casos sinteticos a datos reales | `caso_*/src/data.py` | Ver tabla 5.1. Priorizar oceanos, acidificacion, acuiferos, paradigmas, politicas, movilidad, justicia, fuga cerebros. |
-| **P1.4** Corregir inconsistencia EDI>0.90 vs overall_pass | `common/hybrid_validator.py` | Si `edi.valid = false` (por >0.90), entonces `overall_pass` debe ser `false`. |
+| Accion | Archivo(s) | Descripcion | Estado |
+|--------|-----------|-------------|--------|
+| **P1.1** Corregir data leakage | `common/hybrid_validator.py:646-647` | El `lag_forcing` no debe incluir obs del periodo de validacion. Truncar a entrenamiento y extrapolar. | ✅ Resuelto |
+| **P1.2** Implementar ODEs domain-specific | `caso_*/src/ode.py` | Al menos para los 5 casos bandera: clima (balance radiativo), finanzas (volatilidad estocastica), epidemiologia (ya tiene SEIR), oceanos (difusion termica), acuiferos (Darcy). | ✅ Resuelto — 11 modelos |
+| **P1.3** Migrar 8+ casos sinteticos a datos reales | `caso_*/src/data.py` | Ver tabla 5.1. Priorizar oceanos, acidificacion, acuiferos, paradigmas, politicas, movilidad, justicia, fuga cerebros. | ⚠️ Parcial — 9/12 código listo, 6 fallback |
+| **P1.4** Corregir inconsistencia EDI>0.90 vs overall_pass | `common/hybrid_validator.py` | Si `edi.valid = false` (por >0.90), entonces `overall_pass` debe ser `false`. | ✅ Resuelto |
 
 ### PRIORIDAD 2: ALTA (fortalece significativamente)
 
-| Accion | Archivo(s) | Descripcion |
-|--------|-----------|-------------|
-| **P2.1** Integrar heterogeneidad de agentes | `caso_*/src/abm.py` o usar `common/abm_gpu_v3.py` | Activar `forcing_gradient`, topologias no regulares (small-world), parametros locales variables. |
-| **P2.2** Implementar acoplamiento ABM-ODE real | `common/hybrid_validator.py` + `caso_*/src/` | La salida de la ODE debe alimentar al ABM (como forcing o constraint macro), y las estadisticas del ABM deben informar parametros de la ODE. |
-| **P2.3** Redisenar EDI para incluir la ODE | `common/hybrid_validator.py` | Comparar ABM_con_ODE vs ABM_sin_ODE, no vs ABM_sin_nada. |
-| **P2.4** Restringir macro_coupling < 0.5 | `common/hybrid_validator.py` | Agregar restriccion en calibracion. Reportar resultados con mc limitado. |
-| **P2.5** Reemplazar proxies inadecuados | `20_caso_kessler/src/data.py`, `26_caso_starlink/src/data.py` | Usar CelesTrak para datos orbitales reales. |
+| Accion | Archivo(s) | Descripcion | Estado |
+|--------|-----------|-------------|--------|
+| **P2.1** Integrar heterogeneidad de agentes | `caso_*/src/abm.py` o usar `common/abm_gpu_v3.py` | Activar `forcing_gradient`, topologias no regulares (small-world), parametros locales variables. | ✅ Resuelto |
+| **P2.2** Implementar acoplamiento ABM-ODE real | `common/hybrid_validator.py` + `caso_*/src/` | La salida de la ODE debe alimentar al ABM (como forcing o constraint macro), y las estadisticas del ABM deben informar parametros de la ODE. | ⚠️ Parcial — ODE→ABM ok |
+| **P2.3** Redisenar EDI para incluir la ODE | `common/hybrid_validator.py` | Comparar ABM_con_ODE vs ABM_sin_ODE, no vs ABM_sin_nada. | ⚠️ Parcial |
+| **P2.4** Restringir macro_coupling < 0.5 | `common/hybrid_validator.py` | Agregar restriccion en calibracion. Reportar resultados con mc limitado. | ❌ No resuelto — 23/29 con mc>0.5 |
+| **P2.5** Reemplazar proxies inadecuados | `20_caso_kessler/src/data.py`, `26_caso_starlink/src/data.py` | Usar CelesTrak para datos orbitales reales. | ✅ Resuelto |
 
 ### PRIORIDAD 3: MEDIA (mejora robustez y credibilidad)
 
-| Accion | Archivo(s) | Descripcion |
-|--------|-----------|-------------|
-| **P3.1** Escalar grid a 100x100 | `common/abm_gpu_v3.py` + validaciones | Demostrar que resultados son estables con N=10,000. |
-| **P3.2** Independizar fases sinteticas por caso | `caso_*/src/validate.py` | Cada caso debe tener ODE sintetica con parametros calibrados a su dominio, no compartidos. |
-| **P3.3** Agregar variables multivariadas | `caso_*/src/data.py` | Ver tabla 5.3. Al menos CO2 para clima, VIX para finanzas. |
-| **P3.4** Publicar distribucion nula del EDI | `common/edi_null_distribution_analysis.py` | Ejecutar y documentar el umbral 0.30 derivado de la distribucion nula bajo ruido puro. |
-| **P3.5** Replay total con hashes | Scripts de verificacion | Regenerar todos los outputs, registrar MD5, versionar en git. |
+| Accion | Archivo(s) | Descripcion | Estado |
+|--------|-----------|-------------|--------|
+| **P3.1** Escalar grid a 100x100 | `common/abm_gpu_v3.py` + validaciones | Demostrar que resultados son estables con N=10,000. | ✅ Resuelto — 470x470 GPU |
+| **P3.2** Independizar fases sinteticas por caso | `caso_*/src/validate.py` | Cada caso debe tener ODE sintetica con parametros calibrados a su dominio, no compartidos. | ❌ No resuelto — 25/29 idénticos |
+| **P3.3** Agregar variables multivariadas | `caso_*/src/data.py` | Ver tabla 5.3. Al menos CO2 para clima, VIX para finanzas. | ❌ No resuelto |
+| **P3.4** Publicar distribucion nula del EDI | `common/edi_null_distribution_analysis.py` | Ejecutar y documentar el umbral 0.30 derivado de la distribucion nula bajo ruido puro. | ⚠️ Parcial — distribución GPU calculada (0.3248) |
+| **P3.5** Replay total con hashes | Scripts de verificacion | Regenerar todos los outputs, registrar MD5, versionar en git. | ❌ No resuelto |
 
 ---
 

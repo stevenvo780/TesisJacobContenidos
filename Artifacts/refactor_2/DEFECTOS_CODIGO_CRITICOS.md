@@ -1,6 +1,8 @@
 # Defectos de Codigo Criticos — Referencia Tecnica
 
-## 1. DATA LEAKAGE EN FORCING
+## 1. DATA LEAKAGE EN FORCING — ✅ RESUELTO
+
+> **Estado:** Corregido en `hybrid_validator.py`. El `lag_forcing` ahora usa persistencia (`last_known`) para el periodo de validación en lugar de `obs[:-1]`. La tendencia se ajusta solo con datos de entrenamiento.
 
 **Archivo:** `repos/Simulaciones/common/hybrid_validator.py`
 **Lineas:** 644-647
@@ -28,10 +30,12 @@ forcing_series = [forcing_trend[i] + 0.5 * lag_forcing[i] for i in range(steps)]
 
 ---
 
-## 2. INCONSISTENCIA overall_pass vs EDI > 0.90
+## 2. INCONSISTENCIA overall_pass vs EDI > 0.90 — ✅ RESUELTO (código)
+
+> **Estado:** El código ahora incluye `edi_valid` (rango 0.30–0.90) dentro de la conjunción `overall_pass = all([..., edi_valid, cr_valid])`. Los `metrics.json` actuales ya reflejan `overall_pass = 0/29`, confirmando la corrección.
 
 **Archivo:** `repos/Simulaciones/common/hybrid_validator.py`
-**Problema:** `overall_pass` no incorpora la regla `edi.valid == false` cuando EDI > 0.90.
+**Problema original:** `overall_pass` no incorporaba la regla `edi.valid == false` cuando EDI > 0.90.
 
 **Buscar donde se calcula overall_pass y agregar:**
 ```python
@@ -46,11 +50,13 @@ overall_pass = (
 
 ---
 
-## 3. ODE GENERICA (28/29 IDENTICAS)
+## 3. ODE GENERICA (28/29 IDENTICAS) — ✅ RESUELTO
+
+> **Estado:** Ahora existen **11 modelos ODE distintos** en `common/ode_library.py`: Budyko-Sellers (clima), Heston (finanzas), SEIR (epidemiología), Swing Equation (energía), Ocean Thermal (océanos), Acidification (acidificación), Aquifer Balance (acuíferos), Accumulation-Decay, Logistic-Forced, Random Walk y Constant. Cada caso selecciona un `ode_model` específico.
 
 **Archivos:** `repos/Simulaciones/caso_*/src/ode.py` (28 archivos)
 
-**Todas usan la misma ecuacion:**
+**Antes todas usaban la misma ecuacion:**
 ```python
 dX/dt = alpha * (F(t) - beta * X) + noise
 ```
@@ -93,11 +99,18 @@ def dh_dt(h, recharge, extraction, K, S):
 
 ---
 
-## 4. ABM SIN HETEROGENEIDAD
+## 4. ABM SIN HETEROGENEIDAD — ✅ RESUELTO
+
+> **Estado:** El ABM ahora implementa 3 capas de heterogeneidad en `common/abm_core.py`:
+> - **`forcing_gradient`** (radial/linear/random_hubs) — forcing espacialmente no uniforme
+> - **`heterogeneity_strength=0.15`** — difusión, damping y ruido varían por celda
+> - **Topología opcional** — small-world o scale-free
+>
+> Todos los casos pasan por `hybrid_validator.py` que inyecta estos parámetros por defecto.
 
 **Archivos:** `repos/Simulaciones/caso_*/src/abm.py` (todos)
 
-**Problema:** Todos los agentes son identicos. La ecuacion de actualizacion:
+**Problema original:** Todos los agentes eran identicos. La ecuacion de actualizacion:
 ```python
 delta = diff * (nb_mean - grid) + fs * f + mc * (macro - grid) - dmp * grid + noise
 ```
@@ -117,8 +130,29 @@ no tiene ningun termino que distinga un agente de otro excepto su posicion en la
 **Archivo:** `repos/Simulaciones/common/hybrid_validator.py`, lineas 696-698
 
 ```python
+## 5. ABM Y ODE NO ESTAN ACOPLADOS — ⚠️ PARCIALMENTE RESUELTO
+
+> **Estado:** Se implementó acoplamiento **ODE→ABM** (top-down): la serie ODE se pasa como `macro_target_series` al ABM, que la usa como atractor en el término `mc * (macro_target - grid)`. También existe feedback **micro→macro** opcional que modifica el forcing antes de correr la ODE. Sin embargo:
+> - El acoplamiento es **unidireccional por defecto** (ODE corre primero, luego alimenta ABM)
+> - No hay iteración simultánea paso-a-paso
+> - La ODE no "ve" el estado del ABM durante la simulación
+
+**Archivo:** `repos/Simulaciones/common/hybrid_validator.py`, lineas 696-698
+
+```python
+# ANTES (independientes):
 abm = simulate_abm_fn(eval_params, steps, seed=2)   # Independiente
-ode = simulate_ode_fn(eval_params, steps, seed=3)    # Independiente
+ode = simulate_ode_fn(eval_params, steps, seed=3)   # Independiente
+```
+
+```python
+# AHORA (ODE→ABM):
+ode = simulate_ode_fn(eval_params, steps, seed=3)
+eval_params_ode["macro_target_series"] = ode[ode_key]
+abm = simulate_abm_fn(eval_params_ode, steps, seed=2)
+```
+
+Falta acoplamiento bidireccional simultáneo paso-a-paso.
 ```
 
 No hay ninguna linea donde la salida de la ODE alimente al ABM. El `macro_coupling` en el ABM acopla celdas a su propio promedio (`grid.mean()`), no a la ODE.
@@ -134,7 +168,9 @@ delta = ... + mc * (macro_target - grid) + ...  # Acoplar a la ODE, no al mean(g
 
 ---
 
-## 6. FASES SINTETICAS COMPARTIDAS
+## 6. FASES SINTETICAS COMPARTIDAS — ❌ NO RESUELTO
+
+> **Estado:** 25/29 casos siguen usando los mismos parámetros sintéticos (`ode_alpha=0.08, ode_beta=0.03`). La fase sintética genera datos idénticos para estos 25 casos. Cada caso debería tener parámetros de ODE sintética calibrados a su dominio.
 
 5+ grupos de casos comparten parametros sinteticos identicos:
 - Grupo 1 (obs_mean=6.759): Clima, Energia, Finanzas, Wikipedia

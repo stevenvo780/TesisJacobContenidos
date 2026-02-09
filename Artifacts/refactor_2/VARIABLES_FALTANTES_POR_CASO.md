@@ -5,11 +5,14 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 
 ---
 
-## CASOS CON DATOS REALES (mejorar con variables adicionales)
+## CASOS CON DATOS REALES (mejorar con variables adicionales) — ❌ Pendiente
 
-### 01_caso_clima
+> **Estado:** Las variables multivariadas adicionales (CO2, VIX, vacunación, etc.) **no se han integrado** en ningún caso. Cada caso sigue usando una sola variable observacional.
+
+### 01_caso_clima — ⚠️ ODE resuelta, variables pendientes
 **Actual:** Solo temperatura media mensual (Meteostat)
-**Agregar:**
+**ODE:** ✅ Budyko-Sellers implementado en `ode_library.py`
+**Agregar variables:** ❌ Pendiente
 | Variable | Fuente | API | Impacto |
 |----------|--------|-----|---------|
 | CO2 atmosferico | NOAA ESRL Mauna Loa | `ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt` | CRITICO — forcing real del clima |
@@ -36,9 +39,10 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 | Stringency index | OxCGRT | `https://github.com/OxCGRT/covid-policy-tracker` |
 | **ODE recomendada:** Ya tiene modelo SEIR — es el unico caso bueno |
 
-### 09_caso_finanzas
+### 09_caso_finanzas — ⚠️ ODE resuelta, variables pendientes
 **Actual:** Solo log(SPY) mensual
-**Agregar:**
+**ODE:** ✅ Heston implementado en `ode_library.py`
+**Agregar variables:** ❌ Pendiente
 | Variable | Fuente | API |
 |----------|--------|-----|
 | VIX (volatilidad) | Yahoo Finance | `yfinance.download("^VIX")` |
@@ -59,8 +63,10 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 
 ## CASOS SINTETICOS — MIGRACION A DATOS REALES
 
-### 17_caso_oceanos (PRIORIDAD MAXIMA — datos disponibles)
-**Actual:** Sintetico (ODE+ruido)
+### 17_caso_oceanos (PRIORIDAD MAXIMA — datos disponibles) — ⚠️ Código listo, API falla
+**Actual:** ~~Sintetico (ODE+ruido)~~ → Código real implementado (WMO SST/ERSST) pero **API WMO falla en ejecución** → cae a fallback sintético (obs_mean≈0.499)
+**ODE:** ✅ `ocean_thermal` implementado
+**Acción requerida:** Diagnosticar fallo WMO o usar descarga directa CSV de NOAA ERSST
 **Reemplazo:**
 | Variable | Fuente | API | Formato |
 |----------|--------|-----|---------|
@@ -68,8 +74,10 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 | Nivel del mar | NASA PODAAC | `https://podaac.jpl.nasa.gov/` | Mensual desde 1993 |
 | **Esfuerzo:** BAJO — datos CSV/NetCDF publicos, solo cambiar data.py |
 
-### 19_caso_acidificacion (PRIORIDAD MAXIMA)
-**Actual:** Sintetico
+### 19_caso_acidificacion (PRIORIDAD MAXIMA) — ⚠️ Código listo, API falla
+**Actual:** ~~Sintetico~~ → Código real implementado (PMEL+NOAA+WMO) pero **API PMEL falla** → cae a fallback sintético (obs_mean≈0.499)
+**ODE:** ✅ `acidification` implementado
+**Acción requerida:** Diagnosticar fallo API o usar descarga directa HOT CSV
 **Reemplazo:**
 | Variable | Fuente | API |
 |----------|--------|-----|
@@ -78,8 +86,9 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 | CO2 atmosferico | Mauna Loa | Mismo que clima |
 | **Esfuerzo:** BAJO — datos desde 1988, CSV |
 
-### 25_caso_acuiferos (PRIORIDAD ALTA)
-**Actual:** Sintetico
+### 25_caso_acuiferos (PRIORIDAD ALTA) — ✅ MIGRADO
+**Actual:** ~~Sintetico~~ → **GRAVIS + USGS + WorldBank** (obs_mean=85.74, dataset.csv presente)
+**ODE:** ✅ `aquifer_balance` implementado
 **Reemplazo:**
 | Variable | Fuente | API |
 |----------|--------|-----|
@@ -87,83 +96,83 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 | Niveles piezometricos | USGS NWIS | `https://waterdata.usgs.gov/nwis` |
 | **Esfuerzo:** MEDIO — requiere procesamiento de grids GRACE |
 
-### 12_caso_paradigmas (PRIORIDAD MEDIA)
-**Actual:** Sintetico
-**Reemplazo:**
+### 12_caso_paradigmas (PRIORIDAD MEDIA) — ✅ MIGRADO
+**Actual:** ~~Sintetico~~ → **OpenAlex citations + WorldBank R&D** (obs_mean=34,343)
+**Reemplazo original:**
 | Variable | Fuente | API |
 |----------|--------|-----|
 | Citaciones por campo | OpenAlex | `https://api.openalex.org/works?group_by=publication_year` |
 | Papers publicados | Semantic Scholar | `https://api.semanticscholar.org/` |
 | **Esfuerzo:** MEDIO — requiere definir campos/paradigmas y queries |
 
-### 28_caso_fuga_cerebros (FACIL)
-**Actual:** Sintetico
-**Reemplazo:** World Bank `GB.XPD.RSDV.GD.ZS` (gasto R&D % PIB), `SM.POP.NETM` (migracion neta)
+### 28_caso_fuga_cerebros (FACIL) — ✅ MIGRADO
+**Actual:** ~~Sintetico~~ → **WorldBank GB.XPD.RSDV.GD.ZS** (obs_mean=2.10, dataset.csv presente)
+**Reemplazo original:** World Bank `GB.XPD.RSDV.GD.ZS` (gasto R&D % PIB), `SM.POP.NETM` (migracion neta)
 **Esfuerzo:** BAJO — solo cambiar indicador en data.py
 
-### 29_caso_iot (FACIL)
-**Actual:** Sintetico
-**Reemplazo:** World Bank `IT.CEL.SETS.P2` (suscripciones moviles per capita)
+### 29_caso_iot (FACIL) — ✅ MIGRADO
+**Actual:** ~~Sintetico~~ → **WorldBank IT.CEL.SETS.P2** (obs_mean=36.88, dataset.csv presente)
+**Reemplazo original:** World Bank `IT.CEL.SETS.P2` (suscripciones moviles per capita)
 **Esfuerzo:** BAJO
 
-### 13_caso_politicas (FACIL)
-**Actual:** Sintetico
-**Reemplazo:** World Bank `MS.MIL.XPND.GD.ZS` (gasto militar % PIB) + `GC.TAX.TOTL.GD.ZS` (ingresos fiscales)
+### 13_caso_politicas (FACIL) — ✅ MIGRADO
+**Actual:** ~~Sintetico~~ → **WorldBank MS.MIL.XPND.GD.ZS** (obs_mean=2.75, dataset.csv presente)
+**Reemplazo original:** World Bank `MS.MIL.XPND.GD.ZS` (gasto militar % PIB) + `GC.TAX.TOTL.GD.ZS` (ingresos fiscales)
 **Esfuerzo:** BAJO
 
-### 27_caso_riesgo_biologico (FACIL)
-**Actual:** Sintetico
-**Reemplazo:** World Bank `SH.DYN.MORT` (mortalidad infantil per 1000) + GHS Index
+### 27_caso_riesgo_biologico (FACIL) — ✅ MIGRADO
+**Actual:** ~~Sintetico~~ → **WorldBank SH.DYN.MORT** (obs_mean=52.03, dataset.csv presente)
+**Reemplazo original:** World Bank `SH.DYN.MORT` (mortalidad infantil per 1000) + GHS Index
 **Esfuerzo:** BAJO
 
-### 11_caso_movilidad (FACIL)
-**Actual:** Sintetico
-**Reemplazo:** World Bank `IS.VEH.NVEH.P3` (vehiculos per 1000 personas)
+### 11_caso_movilidad (FACIL) — ⚠️ Código listo, API falla
+**Actual:** ~~Sintetico~~ → Código real implementado (WorldBank IS.VEH.NVEH.P3) pero **API falla** → cae a fallback sintético (obs_mean≈0.49)
+**Reemplazo original:** World Bank `IS.VEH.NVEH.P3` (vehiculos per 1000 personas)
 **Esfuerzo:** BAJO
 
-### 10_caso_justicia (FACIL)
-**Actual:** Sintetico
-**Reemplazo:** World Bank `RL.EST` (Rule of Law Index, WGI)
+### 10_caso_justicia (FACIL) — ⚠️ Código listo, API falla
+**Actual:** ~~Sintetico~~ → Código real implementado (WorldBank RL.EST) pero **API falla** → cae a fallback sintético (obs_mean≈0.49)
+**Reemplazo original:** World Bank `RL.EST` (Rule of Law Index, WGI)
 **Esfuerzo:** BAJO
 
-### 14_caso_postverdad (MEDIO)
-**Actual:** Sintetico
-**Reemplazo:** Google Trends para "fake news" + "misinformation"
+### 14_caso_postverdad (MEDIO) — ⚠️ pytrends no instalado → fallback
+**Actual:** ~~Sintetico~~ → Código real implementado (Google Trends) pero **pytrends no instalado** → cae a fallback sintético (obs_mean≈55.53)
+**Reemplazo original:** Google Trends para "fake news" + "misinformation"
 **Esfuerzo:** MEDIO — Google Trends API tiene limitaciones de rate
 
-### 24_caso_microplasticos (MEDIO)
-**Actual:** Sintetico
-**Reemplazo:** Produccion global de plasticos (PlasticsEurope annual reports, manual)
+### 24_caso_microplasticos (MEDIO) — ✅ MIGRADO
+**Actual:** ~~Sintetico~~ → **OWID plastic production + WorldBank** (obs_mean=42.23, dataset.csv presente)
+**Reemplazo original:** Produccion global de plasticos (PlasticsEurope annual reports, manual)
 **Esfuerzo:** MEDIO — datos anuales, requiere digitalizacion manual
 
-### 23_caso_erosion_dialectica (FACIL)
-**Actual:** Sintetico
-**Reemplazo:** World Bank `SE.ADT.LITR.ZS` (alfabetizacion adultos %)
+### 23_caso_erosion_dialectica (FACIL) — ✅ MIGRADO
+**Actual:** ~~Sintetico~~ → **WorldBank SE.ADT.LITR.ZS** (obs_mean=85.35, dataset.csv presente)
+**Reemplazo original:** World Bank `SE.ADT.LITR.ZS` (alfabetizacion adultos %)
 **Esfuerzo:** BAJO
 
-### ~~02_caso_conciencia (DIFICIL)~~ [IMPLEMENTADO]
+### ~~02_caso_conciencia (DIFICIL)~~ [IMPLEMENTADO] — ⚠️ pytrends no instalado → fallback
 **Actual:** Google Trends ("global news") validado como proxy de atencion.
-**Estado:** Completado en Refactor Fase 2.
+**Estado:** Código completado en Refactor Fase 2, pero **pytrends no instalado** → cae a fallback sintético en ejecución.
 
 
 ---
 
 ## PROXIES INADECUADOS — REEMPLAZO URGENTE
 
-### 20_caso_kessler
-**Actual:** Salidas aereas (IS.AIR.DPRT) — NO es debris orbital
-**Reemplazo:** CelesTrak TLE catalog count (objetos rastreados en orbita)
+### 20_caso_kessler — ✅ RESUELTO
+**Actual:** ~~Salidas aereas (IS.AIR.DPRT) — NO es debris orbital~~ → **CelesTrak SATCAT** (objetos orbitales rastreados, obs_mean=7187)
+**Reemplazo implementado:** CelesTrak TLE catalog count (objetos rastreados en orbita)
 ```
 https://celestrak.org/NORAD/elements/
 ```
 **Alternativa:** ESA DISCOS database o Space-Track.org (requiere registro)
 
-### 26_caso_starlink
-**Actual:** Usuarios de internet (IT.NET.USER.ZS) — NO es Starlink
-**Reemplazo:** CelesTrak Starlink TLE count + SpaceX launch manifest
+### 26_caso_starlink — ✅ RESUELTO
+**Actual:** ~~Usuarios de internet (IT.NET.USER.ZS) — NO es Starlink~~ → **CelesTrak SATCAT filtrado STARLINK** (obs_mean=4774)
+**Reemplazo implementado:** CelesTrak Starlink TLE count + SpaceX launch manifest
 **Alternativa:** Jonathan's Space Report (publicaciones semanales de lanzamientos)
 
-### 21_caso_salinizacion
-**Actual:** Tierra arable % — proxy muy indirecto de salinidad
-**Reemplazo:** FAO AQUASTAT + GLASOD soil degradation data
+### 21_caso_salinizacion — ⚠️ PARCIALMENTE RESUELTO
+**Actual:** ~~Tierra arable %~~ → **Tierra irrigada % (AG.LND.IRIG.AG.ZS)** — proxy menos malo pero aún indirecto
+**Reemplazo ideal pendiente:** FAO AQUASTAT + GLASOD soil degradation data
 **Alternativa:** World Bank AG.LND.IRIG.AG.ZS (irrigated land %) como proxy menos malo
