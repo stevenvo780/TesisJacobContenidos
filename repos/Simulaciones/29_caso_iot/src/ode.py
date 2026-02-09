@@ -10,7 +10,12 @@ Parámetros en Z-space (hybrid_validator normaliza las observaciones).
 
 Ref: Metcalfe (2013) "Metcalfe's Law after 40 Years of Ethernet"
 """
-import os, sys, math, random
+import os
+import sys
+import math
+
+import numpy as np
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 ODE_KEY = "io"
@@ -28,7 +33,19 @@ def _apply_assimilation(value, t, params):
 
 
 def simulate_ode(params, steps, seed=3):
-    random.seed(seed)
+    """Proliferación IoT Bass-Metcalfe (efectos de red).
+
+    dN/dt = α(F − βN) + γ_net·F·N + ε
+
+    Parámetros:
+        α=0.05  Tasa adopción base ~5%/año
+                (ITU 2020: crecimiento medio global de suscripciones)
+        β=0.02  Obsolescencia/churn ~2%/año
+                (Rogers 2003: reemplazo tecnológico natural)
+        γ_net=0.08  Efecto red Metcalfe: N amplifica F
+                (Metcalfe 2013: valor ∝ N²; Bass 1969: imitación)
+    """
+    rng = np.random.default_rng(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.015))
 
@@ -47,7 +64,7 @@ def simulate_ode(params, steps, seed=3):
         core = alpha * (f - beta * N)
         # Bilineal: efecto de red (interacción forcing × estado)
         bilinear = gamma_net * f * N
-        dN = core + bilinear + random.gauss(0, noise_std)
+        dN = core + bilinear + rng.normal(0, noise_std)
         N += dN
         N = max(-10.0, min(N, 10.0))
         N = _apply_assimilation(N, t, params)

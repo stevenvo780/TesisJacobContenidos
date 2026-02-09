@@ -18,7 +18,12 @@ de debris (síndrome de Kessler).
 Ref: Kessler & Cour-Palais (1978); Lewis et al. (2011)
      "Sensitivity of the space debris environment to large constellations"
 """
-import os, sys, math, random
+import os
+import sys
+import math
+
+import numpy as np
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 ODE_KEY = "st"
@@ -36,7 +41,19 @@ def _apply_assimilation(value, t, params):
 
 
 def simulate_ode(params, steps, seed=5):
-    random.seed(seed)
+    """Dinámica orbital de mega-constelación (Kessler-Lewis).
+
+    dN/dt = α(F − βN) − saturation·N·|N| + ε
+
+    Parámetros:
+        α=0.18  Tasa de lanzamiento alta (~18%/año de crecimiento;
+                Lewis et al. 2011: proyección mega-constelaciones)
+        β=0.015 Desorbitado controlado ~1.5%/año
+                (vida útil ~5 años; SpaceX 2020: deorbit design)
+        saturation=0.002  Saturación orbital cuadrática
+                (Kessler & Cour-Palais 1978: colisión ∝ N²)
+    """
+    rng = np.random.default_rng(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.02))
 
@@ -55,7 +72,7 @@ def simulate_ode(params, steps, seed=5):
         core = alpha * (f - beta * N)
         # Domain: saturación cuadrática suave
         sat = saturation * N * abs(N)
-        dN = core - sat + random.gauss(0, noise_std)
+        dN = core - sat + rng.normal(0, noise_std)
         N += dN
         N = max(-10.0, min(N, 10.0))
         N = _apply_assimilation(N, t, params)

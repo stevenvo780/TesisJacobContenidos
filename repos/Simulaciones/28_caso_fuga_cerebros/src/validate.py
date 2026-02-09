@@ -18,11 +18,18 @@ def make_synthetic(start_date, end_date, seed=128):
     rng = np.random.default_rng(seed)
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
+    # Forcing: inversión educativa y económica creciente
+    # 0.01*t: tendencia secular (UNESCO 2021: crecimiento matric. terciaria)
+    # 0.002*t^1.1: aceleración por globalización (Docquier & Rapoport 2012)
     forcing = [0.01 * t + 0.002 * t**1.1 for t in range(steps)]
     true_params = {
-        "p0": 1.2, "ode_alpha": 0.06, "ode_beta": 0.02,
-        "ode_gamma_forcing": 0.08, "ode_delta_drain": 0.015,
-        "ode_drain_threshold": 1.5, "ode_noise": 0.008,
+        "p0": 1.2,
+        "ode_alpha": 0.06,           # Acumulación ~6%/año (Docquier 2012)
+        "ode_beta": 0.02,            # Depreciación ~2%/año
+        "ode_gamma_forcing": 0.08,   # Sensibilidad a PIB
+        "ode_delta_drain": 0.015,    # Brain drain ~1.5%
+        "ode_drain_threshold": 1.5,  # Umbral migración
+        "ode_noise": 0.008,          # Variabilidad baja
         "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
@@ -41,9 +48,12 @@ def main():
         corr_threshold=0.6, ode_noise=0.008, base_noise=0.003,
         loe=3, n_runs=7, ode_calibration=False,
         extra_base_params={
-            "ode_alpha": 0.06, "ode_beta": 0.02,
-            "ode_gamma_forcing": 0.08, "ode_delta_drain": 0.015,
-            "ode_drain_threshold": 1.5,
+            # Docquier & Rapoport (2012): modelo brain drain
+            "ode_alpha": 0.06,            # Acumulación capital humano (~6%/año)
+            "ode_beta": 0.02,             # Depreciación natural (~2%/año)
+            "ode_gamma_forcing": 0.08,    # Sensibilidad a forcing económico
+            "ode_delta_drain": 0.015,     # Intensidad brain drain (~1.5%)
+            "ode_drain_threshold": 1.5,   # Umbral para migración masiva
         },
         driver_cols=["researchers", "enrollment", "remittances", "gdp_pc", "net_migration"],
     )

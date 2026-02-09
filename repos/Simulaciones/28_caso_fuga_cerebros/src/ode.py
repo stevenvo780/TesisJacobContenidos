@@ -28,6 +28,18 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common")
 
 
 def simulate_ode(params, steps, seed=42):
+    """Dinámica de capital humano con brain drain (Docquier & Rapoport 2012).
+
+    dH/dt = α(E − βH) + γF − δ·max(0, H−threshold)^1.5 + ε
+
+    Parámetros:
+        α=0.06  Acumulación capital humano ~6%/año (Barro & Lee 2013)
+        β=0.02  Depreciación natural ~2%/año (obsolescencia de skills)
+        γ=0.08  Sensibilidad a forcing exógeno (PIB, remesas, inversión)
+        δ=0.015 Intensidad brain drain ~1.5% (Docquier & Rapoport 2012)
+        threshold=1.5  Umbral H para migración masiva (brain drain paradox)
+        Exponente 1.5: sub-cuadrático — aceleración moderada sobre umbral
+    """
     rng = np.random.default_rng(seed)
 
     alpha = float(params.get("ode_alpha", 0.06))

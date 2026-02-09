@@ -1,21 +1,21 @@
 # Reporte de Validación — Erosión Dialéctica (Abrams-Strogatz)
 
-- generated_at: 2026-02-09T14:45:55.925530Z
+- generated_at: 2026-02-09T15:57:32.287731Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.3197
-- bootstrap_mean: 0.3197
-- CI 95%: [0.3159, 0.3236]
-- weighted_value (LoE factor 0.60): 0.1918
+- valor: 0.2927
+- bootstrap_mean: 0.2928
+- CI 95%: [0.2880, 0.2979]
+- weighted_value (LoE factor 0.60): 0.1756
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9783
-- CR: 1.0222
+- external: 0.9820
+- CR: 1.0183
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,35 +26,35 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.8548
-- rmse_abm_no_ode: 4.1963
-- rmse_ode: 2.0268
-- rmse_reduced: 6.8895
-- threshold: 2.6262
+- rmse_abm: 2.9341
+- rmse_abm_no_ode: 4.1484
+- rmse_ode: 1.7962
+- rmse_reduced: 6.8364
+- threshold: 2.5948
 
 ### Calibración
-- forcing_scale: 0.3919
-- macro_coupling: 0.5879
-- damping: 0.3686
-- ode_alpha: 0.0340
+- forcing_scale: 0.6500
+- macro_coupling: 0.6511
+- damping: 0.6241
+- ode_alpha: 0.0310
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2060
+- calibration_rmse: 0.1943
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -8.8879
-- bootstrap_mean: -9.5310
-- CI 95%: [-14.6909, -6.6137]
-- weighted_value (LoE factor 0.60): -5.3328
+- valor: -9.0837
+- bootstrap_mean: -9.7582
+- CI 95%: [-15.1846, -6.6466]
+- weighted_value (LoE factor 0.60): -5.4502
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: -0.6293
-- external: 0.2974
-- CR: 2.1163
+- internal: -0.6306
+- external: 0.2956
+- CR: 2.1331
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,9 +65,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.7265
+- rmse_abm: 1.7607
 - rmse_abm_no_ode: 0.1746
-- rmse_ode: 3.5740
+- rmse_ode: 3.6513
 - rmse_reduced: 2.4425
 - threshold: 0.3672
 

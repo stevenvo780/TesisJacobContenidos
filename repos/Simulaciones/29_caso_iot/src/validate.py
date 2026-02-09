@@ -45,16 +45,18 @@ def make_synthetic(start_date, end_date, seed=129):
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
 
-    # Forcing sintético: crecimiento monotónico (patrón estándar)
+    # Forcing sintético: crecimiento monotónico
+    # 0.010*t: tendencia secular (ITU 2020: ~1%/año crecimiento IoT)
+    # 0.0003*t^1.2: aceleración por efectos de red (Metcalfe 2013)
     forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
 
     # ODE con parámetros en espacio Z
     true_params = {
         "p0": 0.0,
-        "ode_alpha": 0.10,
-        "ode_beta": 0.02,
-        "ode_gamma_net": 0.08,
-        "ode_noise": 0.03,
+        "ode_alpha": 0.10,     # Adopción base alta (ITU 2020)
+        "ode_beta": 0.02,      # Obsolescencia ~2%/año (Rogers 2003)
+        "ode_gamma_net": 0.08, # Efecto red Metcalfe (Metcalfe 2013)
+        "ode_noise": 0.03,     # Variabilidad estocástica
         "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
@@ -88,9 +90,11 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_gamma_net": 0.08,    # Efecto de red Metcalfe (fuerte)
-            "forcing_scale": 0.15,
-            "macro_coupling": 0.40,
+            # ode_gamma_net=0.08: efecto de red Metcalfe fuerte
+            #   (Metcalfe 2013: valor ∝ N²; Bass 1969: imitación)
+            "ode_gamma_net": 0.08,
+            "forcing_scale": 0.15,   # Sensibilidad ABM a driver económico
+            "macro_coupling": 0.40,  # Acoplamiento macro→micro alto
         },
         driver_cols=["internet_users", "broadband", "gdp_pc", "gdp_growth"],
     )

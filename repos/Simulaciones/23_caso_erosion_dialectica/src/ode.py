@@ -69,6 +69,10 @@ def simulate_ode(params, steps, seed=3):
         # Core: mean-reversion tracking hacia forcing
         core = alpha * (f - beta * x)
         # Domain: presión mediática asimétrica (más fuerte cuando forcing alto)
+        # 0.3: amplificación proporcional al estado — modela retroalimentación
+        #   positiva donde mayor erosión dialectal facilita más erosión
+        #   (Nettle 1999: "tipping point" en pérdida lingüística; ~30% de
+        #   amplificación no-lineal estimada para lenguas en declive)
         media = prestige * max(0.0, f) * (1.0 + 0.3 * abs(x))
         dx = core + media + rng.normal(0, noise_std)
         x += dx

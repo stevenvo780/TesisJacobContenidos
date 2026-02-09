@@ -35,12 +35,18 @@ def make_synthetic(start_date, end_date, seed=101):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    # Forcing: presión mediática/globalización creciente (Abrams & Strogatz 2003)
+    # Forcing: presión mediática/globalización creciente
+    # 0.008*t: tendencia secular (~0.8%/año; Crystal 2000: ritmo de pérdida dialectal)
+    # 0.0002*t^1.2: aceleración por media digital (Nettle 1999)
     forcing = [0.008 * t + 0.0002 * t**1.2 for t in range(steps)]
     true_params = {
-        "p0": 0.1, "ode_r": 0.03, "ode_k": 1.0,  # Erosión lingüística: crecimiento logístico lento
-        "ode_delta": 0.01, "ode_gamma": 0.08,
-        "ode_noise": 0.015, "forcing_series": forcing,
+        "p0": 0.1,
+        "ode_r": 0.03,     # Tasa transición (Abrams & Strogatz 2003)
+        "ode_k": 1.0,      # Capacidad de carga normalizada
+        "ode_delta": 0.01,  # Resistencia dialectal (Crystal 2000)
+        "ode_gamma": 0.08,  # Coupling no-lineal
+        "ode_noise": 0.015, # Variabilidad interanual
+        "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]

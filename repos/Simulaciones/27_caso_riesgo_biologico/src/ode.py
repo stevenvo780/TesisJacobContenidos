@@ -10,7 +10,12 @@ Parámetros en Z-space (hybrid_validator normaliza las observaciones).
 
 Ref: Woolhouse & Gaunt (2007) "Ecological origins of novel pathogens"
 """
-import os, sys, math, random
+import os
+import sys
+import math
+
+import numpy as np
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 ODE_KEY = "b"
@@ -28,7 +33,19 @@ def _apply_assimilation(value, t, params):
 
 
 def simulate_ode(params, steps, seed=3):
-    random.seed(seed)
+    """Cascada zoonótica Woolhouse (bio-amplificación bilineal).
+
+    dR/dt = α(F − βR) + γ_bio·F·R + ε
+
+    Parámetros:
+        α=0.05  Tasa acumulación de riesgo ~5%/año
+                (Woolhouse & Gaunt 2007: ~3 nuevos patógenos/década)
+        β=0.02  Contención/mitigación sanitaria ~2%/año
+                (WHO 2019: mejora gradual en detección)
+        γ_bio=0.02  Bio-amplificación: riesgo existente amplifica
+                presión zoonótica (Jones et al. 2008: cascada interconectada)
+    """
+    rng = np.random.default_rng(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.015))
 
@@ -47,7 +64,7 @@ def simulate_ode(params, steps, seed=3):
         core = alpha * (f - beta * R)
         # Bilineal: contención sanitaria (damping proporcional a riesgo×forcing)
         bilinear = gamma_bio * f * R
-        dR = core + bilinear + random.gauss(0, noise_std)
+        dR = core + bilinear + rng.normal(0, noise_std)
         R += dR
         R = max(-10.0, min(R, 10.0))
         R = _apply_assimilation(R, t, params)

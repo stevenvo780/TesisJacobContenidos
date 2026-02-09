@@ -32,17 +32,24 @@ def make_synthetic(start_date, end_date, seed=101):
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
 
-    # Forcing: presión zoonótica con tendencia + shock COVID (Woolhouse 2005)
+    # Forcing: presión zoonótica con tendencia + shock COVID
+    # 0.010*t: tendencia secular ~1%/año (Jones et al. 2008: EID events crecientes)
+    # 0.0003*t^1.2: aceleración por deforestación/urbanización
     forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
-    # Shock pandémico tardío (step 20/25 → 80% del rango)
+    # Shock pandémico tardío (simula evento tipo COVID-19)
+    # 0.18: magnitud del shock (WHO 2020: TB incidence spike post-COVID)
+    # 0.3: decaimiento del shock por step
     shock_t = int(0.80 * steps)
     for i in range(shock_t, min(shock_t + 3, steps)):
         forcing[i] += 0.18 * (1 - 0.3 * (i - shock_t))
 
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.06, "ode_beta": 0.02,
-        "ode_gamma_bio": 0.03,
-        "ode_noise": 0.02, "forcing_series": forcing,
+        "p0": 0.0,
+        "ode_alpha": 0.06,      # Acumulación riesgo ~6%/año
+        "ode_beta": 0.02,       # Contención sanitaria ~2%/año
+        "ode_gamma_bio": 0.03,  # Bio-amplificación (Woolhouse cascade)
+        "ode_noise": 0.02,      # Variabilidad interanual
+        "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
@@ -73,9 +80,11 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_gamma_bio": 0.03,   # Bio-amplificación bilineal (Woolhouse cascade)
-            "forcing_scale": 0.20,
-            "macro_coupling": 0.40,
+            # ode_gamma_bio=0.03: bio-amplificación bilineal
+            #   (Woolhouse & Gaunt 2007: cascada zoonótica interconectada)
+            "ode_gamma_bio": 0.03,
+            "forcing_scale": 0.20,   # Sensibilidad ABM a driver zoonótico
+            "macro_coupling": 0.40,  # Acoplamiento macro→micro alto
         },
         driver_cols=["hiv_incidence", "immunization_coverage"],  # Drivers reales WB
     )

@@ -18,7 +18,12 @@ sobreexplotación genera subsidencia irreversible bajo umbral crítico.
 Ref: Theis (1935); De Marsily (2004) "Quantitative Hydrogeology";
      Konikow & Kendy (2005) "Groundwater depletion"
 """
-import os, sys, math, random
+import os
+import sys
+import math
+
+import numpy as np
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 ODE_KEY = "aq"
@@ -36,7 +41,19 @@ def _apply_assimilation(value, t, params):
 
 
 def simulate_ode(params, steps, seed=4):
-    random.seed(seed)
+    """Balance hídrico Darcy-Theis para acuíferos.
+
+    dH/dt = α(F − βH) − extraction·H/(|H|+1) + ε
+
+    Parámetros:
+        α=0.08  Recarga neta ~8%/año (Horton infiltration fraction;
+                Scanlon et al. 2006: 0.1–30% de precipitación)
+        β=0.03  Descarga natural + evapotranspiración ~3%/año
+                (De Marsily 2004: flujo base)
+        extraction=0.01  Bombeo antrópico con saturación logística
+                (Konikow & Kendy 2005: ~1% del stock por año)
+    """
+    rng = np.random.default_rng(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.02))
 
@@ -55,7 +72,7 @@ def simulate_ode(params, steps, seed=4):
         core = alpha * (f - beta * H)
         # Domain: extracción suave (bombeo)
         pump = extraction * H / (abs(H) + 1.0)
-        dH = core - pump + random.gauss(0, noise_std)
+        dH = core - pump + rng.normal(0, noise_std)
         H += dH
         H = max(-10.0, min(H, 10.0))
         H = _apply_assimilation(H, t, params)

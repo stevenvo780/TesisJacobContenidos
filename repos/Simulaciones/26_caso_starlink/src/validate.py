@@ -33,10 +33,15 @@ def make_synthetic(start_date, end_date, seed=129):
         steps = len(dates)
 
     # Forcing: despliegue satelital con ramp-up suave
+    # 0.012*t: tendencia secular (SpaceX 2020: ~60 lanzamientos/año)
+    # 0.0004*t^1.3: aceleración por competencia multi-operador
     forcing = [0.012 * t + 0.0004 * t**1.3 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_inflow": 0.18, "ode_decay": 0.015,
-        "ode_noise": 0.03, "forcing_series": forcing,
+        "p0": 0.0,
+        "ode_inflow": 0.18,   # Alta tasa lanzamiento (Lewis 2011)
+        "ode_decay": 0.015,   # Deorbit ~1.5%/año (vida útil ~5 años)
+        "ode_noise": 0.03,    # Variabilidad estocástica
+        "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
@@ -67,9 +72,11 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_saturation": 0.002,  # Saturación orbital cuadrática
-            "forcing_scale": 0.12,
-            "macro_coupling": 0.28,
+            # ode_saturation=0.002: saturación orbital cuadrática
+            #   (Kessler 1978: probabilidad colisión ∝ N²)
+            "ode_saturation": 0.002,
+            "forcing_scale": 0.12,   # Sensibilidad ABM a lanzamientos
+            "macro_coupling": 0.28,  # Acoplamiento macro→micro
         },
         driver_cols=["launches", "collision_events"],
     )

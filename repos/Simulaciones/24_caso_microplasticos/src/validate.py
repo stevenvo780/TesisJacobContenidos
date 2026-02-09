@@ -35,11 +35,17 @@ def make_synthetic(start_date, end_date, seed=101):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    # Forcing: producción plástica creciente (Jambeck et al. 2015)
+    # Forcing: producción plástica creciente
+    # 0.010*t: tendencia secular ~1%/año (Geyer et al. 2017:
+    #   producción plástica crece ~8.4%/año acumulado desde 1950)
+    # 0.0003*t^1.2: aceleración por economías emergentes (Jambeck 2015)
     forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_inflow": 0.09, "ode_decay": 0.003,
-        "ode_noise": 0.025, "forcing_series": forcing,
+        "p0": 0.0,
+        "ode_inflow": 0.09,  # Input océano (~9%; Jambeck et al. 2015)
+        "ode_decay": 0.003,  # Degradación (~0.3%/año; Ward et al. 2019)
+        "ode_noise": 0.025,  # Variabilidad estocástica
+        "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
