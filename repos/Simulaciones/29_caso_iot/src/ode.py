@@ -36,7 +36,7 @@ def simulate_ode(params, steps, seed=3):
     alpha = float(params.get("ode_alpha", 0.05))
     beta = float(params.get("ode_beta", 0.02))
     # Corrección bilineal: efecto de red Metcalfe (IoT × forzamiento)
-    gamma_net = float(params.get("ode_gamma_net", 0.02))
+    gamma_net = float(params.get("ode_gamma_net", 0.08))
 
     N = float(params.get("p0", 0.0))
     series = []

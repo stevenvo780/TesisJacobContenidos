@@ -53,7 +53,7 @@ def make_synthetic(start_date, end_date, seed=129):
         "p0": 0.0,
         "ode_alpha": 0.10,
         "ode_beta": 0.02,
-        "ode_gamma_net": 0.02,
+        "ode_gamma_net": 0.08,
         "ode_noise": 0.03,
         "forcing_series": forcing,
     }
@@ -62,7 +62,7 @@ def make_synthetic(start_date, end_date, seed=129):
 
     df = pd.DataFrame({"date": dates, "value": obs})
     meta = {
-        "ode_true": {"alpha": 0.10, "beta": 0.02, "gamma_net": 0.02},
+        "ode_true": {"alpha": 0.10, "beta": 0.02, "gamma_net": 0.08},
         "measurement_noise": 0.08,
     }
     return df, meta
@@ -88,7 +88,7 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_gamma_net": 0.02,    # Efecto de red Metcalfe
+            "ode_gamma_net": 0.08,    # Efecto de red Metcalfe (fuerte)
             "forcing_scale": 0.15,
             "macro_coupling": 0.40,
         },

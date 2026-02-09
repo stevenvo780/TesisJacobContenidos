@@ -1,6 +1,6 @@
 # Reporte de Validación — Constelaciones Satelitales Starlink (Mega-Constellation)
 
-- generated_at: 2026-02-09T02:38:14.186510Z
+- generated_at: 2026-02-09T03:29:37.600762Z
 
 ## Fase synthetic
 - **overall_pass**: False

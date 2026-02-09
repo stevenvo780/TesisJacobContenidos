@@ -805,19 +805,12 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     }
     base_params.update(config.extra_base_params)
 
-    # Debug Config
-    print(f"DEBUG: evaluate_phase ode_calibration={config.ode_calibration}") 
-    print(f"DEBUG: extra_base_params={config.extra_base_params}")
-
     # Calibración ODE
     if config.ode_calibration:
-        print("DEBUG: Running ODE calibration...")
         alpha, beta = calibrate_ode(obs[:val_start], forcing_series[:val_start])
-        print(f"DEBUG_CAL: alpha={alpha:.6f}, beta={beta:.6f}, val_start={val_start}, steps={steps}")
         base_params["ode_alpha"] = alpha
         base_params["ode_beta"] = beta
     else:
-        print("DEBUG: Skipping ODE calibration...")
         # Use provided params or defaults
         alpha = config.extra_base_params.get("ode_alpha", 0.05)
         beta = config.extra_base_params.get("ode_beta", 0.02)
@@ -831,12 +824,10 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             param_grid=param_grid, seed=2
         )
     else:
-        print("DEBUG: Skipping ABM calibration...")
         best_abm = {}
         best_err = 0.0
         top_5 = []
     base_params.update(best_abm)
-    print(f"DEBUG_ABM: best_abm={best_abm}, best_err={best_err:.4f}")
 
     # Parámetros de evaluación (sin assimilación)
     eval_params = dict(base_params)
@@ -899,8 +890,6 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     err_abm_no_ode = rmse(abm_no_ode_val, obs_val)
     err_ode = rmse(ode_val, obs_val)
     err_reduced = rmse(reduced_val, obs_val)
-    print(f"DEBUG_RMSE: err_abm={err_abm:.4f}, err_no_ode={err_abm_no_ode:.4f}, err_ode_direct={err_ode:.4f}, err_reduced={err_reduced:.4f}")
-    print(f"DEBUG_VALS: obs_val_mean={np.mean(obs_val):.4f}, abm_val_mean={np.mean(abm_val):.4f}, abm_no_mean={np.mean(abm_no_ode_val):.4f}, ode_val_mean={np.mean(ode_val):.4f}")
 
     # EDI con bootstrap (ABM+ODE vs ABM sin ODE)
     edi_val = compute_edi(err_abm, err_abm_no_ode)

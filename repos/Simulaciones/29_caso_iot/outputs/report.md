@@ -1,21 +1,21 @@
 # Reporte de Validación — Ecosistema IoT Global (Bass-Metcalfe)
 
-- generated_at: 2026-02-09T03:14:13.671575Z
+- generated_at: 2026-02-09T03:29:45.554044Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.1146
-- bootstrap_mean: 0.1152
-- CI 95%: [0.1038, 0.1284]
-- weighted_value (LoE factor 0.80): 0.0917
-- válido (0.30-0.90): False
+- valor: 0.3623
+- bootstrap_mean: 0.3629
+- CI 95%: [0.3398, 0.3942]
+- weighted_value (LoE factor 0.80): 0.2898
+- válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.9989
-- external: 0.9949
-- CR: 1.0040
+- internal: 0.9995
+- external: 0.9610
+- CR: 1.0401
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,35 +26,35 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.0068
-- rmse_abm_no_ode: 3.3961
-- rmse_ode: 2.3325
-- rmse_reduced: 5.0246
-- threshold: 1.8075
+- rmse_abm: 2.8170
+- rmse_abm_no_ode: 4.4175
+- rmse_ode: 0.6975
+- rmse_reduced: 6.1851
+- threshold: 2.4539
 
 ### Calibración
-- forcing_scale: 0.8944
-- macro_coupling: 0.4745
+- forcing_scale: 0.9112
+- macro_coupling: 0.5006
 - damping: 0.9500
-- ode_alpha: 0.2760
+- ode_alpha: 0.2950
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.7091
+- calibration_rmse: 0.6710
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0074
-- bootstrap_mean: -0.0076
-- CI 95%: [-0.0327, 0.0143]
-- weighted_value (LoE factor 0.80): -0.0059
+- valor: 0.0181
+- bootstrap_mean: 0.0176
+- CI 95%: [-0.0095, 0.0393]
+- weighted_value (LoE factor 0.80): 0.0145
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9999
-- external: 0.9330
-- CR: 1.0718
+- internal: 1.0000
+- external: 0.9219
+- CR: 1.0847
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -65,9 +65,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 34.9159
+- rmse_abm: 34.0326
 - rmse_abm_no_ode: 34.6601
-- rmse_ode: 35.4331
+- rmse_ode: 34.2993
 - rmse_reduced: 40.8515
 - threshold: 10.9486
 
