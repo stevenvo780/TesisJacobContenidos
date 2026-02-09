@@ -69,7 +69,7 @@ def main():
         base_noise=0.003,
         loe=3,
         n_runs=7,
-        ode_calibration=False,
+        ode_calibration=True,
         extra_base_params={
             "ode_recharge": 0.04,    # Recarga por precipitación/infiltración
             "ode_extraction": 0.06,  # Extracción agrícola > recarga = depleción

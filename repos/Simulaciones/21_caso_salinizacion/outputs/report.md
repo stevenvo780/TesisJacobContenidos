@@ -1,21 +1,21 @@
-# Reporte de Validación — Salinización de Suelos
+# Reporte de Validación — Salinización de Suelos (Richards-Solute)
 
-- generated_at: 2026-02-08T20:51:21.923015Z
+- generated_at: 2026-02-09T01:45:17.724751Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.2483
-- bootstrap_mean: -0.2504
-- CI 95%: [-0.2827, -0.2259]
-- weighted_value (LoE factor 0.20): -0.0497
+- valor: -0.0967
+- bootstrap_mean: -0.0988
+- CI 95%: [-0.1524, -0.0569]
+- weighted_value (LoE factor 0.60): -0.0580
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9994
-- external: 0.9989
-- CR: 1.0006
+- internal: 0.9998
+- external: 0.9940
+- CR: 1.0058
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,35 +26,35 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.4599
-- rmse_abm_no_ode: 1.1695
-- rmse_ode: 2.1759
-- rmse_reduced: 3.3810
-- threshold: 0.8882
+- rmse_abm: 1.5729
+- rmse_abm_no_ode: 1.4343
+- rmse_ode: 2.3389
+- rmse_reduced: 3.6068
+- threshold: 1.0442
 
 ### Calibración
-- forcing_scale: 0.9803
-- macro_coupling: 0.4280
+- forcing_scale: 0.9447
+- macro_coupling: 0.2441
 - damping: 0.9500
-- ode_alpha: 0.3626
+- ode_alpha: 0.3858
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.3353
+- calibration_rmse: 0.4047
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -1.9302
-- bootstrap_mean: -1.9486
-- CI 95%: [-3.6252, -0.9313]
-- weighted_value (LoE factor 0.20): -0.3860
+- valor: -0.5687
+- bootstrap_mean: -0.5648
+- CI 95%: [-0.8957, -0.2536]
+- weighted_value (LoE factor 0.60): -0.3412
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: -0.9610
-- external: 0.0024
-- CR: 401.7657
+- internal: -0.8228
+- external: 0.1882
+- CR: 4.3712
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,18 +65,18 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 3.8418
-- rmse_abm_no_ode: 1.3111
-- rmse_ode: 2.7269
+- rmse_abm: 1.3716
+- rmse_abm_no_ode: 0.8744
+- rmse_ode: 0.7002
 - rmse_reduced: 1.0780
 - threshold: 0.1357
 
 ### Calibración
-- forcing_scale: 0.9900
-- macro_coupling: 0.8607
+- forcing_scale: 0.9487
+- macro_coupling: 0.7718
 - damping: 0.9500
 - ode_alpha: 0.0010
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2726
+- calibration_rmse: 0.2739
 

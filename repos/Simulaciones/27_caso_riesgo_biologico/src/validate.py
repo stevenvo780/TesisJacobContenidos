@@ -69,7 +69,7 @@ def main():
         base_noise=0.004,
         loe=4,
         n_runs=7,
-        ode_calibration=False,
+        ode_calibration=True,
         extra_base_params={
             "ode_r": 0.06,       # Tasa de emergencia zoonótica
             "ode_k": 2.0,       # Techo de riesgo biológico global

@@ -63,7 +63,7 @@ def main():
         base_noise=0.003,
         loe=3,
         n_runs=7,
-        ode_calibration=False,
+        ode_calibration=True,
         extra_base_params={
             "ode_inflow": 0.07,   # Tasa de aporte fosfatado (fertilizantes + escorrentía)
             "ode_decay": 0.02,    # Reciclaje biogeoquímico lento (sedimentación)

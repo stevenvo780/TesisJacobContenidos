@@ -1,6 +1,6 @@
 # Reporte de Validación — Riesgo Biológico Global (Woolhouse Zoonotic)
 
-- generated_at: 2026-02-09T01:41:31.715455Z
+- generated_at: 2026-02-09T01:46:25.646309Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -36,8 +36,8 @@
 - forcing_scale: 0.7158
 - macro_coupling: 0.7819
 - damping: 0.7006
-- ode_alpha: 0.0500
-- ode_beta: 0.0200
+- ode_alpha: 0.0536
+- ode_beta: 1.0000
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.2331
 
@@ -75,8 +75,8 @@
 - forcing_scale: 0.9195
 - macro_coupling: 0.9739
 - damping: 0.9500
-- ode_alpha: 0.0500
-- ode_beta: 0.0200
+- ode_alpha: 0.0010
+- ode_beta: 0.0010
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.1210
 

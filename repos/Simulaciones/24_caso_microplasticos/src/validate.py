@@ -69,7 +69,7 @@ def main():
         base_noise=0.004,
         loe=4,
         n_runs=7,
-        ode_calibration=False,
+        ode_calibration=True,
         extra_base_params={
             "ode_inflow": 0.09,   # Ingreso de microplásticos desde ríos y costas
             "ode_decay": 0.003,   # Degradación ultra-lenta (persistencia ~450 años)
