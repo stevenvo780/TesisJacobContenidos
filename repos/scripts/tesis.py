@@ -389,7 +389,7 @@ def _build_case_summary_table():
         "",
         "> Tabla generada automáticamente desde `metrics.json` de cada caso.",
         "",
-        "## Matriz de Protocolo Completa (32 casos × 11 criterios)",
+        "## Matriz de Protocolo Completa (29 casos × 11 criterios)",
         "",
         "Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). "
         "**Validado** = 11 condiciones ✓ simultáneamente.",

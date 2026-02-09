@@ -134,7 +134,7 @@ Para resolver la crítica de "homogeneidad espacial" (dom_share ≈ 1/N²), se i
 
 La topología Scale-Free (Barabási-Albert) produce heterogeneidad 10x mayor que la grilla regular. Esto permite detectar hubs (nodos con grado alto) y frontera espacial genuina (CR > 2.0 esperado).
 
-**Implementación:** `repos/Simulaciones/common/topology_generator.py` genera matrices de adyacencia dispersas compatibles con GPU. El motor ABM v2.0 ya soporta difusión vaía `adjacency_matrix` opcional.
+**Implementación:** La heterogeneidad de agentes se implementa en `repos/Simulaciones/common/abm_core.py` con tres capas: `forcing_gradient` (radial/linear/random_hubs), `heterogeneity_strength` (parámetros varían por celda) y topología opcional (small-world/scale-free). Estos parámetros se inyectan por defecto en `hybrid_validator.py`.
 
 ## Riesgos y Mitigacion
 - **Reificacion:** describir dinamicas, no “cosas”; todo debe pasar por métricas.

@@ -14,46 +14,32 @@ pip install -r repos/Simulaciones/requirements.txt
 
 ## Resultados Principales
 
-**29 casos evaluados** con protocolo completo (11 criterios simultaneos). **21 validados** (81%), 5 rechazados genuinos, 3 controles de falsacion correctos.
+**29 casos evaluados** con protocolo completo (11 criterios simultáneos). **overall_pass = 0/29** con el pipeline limpio (sin data leakage, zero-nudging). La hipótesis H1 queda **no confirmada** bajo criterios estrictos, pero el marco demuestra capacidad discriminante (3/3 falsaciones correctas).
 
-| Caso | EDI | Dominio | Estado |
-|------|-----|---------|--------|
-| 28 Acuiferos | 0.959 | Hidrico | ✅ |
-| 12 Mod. Adversarial | 0.950 | Informacional | ✅ |
-| 17 RTB Publicidad | 0.950 | Mercado digital | ✅ |
-| 06 Estetica | 0.949 | Cultural | ✅ |
-| 22 Acidificacion | 0.947 | Oceanico | ✅ |
-| 11 Justicia | 0.946 | Sociotecnico | ✅ |
-| 02 Conciencia | 0.936 | Cognitivo | ✅ |
-| 20 Oceanos | 0.936 | Ambiental | ✅ |
-| 26 Erosion Dial. | 0.923 | Cultural | ✅ |
-| 13 Movilidad | 0.915 | Social | ✅ |
-| 29 Starlink | 0.914 | Tecnologico | ✅ |
-| 25 Fosforo | 0.902 | Biogeoquimico | ✅ |
-| 30 Riesgo Bio | 0.893 | Bioseguridad | ✅ |
-| 32 IoT | 0.889 | Tecnologico | ✅ |
-| 10 Finanzas | 0.882 | Economico | ✅ |
-| 31 Fuga Cerebros | 0.881 | Capital int. | ✅ |
-| 14 Paradigmas | 0.863 | Cultural | ✅ |
-| 27 Microplasticos | 0.856 | Material | ✅ |
-| 19 Deforestacion | 0.846 | Ambiental | ✅ |
-| 21 Urbanizacion | 0.839 | Social | ✅ |
-| 15 Politicas | 0.804 | Geopolitico | ✅ |
-| 23 Kessler | 0.776 | Orbital | ✅ |
-| 01 Clima | 0.372 | Fisico | ✅ |
-| 04 Energia | 0.354 | Infraestructura | ✅ |
+| Caso | EDI_real | Dominio | Estado |
+|------|----------|---------|--------|
+| 24 Microplásticos | 0.586 | Material | ⚠️ Señal parcial |
+| 27 Riesgo Biológico | 0.414 | Bioseguridad | ⚠️ Señal parcial |
+| 28 Fuga Cerebros | 0.213 | Capital int. | ⚠️ Débil |
+| 17 Océanos | 0.119 | Ambiental | ⚠️ Marginal |
+| 09 Finanzas | 0.051 | Económico | ❌ Nulo |
+| 29 IoT | 0.014 | Tecnológico | ❌ Nulo |
+| 01 Clima | -0.299 | Físico | ❌ Anti-emergencia |
+| 16 Deforestación | -1.001 | Ambiental | ❌ Anti-emergencia |
+| 20 Kessler | -3.419 | Orbital | ❌ Anti-emergencia |
+| 26 Starlink | -546.587 | Tecnológico | ❌ Colapso |
 
-**Nota:** Clima tiene el EDI mas bajo pero usa datos reales con forcing_scale <= 0.99 — la emergencia mas conservadora del portafolio.
+**Nota:** Solo Microplásticos (0.586) y Riesgo Biológico (0.414) alcanzan EDI_real > 0.30, pero fallan otros criterios del protocolo de 11 condiciones.
 
-Ejecucion: `repos/Simulaciones/{NN}_caso_*/src/validate.py`
+Ejecución: `repos/Simulaciones/{NN}_caso_*/src/validate.py`
 
 ## Estructura de la Tesis
 
 - **00_Marco_Conceptual:** Fundamentos filosoficos.
 - **01_Metodologia_Medicion:** Protocolos C1-C5, metricas EDI/CR.
-- **02_Modelado_Simulacion:** Arquitectura del motor HybridModel y 32 casos.
-- **03_Validacion_Praxis:** Matriz de evidencia y analisis de fallos.
-- **04_Casos_De_Estudio:** Catalogo detallado de casos.
+- **02_Modelado_Simulacion:** Arquitectura del motor HybridModel y 29 casos.
+- **03_Validacion_Praxis:** Matriz de evidencia y análisis de fallos.
+- **04_Casos_De_Estudio:** Catálogo detallado de casos.
 - **EjersiciosCriticos:** Sintesis del ejercicio Gladiadores.
 
 ## Mapa Doc - Codigo

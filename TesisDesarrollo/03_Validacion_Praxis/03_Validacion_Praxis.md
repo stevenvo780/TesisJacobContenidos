@@ -14,77 +14,49 @@ La validación distingue entre evidencia empírica (datasets largos y duros) y e
 
 El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso es **Validado** solo si las 11 condiciones son ✓ simultáneamente.
 
-### Clasificación por Grupos y Calidad de Evidencia (LoE)
+> **Estado actual (2026-02-09):** Tras la corrección de data leakage, la inclusión de `edi_valid` en `overall_pass`, y la evaluación con `assimilation_strength=0.0`: **overall_pass = 0/29**. La hipótesis H1 queda **no confirmada** bajo criterios estrictos.
 
-La validación ontológica requiere ponderar el EDI técnico por la robustez de los datos (LoE). Se clasifican los 29 casos en 6 grupos funcionales.
+### Clasificación por Resultado
 
-#### Grupo A: Sistemas de Inercia Física (LoE 4-5) — Core H1
-*Alta inercia, datos duros. Validación robusta.*
+#### Casos con señal parcial en fase real (EDI_real > 0)
 
-| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
-|------|-----|-------------|---------------|--------|
-| 25 Acuíferos | 5 | 0.959 | **0.959** | Validado |
-| 19 Acidificación | 5 | 0.947 | **0.947** | Validado |
-| 17 Océanos | 4 | 0.936 | **0.749** | Validado |
-| 22 Fósforo | 3 | 0.902 | **0.541** | Validado |
-| 24 Microplásticos | 4 | 0.856 | **0.685** | Validado |
-| 01 Clima | 5 | 0.372 | **0.372** | Validado |
-| 04 Energía | 4 | 0.354 | **0.283** | Validado (Débil) |
+Estos casos muestran algún indicio de constricción macro, aunque insuficiente para pasar el protocolo completo:
 
-#### Grupo B: Sistemas Sociotécnicos (LoE 3-5)
-*Gobernanza explícita, datos estructurados.*
+| Caso | EDI_syn | EDI_real | Notas |
+|------|---------|----------|-------|
+| 24 Microplásticos | 0.679 | **0.586** | Mejor caso: OWID plastic production |
+| 27 Riesgo Biológico | 0.409 | **0.414** | WorldBank mortalidad — señal consistente |
+| 28 Fuga Cerebros | 0.491 | 0.213 | WorldBank I+D — señal débil |
+| 17 Océanos | 0.110 | 0.119 | Proxy WMO — marginal |
+| 09 Finanzas | -0.000 | 0.051 | Yahoo Finance SPY — casi nulo |
+| 29 IoT | 0.414 | 0.014 | WorldBank — señal se pierde en real |
+| 11 Movilidad | 0.020 | 0.003 | WorldBank — marginal |
+| 14 Postverdad | 0.000 | 0.003 | Fallback sintético — marginal |
 
-| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
-|------|-----|-------------|---------------|--------|
-| 10 Justicia | 2 | 0.946 | 0.378 | Prototipo |
-| 11 Movilidad | 2 | 0.915 | 0.366 | Prototipo |
-| 09 Finanzas | 5 | 0.882 | **0.882** | Validado |
-| 28 Fuga Cerebros | 2 | 0.881 | 0.352 | Prototipo |
-| 18 Urbanización | 4 | 0.839 | **0.671** | Validado |
-| 13 Políticas | 1 | 0.804 | 0.161 | Rechazo (LoE) |
+Solo los casos **24 (Microplásticos)** y **27 (Riesgo Biológico)** alcanzan EDI_real > 0.30, el umbral de H1. Sin embargo, fallan otros criterios del protocolo de 11 condiciones.
 
-#### Grupo C: Sistemas Tecnológicos-Digitales (LoE 2-5)
-*Datos nativos digitales.*
+#### Casos con anti-emergencia (EDI_real < 0)
 
-| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
-|------|-----|-------------|---------------|--------|
-| 26 Starlink | 5 | 0.914 | **0.914** | Validado |
-| 27 Riesgo Bio | 2 | 0.893 | 0.357 | Prototipo |
-| 29 IoT | 3 | 0.889 | **0.533** | Validado |
-| 20 Kessler | 5 | 0.776 | **0.776** | Validado |
+En estos casos, el ABM reducido (sin constricción macro) predice **mejor** que el ABM completo:
 
-#### Grupo D: Sistemas Culturales-Epistémicos (LoE 1-2)
-*Datos proxies, alto riesgo de reificación.*
+| Caso | EDI_real | Interpretación |
+|------|----------|---------------|
+| 26 Starlink | -546.587 | Colapso total del modelo con datos reales |
+| 23 Erosión Dialéctica | -9.084 | Anti-emergencia severa |
+| 22 Fósforo | -4.269 | Anti-emergencia severa |
+| 08 Falsac. Observabilidad | -3.771 | Control correctamente rechazado |
+| 20 Kessler | -3.419 | Anti-emergencia con datos CelesTrak |
+| 21 Salinización | -1.378 | Proxy inadecuado |
+| 16 Deforestación | -1.001 | Anti-emergencia |
+| 06 Falsac. Exogeneidad | -0.615 | Control correctamente rechazado |
+| 07 Falsac. No-Estacionariedad | -7.837 | Control correctamente rechazado |
+| 01 Clima | -0.299 | ODE Budyko-Sellers insuficiente |
+| 25 Acuíferos | -0.272 | Señal real no capturada |
 
-| Caso | LoE | EDI Técnico | EDI Ponderado | Estado |
-|------|-----|-------------|---------------|--------|
-| 02 Conciencia | 1 | 0.936 | 0.187 | Rechazo (LoE) |
-| 23 Erosión Dialéc. | 2 | 0.923 | 0.369 | Prototipo |
-| 12 Paradigmas | 2 | 0.863 | 0.345 | Prototipo |
-| 16 Deforestación | 5 | 0.846 | **0.846** | Validado (Reclasif. a Grupo A) |
-
-#### Grupo E: Rechazos Genuinos (Falla Técnica)
-*EDI Técnico < 0.30 independientemente del LoE.*
-- 05 Epidemiología, 21 Salinización, 14 Postverdad, 03 Contaminación, 15 Wikipedia.
-
-#### Grupo F: Controles de Falsación
-- 06 Exogeneidad, 07 No-estacionariedad, 08 Observabilidad.
-
-
-### Controles de Falsación (3/3 correctamente rechazados)
-- 06 Falsación Exogeneidad: ruido sin estructura → rechazado (EDI=-0.731).
-- 07 Falsación No-Estacionariedad: deriva temporal sin causalidad → rechazado (EDI=0.082).
-- 08 Falsación Observabilidad: límites de medición micro → rechazado (EDI=0.000).
-
-### Rechazados genuinos (5 casos)
-
-| Caso | EDI | Criterios que fallan | Interpretación |
-|------|-----|---------------------|----------------|
-| 05 Epidemiología | 0.176 | C5, Emr | ABM no captura dinámica epidémica |
-| 21 Salinización | 0.176 | C1, C2, Sym, Per | Señal débil sin coherencia interna |
-| 14 Postverdad | 0.154 | C1, C2, C5, Sym | ABM anti-correlacionado (corr=-0.85) |
-| 03 Contaminación | 0.125 | Emr | EDI insuficiente para emergencia |
-| 15 Wikipedia | 0.018 | C1, Emr | Ediciones de Wikipedia no exhiben estructura macro |
+#### Controles de Falsación (3/3 correctamente rechazados)
+- 06 Falsación Exogeneidad: ruido sin estructura → rechazado (EDI=-0.615).
+- 07 Falsación No-Estacionariedad: deriva temporal sin causalidad → rechazado (EDI=-7.837).
+- 08 Falsación Observabilidad: límites de medición micro → rechazado (EDI=-3.771).
 
 ## Análisis de Selectividad
 
@@ -115,10 +87,10 @@ La limitación fs<1.0 garantiza que ningún caso validado se beneficia de amplif
 C1 y Emergence son los filtros más selectivos: exigen convergencia del modelo y reducción significativa de entropía respectivamente. Los 5 rechazos genuinos representan dominios donde la dinámica micro no responde a constricciones macro (EDI < 0.30), confirmando la capacidad discriminante del protocolo.
 
 ### Diversidad de Dominios
-Los casos validados cubren dominios físicos (clima, energía, océanos, acidificación), biológicos (deforestación, fósforo, riesgo biológico), económicos (finanzas), tecnológicos (starlink, IoT), culturales (paradigmas, erosión dialéctica), sociales (urbanización, fuga de cerebros, movilidad, justicia), hídricos (acuíferos), materiales (microplásticos) y orbitales (Kessler).
+Los 29 casos cubren dominios físicos (clima, energía, océanos, acidificación), biológicos (deforestación, fósforo, riesgo biológico, epidemiología), económicos (finanzas), tecnológicos (starlink, IoT, Kessler), culturales (paradigmas, erosión dialéctica, conciencia), sociales (urbanización, fuga de cerebros, movilidad, justicia, postverdad), hídricos (acuíferos, salinización), materiales (microplásticos, contaminación) y de gobernanza (políticas estratégicas, Wikipedia).
 
-### La Paradoja de la Inercia
-El marco detecta **estabilidad de flujo informacional**, no "importancia social". Sistemas con inercia física alta (clima, deforestación, océanos) validan consistentemente, mientras que sistemas de alta fricción social (postverdad, epidemiología) requieren adaptaciones del modelo que están fuera del alcance del ODE lineal actual.
+### La Paradoja de la Inercia — Revisada
+Con el pipeline limpio, la paradoja se disuelve parcialmente: los dos únicos casos con EDI real positivo significativo son **Microplásticos** (EDI=0.586, datos OWID) y **Riesgo Biológico** (EDI=0.414, WorldBank mortalidad). Ambos son sistemas con inercia material/biológica moderada, consistente con la hipótesis de que el marco detecta **estabilidad de flujo informacional** en sistemas con inercia física o biológica.
 
 ---
 
@@ -157,15 +129,21 @@ Si el sistema retiene eficacia causal cuando el programador "suelta los controle
 
 ## Conclusiones
 
-### Evidencia de Ablación: macro_coupling=0 vs modelo completo
+### Estado actual: H1 no confirmada, marco falsable
 
-La prueba más directa de emergencia es la ablación: ejecutar el ABM con `macro_coupling=0.0` y `forcing_scale=0.0` (eliminando toda constricción macro) y comparar con el modelo completo. El EDI mide exactamente esta diferencia.
+El resultado principal es negativo: **overall_pass = 0/29**. La hipótesis H1 (EDI > 0.30 + protocolo C1-C5) no se confirma bajo el pipeline actual con evaluación estricta (zero-nudging, sin data leakage, `edi_valid` en `overall_pass`).
 
-Los casos validados muestran reducciones de RMSE entre 35% (Energía) y 96% (Acuíferos) al incluir la constricción macro. Los 5 rechazados muestran reducciones marginales (<18%) o incluso anti-emergencia (caso 06: el modelo reducido predice MEJOR que el completo, confirmando falsación).
+Sin embargo, este resultado negativo es **epistemológicamente valioso**:
 
-Esta prueba es análoga al "knockout experiment" en genética: si desactivar un gen (macro_coupling) destruye una función (predicción), el gen es causalmente necesario. Del mismo modo, si desactivar la constricción macro destruye la predicción, la estructura macro es causalmente eficaz.
+1. **El marco es falsable:** La corrección del data leakage produjo un colapso de los EDI, demostrando que el protocolo no es un rubber-stamp.
+2. **Los controles de falsación funcionan:** Los 3 controles (06-08) son correctamente rechazados con EDI negativo.
+3. **Hay señal parcial:** Los casos 24 (Microplásticos, EDI=0.586) y 27 (Riesgo Biológico, EDI=0.414) muestran EDI real en rango válido, sugiriendo que la mejora del pipeline (mc restringido, acoplamiento bidireccional, variables multivariadas) podría rescatar la hipótesis en dominios específicos.
 
-### Conclusión de la Falsación
-La tesis sobrevive porque delimita sus fracasos. Al admitir que casos como **Justicia** y **Conciencia** no son hiperobjetos bajo este marco (por LoE bajo), se dota de credibilidad a los casos que sí lo son (Clima, Finanzas, Deforestación). El marco no es un oráculo, es un **filtro de realidad informacional**.
+### Evidencia de Ablación: resultado invertido
 
-La praxis no busca confirmar la hipótesis, sino sobrevivir intentos de refutación. Con validaciones positivas, rechazos genuinos con EDI bajo, y falsaciones correctas, el marco demuestra capacidad discriminante robusta. La corrección de la normalización C5 (§02 Bitácora) recuperó casos que exhibían emergencia genuina pero cuya sensibilidad se sobreestimaba por artefacto de la z-normalización: la sensibilidad del ABM se evalúa ahora contra la escala real del fenómeno, no contra la representación estandarizada.
+La prueba de ablación (macro_coupling=0, forcing_scale=0) produce un resultado inesperado: en la mayoría de los casos reales, el ABM reducido predice **igual o mejor** que el ABM completo. Esto indica que la constricción macro actual (ODE→ABM unidireccional, mc excesivo) no captura emergencia genuina, sino que introduce una señal que interfiere con la dinámica micro.
+
+### Conclusión de la Falsación — Revisada
+La tesis sobrevive como **marco metodológico**: el protocolo de demarcación (EDI + C1-C5 + 6 criterios) es operativo y discriminante. Pero la hipótesis sustantiva (los hiperobjetos son computacionalmente reales vía constricción macro) queda **pendiente de confirmación** hasta que se resuelvan las mejoras pendientes (restricción mc < 0.5, acoplamiento bidireccional, fases sintéticas independientes).
+
+La honestidad de reportar 0/29 — cuando el pipeline anterior inflado reportaba 24/29 — es la mejor evidencia de rigor científico.

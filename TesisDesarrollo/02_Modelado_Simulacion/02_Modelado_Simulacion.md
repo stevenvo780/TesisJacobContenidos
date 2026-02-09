@@ -33,12 +33,16 @@ Lo que se demuestra como real no es la ODE sino la **constricción macro** que l
 2. Permitir la comparación ABM_completo vs ABM_reducido (el EDI no mide calidad de la ODE).
 3. Servir de benchmark para evaluar la coherencia macro-micro (correlación ODE-ABM).
 
-Esta distinción resuelve la objeción "Phantom ODE" (Gladiadores R15): una ODE con correlación baja (ej. Clima: corr ≈ 0.82) puede coexistir con un EDI alto (0.372) porque lo que el EDI mide es la diferencia entre ABM con y sin constricción macro, no la calidad de la ODE como predictor independiente.
+Esta distinción resuelve la objeción "Phantom ODE" (Gladiadores R15): una ODE con correlación baja puede coexistir con un EDI positivo (cuando ocurre) porque lo que el EDI mide es la diferencia entre ABM con y sin constricción macro, no la calidad de la ODE como predictor independiente.
 
-## Arquitectura y Ejecución de los 32 Casos
-La arquitectura actual del proyecto integra **32 motores de simulación completamente funcionales** y ejecutables. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas.
+> **Nota (2026-02-09):** Con el pipeline actual (sin data leakage, zero-nudging), el caso Clima obtiene EDI_real=-0.299 — la ODE Budyko-Sellers no genera constricción suficiente. Este resultado honesto confirma la falsabilidad del marco.
 
-Esta infraestructura permite una reproducibilidad total del EDI y CR reportados, eliminando la dependencia de métricas pre-generadas. El sistema utiliza datos reales de fuentes como World Bank, Wikimedia, Meteostat y yfinance para los casos de alta fidelidad, y generadores estocásticos controlados para los casos de falsación. Los 11 casos nuevos (22-32) amplían la cobertura a dominios como acidificación oceánica, uso de fósforo, acuíferos, conectividad digital (IoT/Starlink), capital intelectual, erosión discursiva, microplásticos, basura espacial y riesgo biológico.
+## Arquitectura y Ejecución de los 29 Casos
+La arquitectura actual del proyecto integra **29 motores de simulación completamente funcionales** y ejecutables. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas.
+
+Esta infraestructura permite una reproducibilidad total del EDI y CR reportados, eliminando la dependencia de métricas pre-generadas. El sistema utiliza datos reales de fuentes como World Bank, Wikimedia, Meteostat, CelesTrak y yfinance para los casos de alta fidelidad, y generadores estocásticos controlados para los casos de falsación. Los casos 19-29 amplían la cobertura a dominios como acidificación oceánica, uso de fósforo, acuíferos, conectividad digital (IoT/Starlink), capital intelectual, erosión discursiva, microplásticos, basura espacial y riesgo biológico.
+
+> **Nota histórica (2026-02-09):** Tres casos originales (Estética Global, Moderación Adversarial, RTB Publicidad) fueron removidos por inviabilidad de datos reales. Los 29 casos restantes constituyen el universo oficial de la tesis.
 
 ### Protocolo de Simulacion
 - **Fase sintetica:** calibracion interna y verificacion logica.
@@ -53,86 +57,88 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 
 ## Resultados Consolidados (Matriz de Validación Técnica)
 
-| Caso | LoE | EDI | CR | Estado | Reporte |
-| :--- | :--- | ---: | ---: | :--- | :--- |
-| 01_caso_clima | 5 | 0.372 | 1.000 | True | `01_caso_clima/report.md` |
-| 02_caso_conciencia | 1 | 0.936 | 1.000 | True | `02_caso_conciencia/report.md` |
-| 03_caso_contaminacion | 4 | 0.125 | 1.365 | False | `03_caso_contaminacion/report.md` |
-| 04_caso_energia | 4 | 0.354 | 1.118 | True | `04_caso_energia/report.md` |
-| 05_caso_epidemiologia | 4 | 0.176 | 1.000 | False | `05_caso_epidemiologia/report.md` |
-| 06_caso_estetica | 2 | 0.949 | 1.000 | True | `06_caso_estetica/report.md` |
-| 06_caso_falsacion_exogeneidad | 1 | -0.401 | -49.492 | False | `06_caso_falsacion_exogeneidad/report.md` |
-| 06_caso_falsacion_no_estacionariedad | 1 | 0.090 | -31.846 | False | `06_caso_falsacion_no_estacionariedad/report.md` |
-| 06_caso_falsacion_observabilidad | 1 | n/a | n/a | False | `06_caso_falsacion_observabilidad/report.md` |
-| 06_caso_finanzas | 5 | 0.882 | 1.250 | True | `06_caso_finanzas/report.md` |
-| 06_caso_justicia | 2 | 0.946 | 1.000 | True | `06_caso_justicia/report.md` |
-| 12_caso_moderacion_adversarial | 1 | 0.950 | 1.000 | True | `12_caso_moderacion_adversarial/report.md` |
-| 06_caso_movilidad | 2 | 0.915 | 1.000 | True | `06_caso_movilidad/report.md` |
-| 12_caso_paradigmas | 2 | 0.863 | 1.000 | True | `12_caso_paradigmas/report.md` |
-| 06_caso_politicas_estrategicas | 1 | 0.804 | 1.000 | True | `06_caso_politicas_estrategicas/report.md` |
-| 12_caso_postverdad | 2 | 0.154 | -33.426 | False | `12_caso_postverdad/report.md` |
-| 17_caso_rtb_publicidad | 1 | 0.950 | 1.000 | True | `17_caso_rtb_publicidad/report.md` |
-| 06_caso_wikipedia | 3 | 0.018 | 1.147 | False | `06_caso_wikipedia/report.md` |
-| 12_caso_deforestacion | 5 | 0.846 | 1.000 | True | `12_caso_deforestacion/report.md` |
-| 17_caso_oceanos | 4 | 0.936 | 1.000 | True | `17_caso_oceanos/report.md` |
-| 06_caso_urbanizacion | 4 | 0.839 | 1.000 | True | `06_caso_urbanizacion/report.md` |
-| 12_caso_acidificacion_oceanica | 5 | 0.947 | 1.000 | True | `12_caso_acidificacion_oceanica/report.md` |
-| 17_caso_kessler | 5 | 0.776 | 1.001 | True | `17_caso_kessler/report.md` |
-| 06_caso_salinizacion | 4 | 0.176 | -26.257 | False | `06_caso_salinizacion/report.md` |
-| 12_caso_fosforo | 3 | 0.902 | 1.000 | True | `12_caso_fosforo/report.md` |
-| 17_caso_erosion_dialectica | 2 | 0.923 | 1.000 | True | `17_caso_erosion_dialectica/report.md` |
-| 06_caso_microplasticos | 4 | 0.856 | 1.000 | True | `06_caso_microplasticos/report.md` |
-| 12_caso_acuiferos | 5 | 0.959 | 1.000 | True | `12_caso_acuiferos/report.md` |
-| 17_caso_starlink | 5 | 0.914 | 1.000 | True | `17_caso_starlink/report.md` |
-| 06_caso_riesgo_biologico | 2 | 0.893 | 1.000 | True | `06_caso_riesgo_biologico/report.md` |
-| 12_caso_fuga_cerebros | 2 | 0.881 | 1.000 | True | `12_caso_fuga_cerebros/report.md` |
-| 17_caso_iot | 3 | 0.889 | 1.000 | True | `17_caso_iot/report.md` |
+> **Estado actual (2026-02-09):** Tras la corrección de data leakage, la inclusión de `edi_valid` en `overall_pass`, y la evaluación con `assimilation_strength=0.0`, el resultado es **overall_pass = 0/29**. La hipótesis H1 queda **no confirmada** bajo criterios estrictos. Los EDI en fase real son predominantemente negativos o por debajo de 0.30.
 
-Para recalcular este reporte de forma automatica, usar:
+| Caso | EDI_syn | EDI_real | Pass | Notas |
+| :--- | ---: | ---: | :--- | :--- |
+| 01_caso_clima | -0.604 | -0.299 | False | ODE Budyko-Sellers; corr baja |
+| 02_caso_conciencia | 0.112 | -0.063 | False | Fallback sintético (pytrends) |
+| 03_caso_contaminacion | -0.000 | -0.000 | False | Sin señal macro |
+| 04_caso_energia | 0.071 | -0.005 | False | OPSD datos reales |
+| 05_caso_epidemiologia | 0.446 | 0.000 | False | SEIR; señal real plana |
+| 06_caso_falsacion_exogeneidad | — | -0.615 | False | Control: ruido puro ✓ |
+| 07_caso_falsacion_no_estacionariedad | — | -7.837 | False | Control: random walk ✓ |
+| 08_caso_falsacion_observabilidad | — | -3.771 | False | Control: estado oculto ✓ |
+| 09_caso_finanzas | -0.000 | 0.051 | False | Yahoo Finance SPY |
+| 10_caso_justicia | -0.025 | 0.000 | False | World Bank; mc>0.5 |
+| 11_caso_movilidad | 0.020 | 0.003 | False | World Bank; mc>0.5 |
+| 12_caso_paradigmas | 0.000 | -0.000 | False | OpenAlex; señal débil |
+| 13_caso_politicas_estrategicas | -0.003 | -0.022 | False | World Bank; mc>0.5 |
+| 14_caso_postverdad | 0.000 | 0.003 | False | Fallback sintético |
+| 15_caso_wikipedia | 0.317 | 0.000 | False | Solo EDI_syn en rango |
+| 16_caso_deforestacion | -3.715 | -1.001 | False | Anti-emergencia |
+| 17_caso_oceanos | 0.110 | 0.119 | False | Proxy WMO; mc>0.5 |
+| 18_caso_urbanizacion | 0.000 | 0.000 | False | World Bank; tendencia suave |
+| 19_caso_acidificacion_oceanica | -0.141 | -0.002 | False | Proxy PMEL; mc>0.5 |
+| 20_caso_kessler | -3.419 | -3.419 | False | CelesTrak SATCAT |
+| 21_caso_salinizacion | 0.505 | -1.378 | False | Proxy World Bank |
+| 22_caso_fosforo | 0.386 | -4.269 | False | Anti-emergencia real |
+| 23_caso_erosion_dialectica | 0.293 | -9.084 | False | Anti-emergencia real |
+| 24_caso_microplasticos | 0.679 | 0.586 | False | **Mejor EDI real** |
+| 25_caso_acuiferos | 0.405 | -0.272 | False | GRAVIS+USGS |
+| 26_caso_starlink | 0.564 | -546.587 | False | CelesTrak; colapso real |
+| 27_caso_riesgo_biologico | 0.409 | 0.414 | False | **EDI real en rango** |
+| 28_caso_fuga_cerebros | 0.491 | 0.213 | False | World Bank; EDI real<0.30 |
+| 29_caso_iot | 0.414 | 0.014 | False | World Bank; señal real plana |
+
+Para recalcular este reporte de forma automática, usar:
 `python3 scripts/actualizar_tablas_002.py`
 ## Análisis de Evidencia y Hallazgos
 
-Los 32 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella.
+Los 29 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella. Sin embargo, tras la corrección de data leakage y la evaluación estricta (zero-nudging, `edi_valid` en `overall_pass`), **la validación colapsa**: ningún caso pasa el protocolo completo de 11 criterios.
 
-**Emergencia Muy Fuerte (EDI > 0.80) — 13 casos validados:**
-- **Acuíferos** (EDI=0.959): Dinámica de agotamiento de acuíferos como hiperobjeto hídrico.
-- **Moderación Adversarial** (EDI=0.950): Dinámica de moderación digital como hiperobjeto informacional.
-- **RTB Publicidad** (EDI=0.950): Mercado publicitario programático como estructura macro.
-- **Estética** (EDI=0.949): Dinámicas estéticas globales como hiperobjeto cultural.
-- **Acidificación Oceánica** (EDI=0.947): Química oceánica global como hiperobjeto ambiental.
-- **Justicia** (EDI=0.946): Sesgos algorítmicos sistémicos como hiperobjeto sociotécnico.
-- **Océanos** (EDI=0.936): Cambio oceánico global como estructura emergente masiva.
-- **Conciencia** (EDI=0.936): Fenómenos de conciencia colectiva como emergencia macro.
-- **Erosión Dialéctica** (EDI=0.923): Degradación del discurso como hiperobjeto cultural.
-- **Movilidad** (EDI=0.915): Patrones de movilidad global como estructura macro.
-- **Starlink** (EDI=0.914): Conectividad digital global como hiperobjeto tecnológico.
-- **Fósforo** (EDI=0.902): Ciclo global de fósforo como hiperobjeto agrícola-ambiental.
-- **Riesgo Biológico** (EDI=0.893): Riesgo biológico global como estructura emergente.
-- **IoT** (EDI=0.889): Internet de las cosas como hiperobjeto de conectividad.
-- **Finanzas** (EDI=0.882): Mercados financieros globales como estructura macro dominante.
-- **Fuga de Cerebros** (EDI=0.881): Capital intelectual global como hiperobjeto migratorio.
-- **Paradigmas** (EDI=0.863): Estructuras paradigmáticas culturales capturadas con alta fidelidad.
-- **Microplásticos** (EDI=0.856): Contaminación por microplásticos como hiperobjeto material.
+### Estado Actual: H1 No Confirmada
 
-**Emergencia Fuerte (0.30 < EDI < 0.80) — 5 casos validados:**
-- **Deforestación** (EDI=0.846): Políticas globales reducen la entropía local en un 85%.
-- **Urbanización** (EDI=0.839): Tendencia macro de urbanización constrinye los patrones micro.
-- **Políticas Estratégicas** (EDI=0.804): Políticas económicas globales como hiperobjeto geopolítico.
-- **Kessler** (EDI=0.776): Síndrome de Kessler como hiperobjeto orbital.
-- **Clima** (EDI=0.372): El modelo macro reduce el RMSE en 37% respecto al ABM aislado (con fs≤0.99).
-- **Energía** (EDI=0.354): Señal macro robusta en consumo energético con datos OPSD.
+**overall_pass = 0/29** — Ningún caso satisface simultáneamente las 11 condiciones del protocolo. Los EDI en fase real son predominantemente negativos, indicando que el ABM reducido (sin macro_coupling ni forcing) predice igual o mejor que el ABM completo en la mayoría de los dominios.
 
-**Total: 24/29 casos genuinos validados (83%)** + 3 controles de falsación correctos.
+**Casos con señal parcial en fase real (EDI_real > 0.10):**
+- **Microplásticos** (EDI_real=0.586): Mejor caso real — datos OWID de producción plástica.
+- **Riesgo Biológico** (EDI_real=0.414): Señal real detectable — datos WorldBank mortalidad.
+- **Fuga de Cerebros** (EDI_real=0.213): Señal débil pero positiva — datos WorldBank I+D.
+- **Océanos** (EDI_real=0.119): Marginal — proxy WMO.
 
-### Composición del universo de 32 casos
+**Casos con señal parcial en fase sintética (EDI_syn en rango 0.30-0.90):**
+- 10 casos muestran EDI sintético en rango válido (05, 15, 21-29), pero la transferencia a datos reales falla consistentemente, sugiriendo que el modelo captura la estructura del generador sintético pero no la del fenómeno real.
+
+**Anti-emergencia (EDI real fuertemente negativo):**
+- Deforestación (-1.001), Kessler (-3.419), Fósforo (-4.269), Erosión (-9.084), Starlink (-546.587): En estos casos, la constricción macro *empeora* la predicción — el ABM aislado predice mejor.
+
+### Composición del universo de 29 casos
 
 | Categoría | Casos | Función | Conteo |
 |-----------|-------|---------|--------|
-| **Genuinos** | 01-06, 10-32 (excluyendo 07,08,09) | Hipótesis H1 | 17 |
-| **Falsaciones** | 07 (Exogeneidad), 08 (No-estacionariedad), 09 (Observabilidad) | Controles negativos diseñados para fallar | 3 |
-| **Total** | 01-32 | | 17 |
+| **Genuinos** | 01-05, 09-29 | Hipótesis H1 | 26 |
+| **Falsaciones** | 06 (Exogeneidad), 07 (No-estacionariedad), 08 (Observabilidad) | Controles negativos | 3 |
+| **Total** | | | 29 |
 
-Los 3 controles de falsación (07, 08, 09) se diseñaron con violaciones intencionales del marco (señal puramente exógena, deriva temporal, observabilidad nula) para verificar que el protocolo C1-C5 + EDI los rechaza correctamente. Su exclusión del denominador "genuinos" sigue la práctica estándar de no contar controles negativos como casos de prueba de la hipótesis.
+Los 3 controles de falsación se diseñaron con violaciones intencionales del marco (señal puramente exógena, deriva temporal, observabilidad nula) para verificar que el protocolo C1-C5 + EDI los rechaza correctamente. Los tres son rechazados con EDI negativo, confirmando la selectividad del protocolo.
+
+### Diagnóstico: ¿Por qué colapsa la validación?
+
+1. **Data leakage corregido:** La corrección del forcing (persistence en validación) eliminó la ventaja artificial que inflaba los EDI anteriores.
+2. **macro_coupling > 0.5 en 23/29 casos:** La calibración sin restricción produce coupling excesivo, pero al evaluarse sin assimilation, el ABM no retiene la señal.
+3. **Fases sintéticas compartidas:** 25/29 casos comparten alpha=0.08, beta=0.03, generando ground truth no diferenciado por dominio.
+4. **ODE→ABM unidireccional:** El acoplamiento es top-down; no hay iteración paso-a-paso ni feedback micro→macro.
+
+### Líneas de mejora pendientes (ver INFORME_CRITICO_COMPLETO.md)
+
+| Mejora | Estado | Impacto esperado |
+|--------|--------|-----------------|
+| Restricción mc < 0.5 en calibración | ❌ Pendiente | Reducir epifenomenalismo |
+| Fases sintéticas independientes por caso | ❌ Pendiente | Ground truth diferenciado |
+| Acoplamiento bidireccional ABM↔ODE | ⚠️ Parcial | Emergencia genuina |
+| Variables multivariadas (CO2, VIX, etc.) | ❌ Pendiente | Forcing más realista |
+| Distribución nula EDI integrada en validator | ⚠️ Parcial | Umbral estadístico riguroso |
 
 ## C5 — Bitácora de Correcciones y Reporte de Fallos
 
@@ -187,7 +193,7 @@ Los 3 controles de falsación (07, 08, 09) se diseñaron con violaciones intenci
 
 **Corrección:** El grid de calibración y el refinamiento adaptativo ahora limitan `forcing_scale ∈ [0.001, 0.99]`. Justificación teórica: en la ecuación del ABM, el forzamiento externo `F(t)` es una condición de contorno que el sistema procesa, no amplifica. Si el calibrador necesita fs>1.0, indica que la señal macro se inyecta directamente sin mediación de la dinámica micro — exactamente lo que el epifenomenalismo predice.
 
-**Impacto confirmado:** Con fs≤0.99, Clima obtiene EDI=0.372 (antes 0.434 con fs=1.595). La reducción demuestra que el protocolo es autocorrectivo: el cap elimina la amplificación exógena y el caso sigue validando genuinamente.
+**Impacto confirmado:** Con fs≤0.99 y pipeline limpio (sin data leakage), Clima obtiene EDI_real=-0.299 (valor anterior pre-corrección: 0.434). La caída drástica demuestra que el protocolo anterior estaba inflado por data leakage en el forcing. El resultado actual es honesto: la constricción macro de Budyko-Sellers no alcanza el umbral H1.
 
 ### Corrección 2026-02-07: Generadores sintéticos diferenciados (19, 23, 29)
 
@@ -216,7 +222,7 @@ Clasificación descriptiva cuando EDI y CR divergen:
 
 **Nota:** El validador (`hybrid_validator.py`, L656) implementa `overall_pass` con 11 condiciones (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude). El CR se computa como métrica informativa pero no es condición de `overall_pass`, coherente con H1.
 
-**Caso Clima real** (EDI=0.424, CR=1.002) satisface H1: emergencia funcional con reducción del 42% en RMSE.
+**Caso Clima real** (EDI_real=-0.299) no satisface H1: la constricción macro no reduce el RMSE respecto al ABM aislado con el pipeline actual.
 
 ### Análisis Teórico: CR ≈ 1.0 en Modelos de Difusión Homogénea
 
@@ -244,7 +250,7 @@ La Información Efectiva (EI) de Hoel, diseñada para cuantificar la ventaja cau
 
 La EI negativa indica que los residuos del modelo completo (ABM+ODE) son **más entrópicos** que los del modelo reducido (ABM solo). Esto ocurre cuando el modelo macro extrae la señal estructurada y deja residuos que son ruido puro — de mayor entropía que los residuos parcialmente estructurados del modelo sin macro.
 
-Críticamente, esto **coexiste con EDI positivo** (ej. Movilidad: EI=-0.347 pero EDI=0.385). El modelo predice mejor (menor RMSE) pero sus errores son más aleatorios. Esta disociación entre eficacia predictiva (EDI) e información efectiva (EI) constituye una **limitación fundamental** del marco de Hoel aplicado a sistemas socio-técnicos ruidosos.
+Críticamente, esto **coexiste con EDI positivo** en algunos casos sintéticos (ej. Movilidad: EI=-0.347 pero EDI_syn=0.020). El modelo puede predecir mejor (menor RMSE) pero sus errores son más aleatorios. Esta disociación entre eficacia predictiva (EDI) e información efectiva (EI) constituye una **limitación fundamental** del marco de Hoel aplicado a sistemas socio-técnicos ruidosos.
 
 ### Implicaciones para la Tesis
 
@@ -301,16 +307,11 @@ La ODE es un componente auxiliar del pipeline, no un factor del EDI. Lo que el E
 
 **Verificación:** `repos/Simulaciones/common/hybrid_validator.py`, líneas 195-207 (z-normalización) y 417-424 (evaluación C1).
 
-### Nota sobre trazabilidad (mega_run_v8)
+### Nota sobre trazabilidad
 
-Resultados completos con MD5 por caso disponibles en:
-- **Archivo:** `repos/Simulaciones/mega_run_v8_traceability.json`
-- **Commit de resultados:** `5f1f938`
-- **Ejecución:** 2026-02-07, torre AMD (PID 3606924, 2h11m)
-- **Configuración:** `forcing_scale ∈ [0.001, 0.99]` (Axioma A6)
-- **Git commit de simulaciones:** `7b9c983` (en torre)
+Cada `metrics.json` contiene `generated_at` (timestamp ISO) y `git.commit` (hash del código ejecutado). Los resultados se generan ejecutando `validate.py` desde `repos/Simulaciones/{NN}_caso_*/src/`.
 
-Cada `metrics.json` contiene `generated_at` (timestamp ISO) y `git.commit` (hash del código ejecutado).
+> **Nota histórica:** El archivo `mega_run_v8_traceability.json` fue eliminado en la limpieza de repositorio (2026-02-09). Los resultados actuales se regeneran individualmente por caso.
 
 ## Auditoría de Consistencia
 

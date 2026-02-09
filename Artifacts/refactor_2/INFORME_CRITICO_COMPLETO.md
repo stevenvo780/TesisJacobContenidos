@@ -83,12 +83,12 @@ La tesis presenta un marco computacional ABM+ODE para validar la existencia de h
 
 | # | Critica | Iteracion | Estrategia Defensiva | Estado |
 |---|---------|-----------|---------------------|--------|
-| C15 | **"Constriccion macro" no es "ontologia fuerte"** | R19, R20, Veredicto | Aceptar: la tesis valida constriccion macro efectiva bajo realismo operativo debil. Declerar explicitamente. | 🚩 No resuelto — requiere revisión narrativa |
-| C16 | **Circularidad en calibracion** | Termonuclear | El forcing contiene datos observacionales, pero la evaluacion se hace sin assimilation. Documentar el protocolo de separacion train/eval. | 🚩 No resuelto — protocolo no documentado |
+| C15 | **"Constriccion macro" no es "ontologia fuerte"** | R19, R20, Veredicto | Aceptar: la tesis valida constriccion macro efectiva bajo realismo operativo debil. Declerar explicitamente. | ⚠️ Parcial — Caps 02-04 ahora dicen "H1 no confirmada" y admiten overall_pass=0/29 |
+| C16 | **Circularidad en calibracion** | Termonuclear | El forcing contiene datos observacionales, pero la evaluacion se hace sin assimilation. Documentar el protocolo de separacion train/eval. | ⚠️ Parcial — Cap 02 documenta zero-nudging y separación train/eval, pero falta documento formal |
 | C17 | **"Inercia de datos" vs "ontologia"** | Termonuclear | Admitir que el marco detecta inercia informacional. Argumentar que la inercia es evidencia de constriccion (no al reves). | 🚩 No resuelto — argumento no redactado |
 | C18 | **Sesgo de predictibilidad** | Pendientes | Las series suaves dan EDI alto. Documentar como limitacion. Incluir test de sensibilidad a ruido. | 🚩 No resuelto — test de sensibilidad pendiente |
-| C19 | **Paradoja Estetica > Justicia** | Termonuclear | Justicia ahora es sintetico (EDI=0.946, tautologico). Si se pasa a datos reales, el resultado sera genuino. | 🚩 No resuelto — Justicia sigue con fallback sintético |
-| C20 | **Tono "Modo Dios"** | Brutal | Revisar narrativa de capitulos 02-04, agregar mas humildad y limitaciones explicitas. | 🚩 No resuelto — narrativa no revisada |
+| C19 | **Paradoja Estetica > Justicia** | Termonuclear | Justicia ahora es sintetico (EDI=0.946, tautologico). Si se pasa a datos reales, el resultado sera genuino. | ⚠️ Disuelta — Estética removida; Justicia EDI_real=0.000; overall_pass=0/29 elimina la paradoja |
+| C20 | **Tono "Modo Dios"** | Brutal | Revisar narrativa de capitulos 02-04, agregar mas humildad y limitaciones explicitas. | ⚠️ Parcial — Caps 02-04 reescritos con overall_pass=0/29 honesto y diagnóstico de causas |
 
 ---
 
@@ -184,25 +184,22 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 
 ## 4. TABLA MAESTRA DE METRICAS — ANOMALIAS
 
-### 4.1. Resumen de Estado Real de los 29 Casos
+### 4.1. Resumen de Estado Real de los 29 Casos (Actualizado 2026-02-09)
 
 | Grupo | Casos | Cantidad |
 |-------|-------|----------|
-| **Genuinamente validados** (EDI 0.30-0.90, datos reales, pass=true) | 04, 09, 12, 16 | **4** |
-| **Tautologicos** (EDI > 0.90, datos reales) | (ninguno con datos reales) | **0** |
-| **Tautologicos** (EDI > 0.90, datos sinteticos) | 02,10,11,17,19,22,23,25,26 | **9** |
-| **Validados con datos reales pero borderline** | 01 (clima, EDI=0.37) | **1** |
-| **Validados con datos sinteticos en rango** | 13,20,24,27,28,29 | **6** |
-| **Rechazados correctamente** | 03,05,14,15,21 | **5** |
-| **Controles de falsacion (correctos)** | 06,07,08 | **3** |
-| **Caso bandera overall_pass=false** | 01 (clima) | **1** |
+| **EDI_real en rango (0.30-0.90)** | 24 (Microplásticos=0.586), 27 (Riesgo Bio=0.414) | **2** |
+| **EDI_real positivo pero < 0.30** | 09, 11, 14, 17, 28, 29 | **6** |
+| **EDI_real ≤ 0 (sin emergencia)** | 01-05, 10, 12-13, 15-16, 18-23, 25-26 | **18** |
+| **Controles de falsación** | 06, 07, 08 | **3** |
+| **overall_pass = true** | Ninguno | **0** |
 
-### 4.2. Conteo Honesto
+### 4.2. Conteo Honesto (Actualizado 2026-02-09)
 
-- **Casos con datos reales Y EDI en rango valido (0.30-0.90):** Solo 4 (Energia, Finanzas, Paradigmas, Deforestacion) + Clima (0.37 pero overall_pass=false)
-- **Casos con datos sinteticos:** 12 de 26 no-falsacion (46%)
-- **Casos con macro_coupling > 0.5:** 22 de 29 (76%)
-- **Casos donde ODE corr < 0:** 3 (clima, contaminacion, epidemiologia)
+- **Casos con datos reales Y EDI_real en rango válido (0.30-0.90):** Solo 2 (Microplásticos=0.586, Riesgo Biológico=0.414)
+- **overall_pass = true:** 0/29 — H1 no confirmada
+- **EDI_real negativo:** 18/26 genuinos — anti-emergencia dominante
+- **Falsaciones correctas:** 3/3 — protocolo discriminante
 
 ### 4.3. Flags Criticos por Caso (Fase Real)
 
@@ -326,17 +323,18 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 
 ## 7. VEREDICTO FINAL
 
-### Estado Actual de la Tesis
+### Estado Actual de la Tesis (Actualizado 2026-02-09)
 
-La tesis tiene un **nucleo conceptual valido** (la idea de medir constriccion macro via ABM+ODE es genuinamente innovadora), pero la **implementacion computacional tiene defectos estructurales** que la hacen vulnerable a criticas demoledoras:
+La tesis tiene un **núcleo conceptual válido** (la idea de medir constricción macro vía ABM+ODE es genuinamente innovadora), pero la **validación empírica colapsa** con el pipeline limpio:
 
-1. 🚩 **Solo 1/29 EDI válido** — overall_pass = 0/29 tras correcciones. *(Antes: 4 validados con métricas infladas)*
-2. 🚩 **El caso bandera (Clima) sigue con overall_pass=false** — ODE Budyko-Sellers implementada ✅ pero correlación aún baja.
-3. ⚠️ **6 casos caen a fallback sintético** por fallos de API — código real listo en 9/12. *(Antes: 46% sintéticos)*
-4. ✅ ~~**Data leakage en forcing**~~ — Corregido con persistence en validación.
-5. ✅ ~~**Agentes idénticos**~~ — 3 capas de heterogeneidad implementadas.
+1. 🚩 **Solo 2/26 EDI_real en rango válido** (Microplásticos=0.586, Riesgo Bio=0.414) — overall_pass = 0/29.
+2. 🚩 **18/26 casos genuinos con EDI_real negativo** — el ABM reducido predice mejor que el completo.
+3. ✅ ~~**Data leakage en forcing**~~ — Corregido con persistence en validación.
+4. ✅ ~~**Agentes idénticos**~~ — 3 capas de heterogeneidad implementadas.
+5. ✅ ~~**ODE genérica**~~ — 11 modelos domain-specific.
 6. 🚩 **macro_coupling > 0.5 en 23/29 casos** — sin restricción en calibración.
-7. 🚩 **Fases sintéticas compartidas** — 25/29 con params idénticos (alpha=0.08, beta=0.03).
+7. 🚩 **Fases sintéticas compartidas** — 25/29 con params idénticos.
+8. ⚠️ **Narrativa actualizada** — Caps 02-04 ahora reportan overall_pass=0/29 honestamente.
 
 ### Potencial Tras las Mejoras
 
