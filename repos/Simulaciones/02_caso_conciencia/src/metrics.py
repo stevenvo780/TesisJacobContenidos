@@ -92,87 +92,40 @@ def dominance_share(grid_series):
 
     total = sum(scores) if scores else 1.0
     max_share = max(scores) / total if scores else 1.0
+    return max_share
 
 # --- Advanced Metrics (Information Theory) ---
 
 def shannon_entropy(grid):
     """
-    Calculates Shannon Entropy of a 2D grid state.
-    H(X) = - sum(p(x) * log2(p(x)))
+    Entropía de Shannon de un grid 2D.
+    H(X) = -Σ p(x) · log₂(p(x))
+
+    Discretización: regla de Sturges, n_bins = ⌈1 + log₂(N)⌉
     """
-    # Flatten grid
     values = [c for row in grid for c in row]
     if not values:
         return 0.0
-    
-    # Binning (discretize continuous values to calculate probabilities)
-    # n_bins = sqrt(len(values)) is a common rule of thumb, but fixed 10 is stable
-    n_bins = 10
-    counts, _ = math.histogram(values, bins=n_bins) if hasattr(math, 'histogram') else ([], []) # math doesn't have histogram
-    
-    # manual histogram
+
+    n = len(values)
+    n_bins = max(2, int(math.ceil(1 + math.log2(n))))
+
     min_v, max_v = min(values), max(values)
     range_v = max_v - min_v
-    if range_v < 1e-9: return 0.0
-    
+    if range_v < 1e-9:
+        return 0.0
+
     bins = [0] * n_bins
     for v in values:
         idx = int((v - min_v) / range_v * n_bins)
-        if idx >= n_bins: idx = n_bins - 1
+        if idx >= n_bins:
+            idx = n_bins - 1
         bins[idx] += 1
-        
-    probs = [b / len(values) for b in bins if b > 0]
+
+    probs = [b / n for b in bins if b > 0]
     entropy = -sum(p * math.log2(p) for p in probs)
     return entropy
 
-
-def lempel_ziv_complexity(sequence):
-    """
-    Calculates Lempel-Ziv Complexity (LZ76) of a binary sequence.
-    Measure of algorithmic complexity / compressibility.
-    """
-    n = len(sequence)
-    if n == 0: return 0
-    
-    c = 1
-    l = 1
-    i = 0
-    k = 1
-    k_max = 1
-    
-    while True:
-        if c + k > n:
-            break
-        
-        # Check if substring seq[i+k-1] appears in seq[0:i+k-2]
-        w = sequence[i : i+k]
-        history = sequence[0 : i+k-1]
-        
-        # Simple search (can be optimized but adequate for this scale)
-        # We look for w in history
-        # Actually LZ76 is checking if strict prefix extension is novel
-        # Commonly used "Kaspar and Schuster" implementation for LZC:
-        
-        # Reset implementation for clarity/correctness using Kaspar/Schuster (1987)
-        break 
-        
-    # Re-implementation of Kaspar-Schuster algo for LZC
-    c = 1
-    r = 0
-    q = 1
-    k = 1
-    i = 0
-    while q + k <= n:
-        Q = sequence[i : i+k]
-        S = sequence[0 : i+k-1] # Search buffer
-        
-        # Check if Q is in S? 
-        # Actually, let's use a simpler heuristic for "Complexity": 
-        # Ratio of compressed size vs original size using zlib is a robust proxy for LZ 
-        # and much faster/less error prone to implement from scratch.
-        return 0 # Placeholder for the zlib approach which is better
-        
-    return 0
 
 def lzc_proxy(grid):
     """

@@ -1,27 +1,26 @@
 """
-ode.py — 05_caso_epidemiologia (Top-Tier)
+ode.py — 05_caso_epidemiologia
 
-Model: Kermack-McKendrick SIR/SEIR ODE
+Modelo: SEIR de Kermack-McKendrick
 
-This is THE foundational epidemic model (1927).
-Used by CDC, WHO, and every epidemiological study.
+Ecuaciones:
+    dS/dt = −β(t) · S · I / N
+    dE/dt = β(t) · S · I / N − σ · E
+    dI/dt = σ · E − γ · I
+    dR/dt = γ · I
 
-Reference:
-- Kermack & McKendrick (1927): "A Contribution to the Theory of Epidemics"
-- Anderson & May (1991): "Infectious Diseases of Humans"
-- Hethcote (2000): "Mathematics of Infectious Diseases" (SIAM Review)
+donde:
+    S, E, I, R : compartimentos (susceptible, expuesto, infectado, recuperado)
+    β(t) = R₀ · γ · clip(1 + f_s · z_t, 0.1, 2.0) : tasa de transmisión modulada
+    σ = 1/T_latente  : tasa de progresión E→I
+    γ = 1/T_infeccioso: tasa de recuperación I→R
+    R₀ = β/γ          : número reproductivo básico
 
-Equations:
-  dS/dt = -beta * S * I / N
-  dE/dt = beta * S * I / N - sigma * E
-  dI/dt = sigma * E - gamma * I
-  dR/dt = gamma * I
-
-Where:
-- beta: Transmission rate
-- sigma: 1/latent period
-- gamma: 1/infectious period
-- R0 = beta / gamma
+Referencias:
+    - Kermack, W. O. & McKendrick, A. G. (1927). A Contribution to the
+      Mathematical Theory of Epidemics. *Proc. R. Soc. A*, 115(772), 700-721.
+    - Anderson, R. M. & May, R. M. (1991). *Infectious Diseases of Humans*. OUP.
+    - Li, Q. et al. (2020). Early Transmission Dynamics in Wuhan. *NEJM*, 382, 1199.
 """
 
 import os
@@ -32,24 +31,32 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common")
 
 def simulate_ode(params, steps, seed=42):
     """
-    Kermack-McKendrick SEIR ODE.
-    
-    Classical compartmental epidemic model.
+    SEIR ODE de Kermack-McKendrick.
+    Modelo compartamental clásico para epidemias.
     """
     rng = np.random.default_rng(seed)
-    
-    # Population
+
+    # ── Población ───────────────────────────────────────────────────
     N = params.get("population", 1000000)
-    
-    # Disease Parameters
-    R0 = params.get("ode_R0", 2.5)          # Basic reproduction number
-    latent_period = params.get("ode_latent", 5)    # Days
-    infectious_period = params.get("ode_infectious", 7)  # Days
-    
-    sigma = 1.0 / latent_period
-    gamma = 1.0 / infectious_period
-    beta = R0 * gamma
-    
+
+    # ── Parámetros epidemiológicos ─────────────────────────────────
+    # R₀ = 2.5: COVID-19 wild-type (Li et al. 2020, NEJM).
+    R0 = params.get("ode_R0", 2.5)
+
+    # T_latente = 5 días: periodo de incubación medio.
+    #   Li et al. (2020): mediana 5.2 días (IC 95%: 4.1-7.0).
+    latent_period = params.get("ode_latent", 5)
+
+    # T_infeccioso = 7 días: periodo de infectividad.
+    #   He et al. (2020, Nat. Med.): infectividad ~7-10 días.
+    infectious_period = params.get("ode_infectious", 7)
+
+    sigma = 1.0 / latent_period   # σ = 0.2 día⁻¹
+    gamma = 1.0 / infectious_period  # γ ≈ 0.143 día⁻¹
+    beta = R0 * gamma              # β ≈ 0.357 día⁻¹
+
+    # Ruido: proporcional al estado. Modela variabilidad estocástica
+    # en transmisión (cambios de contacto, super-spreaders).
     noise_std = params.get("ode_noise", 0.01)
     
     # Forcing: Intervention effect (modulates R0)

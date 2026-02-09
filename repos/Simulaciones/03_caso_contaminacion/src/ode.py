@@ -1,25 +1,34 @@
 """
-ode.py — 03_caso_contaminacion (Top-Tier)
+ode.py — 03_caso_contaminacion
 
-Model: EPA Box Model for Urban Air Quality
+Modelo: Acumulación-Disipación de PM2.5 (escala anual)
 
-The Box Model is used by EPA for estimating urban pollutant concentrations.
-Based on mass balance: inputs, outputs, and chemical reactions.
+Ecuación:
+    dC/dt = α · F(t) − β · C + ε(t)
 
-Reference:
-- Seinfeld & Pandis (2016): "Atmospheric Chemistry and Physics"
-- EPA Box Model for urban air quality
-- CALPUFF for long-range transport
+donde:
+    C       : concentración media de PM2.5 (μg/m³, Z-scored)
+    F(t)    : forzamiento externo (índice de emisiones industriales)
+    α       : tasa de acumulación (sensibilidad a emisiones)
+    β       : tasa de remoción (deposición + dispersión + regulación)
+    ε(t)    : ruido estocástico Gaussiano
 
-Equations:
-  dC/dt = (E + A_in) / V - (k_dep + k_rxn + A_out/V) * C
+Justificación:
+    La ecuación es la reducción temporal del Box Model de EPA
+    (Seinfeld & Pandis 2016, cap. 25) promediada sobre un año.
+    Las partículas individuales de PM2.5 tienen τ_residencia ~ 1 semana,
+    pero la señal de concentración regional persiste 3-7 años por
+    inercia del sistema emisor (IPCC AR6, cap. 6).
 
-Where:
-- E: Emission rate
-- A_in, A_out: Advection in/out
-- V: Box volume (mixing height * area)
-- k_dep: Deposition rate
-- k_rxn: Chemical reaction rate
+Punto de equilibrio:
+    C* = α·F / β
+
+Referencias:
+    - Seinfeld, J. H. & Pandis, S. N. (2016). Atmospheric Chemistry
+      and Physics, 3rd ed. Wiley.
+    - IPCC AR6 WGI (2021), Chapter 6: Short-lived climate forcers.
+    - EPA (2004). AERMOD: A Dispersion Model for Industrial Source
+      Applications. EPA-454/R-03-004.
 """
 
 import os
@@ -30,59 +39,50 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common")
 
 def simulate_ode(params, steps, seed=42):
     """
-    EPA Box Model ODE for Urban Air Pollution.
-    
-    Single-box model with emissions, deposition, and advection.
+    Modelo de acumulación-disipación de PM2.5 a escala anual.
+
+    dC/dt = α·F(t) − β·C + ε(t)
     """
-    rng = np.random.default_rng(seed)
-    
-    # Parameters
-    k_dep = params.get("ode_k_dep", 0.02)     # Deposition rate (1/h)
-    k_rxn = params.get("ode_k_rxn", 0.01)     # Chemical reaction rate (1/h)
-    k_adv = params.get("ode_k_adv", 0.1)      # Advection rate (1/h)
-    noise_std = params.get("ode_noise", 0.05)
-    
-    # Mixing layer height (diurnal variation)
-    H_day = params.get("mixing_height_day", 1500)    # m
-    H_night = params.get("mixing_height_night", 300)  # m
-    
-    # Forcing: Industrial emissions index
-    forcing = params.get("forcing_series")
-    if forcing is None:
-        forcing = np.ones(steps)
-        
-    # Initial State
-    C = params.get("p0", 50.0)  # Initial concentration (ug/m3)
-    
+    rng = np.random.RandomState(seed)
+
+    # ── Parámetros ──────────────────────────────────────────────────────
+    # α = 0.8 año⁻¹ → τ_acum = 1/α = 1.25 años.
+    #   Sensibilidad a cambios en emisiones industriales.
+    #   Un incremento de 1σ en emisiones eleva la concentración
+    #   con e-folding time ~1.25 años.
+    alpha = float(params.get("ode_alpha", 0.8))
+
+    # β = 0.2 año⁻¹ → τ_removal = 1/β = 5 años.
+    #   La señal de PM2.5 regional persiste ~5 años por inercia
+    #   del sistema emisor, no por residencia de partículas individuales.
+    #   IPCC AR6 (cap. 6): la tendencia de PM2.5 tiene autocorrelación
+    #   significativa en escalas de 3-7 años.
+    beta = float(params.get("ode_beta", 0.2))
+
+    # σ_noise = 0.05 → ~5% de variación estocástica.
+    #   Gaussiano (CLT: suma de fuentes menores, variabilidad meteorológica).
+    noise_sigma = float(params.get("ode_noise", 0.05))
+
+    # ── Estado inicial ──────────────────────────────────────────────────
+    C = float(params.get("p0", 0.0))
+
+    # ── Forzamiento ─────────────────────────────────────────────────────
+    forcing = params.get("forcing_series") or [0.0] * steps
+    forcing_scale = params.get("forcing_scale", 0.05)
+
     series_C = []
-    
-    dt = 1.0  # Hourly
-    
+
     for t in range(steps):
-        E = list(forcing)[t] if t < len(forcing) else 1.0
-        
-        # Diurnal mixing height (low at night, high during day)
-        hour_of_day = t % 24
-        if 8 <= hour_of_day <= 18:
-            H = H_day
-        else:
-            H = H_night
-            
-        # Effective dilution rate
-        k_dilution = k_adv / H * 500  # Normalize
-        
-        # Box Model equation
-        # dC/dt = E/H - (k_dep + k_rxn + k_dilution) * C
-        
-        emission_term = E * 100 / H  # Scale emission by mixing height
-        loss_term = (k_dep + k_rxn + k_dilution) * C
-        
-        dC = emission_term - loss_term
-        dC += rng.normal(0, noise_std * max(0.01, abs(C)))
-        
-        C += dC * dt
-        C = max(0, C)
-        
+        f_t = forcing[t] if t < len(forcing) else 0.0
+
+        # dC = α·(fs·z_t) − β·C
+        dC = alpha * (forcing_scale * f_t) - beta * C
+
+        # Ruido Gaussiano (CLT)
+        dC += rng.normal(0.0, noise_sigma)
+
+        C += dC
+
         series_C.append(C)
-        
+
     return {"p": series_C, "forcing": forcing}

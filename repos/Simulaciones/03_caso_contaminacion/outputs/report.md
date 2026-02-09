@@ -1,21 +1,21 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-09T14:45:49.587502Z
+- generated_at: 2026-02-09T15:09:05.250180Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): 0.0000
+- valor: -0.0000
+- bootstrap_mean: -0.0000
+- CI 95%: [-0.0000, 0.0000]
+- weighted_value (LoE factor 0.20): -0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.1322
-- external: 0.0908
-- CR: 1.4564
+- internal: 0.1190
+- external: 0.1076
+- CR: 1.1057
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,11 +26,11 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 5.3145
-- rmse_abm_no_ode: 5.3145
-- rmse_ode: 3.0349
-- rmse_reduced: 5.3145
-- threshold: 1.4325
+- rmse_abm: 0.8262
+- rmse_abm_no_ode: 0.8262
+- rmse_ode: 0.8287
+- rmse_reduced: 0.8262
+- threshold: 0.8248
 
 ### Calibración
 - forcing_scale: 0.0010
@@ -46,15 +46,15 @@
 
 ### EDI
 - valor: -0.0000
-- bootstrap_mean: 0.0000
+- bootstrap_mean: -0.0000
 - CI 95%: [-0.0000, 0.0000]
 - weighted_value (LoE factor 0.20): -0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.1000
-- external: 0.0233
-- CR: 4.2871
+- internal: 0.1035
+- external: 0.0372
+- CR: 2.7804
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -67,7 +67,7 @@
 ### Errores
 - rmse_abm: 3.2945
 - rmse_abm_no_ode: 3.2945
-- rmse_ode: 3.2945
+- rmse_ode: 3.2929
 - rmse_reduced: 3.2945
 - threshold: 3.2834
 

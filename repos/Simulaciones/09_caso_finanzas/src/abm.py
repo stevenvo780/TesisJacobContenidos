@@ -1,5 +1,4 @@
 import numpy as np
-import random
 
 def simulate_abm(params, steps, seed=42, series_key="x"):
     """

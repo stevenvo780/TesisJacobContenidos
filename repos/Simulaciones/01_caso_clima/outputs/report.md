@@ -1,21 +1,21 @@
 # Reporte de Validación — Clima Regional (CONUS)
 
-- generated_at: 2026-02-09T14:46:04.454508Z
+- generated_at: 2026-02-09T14:55:41.379523Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.5929
-- bootstrap_mean: -0.5949
-- CI 95%: [-0.6612, -0.5364]
-- weighted_value (LoE factor 1.00): -0.5929
+- valor: -0.6037
+- bootstrap_mean: -0.6056
+- CI 95%: [-0.6703, -0.5496]
+- weighted_value (LoE factor 1.00): -0.6037
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9999
-- external: 0.9038
-- CR: 1.1063
+- internal: 0.9998
+- external: 0.8755
+- CR: 1.1420
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,35 +26,35 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 5.8021
-- rmse_abm_no_ode: 3.6424
-- rmse_ode: 6.0653
-- rmse_reduced: 6.7513
-- threshold: 2.5747
+- rmse_abm: 6.2896
+- rmse_abm_no_ode: 3.9219
+- rmse_ode: 6.3540
+- rmse_reduced: 7.0276
+- threshold: 2.6830
 
 ### Calibración
-- forcing_scale: 0.3778
-- macro_coupling: 0.8280
-- damping: 0.5550
+- forcing_scale: 0.3668
+- macro_coupling: 0.9542
+- damping: 0.5381
 - ode_alpha: 0.0060
 - ode_beta: 0.1000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1493
+- calibration_rmse: 0.1563
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.3008
-- bootstrap_mean: -0.3018
-- CI 95%: [-0.3275, -0.2797]
-- weighted_value (LoE factor 1.00): -0.3008
+- valor: -0.2992
+- bootstrap_mean: -0.3003
+- CI 95%: [-0.3262, -0.2779]
+- weighted_value (LoE factor 1.00): -0.2992
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9828
-- external: 0.9172
-- CR: 1.0715
+- internal: 0.9822
+- external: 0.9153
+- CR: 1.0731
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -65,9 +65,9 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 1.5508
+- rmse_abm: 1.5489
 - rmse_abm_no_ode: 1.1922
-- rmse_ode: 1.7271
+- rmse_ode: 1.7244
 - rmse_reduced: 0.9637
 - threshold: 0.9547
 

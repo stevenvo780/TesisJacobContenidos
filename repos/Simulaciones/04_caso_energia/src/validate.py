@@ -51,6 +51,11 @@ def make_synthetic(start_date, end_date, seed=101):
 
 
 def main():
+    # ── Configuración del caso ──────────────────────────────────────────
+    # grid_size=20: 400 productores de energía.
+    # persistence_window=12: 12 meses para estabilidad.
+    # Datos mensuales OPSD GB (demanda eléctrica UK).
+    # ODE: Lotka-Volterra de competencia fósil vs renovable.
     config = CaseConfig(
         case_name="Energía (OPSD GB Grid)",
         value_col="value",
@@ -65,14 +70,17 @@ def main():
         real_split="2019-01-01",
         corr_threshold=0.7,
         extra_base_params={
-            "ode_H": 5.0, # High Inertia (Coal/Nuclear era)
-            "ode_D": 1.0, # Strong Damping
-            "generation_cap": 60000 # MW
+            # Nota: la ODE Lotka-Volterra usa ode_alpha y ode_beta como
+            # coeficientes de competencia (defaults 0.1 y 0.05 en ode.py).
+            # No se sobreescriben aquí para usar los valores estándar.
         },
-        driver_cols=["tavg", "price", "renewables_share"],
+        # Drivers: temperatura (demanda estacional) y precio (señal de mercado).
+        # renewables_share ELIMINADO como driver para evitar circularidad
+        # (la variable de salida ODE es cuota renovable).
+        driver_cols=["tavg", "price"],
         use_topology=True,
         topology_type="small_world",
-        ode_calibration=False, # Use Physics
+        ode_calibration=False,  # Parámetros L-V fijados desde literatura
     )
 
     results = run_full_validation(
@@ -82,53 +90,14 @@ def main():
 
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
     write_outputs(results, os.path.abspath(out_dir))
-    
-    # --- Verification of Energy Metrics ---
-    print("\n--- Energy Stability Metrics (High Rigor) ---")
-    from metrics import loss_of_load_probability, rocof_metric, inertia_estimation
-    
-    # Re-run synthetic phase for metric calc
-    print("  Calculating LOLP & ROCOF on Synthetic Phase...")
-    dates = pd.date_range(start=config.synthetic_start, end=config.synthetic_end, freq="MS")
-    steps = len(dates)
-    
-    # Synthetic Forcing: Sinusoidal load mismatch
-    forcing = [100 * np.sin(0.1*t) for t in range(steps)]
-    
-    params = {
-        "steps": steps,
-        "ode_H": 5.0, "ode_D": 1.0,
-        "forcing_series": forcing,
-        "f0": 0.0
-    }
-    
-    sim_result = simulate_ode(params, steps, seed=42)
-    freq_series = sim_result["e"]  # Renewable share series (ODE key)
-    
-    # 1. ROCOF
-    rocof = rocof_metric(freq_series)
-    print(f"  ROCOF (Max df/dt): {rocof:.4f} Hz/s (Safe < 0.5)")
-    
-    # 2. Inertia Estimation (inverse problem)
-    h_est = inertia_estimation(freq_series, forcing)
-    print(f"  Inertia Estimation (Target 5.0): {h_est:.4f} s")
-    
-    # 3. LOLP (Using dummy load vs cap)
-    # Assuming load is normally distributed around 40GW with 60GW cap
-    dummy_load = [np.random.normal(40000, 5000) for _ in range(1000)]
-    lolp = loss_of_load_probability(dummy_load, 50000)
-    print(f"  LOLP (Example Risk): {lolp:.4f} (Prob > 50GW)")
 
-    # Resumen
     for phase_name, phase in results.get("phases", {}).items():
         edi = phase.get("edi", {})
-        sym = phase.get("symploke", {})
-        print(f"  {phase_name}: overall={phase.get('overall_pass')} "
-              f"EDI={edi.get('value', 0):.3f} CR={sym.get('cr', 0):.3f} "
-              f"C1={phase.get('c1_convergence')} C2={phase.get('c2_robustness')} "
-              f"C3={phase.get('c3_replication')} C4={phase.get('c4_validity')} "
-              f"C5={phase.get('c5_uncertainty')}")
-    print("Validación completa. Ver outputs/metrics.json y outputs/report.md")
+        if isinstance(edi, dict):
+            print(f"  {phase_name}: EDI={edi.get('value', 'N/A'):.3f}")
+        else:
+            print(f"  {phase_name}: EDI={edi:.3f}")
+        print(f"    overall_pass={phase.get('overall_pass', False)}")
 
 
 if __name__ == "__main__":

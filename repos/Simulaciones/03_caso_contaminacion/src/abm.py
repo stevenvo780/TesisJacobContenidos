@@ -1,20 +1,38 @@
 """
-abm.py — 03_caso_contaminacion (Top-Tier + Vectorized)
+abm.py — 03_caso_contaminacion
 
-Model: EPA AERMOD-inspired Gaussian Plume Dispersion ABM
-OPTIMIZED: NumPy broadcasting (no Python loops over grid)
+Modelo: ABM de dispersión Gaussiana tipo AERMOD (vectorizado)
 
-Reference:
-- Cimorelli et al. (2005): "AERMOD: A Dispersion Model for Industrial Source Applications"
-- EPA AERMOD User's Guide
+Implementa la ecuación de pluma gaussiana de Pasquill-Gifford para
+dispersión de contaminantes desde fuentes puntuales, con deposición
+y acoplamiento al modelo macro.
+
+Ecuación de pluma gaussiana (por fuente):
+    C(x,y) = Q/(2π·u·σ_y·σ_z) · exp(-y²/2σ_y²) · 2·exp(-H²/2σ_z²)
+
+donde:
+    Q: tasa de emisión (μg/s)
+    u: velocidad del viento (m/s)
+    σ_y, σ_z: coeficientes de dispersión lateral y vertical
+    H: altura de chimenea (m)
+    Factor 2: reflexión del suelo (imagen especular)
+
+Coeficientes de dispersión (Pasquill-Gifford, clase D neutral):
+    σ_y(x) = a_y · x · (1 + b_y · |x|)^(-0.5)
+    σ_z(x) = a_z · x · (1 + b_z · |x|)^(-0.5)
+
+Referencias:
+    - Cimorelli et al. (2005), J. Appl. Meteor. 44:682 — AERMOD
+    - Turner (1970), EPA Workbook of Atmospheric Dispersion Estimates
+    - Pasquill (1961), Meteor. Mag. 90:33 — esquema de estabilidad
 """
 
 import numpy as np
 
 def simulate_abm(params, steps, seed=42):
     """
-    AERMOD-style Gaussian Plume ABM (VECTORIZED).
-    Uses NumPy broadcasting for O(1) complexity per source instead of O(N²).
+    ABM tipo AERMOD con pluma gaussiana vectorizada.
+    Usa broadcasting de NumPy para O(1) por fuente en lugar de O(N²).
     """
     rng = np.random.default_rng(seed)
     
@@ -49,10 +67,13 @@ def simulate_abm(params, steps, seed=42):
     wind_speed_base = params.get("wind_speed", 5.0)
     wind_dir = params.get("wind_dir", 270)
     
-    # Stability parameters (D = Neutral)
-    a_y, a_z = 0.08, 0.06
-    b_y, b_z = 0.0001, 0.0015
+    # ── Parámetros de dispersión Pasquill-Gifford, clase D (neutral) ───
+    # Turner (1970), EPA Workbook. Valores estándar para estabilidad neutral.
+    a_y, a_z = 0.08, 0.06      # coeficientes de dispersión base
+    b_y, b_z = 0.0001, 0.0015  # factores de corrección a distancia
     
+    # Deposición: 1% por paso temporal. Para datos anuales, captura la
+    # remoción neta (deposición húmeda + seca + regulación).
     deposition = params.get("abm_deposition", 0.01)
     
     macro_series = params.get("macro_target_series")

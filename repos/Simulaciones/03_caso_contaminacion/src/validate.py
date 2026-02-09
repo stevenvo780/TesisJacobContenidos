@@ -48,6 +48,11 @@ def make_synthetic(start_date, end_date, seed=101):
 
 
 def main():
+    # ── Configuración del caso ──────────────────────────────────────────
+    # grid_size=20: grid 20×20 para dispersión espacial de PM2.5.
+    # persistence_window=5: 5 años de ventana para estabilidad temporal.
+    # Datos anuales (freq="YS"): World Bank PM2.5 global.
+    # ode_calibration=False: α y β fijados desde literatura (ver ode.py).
     config = CaseConfig(
         case_name="Contaminación PM2.5",
         value_col="pm25",
@@ -61,11 +66,15 @@ def main():
         real_end="2022-01-01",
         real_split="2010-01-01",
         extra_base_params={
-            "ode_alpha": 0.8, # High emission factor
-            "ode_beta": 0.2,  # Slow dissipation (persistence)
+            # α = 0.8 año⁻¹ → τ_acum = 1.25 años.
+            # Sensibilidad a emisiones (Seinfeld & Pandis 2016).
+            "ode_alpha": 0.8,
+            # β = 0.2 año⁻¹ → τ_removal = 5 años.
+            # Inercia del sistema emisor (IPCC AR6, cap. 6).
+            "ode_beta": 0.2,
         },
-        ode_calibration=False,
-        driver_cols=[], # Driver is inferred from date/trend if no external file
+        ode_calibration=False,  # Parámetros fijados desde literatura
+        driver_cols=[],  # Sin drivers externos; forzamiento desde tendencia temporal
     )
 
     results = run_full_validation(
@@ -75,44 +84,14 @@ def main():
 
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
     write_outputs(results, os.path.abspath(out_dir))
-    print("Validación completa. Ver outputs/metrics.json y outputs/report.md")
 
-    # --- Verification of Spatial Metrics ---
-    print("\n--- Spatial Pollution Metrics ---")
-    from metrics import morans_i, gini_coefficient
-    
-    # Run a short separate simulation to capture grid state
-    # Re-using synthetic configuration
-    print("  Calculating Moran's I & Gini on Synthetic Phase...")
-    
-    start_date = config.synthetic_start
-    end_date = config.synthetic_end
-    dates = pd.date_range(start=start_date, end=end_date, freq="YS")
-    steps = len(dates)
-    
-    params = {
-        "grid_size": config.grid_size,
-        "steps": steps,
-        "ode_alpha": 0.8, "ode_beta": 0.2,
-        "forcing_series": [0.01 * t for t in range(steps)],
-        "store_grid": True 
-    }
-    
-    sim_result = simulate_abm(params, steps, seed=42)
-    
-    if "grid" in sim_result:
-        final_grid = sim_result["grid"][-1]
-        
-        # 1. Moran's I (Clustering)
-        moran = morans_i(final_grid)
-        print(f"  Moran's I (Spatial Autocorrelation): {moran:.4f} (Positive = Clouds)")
-        
-        # 2. Gini (Inequality)
-        gini = gini_coefficient(final_grid)
-        print(f"  Gini Coefficient (Inequality): {gini:.4f} (High = Hotspots)")
-        
-    else:
-        print("  [Warning] Grid history not returned by ABM.")
+    for phase_name, phase in results.get("phases", {}).items():
+        edi = phase.get("edi", {})
+        if isinstance(edi, dict):
+            print(f"  {phase_name}: EDI={edi.get('value', 'N/A'):.3f}")
+        else:
+            print(f"  {phase_name}: EDI={edi:.3f}")
+        print(f"    overall_pass={phase.get('overall_pass', False)}")
 
 
 if __name__ == "__main__":

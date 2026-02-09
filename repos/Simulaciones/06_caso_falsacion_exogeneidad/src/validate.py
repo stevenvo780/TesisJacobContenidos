@@ -1,13 +1,15 @@
-"""
-validate.py — Falsación: Exogeneidad
-Validación híbrida ABM+ODE con protocolo C1-C5.
-Generado automáticamente por el framework de validación de hiperobjetos.
+"""validate.py — Caso 06: Falsación por Exogeneidad.
+
+Prueba de control negativo: demuestra que el framework NO detecta
+emergencia espuria cuando el driver es completamente independiente
+de la señal objetivo (GBM caótica vs. onda sinusoidal).
+
+Resultado esperado: EDI << 0.30 → falsificación exitosa.
 """
 
 import os
 import sys
 
-import numpy as np
 import pandas as pd
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
@@ -16,40 +18,15 @@ from abm import simulate_abm
 from data import fetch_memetic_daily
 from ode import simulate_ode
 from datetime import datetime
-from hybrid_validator import CaseConfig, run_full_validation, write_outputs
+from hybrid_validator import CaseConfig, write_outputs
 
 
 def load_real_data(start_date, end_date):
-
+    """Carga (o genera) serie GBM + driver espurio."""
     cache_path = os.path.join(os.path.dirname(__file__), "..", "data", "memetic.csv")
     df = fetch_memetic_daily(start_date, end_date, cache_path=os.path.abspath(cache_path))
-    # df = df.rename(columns={"attention": "value"}) # No longer needed, source returns 'value'
-    print(f"DEBUG: Loaded columns: {df.columns.tolist()}")
     df["date"] = pd.to_datetime(df["date"])
     return df.dropna(subset=["date", "value"])
-
-
-def make_synthetic(start_date, end_date, seed=101):
-    rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
-    steps = len(dates)
-    if steps < 5:
-        dates = pd.date_range(start=start_date, end=end_date, freq="YS")
-        steps = len(dates)
-
-    forcing = [0.01 * t for t in range(steps)]
-    true_params = {
-        "p0": 0.0, "ode_alpha": 0.08, "ode_beta": 0.03,
-        "ode_noise": 0.02, "forcing_series": forcing,
-        "p0_ode": 0.0,
-    }
-    sim = simulate_ode(true_params, steps, seed=seed + 1)
-    ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
-
-    df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.08, "beta": 0.03}, "measurement_noise": 0.05}
-    return df, meta
 
 
 def main():
@@ -72,13 +49,9 @@ def main():
         abm_calibration=False, # Skip ABM calibration loop
     )
 
-    from hybrid_validator import evaluate_phase #, load_real_data_wrapper
-    
-    # Custom "Fast Falsification" Run
-    # We only care if EDI is low (H1 failed), we don't need Robustness (C2) or Replication (C3)
-    # for a case that is SUPPOSED to fail.
-    
-    print("--- Running Falsification Test (EDI Only) ---")
+    from hybrid_validator import evaluate_phase
+
+    print("--- Falsificación: Exogeneidad ---")
     
     # 1. Load Data
     real_df = load_real_data(config.real_start, config.real_end)

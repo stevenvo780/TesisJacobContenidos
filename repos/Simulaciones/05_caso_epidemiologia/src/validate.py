@@ -50,6 +50,12 @@ def make_synthetic(start_date, end_date, seed=101):
 
 
 def main():
+    # ── Configuración del caso ──────────────────────────────────────────
+    # grid_size=20: red de 400 agentes (ABM usa Barabási-Albert interno).
+    # persistence_window=8: 8 semanas de estabilidad.
+    # Datos semanales OWID COVID-19 (casos globales).
+    # ODE: SEIR Kermack-McKendrick con R₀=2.5.
+    # Nota: la ODE lee ode_R0, ode_latent, ode_infectious (defaults en ode.py).
     config = CaseConfig(
         case_name="Epidemiología (COVID-19 SEIR)",
         value_col="value",
@@ -63,12 +69,20 @@ def main():
         real_end="2023-12-31",
         real_split="2022-01-01",
         corr_threshold=0.7,
-        extra_base_params={"beta": 0.3, "sigma": 0.2, "gamma": 0.1, "e0": 0.001, "noise": 0.02},
+        extra_base_params={
+            # Parámetros ABM epidemiológicos:
+            # abm_beta=0.3: SAR ~0.3 para COVID (Bi et al. 2020)
+            # abm_latent=3: periodo latente COVID ~3-5 días (Li et al. 2020)
+            # noise=0.02: ruido de observación
+            "noise": 0.02,
+        },
+        # Drivers: muertes, vacunación, índice de stringencia.
+        # Todos disponibles en OWID COVID-19 dataset.
         driver_cols=["deaths", "vaccinated", "stringency"],
         use_topology=True,
         topology_type="small_world",
         topology_params={"k": 4, "p": 0.1},
-        feedback_strength=0.05,
+        feedback_strength=0.05,  # Feedback micro→macro moderado
     )
 
     results = run_full_validation(
@@ -79,15 +93,13 @@ def main():
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
     write_outputs(results, os.path.abspath(out_dir))
 
-    # Resumen
     for phase_name, phase in results.get("phases", {}).items():
         edi = phase.get("edi", {})
-        sym = phase.get("symploke", {})
-        print(f"  {phase_name}: overall={phase.get('overall_pass')} "
-              f"EDI={edi.get('value', 0):.3f} CR={sym.get('cr', 0):.3f} "
-              f"C1={phase.get('c1_convergence')} C2={phase.get('c2_robustness')} "
-              f"C3={phase.get('c3_replication')} C4={phase.get('c4_validity')} "
-              f"C5={phase.get('c5_uncertainty')}")
+        if isinstance(edi, dict):
+            print(f"  {phase_name}: EDI={edi.get('value', 'N/A'):.3f}")
+        else:
+            print(f"  {phase_name}: EDI={edi:.3f}")
+        print(f"    overall_pass={phase.get('overall_pass', False)}")
     print("Validación completa. Ver outputs/metrics.json y outputs/report.md")
 
 
