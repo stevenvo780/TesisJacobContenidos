@@ -44,13 +44,12 @@ def simulate_abm(params, steps, seed=42):
     
     # Spatial variation in Omega (upwelling zones = lower Omega)
     omega_spatial = np.ones((grid_size, grid_size))
-    # Create upwelling zones (lower Omega)
+    # Create upwelling zones (lower Omega) — vectorized
+    ii, jj = np.meshgrid(np.arange(grid_size), np.arange(grid_size), indexing='ij')
     for _ in range(3):
         cx, cy = rng.integers(0, grid_size, size=2)
-        for i in range(grid_size):
-            for j in range(grid_size):
-                dist = np.sqrt((i - cx)**2 + (j - cy)**2)
-                omega_spatial[i, j] -= 0.3 * np.exp(-dist**2 / 20)
+        dist2 = (ii - cx)**2 + (jj - cy)**2
+        omega_spatial -= 0.3 * np.exp(-dist2 / 20)
     
     # Forcing: Omega time series (from Macro)
     forcing = params.get("forcing_series")  # This should be Omega values
@@ -83,27 +82,15 @@ def simulate_abm(params, steps, seed=42):
         # Local Omega = global * spatial factor
         omega_local = omega_global * omega_spatial
         
-        # Calcification dynamics
-        new_shell = shell_mass.copy()
-        
-        for i in range(grid_size):
-            for j in range(grid_size):
-                omega = omega_local[i, j]
-                
-                if omega > stress_thresh:
-                    # Net Calcification: dm/dt = k * (Omega - 1)
-                    dm = calc_rate * (omega - 1) * shell_mass[i, j]
-                else:
-                    # Net Dissolution: dm/dt = -k' * (1 - Omega)
-                    dm = -diss_rate * (stress_thresh - omega) * shell_mass[i, j]
-                    
-                # Add noise
-                dm += rng.normal(0, 0.005)
-                
-                new_shell[i, j] = shell_mass[i, j] + dm
-                new_shell[i, j] = np.clip(new_shell[i, j], 0.01, 2.0)
-                
-        shell_mass = new_shell
+        # Calcification dynamics (vectorized)
+        # Net calcification where omega > threshold, dissolution otherwise
+        dm = np.where(
+            omega_local > stress_thresh,
+            calc_rate * (omega_local - 1) * shell_mass,
+            -diss_rate * (stress_thresh - omega_local) * shell_mass,
+        )
+        dm += rng.normal(0, 0.005, size=(grid_size, grid_size))
+        shell_mass = np.clip(shell_mass + dm, 0.01, 2.0)
         
         # Calcification Health Index: Mean shell mass anomaly
         health_idx = np.mean(shell_mass) - 1.0  # Deviation from baseline

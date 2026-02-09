@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/validate.py", line 70, in <module>
+    main()
+    ~~~~^^
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/validate.py", line 52, in main
+    results = run_full_validation(
+        config, load_real_data, make_synthetic,
+        simulate_abm, simulate_ode,
+    )
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/../../common/hybrid_validator.py", line 1083, in run_full_validation
+    synthetic = evaluate_phase(
+        config, synth_df, config.synthetic_start, config.synthetic_end,
+        config.synthetic_split, simulate_abm_fn, simulate_ode_fn,
+        synthetic_meta=synth_meta, param_grid=param_grid
+    )
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/../../common/hybrid_validator.py", line 822, in evaluate_phase
+    best_abm, best_err, top_5 = calibrate_abm(
+                                ~~~~~~~~~~~~~^
+        obs[:val_start], base_params, val_start, simulate_abm_fn,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        param_grid=param_grid, seed=2
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/../../common/hybrid_validator.py", line 309, in calibrate_abm
+    sim = simulate_abm_fn(params, steps, seed=seed)
+  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/abm.py", line 110, in simulate_abm
+    population[sh, 2] += int(new_large * frac)
+                         ~~~^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

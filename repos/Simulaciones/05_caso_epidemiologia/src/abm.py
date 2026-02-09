@@ -22,6 +22,7 @@ Dynamics:
 
 import numpy as np
 import networkx as nx
+from scipy.sparse import csr_matrix
 
 def simulate_abm(params, steps, seed=42):
     """
@@ -71,8 +72,8 @@ def simulate_abm(params, steps, seed=42):
     # Initialize timers for initial infected
     infection_timer[infected_idx] = rng.integers(1, infectious_period + 1, size=initial_infected)
     
-    # Pre-compute adjacency list
-    adj = {node: list(G.neighbors(node)) for node in G.nodes()}
+    # Pre-compute sparse adjacency matrix for vectorized transmission
+    adj_matrix = nx.adjacency_matrix(G).astype(np.float64)
     
     series_incidence = []
     series_grid = []
@@ -85,46 +86,50 @@ def simulate_abm(params, steps, seed=42):
         # Macro coupling: adjust beta to match macro R0
         if macro_series is not None and t < len(macro_series) and coupling > 0:
             target_R = macro_series[t]
-            # R0 ~ beta * infectious_period * average_contacts
-            avg_contacts = np.mean([len(adj[i]) for i in range(n_agents)])
+            avg_contacts = 2 * G.number_of_edges() / n_agents
             current_R0 = beta_eff * infectious_period * avg_contacts
             if current_R0 > 0:
                 beta_eff = beta_eff * (1 + coupling * 0.1 * (target_R - current_R0) / current_R0)
                 beta_eff = np.clip(beta_eff, 0, 1)
                 
-        new_infections = 0
-        new_states = states.copy()
+        # Vectorized SEIR transitions
+        is_S = (states == 0)
+        is_E = (states == 1)
+        is_I = (states == 2)
+        is_R = (states == 3)
         
-        # Process each agent
-        for i in range(n_agents):
-            if states[i] == 0:  # Susceptible
-                # Check contacts with infectious
-                neighbors = adj[i]
-                for j in neighbors:
-                    if states[j] == 2:  # Neighbor is Infectious
-                        if rng.random() < beta_eff:
-                            new_states[i] = 1  # Exposed
-                            exposure_timer[i] = latent_period
-                            new_infections += 1
-                            break
-                            
-            elif states[i] == 1:  # Exposed
-                exposure_timer[i] -= 1
-                if exposure_timer[i] <= 0:
-                    new_states[i] = 2  # Infectious
-                    infection_timer[i] = infectious_period
-                    
-            elif states[i] == 2:  # Infectious
-                infection_timer[i] -= 1
-                if infection_timer[i] <= 0:
-                    new_states[i] = 3  # Recovered
-                    
-            elif states[i] == 3:  # Recovered
-                # Waning immunity
-                if immunity_waning > 0 and rng.random() < immunity_waning:
-                    new_states[i] = 0  # Susceptible again
-                    
-        states = new_states
+        # Transmission: for each susceptible, count infectious neighbors
+        infectious_vec = is_I.astype(np.float64)
+        n_inf_neighbors = np.asarray(adj_matrix.dot(infectious_vec)).ravel()
+        
+        # Probability of NOT being infected by any neighbor: (1-beta)^n_inf_neighbors
+        prob_escape = np.power(1 - beta_eff, n_inf_neighbors)
+        prob_infected = 1 - prob_escape
+        
+        # Draw random for each susceptible
+        new_exposed = is_S & (rng.random(n_agents) < prob_infected)
+        new_infections = int(np.sum(new_exposed))
+        
+        # E -> I transitions (timer expired)
+        exposure_timer[is_E] -= 1
+        new_infectious = is_E & (exposure_timer <= 0)
+        
+        # I -> R transitions (timer expired)
+        infection_timer[is_I] -= 1
+        new_recovered = is_I & (infection_timer <= 0)
+        
+        # R -> S waning immunity
+        new_susceptible = np.zeros(n_agents, dtype=bool)
+        if immunity_waning > 0:
+            new_susceptible = is_R & (rng.random(n_agents) < immunity_waning)
+        
+        # Apply transitions
+        states[new_exposed] = 1
+        exposure_timer[new_exposed] = latent_period
+        states[new_infectious] = 2
+        infection_timer[new_infectious] = infectious_period
+        states[new_recovered] = 3
+        states[new_susceptible] = 0
         
         # Record incidence (new infections)
         series_incidence.append(new_infections)
@@ -136,13 +141,12 @@ def simulate_abm(params, steps, seed=42):
         I_count = np.sum(states == 2)
         R_count = np.sum(states == 3)
         
-        # Create a visual grid (approximate spatial distribution)
+        # Grid representation: approximate spatial distribution (vectorized)
         grid = np.zeros((grid_size, grid_size))
-        for i in range(n_agents):
-            gx = i % grid_size
-            gy = i // grid_size % grid_size
-            if states[i] == 2:  # Infectious
-                grid[gx, gy] += 1
+        inf_idx = np.where(states == 2)[0]
+        gx = inf_idx % grid_size
+        gy = (inf_idx // grid_size) % grid_size
+        np.add.at(grid, (gx, gy), 1)
                 
         series_grid.append(grid)
         

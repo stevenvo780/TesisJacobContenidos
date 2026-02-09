@@ -74,25 +74,20 @@ def simulate_abm(params, steps, seed=42):
             current_mean = np.mean(T)
             T += coupling * 0.1 * (target_mean - current_mean)
         
-        # Diffusion (heat exchange with neighbors)
-        new_T = T.copy()
-        for i in range(1, grid_size - 1):
-            for j in range(1, grid_size - 1):
-                laplacian = (T[i+1, j] + T[i-1, j] + T[i, j+1] + T[i, j-1] - 4 * T[i, j])
-                new_T[i, j] += diffusion * laplacian + rng.normal(0, 0.01)
+        # Diffusion (heat exchange with neighbors) — vectorized
+        laplacian = np.zeros_like(T)
+        laplacian[1:-1, 1:-1] = (
+            T[2:, 1:-1] + T[:-2, 1:-1] + T[1:-1, 2:] + T[1:-1, :-2] - 4 * T[1:-1, 1:-1]
+        )
+        new_T = T + diffusion * laplacian + rng.normal(0, 0.01, T.shape)
                 
-        # Convection (simplified): If deep is warmer than surface, mix
-        for j in range(grid_size):
-            for i in range(grid_size - 1):
-                # Density = f(T, S). Simplified: higher T = lower density
-                rho_upper = -0.1 * new_T[i, j] + 0.8 * S[i, j]
-                rho_lower = -0.1 * new_T[i+1, j] + 0.8 * S[i+1, j]
-                
-                if rho_upper > rho_lower + convection_thresh:
-                    # Overturn!
-                    avg = (new_T[i, j] + new_T[i+1, j]) / 2
-                    new_T[i, j] = avg
-                    new_T[i+1, j] = avg
+        # Convection (simplified, vectorized): If deep is warmer than surface, mix
+        rho_upper = -0.1 * new_T[:-1, :] + 0.8 * S[:-1, :]
+        rho_lower = -0.1 * new_T[1:, :] + 0.8 * S[1:, :]
+        overturn = rho_upper > rho_lower + convection_thresh
+        avg_T = (new_T[:-1, :] + new_T[1:, :]) / 2
+        new_T[:-1, :] = np.where(overturn, avg_T, new_T[:-1, :])
+        new_T[1:, :] = np.where(overturn, avg_T, new_T[1:, :])
                     
         T = new_T
         

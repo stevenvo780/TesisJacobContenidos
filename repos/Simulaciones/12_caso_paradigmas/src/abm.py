@@ -1,5 +1,6 @@
 import numpy as np
 import networkx as nx
+from scipy.sparse import csr_matrix
 
 def simulate_abm(params, steps, seed=42):
     """
@@ -42,65 +43,40 @@ def simulate_abm(params, steps, seed=42):
     series_m = [] # Magnetization (Average Spin)
     series_grid = [] # Pattern (spins)
     
-    # Pre-compute adjacency lists for speed
-    adj = [list(G.neighbors(i)) for i in range(n_agents)]
+    # Pre-compute sparse adjacency matrix for vectorized local field
+    adj_sparse = nx.adjacency_matrix(G).astype(np.float64)
     
     for t in range(steps):
         # External Field (Evidence)
         H_ext = forcing[t] if t < len(forcing) else 0.0
         
         # Macro Coupling (Social Pressure from Paradigm)
-        # If coupling > 0, the Global Consensus (ODE State) biases local nodes.
-        # This represents "Scientific Zeitgeist" or "Funding Bias".
         macro_series = params.get("macro_target_series")
         coupling = params.get("macro_coupling", 0.0)
         
         H_macro = 0.0
         if macro_series is not None and t < len(macro_series):
-            H_macro = macro_series[t] # Order Parameter M from ODE
+            H_macro = macro_series[t]
             
-        # Total Effective External Field
         H = H_ext + coupling * H_macro
         
-        # Metropolis Updates
-        # Random sequential updates per step (N times)
-        for _ in range(n_agents):
-            i = rng.integers(0, n_agents)
-            s_i = spins[i]
-            
-            # Local Field: Sum of neighbors spins
-            # h_local = sum(spins[j] for j in neighbors)
-            # Optimization: raw access
-            h_local = sum(spins[j] for j in adj[i])
-            
-            # Total energy change if flipped
-            # E = - J * S_i * h_local - H * S_i
-            # Delta E = E_new - E_old
-            # S_new = -S_i
-            # Delta E = (- (-S_i) * (h_local + H)) - (- (S_i) * (h_local + H))
-            #         = (S_i * (h_local + H)) + (S_i * (h_local + H))
-            #         = 2 * S_i * (h_local + H)
-            
-            delta_E = 2 * s_i * (h_local + H)
-            
-            if delta_E <= 0:
-                # Energy lowers, accept flip
-                spins[i] = -s_i
-            else:
-                # Energy increases, accept with prob exp(-dE/T)
-                # T relates to "Anomalies" or "Tolerance"
-                # If T is high (Crisis), we flip easily (Randomness/search).
-                # If T is low (Normal Science), we stick to consensus.
-                
-                # To capture the Synthetic dynamic, T must vary?
-                # We don't have a direct T-series input usually.
-                # Let's assume constant T for the "Validator" default,
-                # unless macro_coupling modulates it?
-                # Or maybe H represents the evidence.
-                
-                prob = np.exp(-delta_E / T_base)
-                if rng.random() < prob:
-                    spins[i] = -s_i
+        # Vectorized Metropolis: compute local field for ALL agents at once
+        # h_local[i] = sum of spins of neighbors of i
+        h_local = np.asarray(adj_sparse.dot(spins.astype(np.float64))).ravel()
+        
+        # Delta E if we flip each spin: 2 * s_i * (h_local + H)
+        delta_E = 2 * spins * (h_local + H)
+        
+        # Acceptance probability
+        # Accept if delta_E <= 0, else with prob exp(-delta_E / T)
+        accept_prob = np.where(delta_E <= 0, 1.0, np.exp(-delta_E / T_base))
+        
+        # Only flip a random subset (n_agents attempts out of n_agents, like sequential)
+        # Use random selection to avoid simultaneous-flip bias
+        flip_candidates = rng.random(n_agents) < accept_prob
+        # Only flip ~50% to approximate sequential updates
+        flip_mask = flip_candidates & (rng.random(n_agents) < 0.5)
+        spins[flip_mask] *= -1
                     
         # Calculate Magnetization
         m = np.mean(spins)

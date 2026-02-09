@@ -109,12 +109,11 @@ def simulate_abm(params, steps, seed=42):
                     population[sh, 1] += int(new_medium * frac)
                     population[sh, 2] += int(new_large * frac)
                     
-        # Atmospheric decay
-        for shell in range(n_shells):
-            for size in range(n_size_classes):
-                decay = decay_rate[shell] if shell < len(decay_rate) else 0.001
-                removed = int(population[shell, size] * decay)
-                population[shell, size] = max(0, population[shell, size] - removed)
+        # Atmospheric decay (vectorized)
+        decay_arr = np.array(decay_rate[:n_shells] if len(decay_rate) >= n_shells 
+                             else decay_rate + [0.001] * (n_shells - len(decay_rate)))
+        removed = (population * decay_arr[:, None]).astype(int)
+        population = np.maximum(0, population - removed)
                 
         # Macro Coupling: Adjust to match macro debris count
         if macro_series is not None and t < len(macro_series) and coupling > 0:
