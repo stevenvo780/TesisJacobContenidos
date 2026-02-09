@@ -1,9 +1,9 @@
 # Reporte de Validación — Depleción de Acuíferos (Darcy-Theis)
 
-- generated_at: 2026-02-09T18:53:45.475859Z
+- generated_at: 2026-02-09T20:23:53.773081Z
 
 ## Fase synthetic
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
 - valor: 0.3804

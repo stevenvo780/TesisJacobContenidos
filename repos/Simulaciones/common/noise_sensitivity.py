@@ -23,7 +23,10 @@ def rmse(a, b):
 def compute_edi(err_coupled, err_reduced):
     if err_reduced < 1e-15:
         return 0.0
-    return max(0.0, (err_reduced - err_coupled) / err_reduced)
+    # No clipear a 0: EDI negativo indica coupling contraproducente
+    # y eso es estable si se mantiene → información legítima
+    raw = (err_reduced - err_coupled) / err_reduced
+    return float(np.clip(raw, -1.0, 1.0))
 
 
 def noise_sensitivity_test(
@@ -56,14 +59,18 @@ def noise_sensitivity_test(
 
     for mult in multipliers:
         noise_level = original_noise * mult
+        # Misma seed para coupled y reduced dentro de cada nivel de ruido
+        # para que la única diferencia sea el acoplamiento macro, no el azar
+        level_seed = rng.randint(0, 100000)
 
         # Modelo acoplado (con macro_coupling original)
         params_coupled = dict(eval_params)
-        params_coupled["base_noise"] = noise_level
-        params_coupled["seed"] = rng.randint(0, 100000)
+        params_coupled["noise"] = noise_level        # ABM core usa "noise" como key
+        params_coupled["base_noise"] = noise_level   # alias para compatibilidad
+        params_coupled["seed"] = level_seed
 
         try:
-            abm_coupled = simulate_abm_fn(params_coupled, steps)
+            abm_coupled = simulate_abm_fn(params_coupled, steps, seed=level_seed)
         except Exception as e:
             results.append({
                 "noise_mult": mult, "noise_level": noise_level,
@@ -72,14 +79,17 @@ def noise_sensitivity_test(
             })
             continue
 
-        # Modelo reducido (sin macro)
+        # Modelo reducido (sin macro) — misma seed que coupled
+        # Fix P4: zerificar TODOS los canales de acoplamiento macro
         params_reduced = dict(params_coupled)
         params_reduced["macro_coupling"] = 0.0
         params_reduced["forcing_scale"] = 0.0
-        params_reduced["seed"] = rng.randint(0, 100000)
+        params_reduced["macro_target_series"] = None       # Fix: evitar leak de nudging ODE→ABM
+        params_reduced["ode_coupling_strength"] = 0.0      # Fix: evitar leak de coupling ODE
+        params_reduced["seed"] = level_seed                 # Fix: misma seed que coupled
 
         try:
-            abm_reduced = simulate_abm_fn(params_reduced, steps)
+            abm_reduced = simulate_abm_fn(params_reduced, steps, seed=level_seed)
         except Exception as e:
             results.append({
                 "noise_mult": mult, "noise_level": noise_level,

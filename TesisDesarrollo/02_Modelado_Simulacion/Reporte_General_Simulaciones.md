@@ -1,0 +1,33 @@
+# Reporte General de Simulaciones
+
+| Caso | EDI | CR | Estado | Reporte |
+| :--- | ---: | ---: | :--- | :--- |
+| 01_caso_clima | -0.225 | 1.000 | False | `01_caso_clima/report.md` |
+| 02_caso_conciencia | 0.447 | 0.936 | False | `02_caso_conciencia/report.md` |
+| 03_caso_contaminacion | -0.000 | 2.780 | False | `03_caso_contaminacion/report.md` |
+| 04_caso_energia | -0.012 | -1.096 | False | `04_caso_energia/report.md` |
+| 05_caso_epidemiologia | 0.674 | -0.000 | False | `05_caso_epidemiologia/report.md` |
+| 06_caso_falsacion_exogeneidad | 0.005 | 1.006 | False | `06_caso_falsacion_exogeneidad/report.md` |
+| 07_caso_falsacion_no_estacionariedad | 0.148 | 1.004 | False | `07_caso_falsacion_no_estacionariedad/report.md` |
+| 08_caso_falsacion_observabilidad | 0.140 | 1.005 | False | `08_caso_falsacion_observabilidad/report.md` |
+| 09_caso_finanzas | 0.030 | 0.000 | False | `09_caso_finanzas/report.md` |
+| 10_caso_justicia | 0.000 | 1.053 | False | `10_caso_justicia/report.md` |
+| 11_caso_movilidad | -1.069 | n/a | False | `11_caso_movilidad/report.md` |
+| 12_caso_paradigmas | -0.167 | n/a | False | `12_caso_paradigmas/report.md` |
+| 13_caso_politicas_estrategicas | 0.021 | -1.626 | False | `13_caso_politicas_estrategicas/report.md` |
+| 14_caso_postverdad | 0.003 | 1.054 | False | `14_caso_postverdad/report.md` |
+| 15_caso_wikipedia | 0.000 | -1.158 | False | `15_caso_wikipedia/report.md` |
+| 16_caso_deforestacion | 0.879 | 1.017 | False | `16_caso_deforestacion/report.md` |
+| 17_caso_oceanos | 0.058 | -1.334 | False | `17_caso_oceanos/report.md` |
+| 18_caso_urbanizacion | -0.001 | -30.069 | False | `18_caso_urbanizacion/report.md` |
+| 19_caso_acidificacion_oceanica | -0.021 | 1.211 | False | `19_caso_acidificacion_oceanica/report.md` |
+| 20_caso_kessler | -0.238 | 1.198 | False | `20_caso_kessler/report.md` |
+| 21_caso_salinizacion | 0.396 | 1.047 | False | `21_caso_salinizacion/report.md` |
+| 22_caso_fosforo | 0.481 | 1.065 | False | `22_caso_fosforo/report.md` |
+| 23_caso_erosion_dialectica | 0.747 | 1.000 | False | `23_caso_erosion_dialectica/report.md` |
+| 24_caso_microplasticos | -1.302 | 1.002 | False | `24_caso_microplasticos/report.md` |
+| 25_caso_acuiferos | 0.383 | 1.001 | False | `25_caso_acuiferos/report.md` |
+| 26_caso_starlink | -576.760 | n/a | False | `26_caso_starlink/report.md` |
+| 27_caso_riesgo_biologico | 0.659 | 1.002 | False | `27_caso_riesgo_biologico/report.md` |
+| 28_caso_fuga_cerebros | 0.437 | 1.008 | False | `28_caso_fuga_cerebros/report.md` |
+| 29_caso_iot | 0.169 | 1.053 | False | `29_caso_iot/report.md` |

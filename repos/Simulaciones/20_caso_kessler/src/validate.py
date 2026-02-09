@@ -52,6 +52,7 @@ def main():
             "ode_frag_mult": 500
         },
         driver_cols=[],  # CSV solo tiene date, value
+        log_transform=True,  # Fix P6: escala orbital (miles de objetos) necesita log-transform
     )
 
     results = run_full_validation(

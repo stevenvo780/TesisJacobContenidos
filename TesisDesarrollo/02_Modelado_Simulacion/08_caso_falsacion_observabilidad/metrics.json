@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: Observabilidad Escasa",
-  "generated_at": "2026-02-09T13:53:31.899214",
+  "generated_at": "2026-02-09T15:23:39.529854",
   "git": {
     "commit": "falsification_confounder",
     "dirty": false
@@ -56,12 +56,12 @@
         "ode_obs": 0.6407467807468211
       },
       "edi": {
-        "value": -2.124228527135744,
+        "value": -1.0,
         "bootstrap_mean": -2.133983642331822,
         "ci_lo": -2.503156510783447,
         "ci_hi": -1.7968957321920964,
         "valid": false,
-        "weighted_value": -0.42484570542714883,
+        "weighted_value": -0.2,
         "loe_factor": 0.2,
         "permutation_pvalue": 1.0,
         "permutation_null_95": -0.5816789026637136,
@@ -77,10 +77,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 0.0006895108152180802,
+        "edi_mean": 0.14052653426410144,
+        "edi_std": 9.689456520021206e-05,
         "monotonic_decrease": false
       },
       "effective_information": -0.21078339216736652,
@@ -151,6 +151,23 @@
         "ode_mean_train": -1.3159733717667055,
         "obs_mean_train": 1.295260195396016e-16,
         "scale_factor": 1.0
+      },
+      "criteria": {
+        "c1_convergence": false,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "falsification",

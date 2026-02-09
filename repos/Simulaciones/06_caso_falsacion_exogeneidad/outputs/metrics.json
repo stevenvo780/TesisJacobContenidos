@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: Exogeneidad",
-  "generated_at": "2026-02-09T13:53:34.034159",
+  "generated_at": "2026-02-09T15:23:43.261061",
   "git": {
     "commit": "falsification_mode",
     "dirty": false
@@ -77,10 +77,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 0.004129759639008614,
+        "edi_mean": 0.0052330361261889195,
+        "edi_std": 2.1611181383408988e-05,
         "monotonic_decrease": false
       },
       "effective_information": 1.021743182394478,
@@ -151,6 +151,23 @@
         "ode_mean_train": 1.6810775077105506,
         "obs_mean_train": 0.0,
         "scale_factor": 1.0
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": false,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "falsification",

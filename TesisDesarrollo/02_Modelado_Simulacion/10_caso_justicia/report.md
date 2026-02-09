@@ -1,6 +1,6 @@
 # Reporte de Validación — Justicia Algorítmica
 
-- generated_at: 2026-02-09T18:53:37.032413Z
+- generated_at: 2026-02-09T20:23:44.866112Z
 
 ## Fase synthetic
 - **overall_pass**: False

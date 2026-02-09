@@ -1,8 +1,8 @@
 {
   "case": "Energ\u00eda (OPSD GB Grid)",
-  "generated_at": "2026-02-09T18:54:49.537298Z",
+  "generated_at": "2026-02-09T20:24:56.700602Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -68,9 +68,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.04802432692816177,
-        "edi_std": 0.0,
+        "cv": 0.009318315970578405,
+        "edi_mean": 0.048379545963783965,
+        "edi_std": 0.0004508158958036601,
         "monotonic_decrease": false
       },
       "effective_information": -0.005703023696824294,
@@ -141,6 +141,23 @@
         "ode_mean_train": 0.750958792714884,
         "obs_mean_train": 2.7478019859472625e-16,
         "scale_factor": 4.90256048876483
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "trend",
@@ -218,9 +235,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "cv": 0.040760604271531116,
+        "edi_mean": -0.0029505174214793047,
+        "edi_std": 0.00012026487301317633,
         "monotonic_decrease": false
       },
       "effective_information": -0.00028142530602592863,
@@ -291,6 +308,23 @@
         "ode_mean_train": null,
         "obs_mean_train": null,
         "scale_factor": null
+      },
+      "criteria": {
+        "c1_convergence": false,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "null",

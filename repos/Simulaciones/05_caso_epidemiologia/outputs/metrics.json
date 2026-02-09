@@ -1,8 +1,8 @@
 {
   "case": "Epidemiolog\u00eda (COVID-19 SEIR)",
-  "generated_at": "2026-02-09T18:53:55.191449Z",
+  "generated_at": "2026-02-09T20:24:03.228606Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -68,9 +68,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.8744559702174074,
-        "edi_std": 0.0,
+        "cv": 0.02081740008610469,
+        "edi_mean": 0.6501248937924314,
+        "edi_std": 0.013533910020013364,
         "monotonic_decrease": false
       },
       "effective_information": 0.7535140574457124,
@@ -142,6 +142,23 @@
         "obs_mean_train": -7.786769706960002e-17,
         "scale_factor": 1.0
       },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": false,
+        "c3_replication": false,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": true,
+        "cr_valid": false
+      },
       "emergence_taxonomy": {
         "category": "trend",
         "ode_quality": "poor",
@@ -150,8 +167,9 @@
       },
       "synthetic_meta": {
         "ode_true": {
-          "alpha": 0.08,
-          "beta": 0.03
+          "beta": 0.3,
+          "sigma": 0.2,
+          "gamma": 0.1
         },
         "measurement_noise": 0.05
       }
@@ -217,10 +235,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": false,
+        "cv": 0.7678319301577594,
+        "edi_mean": -0.02646825870283436,
+        "edi_std": 0.020323174167712222,
         "monotonic_decrease": false
       },
       "effective_information": 0.0,
@@ -291,6 +309,23 @@
         "ode_mean_train": 21.35141546319352,
         "obs_mean_train": 4.715586455108912e-16,
         "scale_factor": 0.8488239381319845
+      },
+      "criteria": {
+        "c1_convergence": false,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "c2_robustness": false,
+        "c3_replication": false,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": false,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "null",

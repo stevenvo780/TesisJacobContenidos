@@ -1,14 +1,14 @@
 {
   "case": "Ciclo del F\u00f3sforo (Carpenter Biogeoqu\u00edmico)",
-  "generated_at": "2026-02-09T18:53:38.904031Z",
+  "generated_at": "2026-02-09T20:23:46.105118Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
     "synthetic": {
       "phase": "synthetic",
-      "overall_pass": false,
+      "overall_pass": true,
       "data": {
         "start": "1960-01-01",
         "end": "2022-01-01",
@@ -69,10 +69,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 1.5435522448839804e-06,
+        "edi_mean": 0.7542459167032097,
+        "edi_std": 1.164217977921815e-06,
         "monotonic_decrease": false
       },
       "effective_information": 0.29850755735756074,
@@ -144,6 +144,23 @@
         "obs_mean_train": -2.0724163126336256e-16,
         "scale_factor": 0.9531567823331544
       },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": true,
+        "cr_valid": false
+      },
       "emergence_taxonomy": {
         "category": "strong",
         "ode_quality": "good",
@@ -200,12 +217,12 @@
         "ode_obs": -0.8015085123342236
       },
       "edi": {
-        "value": -2.6856175509910405,
+        "value": -1.0,
         "bootstrap_mean": -2.7133499515133725,
         "ci_lo": -3.3266935514549334,
         "ci_hi": -2.1635471934374295,
         "valid": false,
-        "weighted_value": -1.6113705305946242,
+        "weighted_value": -0.6,
         "loe_factor": 0.6,
         "permutation_pvalue": 1.0,
         "permutation_null_95": -0.7421184570922583,
@@ -221,10 +238,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 2.9719027999150463e-06,
+        "edi_mean": 0.4813324341807167,
+        "edi_std": 1.4304732088315967e-06,
         "monotonic_decrease": false
       },
       "effective_information": -0.7670196326821108,
@@ -295,6 +312,23 @@
         "ode_mean_train": -1.3330133137643598,
         "obs_mean_train": 5.636516894250794e-16,
         "scale_factor": 3.7555678182435646
+      },
+      "criteria": {
+        "c1_convergence": false,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "null",

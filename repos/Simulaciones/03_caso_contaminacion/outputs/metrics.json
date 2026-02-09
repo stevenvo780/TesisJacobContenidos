@@ -1,8 +1,8 @@
 {
   "case": "Contaminaci\u00f3n PM2.5",
-  "generated_at": "2026-02-09T18:53:35.501176Z",
+  "generated_at": "2026-02-09T20:23:42.960273Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -68,9 +68,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "cv": 0.3201979327794297,
+        "edi_mean": -5.1177237403561296e-11,
+        "edi_std": 3.2019793277942974e-11,
         "monotonic_decrease": false
       },
       "effective_information": -3.8542502522886934e-12,
@@ -141,6 +141,23 @@
         "ode_mean_train": null,
         "obs_mean_train": null,
         "scale_factor": null
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": false,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "trend",
@@ -219,9 +236,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "cv": 0.3074918128222088,
+        "edi_mean": -4.786075638270168e-11,
+        "edi_std": 3.0749181282220877e-11,
         "monotonic_decrease": false
       },
       "effective_information": 5.31574784190525e-13,
@@ -292,6 +309,23 @@
         "ode_mean_train": null,
         "obs_mean_train": null,
         "scale_factor": null
+      },
+      "criteria": {
+        "c1_convergence": false,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": false,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": true
       },
       "emergence_taxonomy": {
         "category": "null",

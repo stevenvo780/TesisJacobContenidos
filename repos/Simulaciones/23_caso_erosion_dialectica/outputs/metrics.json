@@ -1,8 +1,8 @@
 {
   "case": "Erosi\u00f3n Dial\u00e9ctica (Abrams-Strogatz)",
-  "generated_at": "2026-02-09T18:53:44.731119Z",
+  "generated_at": "2026-02-09T20:23:52.022546Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -69,10 +69,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 1.0209834229729135e-06,
+        "edi_mean": 0.42199059068467654,
+        "edi_std": 4.308453977396027e-07,
         "monotonic_decrease": false
       },
       "effective_information": 0.038997960126355036,
@@ -144,6 +144,23 @@
         "obs_mean_train": 1.0765799026668185e-16,
         "scale_factor": 0.9827967807499762
       },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
+      },
       "emergence_taxonomy": {
         "category": "suggestive",
         "ode_quality": "good",
@@ -202,12 +219,12 @@
         "ode_obs": 0.9877470827328517
       },
       "edi": {
-        "value": -2.691700409729194,
+        "value": -1.0,
         "bootstrap_mean": -2.8638915163081293,
         "ci_lo": -4.732742551798789,
         "ci_hi": -1.879769297784376,
         "valid": false,
-        "weighted_value": -1.6150202458375165,
+        "weighted_value": -0.6,
         "loe_factor": 0.6,
         "permutation_pvalue": 1.0,
         "permutation_null_95": -0.1479367159444596,
@@ -223,10 +240,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 8.962023657249455e-06,
+        "edi_mean": 0.7472563793583642,
+        "edi_std": 6.696929349840234e-06,
         "monotonic_decrease": false
       },
       "effective_information": 0.0,
@@ -297,6 +314,23 @@
         "ode_mean_train": -1.408616438682907,
         "obs_mean_train": -5.732787981700808e-15,
         "scale_factor": 1.0
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": false,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "null",

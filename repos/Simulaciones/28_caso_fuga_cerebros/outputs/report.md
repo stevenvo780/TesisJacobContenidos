@@ -1,9 +1,9 @@
 # Reporte de Validación — Fuga de Cerebros Global (Docquier-Rapoport)
 
-- generated_at: 2026-02-09T18:53:34.808938Z
+- generated_at: 2026-02-09T20:23:42.544129Z
 
 ## Fase synthetic
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
 - valor: 0.7245

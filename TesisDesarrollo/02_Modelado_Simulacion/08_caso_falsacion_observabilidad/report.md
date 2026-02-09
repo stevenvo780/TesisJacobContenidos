@@ -1,15 +1,15 @@
 # Reporte de Validación — Falsación: Observabilidad Escasa
 
-- generated_at: 2026-02-09T13:53:31.899214
+- generated_at: 2026-02-09T15:23:39.529854
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -2.1242
+- valor: -1.0000
 - bootstrap_mean: -2.1340
 - CI 95%: [-2.5032, -1.7969]
-- weighted_value (LoE factor 0.20): -0.4248
+- weighted_value (LoE factor 0.20): -0.2000
 - válido (0.30-0.90): False
 
 ### Symploké y CR

@@ -1,8 +1,8 @@
 {
   "case": "Clima Regional (CONUS)",
-  "generated_at": "2026-02-09T18:53:45.844616Z",
+  "generated_at": "2026-02-09T20:23:53.678505Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -70,9 +70,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.2530600213103161,
-        "edi_std": 0.0,
+        "cv": 7.333267783103405e-08,
+        "edi_mean": 0.3061696421355339,
+        "edi_std": 2.2452239728368093e-08,
         "monotonic_decrease": false
       },
       "effective_information": 0.027459396634625488,
@@ -143,6 +143,23 @@
         "ode_mean_train": -1.5206008038699288,
         "obs_mean_train": 1.0362081563168128e-16,
         "scale_factor": 1.0
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": false,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "null",
@@ -222,9 +239,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "cv": 2.5854190578803737e-06,
+        "edi_mean": -0.22519289708378548,
+        "edi_std": 5.822180078197126e-07,
         "monotonic_decrease": false
       },
       "effective_information": 9.148056625862822e-05,
@@ -295,6 +312,23 @@
         "ode_mean_train": -1.1377930023466813,
         "obs_mean_train": 2.000163703094528e-16,
         "scale_factor": 1.0
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "trend",

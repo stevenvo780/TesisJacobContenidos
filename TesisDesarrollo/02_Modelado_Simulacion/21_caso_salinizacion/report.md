@@ -1,6 +1,6 @@
 # Reporte de Validación — Salinización de Suelos (Richards-Solute)
 
-- generated_at: 2026-02-09T18:53:38.131299Z
+- generated_at: 2026-02-09T20:23:46.217073Z
 
 ## Fase synthetic
 - **overall_pass**: False

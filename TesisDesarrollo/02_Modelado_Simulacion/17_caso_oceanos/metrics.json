@@ -1,8 +1,8 @@
 {
   "case": "Ocean (Stommel + Thermohaline ABM)",
-  "generated_at": "2026-02-09T18:53:37.428235Z",
+  "generated_at": "2026-02-09T20:23:45.293068Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -68,9 +68,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.0808175839783362,
-        "edi_std": 0.0,
+        "cv": 0.08944107114959648,
+        "edi_mean": 0.09114006650314273,
+        "edi_std": 0.008151665172686545,
         "monotonic_decrease": false
       },
       "effective_information": 0.3247591538373249,
@@ -141,6 +141,23 @@
         "ode_mean_train": 0.42920555768787777,
         "obs_mean_train": 4.7369515717340015e-17,
         "scale_factor": 0.8099536107352785
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": false,
+        "emergence_pass": true,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": true
       },
       "emergence_taxonomy": {
         "category": "trend",
@@ -217,9 +234,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.05187363481392062,
-        "edi_std": 0.0,
+        "cv": 0.021505646732362934,
+        "edi_mean": 0.053204693319767904,
+        "edi_std": 0.0011442013390386386,
         "monotonic_decrease": false
       },
       "effective_information": 0.013443734993789036,
@@ -290,6 +307,23 @@
         "ode_mean_train": -0.4225499442967804,
         "obs_mean_train": -3.941291737419306e-15,
         "scale_factor": 1.0
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "suggestive",

@@ -1,9 +1,9 @@
 # Reporte de Validación — Riesgo Biológico Global (TB Incidence — Woolhouse)
 
-- generated_at: 2026-02-09T18:53:35.419645Z
+- generated_at: 2026-02-09T20:23:43.171463Z
 
 ## Fase synthetic
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
 - valor: 0.4425

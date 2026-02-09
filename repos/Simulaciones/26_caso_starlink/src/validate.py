@@ -79,6 +79,7 @@ def main():
             "macro_coupling": 0.28,  # Acoplamiento macro→micro
         },
         driver_cols=["launches", "collision_events"],
+        log_transform=True,  # Fix P7: crecimiento exponencial necesita log-transform
     )
 
     results = run_full_validation(

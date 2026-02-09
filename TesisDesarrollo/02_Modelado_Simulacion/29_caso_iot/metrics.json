@@ -1,8 +1,8 @@
 {
   "case": "Ecosistema IoT Global (Bass-Metcalfe)",
-  "generated_at": "2026-02-09T18:53:36.367301Z",
+  "generated_at": "2026-02-09T20:23:43.540775Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -70,9 +70,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.5353731408820435,
-        "edi_std": 0.0,
+        "cv": 1.7666237042051725e-06,
+        "edi_mean": 0.5353706658267618,
+        "edi_std": 9.457985087856636e-07,
         "monotonic_decrease": false
       },
       "effective_information": 0.24545321092456795,
@@ -143,6 +143,23 @@
         "ode_mean_train": -0.061705802353864546,
         "obs_mean_train": 3.552713678800501e-17,
         "scale_factor": 0.8476754765807601
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "weak",
@@ -237,9 +254,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.16942816297423602,
-        "edi_std": 0.0,
+        "cv": 4.667456326954666e-06,
+        "edi_mean": 0.16942851476772372,
+        "edi_std": 7.908001932191441e-07,
         "monotonic_decrease": false
       },
       "effective_information": 0.13320442524123077,
@@ -310,6 +327,23 @@
         "ode_mean_train": -0.8166782444971956,
         "obs_mean_train": -6.661338147750939e-17,
         "scale_factor": 1.0
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "suggestive",

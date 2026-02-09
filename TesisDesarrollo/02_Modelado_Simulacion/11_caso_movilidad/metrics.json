@@ -1,8 +1,8 @@
 {
   "case": "Movilidad Urbana (Traffic)",
-  "generated_at": "2026-02-09T18:54:40.598730Z",
+  "generated_at": "2026-02-09T20:24:47.853211Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -68,9 +68,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.6399725379280486,
-        "edi_std": 0.0,
+        "cv": 0.0061238824126853796,
+        "edi_mean": 0.635629757152144,
+        "edi_std": 0.0038925218908034934,
         "monotonic_decrease": false
       },
       "effective_information": 0.0607879002069911,
@@ -88,7 +88,7 @@
       "persistence": {
         "model": 1.4166666666666667,
         "obs": 0.2110820971046824,
-        "pass": false
+        "pass": true
       },
       "emergence": {
         "err_reduced": 34.66402278210417,
@@ -141,6 +141,23 @@
         "ode_mean_train": null,
         "obs_mean_train": null,
         "scale_factor": null
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": false,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": false,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "trend",
@@ -225,9 +242,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "cv": 0.02235323797052824,
+        "edi_mean": -0.9761241192633004,
+        "edi_std": 0.021819534726664844,
         "monotonic_decrease": false
       },
       "effective_information": -0.027978848837795667,
@@ -298,6 +315,23 @@
         "ode_mean_train": null,
         "obs_mean_train": null,
         "scale_factor": null
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": false,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": false,
+        "persistence_pass": false,
+        "emergence_pass": true,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "trend",

@@ -1,8 +1,8 @@
 {
   "case": "Conciencia Colectiva",
-  "generated_at": "2026-02-09T18:53:33.519955Z",
+  "generated_at": "2026-02-09T20:23:41.059471Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -67,10 +67,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.009496254016684054,
-        "edi_std": 0.0,
+        "stable": false,
+        "cv": 1.3268437438546161,
+        "edi_mean": -0.007669582137017209,
+        "edi_std": 0.0101763370764804,
         "monotonic_decrease": false
       },
       "effective_information": -0.0009489868298770965,
@@ -141,6 +141,23 @@
         "ode_mean_train": 0.26485464683035664,
         "obs_mean_train": -1.6148698540002277e-16,
         "scale_factor": 1.0
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": false,
+        "non_locality_pass": false,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "trend",
@@ -226,9 +243,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.4557361194779195,
-        "edi_std": 0.0,
+        "cv": 0.052987317236289175,
+        "edi_mean": 0.4660574772065413,
+        "edi_std": 0.024695135395087615,
         "monotonic_decrease": false
       },
       "effective_information": -0.0022388599136347054,
@@ -299,6 +316,23 @@
         "ode_mean_train": null,
         "obs_mean_train": null,
         "scale_factor": null
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": false,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": false,
+        "non_locality_pass": false,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "null",

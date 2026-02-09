@@ -1,8 +1,8 @@
 {
   "case": "Salinizaci\u00f3n de Suelos (Richards-Solute)",
-  "generated_at": "2026-02-09T18:53:38.131299Z",
+  "generated_at": "2026-02-09T20:23:46.217073Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -69,10 +69,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 1.7813783104354356e-06,
+        "edi_mean": 0.8340384769775083,
+        "edi_std": 1.4857380529563377e-06,
         "monotonic_decrease": false
       },
       "effective_information": 0.14215326816625018,
@@ -143,6 +143,23 @@
         "ode_mean_train": -0.15262402140288284,
         "obs_mean_train": -1.9176579516252704e-16,
         "scale_factor": 0.7977537773389529
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "weak",
@@ -221,9 +238,9 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
+        "stable": true,
         "cv": 0.0,
-        "edi_mean": 0.0,
+        "edi_mean": -1.0,
         "edi_std": 0.0,
         "monotonic_decrease": false
       },
@@ -295,6 +312,23 @@
         "ode_mean_train": null,
         "obs_mean_train": null,
         "scale_factor": null
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": false,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "trend",

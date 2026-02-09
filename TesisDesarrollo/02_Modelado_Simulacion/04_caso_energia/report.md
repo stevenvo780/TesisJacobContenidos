@@ -1,6 +1,6 @@
 # Reporte de Validación — Energía (OPSD GB Grid)
 
-- generated_at: 2026-02-09T18:54:49.537298Z
+- generated_at: 2026-02-09T20:24:56.700602Z
 
 ## Fase synthetic
 - **overall_pass**: False

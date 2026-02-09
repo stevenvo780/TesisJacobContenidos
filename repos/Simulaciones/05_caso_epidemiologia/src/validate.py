@@ -45,7 +45,7 @@ def make_synthetic(start_date, end_date, seed=101):
     obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.08, "beta": 0.03}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"beta": 0.3, "sigma": 0.2, "gamma": 0.1}, "measurement_noise": 0.05}
     return df, meta
 
 

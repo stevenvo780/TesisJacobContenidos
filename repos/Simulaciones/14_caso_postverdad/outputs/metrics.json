@@ -1,8 +1,8 @@
 {
   "case": "Postverdad (SIS Infodemic)",
-  "generated_at": "2026-02-09T18:53:43.238632Z",
+  "generated_at": "2026-02-09T20:23:51.448121Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
@@ -142,6 +142,23 @@
         "obs_mean_train": 5.4447719215333345e-17,
         "scale_factor": 2.220272888180915
       },
+      "criteria": {
+        "c1_convergence": false,
+        "c1_relative": false,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": false,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": false,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
+      },
       "emergence_taxonomy": {
         "category": "null",
         "ode_quality": "poor",
@@ -217,9 +234,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0,
-        "edi_mean": 0.0025361753179920983,
-        "edi_std": 0.0,
+        "cv": 0.39696654128783454,
+        "edi_mean": 0.0012414349814169902,
+        "edi_std": 0.0004928081508068298,
         "monotonic_decrease": false
       },
       "effective_information": 0.0027809141821615313,
@@ -290,6 +307,23 @@
         "ode_mean_train": 0.14302942041475059,
         "obs_mean_train": 5.652044489000797e-16,
         "scale_factor": 1.0
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": false,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "suggestive",

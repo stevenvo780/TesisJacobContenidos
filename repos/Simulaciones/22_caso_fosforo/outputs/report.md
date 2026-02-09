@@ -1,9 +1,9 @@
 # Reporte de Validación — Ciclo del Fósforo (Carpenter Biogeoquímico)
 
-- generated_at: 2026-02-09T18:53:38.904031Z
+- generated_at: 2026-02-09T20:23:46.105118Z
 
 ## Fase synthetic
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
 - valor: 0.3453
@@ -48,10 +48,10 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -2.6856
+- valor: -1.0000
 - bootstrap_mean: -2.7133
 - CI 95%: [-3.3267, -2.1635]
-- weighted_value (LoE factor 0.60): -1.6114
+- weighted_value (LoE factor 0.60): -0.6000
 - válido (0.30-0.90): False
 
 ### Symploké y CR

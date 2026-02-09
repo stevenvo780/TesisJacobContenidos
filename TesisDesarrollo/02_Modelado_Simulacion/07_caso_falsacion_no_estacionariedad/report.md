@@ -1,15 +1,15 @@
 # Reporte de Validación — Falsación: No-Estacionariedad
 
-- generated_at: 2026-02-09T13:53:31.875619
+- generated_at: 2026-02-09T15:23:39.551245
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -4.8844
+- valor: -1.0000
 - bootstrap_mean: -4.9011
 - CI 95%: [-5.6393, -4.1781]
-- weighted_value (LoE factor 0.20): -0.9769
+- weighted_value (LoE factor 0.20): -0.2000
 - válido (0.30-0.90): False
 
 ### Symploké y CR

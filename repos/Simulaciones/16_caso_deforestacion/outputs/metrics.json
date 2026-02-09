@@ -1,14 +1,14 @@
 {
   "case": "Deforestaci\u00f3n Global (von Th\u00fcnen Frontier)",
-  "generated_at": "2026-02-09T18:53:45.937020Z",
+  "generated_at": "2026-02-09T20:23:53.369915Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
     "synthetic": {
       "phase": "synthetic",
-      "overall_pass": false,
+      "overall_pass": true,
       "data": {
         "start": "1990-01-01",
         "end": "2022-01-01",
@@ -69,10 +69,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 3.1814161826321866e-06,
+        "edi_mean": 0.9487366834779227,
+        "edi_std": 3.018326237873454e-06,
         "monotonic_decrease": false
       },
       "effective_information": 0.8650307145615048,
@@ -144,6 +144,23 @@
         "obs_mean_train": 1.1842378929335003e-16,
         "scale_factor": 0.3936047896300125
       },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": true,
+        "cr_valid": false
+      },
       "emergence_taxonomy": {
         "category": "strong",
         "ode_quality": "good",
@@ -160,7 +177,7 @@
     },
     "real": {
       "phase": "real",
-      "overall_pass": false,
+      "overall_pass": true,
       "data": {
         "start": "1990-01-01",
         "end": "2022-01-01",
@@ -221,10 +238,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 4.36958069837274e-06,
+        "edi_mean": 0.8790882335167108,
+        "edi_std": 3.841246977341208e-06,
         "monotonic_decrease": false
       },
       "effective_information": -0.0629460755585769,
@@ -242,7 +259,7 @@
       "persistence": {
         "model": 0.11427673230096455,
         "obs": 0.015969938498941644,
-        "pass": false
+        "pass": true
       },
       "emergence": {
         "err_reduced": 1.1638996831357857,
@@ -295,6 +312,23 @@
         "ode_mean_train": 1.830330026514145,
         "obs_mean_train": -1.2076759345644758e-14,
         "scale_factor": 1.9335102547005756
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": true,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "strong",

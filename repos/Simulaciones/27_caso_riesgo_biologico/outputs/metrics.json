@@ -1,14 +1,14 @@
 {
   "case": "Riesgo Biol\u00f3gico Global (TB Incidence \u2014 Woolhouse)",
-  "generated_at": "2026-02-09T18:53:35.419645Z",
+  "generated_at": "2026-02-09T20:23:43.171463Z",
   "git": {
-    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
+    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
     "dirty": true
   },
   "phases": {
     "synthetic": {
       "phase": "synthetic",
-      "overall_pass": false,
+      "overall_pass": true,
       "data": {
         "start": "2000-01-01",
         "end": "2024-01-01",
@@ -69,10 +69,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 1.1350601172959849e-05,
+        "edi_mean": 0.6203280650062528,
+        "edi_std": 7.041096462279887e-06,
         "monotonic_decrease": false
       },
       "effective_information": 0.1301133467695268,
@@ -143,6 +143,23 @@
         "ode_mean_train": -0.3683529072957117,
         "obs_mean_train": -5.258951169277057e-17,
         "scale_factor": 1.0966005567749306
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": true,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": true,
+        "emergence_pass": true,
+        "coupling_ok": true,
+        "rmse_fraud_check": true,
+        "edi_valid": true,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "strong",
@@ -232,10 +249,10 @@
         }
       },
       "noise_sensitivity": {
-        "stable": false,
-        "cv": 0.0,
-        "edi_mean": 0.0,
-        "edi_std": 0.0,
+        "stable": true,
+        "cv": 4.459583484061105e-05,
+        "edi_mean": 0.5899535402877987,
+        "edi_std": 2.6309470646308447e-05,
         "monotonic_decrease": false
       },
       "effective_information": 0.025031744241926668,
@@ -306,6 +323,23 @@
         "ode_mean_train": null,
         "obs_mean_train": null,
         "scale_factor": null
+      },
+      "criteria": {
+        "c1_convergence": true,
+        "c1_relative": true,
+        "c1_absolute": false,
+        "c2_robustness": true,
+        "c3_replication": true,
+        "c4_validity": true,
+        "c5_uncertainty": true,
+        "symploke_pass": true,
+        "non_locality_pass": true,
+        "persistence_pass": false,
+        "emergence_pass": true,
+        "coupling_ok": false,
+        "rmse_fraud_check": true,
+        "edi_valid": false,
+        "cr_valid": false
       },
       "emergence_taxonomy": {
         "category": "trend",
