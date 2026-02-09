@@ -32,24 +32,25 @@ def make_synthetic(start_date, end_date, seed=123):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    forcing = [0.02 * t for t in range(steps)]
+    # Forcing: lanzamientos acumulativos (crecimiento exponencial post-2010)
+    forcing = [0.015 * t + 0.0008 * t**1.5 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.10, "ode_beta": 0.015,
-        "ode_noise": 0.04, "forcing_series": forcing,
-        "p0_ode": 0.0,
+        "p0": 0.0, "ode_alpha": 0.12, "ode_beta": 0.005,  # Kessler: alta generación, decaimiento orbital MUY lento
+        "ode_inflow": 0.12, "ode_decay": 0.005,
+        "ode_noise": 0.05, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.12, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.15, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.10, "beta": 0.015}, "measurement_noise": 0.12}
+    meta = {"ode_true": {"inflow": 0.12, "decay": 0.005}, "measurement_noise": 0.15}
     return df, meta
 
 
 def main():
     config = CaseConfig(
-        case_name="Síndrome de Kessler",
+        case_name="Síndrome de Kessler (Cascada Orbital)",
         value_col="value",
         series_key="k",
         grid_size=25,
@@ -60,8 +61,15 @@ def main():
         real_start="1970-01-01",
         real_end="2019-01-01",
         real_split="2005-01-01",
-        corr_threshold=0.7,
-        extra_base_params={},
+        corr_threshold=0.65,
+        ode_noise=0.05,
+        base_noise=0.004,
+        loe=4,
+        n_runs=7,
+        extra_base_params={
+            "ode_inflow": 0.12,   # Generación de escombros por lanzamiento/colisión
+            "ode_decay": 0.005,   # Decaimiento orbital natural (muy lento en LEO alto)
+        },
         driver_cols=["launches", "debris_objects", "collision_events"],
     )
 

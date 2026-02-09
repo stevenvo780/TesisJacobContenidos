@@ -1,82 +1,82 @@
-# Reporte de Validación — Temperatura Oceánica Global
+# Reporte de Validación — Ocean (Stommel + Thermohaline ABM)
 
-- generated_at: 2026-02-08T20:52:14.107911Z
+- generated_at: 2026-02-09T01:35:57.218673Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.3955
-- bootstrap_mean: 0.3958
-- CI 95%: [0.3895, 0.4020]
-- weighted_value (LoE factor 0.20): 0.0791
-- válido (0.30-0.90): True
+- valor: -0.1425
+- bootstrap_mean: -0.1453
+- CI 95%: [-0.2049, -0.0968]
+- weighted_value (LoE factor 0.20): -0.0285
+- válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 1.0000
-- external: 0.9982
-- CR: 1.0018
+- internal: 0.9817
+- external: 0.5407
+- CR: 1.8158
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.6071
-- rmse_abm_no_ode: 1.0044
-- rmse_ode: 0.1695
-- rmse_reduced: 3.8166
-- threshold: 1.0540
+- rmse_abm: 3.4294
+- rmse_abm_no_ode: 3.0016
+- rmse_ode: 1.3662
+- rmse_reduced: 2.8463
+- threshold: 0.9858
 
 ### Calibración
-- forcing_scale: 0.6424
-- macro_coupling: 0.4694
-- damping: 0.6308
-- ode_alpha: 0.1405
-- ode_beta: 1.0000
+- forcing_scale: 0.0010
+- macro_coupling: 0.1000
+- damping: 0.0000
+- ode_alpha: 0.0068
+- ode_beta: 0.7284
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1169
+- calibration_rmse: 2.1251
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.4511
-- bootstrap_mean: -0.4729
-- CI 95%: [-0.7313, -0.2748]
-- weighted_value (LoE factor 0.20): -0.0902
+- valor: -0.0690
+- bootstrap_mean: -0.0715
+- CI 95%: [-0.1270, -0.0221]
+- weighted_value (LoE factor 0.20): -0.0138
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: -1.0000
-- external: 0.0000
-- CR: 1626939.0440
-- CR indicador (>2.0 = frontera nítida): True
+- internal: 0.9824
+- external: 0.5190
+- CR: 1.8928
+- CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: False
-- c3_replication: False
+- c2_robustness: True
+- c3_replication: True
 - c4_validity: True
-- c5_uncertainty: False
+- c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 34.4784
-- rmse_abm_no_ode: 23.7603
-- rmse_ode: 1.4014
-- rmse_reduced: 2.0497
-- threshold: 1.0498
+- rmse_abm: 2.9249
+- rmse_abm_no_ode: 2.7360
+- rmse_ode: 0.8567
+- rmse_reduced: 2.6139
+- threshold: 1.1913
 
 ### Calibración
-- forcing_scale: 0.6385
-- macro_coupling: 0.8272
-- damping: 0.8281
-- ode_alpha: 0.1307
-- ode_beta: 1.0000
+- forcing_scale: 0.0010
+- macro_coupling: 0.1000
+- damping: 0.0000
+- ode_alpha: 0.0082
+- ode_beta: 0.9450
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.9647
+- calibration_rmse: 2.1823
 
