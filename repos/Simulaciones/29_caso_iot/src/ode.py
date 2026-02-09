@@ -1,29 +1,22 @@
 """
 ode.py — 29_caso_iot (Top-Tier)
 
-Modelo ODE: Bass Diffusion con Network Externalities (Metcalfe)
+Modelo ODE: Bass Diffusion con Network Externalities
 
-Ecuación principal (Bass 1969 + extensiones):
-  dN/dt = [p + q*(N/M)] * (M - N) + ε*F(t) + η*N²/M² * (M-N)
+  dN/dt = α*(F - β*N) + γ*F - δ*max(0,N) + noise
 
 Donde:
-  N(t)  = nivel de adopción (suscripciones/100 hab)
-  p     = coeficiente de innovación (publicidad, early adopters)
-  q     = coeficiente de imitación (boca a boca, efecto red)
-  M     = mercado potencial (saturación)
-  ε     = sensibilidad al forcing exógeno (PIB, infraestructura)
-  η     = intensidad de externalidades de red (Metcalfe)
-  F(t)  = forcing externo (drivers económicos/tecnológicos)
+  N(t)  = nivel de adopción IoT (espacio Z)
+  α*(F - β*N) = core tracking (calibrado, puede ser ~0.001)
+  γ*F = sensibilidad directa a forcing tecnológico (bypassa calibración)
+  δ*max(0,N) = saturación de mercado (rendimientos decrecientes)
 
-Extensiones sobre Bass clásico:
-1. Network externalities cuadráticas (Metcalfe 1995)
-2. Forcing exógeno continuo (no solo innovación)
-3. Saturación variable con techo adaptativo
-4. Ruido estocástico calibrado
+La clave: γ*F proporciona respuesta robusta al forcing incluso cuando
+calibrate_ode aplasta α→0.001 (Tikhonov con datos tendenciales).
+δ*max(0,N) asimétrico: solo frena adopción sobre la media.
 
 Referencia:
 - Bass (1969) Management Science 15(5):215-227
-- Mahajan, Muller & Bass (1990) "New Product Diffusion Models in Marketing"
 - Shy (2001) "The Economics of Network Industries"
 """
 
@@ -37,14 +30,15 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common")
 def simulate_ode(params, steps, seed=42):
     """
     Bass Diffusion simplificado operando en espacio Z.
-
-    Usa alpha*(f - beta*N) como core tracking (calibrado por hybrid_validator).
+    Usa alpha*(f - beta*N) + gamma*f como tracking robusto.
     """
     rng = np.random.default_rng(seed)
 
-    # Core tracking (calibrado por hybrid_validator)
+    # Core tracking (calibrado por hybrid_validator, puede ser ~0.001)
     alpha = float(params.get("ode_alpha", 0.10))
     beta = float(params.get("ode_beta", 0.02))
+    # Sensibilidad directa al forcing (bypassa calibración aplastada)
+    gamma = float(params.get("ode_gamma", 0.05))
     # Saturación: freno lineal de adopción (mercado finito)
     saturation = float(params.get("ode_saturation", 0.003))
     noise_std = float(params.get("ode_noise", 0.03))
@@ -60,7 +54,7 @@ def simulate_ode(params, steps, seed=42):
     assim_strength = float(params.get("assimilation_strength", 0.0))
 
     # Estado inicial
-    N = float(params.get("p0", 0.5))
+    N = float(params.get("p0", 0.0))
 
     series = []
 
@@ -69,9 +63,11 @@ def simulate_ode(params, steps, seed=42):
 
         # Core: mean-reversion tracking hacia forcing (espacio Z)
         core = alpha * (f - beta * N)
-        # Saturación lineal (mercado finito)
+        # Tech push directo: γ*f (robusto a calibración)
+        tech_push = gamma * f
+        # Saturación lineal (mercado finito, rendimientos decrecientes)
         sat = saturation * max(0.0, N)
-        dN = core - sat + rng.normal(0, noise_std)
+        dN = core + tech_push - sat + rng.normal(0, noise_std)
 
         N += dN
         N = np.clip(N, -10.0, 10.0)

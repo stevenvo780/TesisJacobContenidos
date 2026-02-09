@@ -1,21 +1,21 @@
 # Reporte de Validación — Conciencia Colectiva
 
-- generated_at: 2026-02-09T02:42:45.242431Z
+- generated_at: 2026-02-09T02:54:06.474993Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.1605
-- bootstrap_mean: 0.1556
-- CI 95%: [0.0708, 0.2466]
-- weighted_value (LoE factor 0.20): 0.0321
+- valor: 0.1552
+- bootstrap_mean: 0.1502
+- CI 95%: [0.0669, 0.2330]
+- weighted_value (LoE factor 0.20): 0.0310
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 0.8614
-- external: 0.7014
-- CR: 1.2280
+- external: 0.7040
+- CR: 1.2236
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,11 +26,11 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.5185
-- rmse_abm_no_ode: 0.6177
-- rmse_ode: 0.8471
-- rmse_reduced: 0.5872
-- threshold: 0.2674
+- rmse_abm: 0.6108
+- rmse_abm_no_ode: 0.7231
+- rmse_ode: 0.9025
+- rmse_reduced: 0.6794
+- threshold: 0.2371
 
 ### Calibración
 - forcing_scale: 0.0010
@@ -52,9 +52,9 @@
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9782
-- external: 0.7334
-- CR: 1.3339
+- internal: 0.9491
+- external: 0.7841
+- CR: 1.2104
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -65,11 +65,11 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.8394
-- rmse_abm_no_ode: 1.8394
-- rmse_ode: 1.8263
-- rmse_reduced: 1.8394
-- threshold: 1.0547
+- rmse_abm: 1.6046
+- rmse_abm_no_ode: 1.6046
+- rmse_ode: 1.4173
+- rmse_reduced: 1.6046
+- threshold: 0.9280
 
 ### Calibración
 - forcing_scale: 0.0010

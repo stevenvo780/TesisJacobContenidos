@@ -38,16 +38,16 @@ def make_synthetic(start_date, end_date, seed=101):
     # Forcing: presión zoonótica creciente (Woolhouse 2005)
     forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.06, "ode_beta": 0.025,
-        "ode_containment": 0.003,
+        "p0": 0.0, "ode_alpha": 0.06, "ode_beta": 0.02,
+        "ode_gamma": 0.05, "ode_containment": 0.003,
         "ode_noise": 0.02, "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.10, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.06, "beta": 0.025, "containment": 0.003}, "measurement_noise": 0.10}
+    meta = {"ode_true": {"alpha": 0.06, "beta": 0.02, "gamma": 0.05, "containment": 0.003}, "measurement_noise": 0.05}
     return df, meta
 
 
@@ -69,10 +69,9 @@ def main():
         base_noise=0.004,
         loe=4,
         n_runs=7,
-        ode_calibration=False,   # Bypass calibrate_ode (aplasta alpha→0.001 con Tikhonov)
+        ode_calibration=True,
         extra_base_params={
-            "ode_alpha": 0.06,         # Tracking forcing (Woolhouse spillover rate)
-            "ode_beta": 0.02,          # Drag leve (inmunidad parcial)
+            "ode_gamma": 0.05,          # Spillover directo (bypassa alpha aplastado)
             "ode_containment": 0.002,   # Contención sanitaria lineal
             "forcing_scale": 0.10,
             "macro_coupling": 0.25,

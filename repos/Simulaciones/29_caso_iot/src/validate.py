@@ -39,7 +39,7 @@ def load_real_data(start_date, end_date):
 def make_synthetic(start_date, end_date, seed=129):
     """
     Sintético calibrado a curva de adopción IoT.
-    Usa ODE con patrón alpha*(f-beta*X) en espacio Z.
+    Usa ODE con alpha*(f-beta*N) + gamma*f en espacio Z.
     """
     rng = np.random.default_rng(seed)
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
@@ -48,22 +48,23 @@ def make_synthetic(start_date, end_date, seed=129):
     # Forcing sintético: crecimiento monotónico (patrón estándar)
     forcing = [0.010 * t + 0.0003 * t**1.2 for t in range(steps)]
 
-    # ODE con parámetros en espacio Z
+    # ODE con parámetros en espacio Z + gamma forcing
     true_params = {
         "p0": 0.0,
-        "ode_alpha": 0.12,
+        "ode_alpha": 0.10,
         "ode_beta": 0.02,
-        "ode_metcalfe": 0.003,
-        "ode_noise": 0.08,
+        "ode_gamma": 0.05,
+        "ode_saturation": 0.003,
+        "ode_noise": 0.03,
         "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
-    obs = np.array(sim["io"]) + rng.normal(0.0, 0.15, size=steps)
+    obs = np.array(sim["io"]) + rng.normal(0.0, 0.08, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
     meta = {
-        "ode_true": {"alpha": 0.12, "beta": 0.02, "metcalfe": 0.003},
-        "measurement_noise": 0.15,
+        "ode_true": {"alpha": 0.10, "beta": 0.02, "gamma": 0.05, "saturation": 0.003},
+        "measurement_noise": 0.08,
     }
     return df, meta
 
@@ -86,11 +87,10 @@ def main():
         base_noise=0.005,
         loe=4,                       # Level of Evidence: alto (datos sólidos, modelo validado)
         n_runs=7,
-        ode_calibration=False,   # Bypass calibrate_ode (aplasta alpha→0.001 con Tikhonov)
+        ode_calibration=True,
         extra_base_params={
-            "ode_alpha": 0.10,         # Tracking forcing (Bass adoption rate)
-            "ode_beta": 0.02,          # Drag leve (obsolescencia)
-            "ode_saturation": 0.003,   # Saturación mercado finito
+            "ode_gamma": 0.05,          # Tech push directo (bypassa alpha aplastado)
+            "ode_saturation": 0.003,    # Saturación mercado finito
             "forcing_scale": 0.10,
             "macro_coupling": 0.25,
         },

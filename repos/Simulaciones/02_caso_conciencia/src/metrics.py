@@ -1,8 +1,10 @@
+import numpy as np
 import math
 
-
 def mean(xs):
-    return sum(xs) / len(xs) if xs else 0.0
+    if hasattr(xs, '__len__') and len(xs) > 0:
+        return sum(xs) / len(xs)
+    return 0.0
 
 
 def variance(xs):

@@ -126,7 +126,9 @@ def main():
         
         # 2. LZC (Spatiotemporal)
         # Take a center slice over time
-        center_series = [grid_history[t][10][10] for t in range(steps)]
+        grid_sz = final_grid.shape[0]
+        center_idx = grid_sz // 2
+        center_series = [grid_history[t][center_idx][center_idx] for t in range(steps)]
         # Binarize and compress
         import zlib
         mean_v = sum(center_series)/len(center_series)
