@@ -1,32 +1,5 @@
-Traceback (most recent call last):
-  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/validate.py", line 70, in <module>
-    main()
-    ~~~~^^
-  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/validate.py", line 52, in main
-    results = run_full_validation(
-        config, load_real_data, make_synthetic,
-        simulate_abm, simulate_ode,
-    )
-  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/../../common/hybrid_validator.py", line 1083, in run_full_validation
-    synthetic = evaluate_phase(
-        config, synth_df, config.synthetic_start, config.synthetic_end,
-        config.synthetic_split, simulate_abm_fn, simulate_ode_fn,
-        synthetic_meta=synth_meta, param_grid=param_grid
-    )
-  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/../../common/hybrid_validator.py", line 822, in evaluate_phase
-    best_abm, best_err, top_5 = calibrate_abm(
-                                ~~~~~~~~~~~~~^
-        obs[:val_start], base_params, val_start, simulate_abm_fn,
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        param_grid=param_grid, seed=2
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/../../common/hybrid_validator.py", line 309, in calibrate_abm
-    sim = simulate_abm_fn(params, steps, seed=seed)
-  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/src/abm.py", line 73, in simulate_abm
-    target_shells = rng.choice([3, 4, 5, 6], p=[0.1, 0.3, 0.4, 0.2], size=new_objects)
-  File "numpy/random/_generator.pyx", line 909, in numpy.random._generator.Generator.choice
-  File "numpy/random/_generator.pyx", line 355, in numpy.random._generator.Generator.random
-  File "numpy/random/_common.pyx", line 309, in numpy.random._common.double_fill
-ValueError: negative dimensions are not allowed
+DEBUG: writing results to /datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/20_caso_kessler/outputs
+
+--- Validation Results ---
+  synthetic: EDI=-16.7572 Pass=False
+  real: EDI=-16.6351 Pass=False

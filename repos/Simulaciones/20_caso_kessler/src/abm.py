@@ -69,46 +69,58 @@ def simulate_abm(params, steps, seed=42):
         L_t = forcing[t] if t < len(forcing) else 80
         
         # Add new launches (vectorized distribution across shells)
-        new_objects = int(L_t * 1.5)
-        target_shells = rng.choice([3, 4, 5, 6], p=[0.1, 0.3, 0.4, 0.2], size=new_objects)
-        size_classes = rng.choice([0, 1, 2], p=[0.6, 0.3, 0.1], size=new_objects)
-        for sh in range(n_shells):
-            for sc in range(3):
-                population[sh, sc] += np.sum((target_shells == sh) & (size_classes == sc))
+        new_objects = max(0, int(L_t * 1.5))
+        if new_objects > 0:
+            target_shells = rng.choice([3, 4, 5, 6], p=[0.1, 0.3, 0.4, 0.2], size=new_objects)
+            size_classes = rng.choice([0, 1, 2], p=[0.6, 0.3, 0.1], size=new_objects)
+            np.add.at(population, (target_shells, size_classes), 1)
             
-        # Collisions and fragmentation
+        # Collisions and fragmentation (vectorized per shell)
         for shell in range(n_shells):
-            # Spatial density
             shell_total = population[shell].sum()
             
             # Collision probability ~ N^2 (random encounter)
             collision_prob = collision_coeff * shell_total ** 2
-            n_collisions = rng.poisson(collision_prob)
+            # Cap collisions to prevent runaway cascade (physical: limited collision cross-section)
+            n_collisions = min(rng.poisson(collision_prob), 50)
             
-            for _ in range(n_collisions):
-                # Remove two colliding objects (preferentially large)
-                if population[shell, 2] >= 2:
-                    population[shell, 2] -= 2
-                elif population[shell, 2] >= 1 and population[shell, 1] >= 1:
-                    population[shell, 2] -= 1
-                    population[shell, 1] -= 1
-                elif population[shell, 1] >= 2:
-                    population[shell, 1] -= 2
-                else:
-                    continue
-                    
-                # Generate fragments (NASA Standard Breakup Model)
-                # Large->Large collision: ~1000 trackable fragments
-                new_small = rng.integers(500, 1500)
-                new_medium = rng.integers(50, 150)
-                new_large = rng.integers(5, 20)
-                
-                # Distribute fragments (mostly same shell, some adjacent)
-                for sh in range(max(0, shell-1), min(n_shells, shell+2)):
-                    frac = 0.8 if sh == shell else 0.1
-                    population[sh, 0] += int(new_small * frac)
-                    population[sh, 1] += int(new_medium * frac)
-                    population[sh, 2] += int(new_large * frac)
+            if n_collisions == 0:
+                continue
+            
+            # Determine how many collisions can actually happen (need 2 objects per collision)
+            available_large = int(population[shell, 2])
+            available_medium = int(population[shell, 1])
+            
+            # Count collisions by type
+            ll_collisions = min(n_collisions, available_large // 2)
+            remaining = n_collisions - ll_collisions
+            lm_collisions = min(remaining, min(available_large - ll_collisions * 2, available_medium))
+            remaining -= lm_collisions
+            mm_collisions = min(remaining, (available_medium - lm_collisions) // 2)
+            actual_collisions = ll_collisions + lm_collisions + mm_collisions
+            
+            if actual_collisions == 0:
+                continue
+            
+            # Remove colliding objects
+            population[shell, 2] -= 2 * ll_collisions + lm_collisions
+            population[shell, 1] -= lm_collisions + 2 * mm_collisions
+            
+            # Generate fragments in batch (NASA Standard Breakup Model)
+            new_small_arr = rng.integers(500, 1500, size=actual_collisions)
+            new_medium_arr = rng.integers(50, 150, size=actual_collisions)
+            new_large_arr = rng.integers(5, 20, size=actual_collisions)
+            
+            total_new_small = new_small_arr.sum()
+            total_new_medium = new_medium_arr.sum()
+            total_new_large = new_large_arr.sum()
+            
+            # Distribute fragments (80% same shell, 10% each adjacent)
+            for sh in range(max(0, shell-1), min(n_shells, shell+2)):
+                frac = 0.8 if sh == shell else 0.1
+                population[sh, 0] += int(total_new_small * frac)
+                population[sh, 1] += int(total_new_medium * frac)
+                population[sh, 2] += int(total_new_large * frac)
                     
         # Atmospheric decay (vectorized)
         decay_arr = np.array(decay_rate[:n_shells] if len(decay_rate) >= n_shells 
@@ -127,6 +139,11 @@ def simulate_abm(params, steps, seed=42):
         # Total trackable debris (large + medium)
         total_debris = population[:, 1:].sum()
         series_k.append(total_debris)
-        series_grid.append(population.copy())
+        # Represent population as square grid for validator compatibility
+        grid_size = int(np.ceil(np.sqrt(n_shells * n_size_classes)))
+        grid_rep = np.zeros((grid_size, grid_size))
+        flat_pop = population.flatten()
+        grid_rep.flat[:len(flat_pop)] = flat_pop
+        series_grid.append(grid_rep)
         
     return {"k": series_k, "forcing": forcing, "grid": series_grid}

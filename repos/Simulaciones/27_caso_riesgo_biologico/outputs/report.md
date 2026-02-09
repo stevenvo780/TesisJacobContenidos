@@ -1,6 +1,6 @@
 # Reporte de Validación — Riesgo Biológico Global (Woolhouse Zoonotic)
 
-- generated_at: 2026-02-09T03:47:53.902719Z
+- generated_at: 2026-02-09T04:16:16.760917Z
 
 ## Fase synthetic
 - **overall_pass**: False

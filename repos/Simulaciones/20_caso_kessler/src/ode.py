@@ -56,7 +56,8 @@ def simulate_ode(params, steps, seed=42):
         L_t = list(forcing)[t] if t < len(forcing) else 80
         
         # Kessler equation: dN/dt = L + alpha*N^2*frag - beta*N
-        collision_rate = alpha * N ** 2
+        # Saturate collision rate to prevent numerical overflow (physical: finite collision volume)
+        collision_rate = alpha * min(N, 1e7) ** 2
         dN = L_t + collision_rate * frag_mult - beta * N
         
         dN += rng.normal(0, noise_std)

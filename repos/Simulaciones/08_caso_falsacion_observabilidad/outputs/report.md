@@ -1,21 +1,21 @@
 # Reporte de Validación — Falsación: Observabilidad Escasa
 
-- generated_at: 2026-02-08T22:47:50.239722
+- generated_at: 2026-02-08T23:16:12.531926
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -3.5644
-- bootstrap_mean: -3.5864
-- CI 95%: [-4.1522, -3.1091]
-- weighted_value (LoE factor 0.20): -0.7129
+- valor: -4.0215
+- bootstrap_mean: -4.0455
+- CI 95%: [-4.6579, -3.4822]
+- weighted_value (LoE factor 0.20): -0.8043
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9980
-- external: 0.8485
-- CR: 1.1763
+- internal: 0.9982
+- external: 0.7948
+- CR: 1.2559
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,11 +26,11 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.3129
-- rmse_abm_no_ode: 0.7258
-- rmse_ode: 3.7863
-- rmse_reduced: 2.5776
-- threshold: 0.9315
+- rmse_abm: 3.4645
+- rmse_abm_no_ode: 0.6899
+- rmse_ode: 3.9494
+- rmse_reduced: 2.5137
+- threshold: 0.9023
 
 ### Calibración
 - forcing_scale: 0.0500
