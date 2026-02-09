@@ -64,9 +64,13 @@ def simulate_abm(params, steps, seed=42):
     broadcast_boost = params.get("abm_broadcast", 0.3)  # Winner boost
     
     # Forcing: External stimuli (news volatility, attention-grabbing events)
+    # NOTE: forcing_series comes Z-scored from the validator (mean≈0, std≈1).
+    # We modulate stimulus strength around a baseline (0.5).
     forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
         forcing = np.ones(steps) * 0.5
+        forcing_scale = 1.0  # Direct values if standalone
         
     # Macro Coupling (ODE consciousness level)
     macro_series = params.get("macro_target_series")
@@ -77,7 +81,13 @@ def simulate_abm(params, steps, seed=42):
     
     for t in range(steps):
         # External stimulus strength
-        stimulus = forcing[t] if t < len(forcing) else 0.5
+        f_t = forcing[t] if t < len(forcing) else 0.0
+        if forcing_scale < 1.0:
+            # Z-scored forcing: modulate around baseline 0.5
+            stimulus = max(0.01, 0.5 + forcing_scale * f_t)
+        else:
+            # Direct physical values (standalone mode)
+            stimulus = f_t
         
         # 1. Bottom-up activation (stimulus + noise)
         # Different modules respond to different stimuli

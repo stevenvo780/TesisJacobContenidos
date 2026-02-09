@@ -41,9 +41,13 @@ def simulate_ode(params, steps, seed=42):
     noise_std = params.get("ode_noise", 50)
     
     # Forcing: Launch rate
+    # NOTE: forcing_series from validator is Z-scored (mean≈0).
+    # Modulate around baseline launch rate.
     forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
         forcing = np.ones(steps) * 80
+        forcing_scale = 1.0  # Direct values if standalone
         
     # Initial State
     N = params.get("p0", 2000)  # Starting debris count
@@ -53,7 +57,12 @@ def simulate_ode(params, steps, seed=42):
     dt = 1.0  # Yearly
     
     for t in range(steps):
-        L_t = list(forcing)[t] if t < len(forcing) else 80
+        f_t = list(forcing)[t] if t < len(forcing) else 0.0
+        if forcing_scale < 1.0:
+            # Z-scored forcing: modulate around baseline 80 launches/year
+            L_t = 80.0 * (1.0 + forcing_scale * f_t)
+        else:
+            L_t = f_t
         
         # Kessler equation: dN/dt = L + alpha*N^2*frag - beta*N
         # Saturate collision rate to prevent numerical overflow (physical: finite collision volume)

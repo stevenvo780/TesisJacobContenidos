@@ -31,12 +31,16 @@ def simulate_ode(params, steps, seed):
     A = float(params.get("c0", 0.1)) # Low initial attention
     
     # Forcing
+    # NOTE: forcing_series from validator is Z-scored (mean≈0).
     forcing = params.get("forcing_series") or [0.0]*steps
+    forcing_scale = params.get("forcing_scale", 0.05)
     
     series = []
     
     for t in range(steps):
-        F = max(0, forcing[t]) # Forcing must be positive (news intensity)
+        f_t = forcing[t]
+        # Modulate stimulus around baseline 0.5
+        F = max(0, 0.5 + forcing_scale * f_t)
         
         # d A = (Drive - Decay) * dt
         # Drive = alpha * F * (1 - A) [Saturation]

@@ -20,14 +20,17 @@ def simulate_ode(params, steps, seed):
     kj = params.get("mfd_kj", 150.0)
     noise = params.get("ode_noise", 5.0)
     
+    # NOTE: forcing_series from validator is Z-scored (mean≈0).
     forcing = params.get("forcing_series") or np.zeros(steps)
+    forcing_scale = params.get("forcing_scale", 0.05)
     
     series = []
     k = 10.0 # Initial density
     
     for t in range(steps):
-        # Demand (Forcing)
-        inflow = list(forcing)[t] * 10.0 # Scale forcing to inflow units
+        # Demand (Forcing) - modulate around baseline inflow
+        f_t = list(forcing)[t]
+        inflow = max(0, 50.0 * (1.0 + forcing_scale * f_t))  # Baseline 50 vehicles/step
         
         # Outflow (Capacity)
         q_out = vf * k * (1 - k/kj)

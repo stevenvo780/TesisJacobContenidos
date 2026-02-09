@@ -1,32 +1,32 @@
 # Reporte de Validación — Justicia Algorítmica
 
-- generated_at: 2026-02-09T04:22:55.810234Z
+- generated_at: 2026-02-09T05:10:39.327594Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): 0.0000
+- valor: -0.0248
+- bootstrap_mean: -0.0251
+- CI 95%: [-0.0398, -0.0140]
+- weighted_value (LoE factor 0.20): -0.0050
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9978
-- external: 0.8995
-- CR: 1.1093
+- internal: 0.9984
+- external: 0.9360
+- CR: 1.0666
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
-- c4_validity: False
+- c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.5812
+- rmse_abm: 0.5956
 - rmse_abm_no_ode: 0.5812
 - rmse_ode: 1.1943
 - rmse_reduced: 0.5812
@@ -45,16 +45,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): 0.0000
+- valor: -0.2139
+- bootstrap_mean: -0.2180
+- CI 95%: [-0.2547, -0.1799]
+- weighted_value (LoE factor 0.20): -0.0428
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9937
-- external: 0.7818
-- CR: 1.2711
+- internal: 0.9854
+- external: 0.8164
+- CR: 1.2069
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -65,7 +65,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.4409
+- rmse_abm: 1.7492
 - rmse_abm_no_ode: 1.4409
 - rmse_ode: 1.9336
 - rmse_reduced: 1.4396

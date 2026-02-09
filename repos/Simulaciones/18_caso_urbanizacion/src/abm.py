@@ -85,14 +85,20 @@ def simulate_abm(params, steps, seed=42):
             rural_pop -= new_size
             rural_pop = max(100, rural_pop)
             
-        # Macro Coupling: If macro urbanization target exists, adjust
+        # Macro Coupling: ODE urbanization target nudges migration balance
         if macro_series is not None and t < len(macro_series) and coupling > 0:
             target_rate = macro_series[t]
             current_rate = city_pop.sum() / (city_pop.sum() + rural_pop)
-            # Nudge toward target
-            if target_rate > current_rate:
-                rural_pop *= (1 - coupling * 0.1)
-                city_pop *= (1 + coupling * 0.05)
+            delta = target_rate - current_rate
+            # Shift population between urban and rural
+            shift = coupling * abs(delta) * (city_pop.sum() + rural_pop) * 0.01
+            if delta > 0:
+                rural_pop -= shift
+                city_pop *= (1 + shift / city_pop.sum()) if city_pop.sum() > 0 else 1.0
+            else:
+                rural_pop += shift
+                city_pop *= max(0.9, 1 - shift / city_pop.sum()) if city_pop.sum() > 0 else 1.0
+            rural_pop = max(100, rural_pop)
                 
         # Calculate urbanization rate
         total = city_pop.sum() + rural_pop

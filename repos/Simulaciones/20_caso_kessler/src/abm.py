@@ -49,9 +49,13 @@ def simulate_abm(params, steps, seed=42):
         population[shell, 2] = int(1000 * peak_factor)   # Large
         
     # Forcing: Launch rate
+    # NOTE: forcing_series comes Z-scored from the validator (mean≈0, std≈1).
+    # We use it to MODULATE launch rate around baseline (~80), not as raw count.
     forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
         forcing = np.ones(steps) * 80
+        forcing_scale = 1.0  # Direct values if standalone
         
     # Parameters
     collision_coeff = params.get("abm_collision_coeff", 1e-9)
@@ -66,7 +70,13 @@ def simulate_abm(params, steps, seed=42):
     series_grid = []
     
     for t in range(steps):
-        L_t = forcing[t] if t < len(forcing) else 80
+        f_t = forcing[t] if t < len(forcing) else 0.0
+        if forcing_scale < 1.0:
+            # Z-scored forcing: modulate around baseline 80 launches/step
+            L_t = 80.0 * (1.0 + forcing_scale * f_t)
+        else:
+            # Direct physical values (standalone mode)
+            L_t = f_t
         
         # Add new launches (vectorized distribution across shells)
         new_objects = max(0, int(L_t * 1.5))
@@ -128,13 +138,14 @@ def simulate_abm(params, steps, seed=42):
         removed = (population * decay_arr[:, None]).astype(int)
         population = np.maximum(0, population - removed)
                 
-        # Macro Coupling: Adjust to match macro debris count
+        # Macro Coupling: ODE signal modulates debris generation/removal
+        # macro_series is Z-scored: positive = more debris expected, negative = less
         if macro_series is not None and t < len(macro_series) and coupling > 0:
-            target = macro_series[t]
-            current = population.sum()
-            if current > 0:
-                scale = 1 + coupling * 0.01 * (target - current) / current
-                population = population * np.clip(scale, 0.9, 1.1)
+            target_z = macro_series[t]
+            # Modulate population by small factor based on Z-scored target
+            scale = 1 + coupling * 0.01 * target_z
+            population = (population * np.clip(scale, 0.95, 1.05)).astype(int)
+            population = np.maximum(0, population)
                 
         # Total trackable debris (large + medium)
         total_debris = population[:, 1:].sum()

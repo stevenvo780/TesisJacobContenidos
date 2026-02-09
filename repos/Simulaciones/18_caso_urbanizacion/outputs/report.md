@@ -1,32 +1,32 @@
 # Reporte de Validación — Urbanización (Bettencourt + Preferential Attachment)
 
-- generated_at: 2026-02-09T04:23:02.176478Z
+- generated_at: 2026-02-09T05:10:44.581592Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0008
-- bootstrap_mean: 0.0008
-- CI 95%: [0.0006, 0.0010]
-- weighted_value (LoE factor 0.20): 0.0002
+- valor: -0.0002
+- bootstrap_mean: -0.0002
+- CI 95%: [-0.0003, -0.0001]
+- weighted_value (LoE factor 0.20): -0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.0020
-- external: -0.0003
-- CR: 5.5749
-- CR indicador (>2.0 = frontera nítida): True
+- internal: 0.0011
+- external: -0.0015
+- CR: 0.7557
+- CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
-- c4_validity: False
+- c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.0476
+- rmse_abm: 2.0496
 - rmse_abm_no_ode: 2.0493
 - rmse_ode: 2.0480
 - rmse_reduced: 2.0466
@@ -45,16 +45,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0011
-- bootstrap_mean: 0.0011
-- CI 95%: [0.0010, 0.0012]
-- weighted_value (LoE factor 0.20): 0.0002
+- valor: 0.0001
+- bootstrap_mean: 0.0001
+- CI 95%: [0.0000, 0.0002]
+- weighted_value (LoE factor 0.20): 0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.0021
-- external: 0.0005
-- CR: 4.0528
+- internal: -0.0036
+- external: -0.0017
+- CR: 2.1910
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -65,7 +65,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.0576
+- rmse_abm: 2.0596
 - rmse_abm_no_ode: 2.0598
 - rmse_ode: 2.0601
 - rmse_reduced: 2.0557

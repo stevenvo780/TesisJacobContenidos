@@ -61,9 +61,12 @@ def simulate_abm(params, steps, seed=42):
     immunity_waning = params.get("abm_waning", 0.02)  # Prob R -> S per step (~50 step immunity)
     
     # Forcing: Behavioral changes / interventions
+    # NOTE: forcing_series comes Z-scored from the validator (mean≈0, std≈1).
+    # We use it as a MODULATOR around base beta, not a raw multiplier.
     forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
-        forcing = np.ones(steps)
+        forcing = np.zeros(steps)  # No external forcing = no modulation
         
     # Macro Coupling (ODE reproduction number)
     macro_series = params.get("macro_target_series")
@@ -79,9 +82,10 @@ def simulate_abm(params, steps, seed=42):
     series_grid = []
     
     for t in range(steps):
-        # Intervention effect (reduces transmission)
-        intervention = forcing[t] if t < len(forcing) else 1.0
-        beta_eff = beta * intervention
+        # Intervention effect (modulates transmission around base beta)
+        # forcing[t] is Z-scored: 0 = mean, +1 = 1 std above, etc.
+        intervention = forcing[t] if t < len(forcing) else 0.0
+        beta_eff = beta * np.clip(1.0 + forcing_scale * intervention, 0.1, 2.0)
         
         # Macro coupling: adjust beta to match macro R0
         if macro_series is not None and t < len(macro_series) and coupling > 0:

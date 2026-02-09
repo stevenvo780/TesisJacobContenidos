@@ -62,10 +62,14 @@ def simulate_ode(params, steps, seed=42):
     noise_std = params.get("ode_noise", 0.005)
     
     # Forcing: Atmospheric pCO2 (ppm)
+    # NOTE: forcing_series from validator is Z-scored (mean≈0).
+    # Modulate pCO2 around baseline.
     forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
         # Keeling curve
         forcing = 280 + 2.5 * np.arange(steps) / 12
+        forcing_scale = 1.0  # Direct ppm values
         
     # Initial State
     pH = params.get("p0", 8.2)  # Pre-industrial pH
@@ -76,7 +80,12 @@ def simulate_ode(params, steps, seed=42):
     dt = 0.1  # Monthly timestep
     
     for t in range(steps):
-        pCO2 = list(forcing)[t] if t < len(forcing) else 400
+        f_t = list(forcing)[t] if t < len(forcing) else 0.0
+        if forcing_scale < 1.0:
+            # Z-scored: modulate around current baseline pCO2 (~400 ppm)
+            pCO2 = 400.0 * (1.0 + forcing_scale * f_t)
+        else:
+            pCO2 = f_t
         
         # Sea surface temperature (seasonal)
         T = 18 + 5 * np.sin(2 * np.pi * t / 12)

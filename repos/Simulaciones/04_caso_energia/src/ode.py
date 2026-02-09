@@ -47,9 +47,12 @@ def simulate_ode(params, steps, seed=42):
     noise_std = params.get("ode_noise", 0.01)
     
     # Forcing: Policy stringency (accelerates renewable growth)
+    # NOTE: forcing_series from validator is Z-scored (mean≈0).
     forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
         forcing = np.ones(steps)
+        forcing_scale = 1.0  # Direct values
         
     # Initial State
     F = params.get("F0", 0.7)   # Initial fossil share
@@ -60,7 +63,12 @@ def simulate_ode(params, steps, seed=42):
     dt = 1.0  # Yearly
     
     for t in range(steps):
-        policy = list(forcing)[t] if t < len(forcing) else 1.0
+        f_t = list(forcing)[t] if t < len(forcing) else 0.0
+        if forcing_scale < 1.0:
+            # Z-scored: modulate around baseline policy=1.0
+            policy = max(0.1, 1.0 + forcing_scale * f_t)
+        else:
+            policy = f_t
         
         # Policy accelerates renewable growth
         r_R_eff = r_R * (1 + 0.5 * (policy - 1))

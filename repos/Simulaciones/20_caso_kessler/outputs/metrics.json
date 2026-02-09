@@ -1,8 +1,8 @@
 {
   "case": "S\u00edndrome de Kessler (NASA LEGEND + ORDEM)",
-  "generated_at": "2026-02-09T04:22:54.569276Z",
+  "generated_at": "2026-02-09T05:10:39.199087Z",
   "git": {
-    "commit": "04e78a0c51ea966423f0e56f80fa4e35829dd011",
+    "commit": "f446aa31968bec1194db0d7846a14735bd5edbfe",
     "dirty": true
   },
   "phases": {
@@ -20,13 +20,13 @@
         "coverage": 1.0
       },
       "calibration": {
-        "forcing_scale": 0.001,
+        "forcing_scale": 0.8343286510573357,
         "macro_coupling": 0.1,
-        "damping": 0.0,
+        "damping": 0.0851815041248499,
         "ode_alpha": 0.11323087612002594,
         "ode_beta": 0.7547547643545328,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 163478.4257518934
+        "calibration_rmse": 135803.95130123658
       },
       "forcing": {
         "driver_meta": {
@@ -42,23 +42,23 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 11600777.075037455,
-        "rmse_abm_no_ode": 653299.1465764996,
-        "rmse_ode": 7501170013604411.0,
-        "rmse_reduced": 700761.2854012434,
+        "rmse_abm": 2532181.866789956,
+        "rmse_abm_no_ode": 595668.7238902522,
+        "rmse_ode": 7501170013605142.0,
+        "rmse_reduced": 627263.5667360197,
         "threshold": 8.92654054209677
       },
       "correlations": {
-        "abm_obs": 0.7435758376975631,
-        "ode_obs": 0.6959072215449178
+        "abm_obs": 0.7777457796638144,
+        "ode_obs": 0.7021780889639294
       },
       "edi": {
-        "value": -16.757220617582785,
-        "bootstrap_mean": -16.68217716849127,
-        "ci_lo": -18.391221807964786,
-        "ci_hi": -14.536358458984122,
+        "value": -3.2509901313141514,
+        "bootstrap_mean": -3.2472018608272126,
+        "ci_lo": -3.357188795465225,
+        "ci_hi": -3.1084416281256315,
         "valid": false,
-        "weighted_value": -3.3514441235165573,
+        "weighted_value": -0.6501980262628303,
         "loe_factor": 0.2
       },
       "viscosity": {
@@ -68,26 +68,26 @@
           "peak_impact": 0.0
         }
       },
-      "effective_information": -3.5081610358658537,
+      "effective_information": -1.6352604420354524,
       "symploke": {
-        "internal": 0.8323165224799247,
-        "external": 0.8127265101729972,
-        "cr": 1.024104064604411,
+        "internal": 0.8212971144267147,
+        "external": 0.7879370707256701,
+        "cr": 1.0423384619666656,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0334346867691009,
+        "dominance_share": 0.03433044404365363,
         "pass": true
       },
       "persistence": {
-        "model": 13167416506415.957,
+        "model": 229453338598.16,
         "obs": 13.624600320701154,
         "pass": false
       },
       "emergence": {
-        "err_reduced": 653299.1465764996,
-        "err_abm": 11600777.075037455,
+        "err_reduced": 595668.7238902522,
+        "err_abm": 2532181.866789956,
         "threshold": 1.785308108419354,
         "pass": false,
         "significance": "computed"
@@ -100,30 +100,30 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 11600777.075037455,
-        "rmse_ode": 7501170013604411.0,
-        "corr_abm": 0.7435758376975631,
-        "corr_ode": 0.6959072215449178,
+        "rmse_abm": 2532181.866789956,
+        "rmse_ode": 7501170013605142.0,
+        "corr_abm": 0.7777457796638144,
+        "corr_ode": 0.7021780889639294,
         "threshold": 8.92654054209677
       },
       "c2_detail": {
-        "mean_delta": 298633.7047031071,
-        "var_delta": 1397739810180.621,
-        "relative_mean": 0.028561954178650758,
-        "relative_var": 0.05533836299768823
+        "mean_delta": 181181.30526315802,
+        "var_delta": 66014329733.29421,
+        "relative_mean": 0.07502610754258876,
+        "relative_var": 0.11376208981175796
       },
       "c3_detail": {
-        "persistence_1": 13167416506415.957,
-        "persistence_2": 14428939228296.812
+        "persistence_1": 229453338598.16,
+        "persistence_2": 237919193659.36002
       },
       "c4_detail": {
-        "diff": 748990.080704892
+        "diff": 10574.947368421126
       },
       "c5_detail": {
-        "sensitivity_min": 10290144.765956966,
-        "sensitivity_max": 11091722.682455426,
-        "range": 801577.9164984599,
-        "relative_range": 0.0761399463298218
+        "sensitivity_min": 2406444.8421052634,
+        "sensitivity_max": 2665218.0,
+        "range": 258773.15789473662,
+        "relative_range": 0.10186567612870401
       },
       "synthetic_meta": {
         "model": "NASA ORDEM / ESA MASTER (Kessler-Liou)",
@@ -149,13 +149,13 @@
         "coverage": 1.0
       },
       "calibration": {
-        "forcing_scale": 0.001,
-        "macro_coupling": 0.1,
+        "forcing_scale": 0.05129085264669074,
+        "macro_coupling": 0.16355519021385706,
         "damping": 0.0,
         "ode_alpha": 0.25754331747997583,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 165252.92923422335
+        "calibration_rmse": 130304.48699395325
       },
       "forcing": {
         "driver_meta": {
@@ -171,23 +171,23 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 11626563.953617206,
-        "rmse_abm_no_ode": 659284.6461818493,
-        "rmse_ode": 1.287716587399873e+16,
-        "rmse_reduced": 699352.7888594458,
+        "rmse_abm": 2557266.204123628,
+        "rmse_abm_no_ode": 578431.5678637413,
+        "rmse_ode": 1.2877165873998824e+16,
+        "rmse_reduced": 627223.1903542103,
         "threshold": 24.683390682741866
       },
       "correlations": {
-        "abm_obs": 0.7227850586820651,
-        "ode_obs": 0.42397919603743023
+        "abm_obs": 0.7554107534892708,
+        "ode_obs": 0.7311443755037849
       },
       "edi": {
-        "value": -16.635120157811578,
-        "bootstrap_mean": -16.560515874998963,
-        "ci_lo": -18.241247681654173,
-        "ci_hi": -14.438949923170913,
+        "value": -3.421034995666129,
+        "bootstrap_mean": -3.4170134169373996,
+        "ci_lo": -3.534356636344186,
+        "ci_hi": -3.270886886970716,
         "valid": false,
-        "weighted_value": -3.3270240315623156,
+        "weighted_value": -0.6842069991332258,
         "loe_factor": 0.2
       },
       "viscosity": {
@@ -197,26 +197,26 @@
           "peak_impact": 0.0
         }
       },
-      "effective_information": -3.5000364805110493,
+      "effective_information": -1.6747785935629143,
       "symploke": {
-        "internal": 0.8324016734258293,
-        "external": 0.8171137349666365,
-        "cr": 1.0187096823917872,
+        "internal": 0.8219913654555268,
+        "external": 0.7977705302114726,
+        "cr": 1.0303606542568498,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.03342962491214177,
+        "dominance_share": 0.03427299227618919,
         "pass": true
       },
       "persistence": {
-        "model": 13223113430811.527,
+        "model": 233510317047.09,
         "obs": 119.3793661920984,
         "pass": false
       },
       "emergence": {
-        "err_reduced": 659284.6461818493,
-        "err_abm": 11626563.953617206,
+        "err_reduced": 578431.5678637413,
+        "err_abm": 2557266.204123628,
         "threshold": 4.936678136548373,
         "pass": false,
         "significance": "computed"
@@ -229,30 +229,30 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 11626563.953617206,
-        "rmse_ode": 1.287716587399873e+16,
-        "corr_abm": 0.7227850586820651,
-        "corr_ode": 0.42397919603743023,
+        "rmse_abm": 2557266.204123628,
+        "rmse_ode": 1.2877165873998824e+16,
+        "corr_abm": 0.7554107534892708,
+        "corr_ode": 0.7311443755037849,
         "threshold": 24.683390682741866
       },
       "c2_detail": {
-        "mean_delta": 288563.82108965516,
-        "var_delta": 1358997548183.3843,
-        "relative_mean": 0.027537333311762405,
-        "relative_var": 0.05356927255555015
+        "mean_delta": 105477.84210526319,
+        "var_delta": 38789149739.40051,
+        "relative_mean": 0.043237601491629835,
+        "relative_var": 0.06587605726822318
       },
       "c3_detail": {
-        "persistence_1": 13223113430811.527,
-        "persistence_2": 14430600534792.51
+        "persistence_1": 233510317047.09,
+        "persistence_2": 238555614066.36002
       },
       "c4_detail": {
-        "diff": 806147.6713573411
+        "diff": 41279.78947368404
       },
       "c5_detail": {
-        "sensitivity_min": 10285209.080581447,
-        "sensitivity_max": 11091909.477671904,
-        "range": 806700.3970904574,
-        "relative_range": 0.07658693979874533
+        "sensitivity_min": 2530084.263157895,
+        "sensitivity_max": 2771493.5789473685,
+        "range": 241409.3157894737,
+        "relative_range": 0.09325437853948272
       },
       "gated_by_synthetic": true
     }

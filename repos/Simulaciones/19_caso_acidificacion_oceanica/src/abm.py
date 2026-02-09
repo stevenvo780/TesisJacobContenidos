@@ -52,10 +52,14 @@ def simulate_abm(params, steps, seed=42):
         omega_spatial -= 0.3 * np.exp(-dist2 / 20)
     
     # Forcing: Omega time series (from Macro)
-    forcing = params.get("forcing_series")  # This should be Omega values
+    # NOTE: forcing_series comes Z-scored from the validator (mean≈0, std≈1).
+    # We use it to MODULATE omega around a physical baseline (~2.5), not as raw omega.
+    forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
         # Default: declining Omega
         forcing = np.linspace(3.0, 1.5, steps)
+        forcing_scale = 1.0  # Direct physical values if no external forcing
         
     # Parameters
     calc_rate = params.get("abm_calc_rate", 0.02)   # Calcification coefficient
@@ -71,13 +75,21 @@ def simulate_abm(params, steps, seed=42):
     
     for t in range(steps):
         # Global Omega from forcing
-        omega_global = forcing[t] if t < len(forcing) else 1.5
+        # If forcing_scale=1.0 (standalone), forcing IS omega directly.
+        # If forcing is Z-scored (from validator), modulate around baseline omega=2.5.
+        f_t = forcing[t] if t < len(forcing) else 0.0
+        if forcing_scale < 1.0:
+            # Z-scored forcing: modulate around physical baseline
+            omega_global = 2.5 * (1.0 + forcing_scale * f_t)
+        else:
+            # Direct physical values (standalone mode)
+            omega_global = f_t
         
         # Macro coupling: adjust omega
         if macro_series is not None and t < len(macro_series) and coupling > 0:
-            # Macro = pH, convert to Omega proxy
+            # Macro signal is Z-scored: use directly as modulation factor
             macro_val = macro_series[t]
-            omega_global = omega_global * (1 + coupling * (macro_val - 8.0))
+            omega_global = omega_global * (1 + coupling * 0.1 * macro_val)
         
         # Local Omega = global * spatial factor
         omega_local = omega_global * omega_spatial

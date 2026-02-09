@@ -52,10 +52,13 @@ def simulate_ode(params, steps, seed=42):
     
     noise_std = params.get("ode_noise", 0.01)
     
-    # Forcing: Intervention effect (reduces R0)
+    # Forcing: Intervention effect (modulates R0)
+    # NOTE: forcing_series from validator is Z-scored (mean≈0).
+    # We modulate beta around its base value.
     forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
-        forcing = np.ones(steps)
+        forcing = np.zeros(steps)  # No modulation
         
     # Initial State
     I0 = params.get("I0", 100)
@@ -69,8 +72,8 @@ def simulate_ode(params, steps, seed=42):
     dt = 1.0  # Daily
     
     for t in range(steps):
-        intervention = list(forcing)[t] if t < len(forcing) else 1.0
-        beta_eff = beta * intervention
+        f_t = list(forcing)[t] if t < len(forcing) else 0.0
+        beta_eff = beta * np.clip(1.0 + forcing_scale * f_t, 0.1, 2.0)
         
         # SEIR equations
         dS = -beta_eff * S * I / N

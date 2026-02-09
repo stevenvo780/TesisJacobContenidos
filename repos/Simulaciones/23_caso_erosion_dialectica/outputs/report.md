@@ -1,6 +1,6 @@
 # Reporte de Validación — Erosión Dialéctica (Abrams-Strogatz)
 
-- generated_at: 2026-02-09T04:43:39.921355Z
+- generated_at: 2026-02-09T05:10:38.667632Z
 
 ## Fase synthetic
 - **overall_pass**: False

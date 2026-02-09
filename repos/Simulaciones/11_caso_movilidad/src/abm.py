@@ -38,9 +38,12 @@ def simulate_abm(params, steps, seed=42):
         })
         
     # Forcing (Demand Profile)
+    # NOTE: forcing_series comes Z-scored from the validator (mean≈0, std≈1).
+    # We use it to MODULATE demand around a baseline, not as absolute demand.
     forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
-        forcing = np.ones(steps)
+        forcing = np.zeros(steps)  # No modulation = baseline demand
         
     series_flow = []
     series_grid = [] # Store aggregate density map?
@@ -52,8 +55,9 @@ def simulate_abm(params, steps, seed=42):
     
     for t in range(steps):
         # 1. Demand Injection (Rush Hour based on Forcing)
-        # If forcing is high, activate more agents
-        demand_level = forcing[t] if t < len(forcing) else 0.5
+        # Baseline demand + Z-scored modulation
+        f_t = forcing[t] if t < len(forcing) else 0.0
+        demand_level = max(0.1, 0.5 + forcing_scale * f_t)  # Baseline 0.5, modulated
         n_to_activate = int(demand_level * 50) # 50 agents/hr max
         
         # Activate random dormant agents

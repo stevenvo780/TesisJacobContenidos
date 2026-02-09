@@ -38,8 +38,10 @@ def simulate_abm(params, steps, seed=42):
     carbon_price_base = params.get("carbon_price", 20)
     
     forcing = params.get("forcing_series")
+    forcing_scale = params.get("forcing_scale", 0.05)
     if forcing is None:
         forcing = np.linspace(1, 3, steps)
+        forcing_scale = 1.0  # Direct values if standalone
         
     investment_rate = params.get("abm_investment_rate", 0.05)
     lock_in = params.get("abm_lock_in", 0.8)
@@ -53,7 +55,13 @@ def simulate_abm(params, steps, seed=42):
     cumulative_capacity = capacity.sum(axis=0)
     
     for t in range(steps):
-        policy_mult = forcing[t] if t < len(forcing) else 1.0
+        f_t = forcing[t] if t < len(forcing) else 0.0
+        if forcing_scale < 1.0:
+            # Z-scored forcing: modulate around baseline multiplier of 1.0
+            policy_mult = max(0.1, 1.0 + forcing_scale * f_t)
+        else:
+            # Direct physical values (standalone mode)
+            policy_mult = f_t
         carbon_price = carbon_price_base * policy_mult
         
         # VECTORIZED: Update LCOE with learning curves
