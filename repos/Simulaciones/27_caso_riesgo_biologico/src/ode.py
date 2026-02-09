@@ -1,17 +1,79 @@
-import os
-import sys
+"""
+ode.py — 27_caso_riesgo_biologico (Top-Tier)
 
+Modelo: Riesgo Zoonótico Woolhouse-Spillover
+
+  dR/dt = r*R*(1 - R/K) + γ*F_zoonotic - δ*R + σ_outbreak + noise
+
+Donde:
+  R = nivel de riesgo biológico agregado (zoonosis, antimicrobial resistance)
+  r = tasa intrínseca de amplificación (propagación comunitaria)
+  K = capacidad de riesgo (saturación por inmunidad/intervención)
+  γ*F = incidencia desde interfaz silvestre-humana (forcing)
+  δ = mitigación (respuesta sanitaria, vigilancia)
+  σ_outbreak = pulsos estocásticos de brotes (cola pesada)
+
+La clave: riesgo crece logísticamente con spillover zoonótico.
+Combinación de crecimiento basal + pulsos de brotes genera
+dinámica no-lineal con intermitencia (brotes esporádicos sobre
+base endémica creciente).
+
+Ref: Woolhouse & Gowtage-Sequeria (2005) "Host range and emerging pathogens"
+     Jones et al. (2008) "Global trends in emerging infectious diseases"
+"""
+import os, sys, math, random
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
-from ode_models import simulate_ode_model
-
-ODE_MODEL = "logistic_forced"
 ODE_KEY = "b"
 
 
-def simulate_ode(params, steps, seed):
-    p = dict(params)
-    p["ode_model"] = ODE_MODEL
-    if "ode_key" not in p:
-        p["ode_key"] = ODE_KEY
-    return simulate_ode_model(p, steps, seed=seed)
+def _apply_assimilation(value, t, params):
+    series = params.get("assimilation_series")
+    strength = params.get("assimilation_strength", 0.0)
+    if series is None or t >= len(series):
+        return value
+    target = series[t]
+    if target is None:
+        return value
+    return value + strength * (target - value)
+
+
+def simulate_ode(params, steps, seed=6):
+    random.seed(seed)
+    forcing = params.get("forcing_series") or [0.0] * steps
+    noise_std = float(params.get("ode_noise", 0.03))
+
+    # Parámetros epidemiológicos/ecológicos
+    r = float(params.get("ode_r", params.get("ode_alpha", 0.06)))
+    K = float(params.get("ode_k", params.get("ode_beta", 2.0)))
+    # Tasa de spillover zoonótico
+    gamma = float(params.get("ode_gamma", 0.10))
+    # Mitigación (respuesta sanitaria)
+    delta = float(params.get("ode_delta", 0.025))
+    # Probabilidad de brote estocástico por paso
+    outbreak_prob = float(params.get("ode_outbreak_prob", 0.03))
+    outbreak_intensity = float(params.get("ode_outbreak_intensity", 0.8))
+
+    R = float(params.get("p0", 0.0))
+    series = []
+
+    for t in range(steps):
+        f = forcing[t] if t < len(forcing) else 0.0
+        # Crecimiento logístico basal
+        growth = r * R * (1.0 - R / K) if K > 0 else 0.0
+        # Spillover zoonótico desde interfaz (forcing)
+        spillover = gamma * max(0.0, f)
+        # Mitigación sanitaria
+        mitigation = delta * R
+        # Pulso estocástico de brote (cola pesada)
+        outbreak = outbreak_intensity * random.expovariate(1.0) if random.random() < outbreak_prob else 0.0
+
+        dR = growth + spillover - mitigation + outbreak + random.gauss(0, noise_std)
+        R += dR
+        R = max(0.0, min(R, 3.0 * K))
+        R = _apply_assimilation(R, t, params)
+        if not math.isfinite(R):
+            R = 0.0
+        series.append(float(R))
+
+    return {ODE_KEY: series, "forcing": forcing}
