@@ -1,21 +1,21 @@
 # Reporte de Validación — Acidificación Oceánica (CO2SYS + Revelle Factor)
 
-- generated_at: 2026-02-09T18:26:36.057928Z
+- generated_at: 2026-02-09T18:53:35.478025Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0931
-- bootstrap_mean: -0.0929
-- CI 95%: [-0.0997, -0.0868]
-- weighted_value (LoE factor 0.20): -0.0186
+- valor: -0.0892
+- bootstrap_mean: -0.0890
+- CI 95%: [-0.0954, -0.0831]
+- weighted_value (LoE factor 0.20): -0.0178
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 0.9974
-- external: 0.4534
-- CR: 2.1995
+- external: 0.4555
+- CR: 2.1898
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -26,9 +26,9 @@
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 1.5452
+- rmse_abm: 1.5396
 - rmse_abm_no_ode: 1.4135
-- rmse_ode: 8.3145
+- rmse_ode: 7.9611
 - rmse_reduced: 2.0224
 - threshold: 1.0107
 
@@ -48,16 +48,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0018
-- bootstrap_mean: -0.0028
-- CI 95%: [-0.0102, 0.0003]
-- weighted_value (LoE factor 0.20): -0.0004
+- valor: -0.0000
+- bootstrap_mean: -0.0000
+- CI 95%: [-0.0000, -0.0000]
+- weighted_value (LoE factor 0.20): -0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9993
-- external: 0.8556
-- CR: 1.1680
+- internal: 0.9992
+- external: 0.8250
+- CR: 1.2111
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -68,9 +68,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.3492
+- rmse_abm: 3.3431
 - rmse_abm_no_ode: 3.3431
-- rmse_ode: 9.2096
+- rmse_ode: 8.8946
 - rmse_reduced: 3.2742
 - threshold: 2.3256
 

@@ -1,34 +1,34 @@
 # Reporte de Validación — Epidemiología (COVID-19 SEIR)
 
-- generated_at: 2026-02-09T18:26:55.098868Z
+- generated_at: 2026-02-09T18:53:55.191449Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.4457
-- bootstrap_mean: 0.4401
-- CI 95%: [0.3611, 0.5145]
-- weighted_value (LoE factor 0.20): 0.0891
+- valor: 0.5276
+- bootstrap_mean: 0.5233
+- CI 95%: [0.4465, 0.5945]
+- weighted_value (LoE factor 0.20): 0.1055
 - válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.3931
-- external: 0.2607
-- CR: 1.5080
+- internal: 0.3969
+- external: 0.2630
+- CR: 1.5094
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: True
 - c2_robustness: False
-- c3_replication: True
+- c3_replication: False
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.3625
+- rmse_abm: 2.0133
 - rmse_abm_no_ode: 4.2623
-- rmse_ode: 0.4775
+- rmse_ode: 0.5436
 - rmse_reduced: 15.2230
 - threshold: 0.1000
 
@@ -70,7 +70,7 @@
 ### Errores
 - rmse_abm: 4.5221
 - rmse_abm_no_ode: 4.5221
-- rmse_ode: 4606.4346
+- rmse_ode: 16.4401
 - rmse_reduced: 13.8782
 - threshold: 4.3680
 

@@ -1,21 +1,21 @@
 # Reporte de Validación — Microplásticos Oceánicos (Jambeck Persistent Accumulation)
 
-- generated_at: 2026-02-09T18:26:49.338209Z
+- generated_at: 2026-02-09T18:53:48.616343Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.5570
-- bootstrap_mean: 0.5576
-- CI 95%: [0.5438, 0.5745]
-- weighted_value (LoE factor 0.80): 0.4456
-- válido (0.30-0.90): True
+- valor: 0.2847
+- bootstrap_mean: 0.2851
+- CI 95%: [0.2783, 0.2940]
+- weighted_value (LoE factor 0.80): 0.2278
+- válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 0.9999
-- external: 0.9979
-- CR: 1.0020
+- external: 0.9980
+- CR: 1.0019
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,9 +26,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.6879
+- rmse_abm: 1.1106
 - rmse_abm_no_ode: 1.5527
-- rmse_ode: 1.8385
+- rmse_ode: 1.7280
 - rmse_reduced: 0.9685
 - threshold: 0.1000
 
@@ -48,16 +48,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.4393
-- bootstrap_mean: 0.4401
-- CI 95%: [0.4271, 0.4607]
-- weighted_value (LoE factor 0.80): 0.3515
+- valor: 0.4265
+- bootstrap_mean: 0.4272
+- CI 95%: [0.4144, 0.4465]
+- weighted_value (LoE factor 0.80): 0.3412
 - válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9983
-- CR: 1.0017
+- external: 0.9984
+- CR: 1.0016
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -68,9 +68,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 10.1949
+- rmse_abm: 10.4284
 - rmse_abm_no_ode: 18.1839
-- rmse_ode: 2.5937
+- rmse_ode: 2.7865
 - rmse_reduced: 4.5301
 - threshold: 1.4633
 

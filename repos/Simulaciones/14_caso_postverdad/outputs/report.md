@@ -1,6 +1,6 @@
 # Reporte de Validación — Postverdad (SIS Infodemic)
 
-- generated_at: 2026-02-09T18:26:43.840748Z
+- generated_at: 2026-02-09T18:53:43.238632Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -28,7 +28,7 @@
 ### Errores
 - rmse_abm: 2.8853
 - rmse_abm_no_ode: 2.8853
-- rmse_ode: 1.9349
+- rmse_ode: 1.9815
 - rmse_reduced: 2.8853
 - threshold: 0.6609
 
@@ -70,7 +70,7 @@
 ### Errores
 - rmse_abm: 2.9622
 - rmse_abm_no_ode: 2.9658
-- rmse_ode: 2.9096
+- rmse_ode: 2.9121
 - rmse_reduced: 2.9720
 - threshold: 1.1553
 

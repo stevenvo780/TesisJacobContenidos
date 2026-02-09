@@ -1,34 +1,34 @@
 # Reporte de Validación — Políticas Estratégicas (Bass Diffusion + Inertia)
 
-- generated_at: 2026-02-09T18:26:55.337970Z
+- generated_at: 2026-02-09T18:53:56.310596Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0005
-- bootstrap_mean: -0.0005
-- CI 95%: [-0.0011, -0.0001]
-- weighted_value (LoE factor 0.20): -0.0001
+- valor: 0.0005
+- bootstrap_mean: 0.0005
+- CI 95%: [0.0001, 0.0011]
+- weighted_value (LoE factor 0.20): 0.0001
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9297
+- internal: 0.9117
 - external: 0.8593
-- CR: 1.0820
+- CR: 1.0610
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: False
+- c1_convergence: True
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.3993
+- rmse_abm: 1.3978
 - rmse_abm_no_ode: 1.3985
-- rmse_ode: 0.5130
+- rmse_ode: 0.5470
 - rmse_reduced: 1.4052
 - threshold: 0.3900
 
@@ -70,7 +70,7 @@
 ### Errores
 - rmse_abm: 1.7745
 - rmse_abm_no_ode: 1.7944
-- rmse_ode: 0.9596
+- rmse_ode: 1.0011
 - rmse_reduced: 1.8131
 - threshold: 0.1452
 

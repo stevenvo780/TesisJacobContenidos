@@ -1,15 +1,15 @@
 # Reporte de Validación — Erosión Dialéctica (Abrams-Strogatz)
 
-- generated_at: 2026-02-09T18:26:44.568587Z
+- generated_at: 2026-02-09T18:53:44.731119Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0491
-- bootstrap_mean: 0.0491
-- CI 95%: [0.0479, 0.0505]
-- weighted_value (LoE factor 0.60): 0.0294
+- valor: 0.0471
+- bootstrap_mean: 0.0471
+- CI 95%: [0.0460, 0.0484]
+- weighted_value (LoE factor 0.60): 0.0283
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -26,9 +26,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.9434
+- rmse_abm: 3.9515
 - rmse_abm_no_ode: 4.1468
-- rmse_ode: 1.7962
+- rmse_ode: 1.9042
 - rmse_reduced: 6.8364
 - threshold: 2.5948
 
@@ -48,29 +48,29 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -5.9305
-- bootstrap_mean: -6.2642
-- CI 95%: [-9.7124, -4.4055]
-- weighted_value (LoE factor 0.60): -3.5583
+- valor: -2.6917
+- bootstrap_mean: -2.8639
+- CI 95%: [-4.7327, -1.8798]
+- weighted_value (LoE factor 0.60): -1.6150
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9966
-- external: 0.9976
-- CR: 0.9990
+- internal: 0.9963
+- external: 0.9961
+- CR: 1.0002
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: False
+- c1_convergence: True
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.1590
+- rmse_abm: 0.6173
 - rmse_abm_no_ode: 0.1672
-- rmse_ode: 3.6513
+- rmse_ode: 3.5265
 - rmse_reduced: 2.4425
 - threshold: 0.3672
 

@@ -1,8 +1,8 @@
 {
   "case": "Postverdad (SIS Infodemic)",
-  "generated_at": "2026-02-09T18:26:43.840748Z",
+  "generated_at": "2026-02-09T18:53:43.238632Z",
   "git": {
-    "commit": "adf346005e8de45227735c1d94bcc86ac552d63d",
+    "commit": "04bc8694f5b73f9851ca16aebc1192d5b059c7f4",
     "dirty": true
   },
   "phases": {
@@ -39,13 +39,13 @@
       "errors": {
         "rmse_abm": 2.8852570719241872,
         "rmse_abm_no_ode": 2.8852570719241872,
-        "rmse_ode": 1.9349119230660816,
+        "rmse_ode": 1.9815071564535274,
         "rmse_reduced": 2.8852570719241872,
         "threshold": 0.660884881075679
       },
       "correlations": {
         "abm_obs": 0.0,
-        "ode_obs": -4.793610849976798e-16
+        "ode_obs": 0.0
       },
       "edi": {
         "value": 0.0,
@@ -106,9 +106,9 @@
       "c5_uncertainty": true,
       "c1_detail": {
         "rmse_abm": 2.8852570719241872,
-        "rmse_ode": 1.9349119230660816,
+        "rmse_ode": 1.9815071564535274,
         "corr_abm": 0.0,
-        "corr_ode": -4.793610849976798e-16,
+        "corr_ode": 0.0,
         "threshold": 0.660884881075679,
         "c1_relative": false,
         "c1_absolute": false,
@@ -137,15 +137,15 @@
       "bias_correction": {
         "applied": true,
         "mode": "full",
-        "ode_obs_corr_train": 0.9675499182530459,
-        "ode_mean_train": 0.39874620870953903,
+        "ode_obs_corr_train": 0.9674809187254996,
+        "ode_mean_train": 0.37893725076448354,
         "obs_mean_train": 5.4447719215333345e-17,
-        "scale_factor": 2.108767356637952
+        "scale_factor": 2.220272888180915
       },
       "emergence_taxonomy": {
         "category": "null",
         "ode_quality": "poor",
-        "ode_obs_corr": -4.793610849976798e-16,
+        "ode_obs_corr": 0.0,
         "interpretation": "Emergencia nula: sin evidencia de constricci\u00f3n macro efectiva"
       },
       "synthetic_meta": {
@@ -188,13 +188,13 @@
       "errors": {
         "rmse_abm": 2.9622193741177427,
         "rmse_abm_no_ode": 2.9657705602965434,
-        "rmse_ode": 2.909614448709353,
+        "rmse_ode": 2.912103009838816,
         "rmse_reduced": 2.972007108994803,
         "threshold": 1.155339818129952
       },
       "correlations": {
         "abm_obs": -0.5629555012349103,
-        "ode_obs": 0.5414352970456043
+        "ode_obs": 0.531819043978279
       },
       "edi": {
         "value": 0.00119739073087488,
@@ -255,9 +255,9 @@
       "c5_uncertainty": true,
       "c1_detail": {
         "rmse_abm": 2.9622193741177427,
-        "rmse_ode": 2.909614448709353,
+        "rmse_ode": 2.912103009838816,
         "corr_abm": -0.5629555012349103,
-        "corr_ode": 0.5414352970456043,
+        "corr_ode": 0.531819043978279,
         "threshold": 1.155339818129952,
         "c1_relative": true,
         "c1_absolute": false,
@@ -286,15 +286,15 @@
       "bias_correction": {
         "applied": true,
         "mode": "bias_only",
-        "ode_obs_corr_train": 0.8046522048398377,
-        "ode_mean_train": 0.13232761957533556,
+        "ode_obs_corr_train": 0.8192751268146059,
+        "ode_mean_train": 0.14302942041475059,
         "obs_mean_train": 5.652044489000797e-16,
         "scale_factor": 1.0
       },
       "emergence_taxonomy": {
         "category": "suggestive",
         "ode_quality": "moderate",
-        "ode_obs_corr": 0.5414352970456043,
+        "ode_obs_corr": 0.531819043978279,
         "interpretation": "Se\u00f1al sugestiva: EDI positivo y significativo pero muy bajo"
       },
       "gated_by_synthetic": true

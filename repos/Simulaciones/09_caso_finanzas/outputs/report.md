@@ -1,6 +1,6 @@
 # Reporte de Validación — Finanzas (SPY)
 
-- generated_at: 2026-02-09T18:26:36.886539Z
+- generated_at: 2026-02-09T18:53:36.644904Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -14,7 +14,7 @@
 
 ### Symploké y CR
 - internal: 0.0000
-- external: 0.9866
+- external: 0.9874
 - CR: 0.0000
 - CR indicador (>2.0 = frontera nítida): False
 
@@ -26,9 +26,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 20481509.0743
+- rmse_abm: 20481509.7124
 - rmse_abm_no_ode: 20481508.8624
-- rmse_ode: 20481508.8351
+- rmse_ode: 20481525.7721
 - rmse_reduced: 20481508.9052
 - threshold: 19219447.7270
 
@@ -48,29 +48,29 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0257
-- bootstrap_mean: 0.0257
-- CI 95%: [0.0223, 0.0288]
-- weighted_value (LoE factor 1.00): 0.0257
+- valor: 0.0398
+- bootstrap_mean: 0.0398
+- CI 95%: [0.0388, 0.0410]
+- weighted_value (LoE factor 1.00): 0.0398
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 0.0000
-- external: 0.9844
+- external: 0.9850
 - CR: 0.0000
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: True
 - c2_robustness: True
-- c3_replication: False
+- c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 36.9584
+- rmse_abm: 36.4203
 - rmse_abm_no_ode: 37.9317
-- rmse_ode: 29.7012
+- rmse_ode: 11.2064
 - rmse_reduced: 37.5564
 - threshold: 1.1814
 

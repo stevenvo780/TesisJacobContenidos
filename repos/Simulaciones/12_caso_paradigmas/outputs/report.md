@@ -1,6 +1,6 @@
 # Reporte de Validación — Paradigmas Cientificos (Ising)
 
-- generated_at: 2026-02-09T18:26:38.349135Z
+- generated_at: 2026-02-09T18:53:37.305644Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -28,7 +28,7 @@
 ### Errores
 - rmse_abm: 1.1026
 - rmse_abm_no_ode: 1.1028
-- rmse_ode: 0.6675
+- rmse_ode: 0.6891
 - rmse_reduced: 1.0999
 - threshold: 0.1000
 
@@ -70,7 +70,7 @@
 ### Errores
 - rmse_abm: 9.7056
 - rmse_abm_no_ode: 9.7056
-- rmse_ode: 9.4348
+- rmse_ode: 9.4482
 - rmse_reduced: 8.3184
 - threshold: 5.7385
 

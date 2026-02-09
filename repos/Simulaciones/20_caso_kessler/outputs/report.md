@@ -1,21 +1,21 @@
 # Reporte de Validación — Síndrome de Kessler (NASA LEGEND + ORDEM)
 
-- generated_at: 2026-02-09T18:26:41.883836Z
+- generated_at: 2026-02-09T18:53:41.731663Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -3.4194
-- bootstrap_mean: -3.4154
-- CI 95%: [-3.5367, -3.2629]
-- weighted_value (LoE factor 0.20): -0.6839
+- valor: -0.4485
+- bootstrap_mean: -0.4488
+- CI 95%: [-0.4588, -0.4414]
+- weighted_value (LoE factor 0.20): -0.0897
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.8221
-- external: 0.7165
-- CR: 1.1475
+- internal: 0.7976
+- external: 0.6861
+- CR: 1.1625
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,9 +26,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2691399.5511
+- rmse_abm: 882106.9302
 - rmse_abm_no_ode: 608992.9187
-- rmse_ode: 7660452158067588.0000
+- rmse_ode: 10.6201
 - rmse_reduced: 627263.5667
 - threshold: 8.9265
 
@@ -48,16 +48,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.1612
-- bootstrap_mean: -0.1568
-- CI 95%: [-0.2500, -0.0355]
-- weighted_value (LoE factor 0.20): -0.0322
+- valor: -0.3559
+- bootstrap_mean: -0.3560
+- CI 95%: [-0.3617, -0.3515]
+- weighted_value (LoE factor 0.20): -0.0712
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.7883
-- external: 0.5222
-- CR: 1.5095
+- internal: 0.7914
+- external: 0.6605
+- CR: 1.1982
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -68,9 +68,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 665319.2883
+- rmse_abm: 776863.0414
 - rmse_abm_no_ode: 572967.3112
-- rmse_ode: 2073629760066926.7500
+- rmse_ode: 11.6175
 - rmse_reduced: 627284.2745
 - threshold: 2.3530
 

@@ -1,21 +1,21 @@
 # Reporte de Validación — Ocean (Stommel + Thermohaline ABM)
 
-- generated_at: 2026-02-09T18:26:38.383100Z
+- generated_at: 2026-02-09T18:53:37.428235Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.1403
-- bootstrap_mean: 0.1391
-- CI 95%: [0.1197, 0.1559]
-- weighted_value (LoE factor 0.20): 0.0281
+- valor: 0.1149
+- bootstrap_mean: 0.1138
+- CI 95%: [0.0940, 0.1308]
+- weighted_value (LoE factor 0.20): 0.0230
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9615
-- external: 0.1167
-- CR: 8.2419
+- internal: 0.9612
+- external: 0.1463
+- CR: 6.5683
 - CR indicador (>2.0 = frontera nítida): True
 
 ### Criterios C1-C5
@@ -26,9 +26,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 4.7575
+- rmse_abm: 4.8976
 - rmse_abm_no_ode: 5.5337
-- rmse_ode: 1.4691
+- rmse_ode: 1.6554
 - rmse_reduced: 5.1439
 - threshold: 0.9858
 
@@ -48,16 +48,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0532
-- bootstrap_mean: 0.0697
-- CI 95%: [0.0359, 0.1251]
-- weighted_value (LoE factor 0.20): 0.0106
+- valor: 0.0534
+- bootstrap_mean: 0.0700
+- CI 95%: [0.0361, 0.1256]
+- weighted_value (LoE factor 0.20): 0.0107
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9178
-- external: -0.6878
-- CR: 1.3344
+- internal: 0.9186
+- external: -0.6888
+- CR: 1.3336
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -68,9 +68,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.5834
+- rmse_abm: 3.5824
 - rmse_abm_no_ode: 3.7846
-- rmse_ode: 2.7954
+- rmse_ode: 2.7994
 - rmse_reduced: 3.8040
 - threshold: 2.7353
 

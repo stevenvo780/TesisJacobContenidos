@@ -1,21 +1,21 @@
 # Reporte de Validación — Ciclo del Fósforo (Carpenter Biogeoquímico)
 
-- generated_at: 2026-02-09T18:26:38.851366Z
+- generated_at: 2026-02-09T18:53:38.904031Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.3567
-- bootstrap_mean: 0.3596
-- CI 95%: [0.3297, 0.3985]
-- weighted_value (LoE factor 0.60): 0.2140
+- valor: 0.3453
+- bootstrap_mean: 0.3482
+- CI 95%: [0.3191, 0.3858]
+- weighted_value (LoE factor 0.60): 0.2072
 - válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 0.9999
-- external: 0.9949
-- CR: 1.0050
+- external: 0.9952
+- CR: 1.0046
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,9 +26,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.8594
+- rmse_abm: 0.8747
 - rmse_abm_no_ode: 1.3359
-- rmse_ode: 0.5559
+- rmse_ode: 0.4912
 - rmse_reduced: 3.5591
 - threshold: 0.8987
 
@@ -48,16 +48,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -3.0691
-- bootstrap_mean: -3.1013
-- CI 95%: [-3.8195, -2.4885]
-- weighted_value (LoE factor 0.60): -1.8415
+- valor: -2.6856
+- bootstrap_mean: -2.7133
+- CI 95%: [-3.3267, -2.1635]
+- weighted_value (LoE factor 0.60): -1.6114
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9985
-- external: 0.9159
-- CR: 1.0902
+- internal: 0.9986
+- external: 0.9380
+- CR: 1.0646
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -68,9 +68,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.3378
+- rmse_abm: 1.2117
 - rmse_abm_no_ode: 0.3288
-- rmse_ode: 3.9051
+- rmse_ode: 3.7863
 - rmse_reduced: 2.3362
 - threshold: 0.4564
 

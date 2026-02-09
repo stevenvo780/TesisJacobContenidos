@@ -1,21 +1,21 @@
 # Reporte de Validación — Conciencia Colectiva
 
-- generated_at: 2026-02-09T18:26:33.778534Z
+- generated_at: 2026-02-09T18:53:33.519955Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
 - valor: 0.0183
-- bootstrap_mean: 0.0180
-- CI 95%: [0.0099, 0.0261]
+- bootstrap_mean: 0.0181
+- CI 95%: [0.0100, 0.0262]
 - weighted_value (LoE factor 0.20): 0.0037
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.5372
-- external: 0.6269
-- CR: 0.8570
+- internal: 0.5380
+- external: 0.6273
+- CR: 0.8576
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -28,7 +28,7 @@
 ### Errores
 - rmse_abm: 1.1018
 - rmse_abm_no_ode: 1.1223
-- rmse_ode: 1.0904
+- rmse_ode: 1.0791
 - rmse_reduced: 1.1208
 - threshold: 1.0629
 
@@ -48,16 +48,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0456
-- bootstrap_mean: -0.0477
-- CI 95%: [-0.0769, -0.0141]
-- weighted_value (LoE factor 0.20): -0.0091
+- valor: -0.0361
+- bootstrap_mean: -0.0377
+- CI 95%: [-0.0610, -0.0101]
+- weighted_value (LoE factor 0.20): -0.0072
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.7644
-- external: 0.8176
-- CR: 0.9349
+- internal: 0.7687
+- external: 0.8211
+- CR: 0.9362
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -68,9 +68,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.7504
+- rmse_abm: 0.7437
 - rmse_abm_no_ode: 0.7177
-- rmse_ode: 1.7923
+- rmse_ode: 1.7348
 - rmse_reduced: 1.3440
 - threshold: 0.6211
 

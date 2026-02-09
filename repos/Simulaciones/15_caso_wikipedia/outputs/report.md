@@ -1,15 +1,15 @@
 # Reporte de Validación — Wikipedia (Axelrod + Lotka-Volterra)
 
-- generated_at: 2026-02-09T18:26:44.933215Z
+- generated_at: 2026-02-09T18:53:44.713152Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.2876
-- bootstrap_mean: 0.2876
-- CI 95%: [0.2797, 0.2967]
-- weighted_value (LoE factor 0.20): 0.0575
+- valor: 0.2841
+- bootstrap_mean: 0.2841
+- CI 95%: [0.2763, 0.2931]
+- weighted_value (LoE factor 0.20): 0.0568
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -23,12 +23,12 @@
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
-- c5_uncertainty: False
+- c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.9722
+- rmse_abm: 1.9819
 - rmse_abm_no_ode: 2.7683
-- rmse_ode: 1.8747
+- rmse_ode: 1.8794
 - rmse_reduced: 2.7683
 - threshold: 1.0224
 
@@ -70,7 +70,7 @@
 ### Errores
 - rmse_abm: 5.0287
 - rmse_abm_no_ode: 5.0287
-- rmse_ode: 3.6585
+- rmse_ode: 3.7211
 - rmse_reduced: 5.0287
 - threshold: 2.2194
 

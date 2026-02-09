@@ -1,21 +1,21 @@
 # Reporte de Validación — Fuga de Cerebros Global (Docquier-Rapoport)
 
-- generated_at: 2026-02-09T18:26:35.452594Z
+- generated_at: 2026-02-09T18:53:34.808938Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.7537
-- bootstrap_mean: 0.7594
-- CI 95%: [0.6913, 0.8428]
-- weighted_value (LoE factor 0.60): 0.4522
+- valor: 0.7245
+- bootstrap_mean: 0.7297
+- CI 95%: [0.6625, 0.8093]
+- weighted_value (LoE factor 0.60): 0.4347
 - válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 0.9999
-- external: 0.9683
-- CR: 1.0327
+- external: 0.9703
+- CR: 1.0305
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,9 +26,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.6858
+- rmse_abm: 0.7670
 - rmse_abm_no_ode: 2.7838
-- rmse_ode: 0.7834
+- rmse_ode: 0.6865
 - rmse_reduced: 5.3990
 - threshold: 1.7147
 
@@ -48,16 +48,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.1903
-- bootstrap_mean: 0.1875
-- CI 95%: [0.0359, 0.2971]
-- weighted_value (LoE factor 0.60): 0.1142
+- valor: 0.1829
+- bootstrap_mean: 0.1805
+- CI 95%: [0.0359, 0.2881]
+- weighted_value (LoE factor 0.60): 0.1097
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 0.9995
-- external: 0.9909
-- CR: 1.0087
+- external: 0.9915
+- CR: 1.0081
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -68,9 +68,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.7399
+- rmse_abm: 3.7740
 - rmse_abm_no_ode: 4.6188
-- rmse_ode: 3.4863
+- rmse_ode: 3.4368
 - rmse_reduced: 6.7010
 - threshold: 5.6455
 

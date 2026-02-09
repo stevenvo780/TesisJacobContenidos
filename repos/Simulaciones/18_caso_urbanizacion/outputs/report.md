@@ -1,6 +1,6 @@
 # Reporte de Validación — Urbanización (Bettencourt + Preferential Attachment)
 
-- generated_at: 2026-02-09T18:26:51.471184Z
+- generated_at: 2026-02-09T18:53:51.702093Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -28,7 +28,7 @@
 ### Errores
 - rmse_abm: 2.0440
 - rmse_abm_no_ode: 2.0440
-- rmse_ode: 2.0427
+- rmse_ode: 2.0428
 - rmse_reduced: 2.0406
 - threshold: 0.4782
 
@@ -70,7 +70,7 @@
 ### Errores
 - rmse_abm: 2.6843
 - rmse_abm_no_ode: 2.6844
-- rmse_ode: 2.6832
+- rmse_ode: 2.6833
 - rmse_reduced: 2.6812
 - threshold: 0.8867
 

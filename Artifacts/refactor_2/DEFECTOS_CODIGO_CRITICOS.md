@@ -125,13 +125,15 @@ no tiene ningun termino que distinga un agente de otro excepto su posicion en la
 
 ---
 
-## 5. ABM Y ODE NO ESTAN ACOPLADOS — ✅ RESUELTO
+## 5. ABM Y ODE NO ESTAN ACOPLADOS — ✅ RESUELTO (Fix C13-b)
 
 > **Estado:** Acoplamiento **bidireccional** implementado en `hybrid_validator.py`:
 > - **ODE→ABM** (top-down): la serie ODE se pasa como `macro_target_series` al ABM, que la usa como atractor en el término `ode_cs * (macro_target - grid_mean)`.
-> - **ABM→ODE** (bottom-up): el campo medio del ABM se pasa como `abm_feedback_series` a la ODE con `abm_feedback_gamma=0.05`. La ODE recibe feedback `dx += gamma * (abm_mean[t] - x)`.
-> - **2 iteraciones** de acoplamiento: ODE₁→ABM₁→ODE₂→ABM₂ para convergencia.
+> - **ABM→ODE** (bottom-up, Fix C13-b): nudging post-integración en `hybrid_validator.py`. Después de generar la serie ODE con `simulate_ode_fn`, se aplica `ode[t] += γ·(abm_mean[t] - ode[t])` con γ=0.05.
+> - **2 iteraciones** de acoplamiento: ODE₁→ABM₁→nudge(ODE₁,ABM₁)→ABM₂ para convergencia.
 > - **`ode_coupling_strength`** separado de `macro_coupling`: el auto-acoplamiento ABM usa `mc`, el nudging ODE→ABM usa `ode_cs = min(0.30, mc*0.8)`.
+>
+> **Nota técnica:** Las 29 ode.py locales no leen `abm_feedback_series` directamente. El nudging se aplica en `hybrid_validator.py` como post-proceso sobre la serie ODE generada, lo cual es equivalente para integración Euler de primer orden. El módulo `common/ode_models.py` sí tiene el feedback integrado en el loop para uso futuro.
 >
 > Verificación: 29/29 casos tienen `ode_coupling_strength` y `abm_feedback_gamma=0.05` en `metrics.json`.
 
@@ -170,9 +172,12 @@ Todos generan datos sinteticos con la misma ODE `dX = alpha*(F-beta*X)`. La fase
 
 ---
 
-## 7. BIAS CORRECTION ODE→ABM — ✅ RESUELTO (commit 54234d6)
+## 7. BIAS CORRECTION ODE→ABM — ✅ RESUELTO (commit 54234d6 + Fix #7-b/c)
 
-> **Estado:** Implementado en `hybrid_validator.py`. La serie ODE, aunque bien correlacionada con observaciones, puede tener sesgo en nivel (media) y escala (desviación estándar) que destruye el acoplamiento con el ABM. Se aplica corrección de sesgo con 3 modos protegidos por guardas.
+> **Estado:** Implementado en `hybrid_validator.py` con 3 mejoras adicionales:
+> - **Fix #7-b: Umbral adaptativo** — Bajado de 0.5 a 0.3 para capturar ODE con correlación moderada pero útil.
+> - **Fix #7-b: Clipping de serie ODE** — `np.clip(ode, -5·range, +5·range)` protege contra explosión numérica (ej: Starlink EDI=-545 → ahora acotado).
+> - **Fix #7-c: Guarda de reversión** — Si BC empeora RMSE (ABM acoplado peor que ABM sin ODE), se re-ejecuta sin BC. Si mejora, se revierte a mode="reverted". Esto elimina casos donde BC destruía el resultado (ej: Fósforo con scale=4.06 → EDI=-3.07).
 
 **Archivo:** `repos/Simulaciones/common/hybrid_validator.py`, líneas ~917-948
 

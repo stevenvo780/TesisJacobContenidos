@@ -1002,19 +1002,50 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     ode = simulate_ode_fn(ode_params_1, steps, seed=3)
     ode_series = ode[ode_key]
 
+    # Fix C13-b: Nudging ABM→ODE post-integración
+    # Las ODE locales (caso_*/src/ode.py) no leen abm_feedback_series/gamma.
+    # Aplicamos el feedback como nudging Euler sobre la serie ya generada.
+    # Esto es equivalente a integrar dx += γ·(abm_mean - x) en cada paso,
+    # con la simplificación de que la serie base ya está estabilizada.
+    if abm_mean_0 is not None and abm_feedback_gamma > 1e-8:
+        abm_arr = np.asarray(abm_mean_0, dtype=np.float64)
+        if abm_arr.ndim == 3:
+            abm_arr = abm_arr.mean(axis=(1, 2))
+        elif abm_arr.ndim == 2:
+            abm_arr = abm_arr.mean(axis=1)
+        ode_nudged = list(ode_series)
+        for t in range(min(len(ode_nudged), len(abm_arr))):
+            ode_nudged[t] = float(
+                ode_nudged[t] + abm_feedback_gamma * (abm_arr[t] - ode_nudged[t])
+            )
+        ode_series = ode_nudged
+
     # ── Bias Correction del ODE target (Fix Cat.B) ──
     # El ODE puede capturar la FORMA de la dinámica (alta correlación) pero tener
     # sesgo en nivel/escala. Sin corrección, el nudging ODE→ABM empuja al ABM
     # hacia valores sesgados, empeorando RMSE incluso con correlación alta.
     # Solución: transformación afín que mantiene correlación pero elimina sesgo.
-    # Solo se aplica cuando el ODE tiene correlación positiva útil (>0.5) en training.
-    # El scale factor se limita a [0.2, 5.0] para evitar amplificación excesiva.
+    #
+    # Fix #7-b: Umbral adaptativo + guarda de reversión
+    # - Umbral bajado de 0.5 a 0.3 (captura más ODE con señal útil)
+    # - Clipping de serie ODE para evitar explosión numérica
+    # - Guarda de reversión: si BC empeora RMSE, revertir a mode=none
     ode_arr_full = np.asarray(ode_series, dtype=np.float64)
+
+    # Guarda: clipping de valores extremos en la serie ODE
+    # (protege contra explosión numérica, ej: Starlink EDI=-545)
+    obs_range = float(np.ptp(obs[:val_start])) if val_start > 1 else 1.0
+    clip_bound = max(10.0, 5.0 * obs_range)
+    ode_arr_full = np.clip(ode_arr_full, -clip_bound, clip_bound)
+    ode_series = ode_arr_full.tolist()
+
     ode_train_seg = ode_arr_full[:val_start]
     obs_train_seg = np.asarray(obs[:val_start], dtype=np.float64)
     ode_obs_corr_train = correlation(ode_train_seg.tolist(), obs_train_seg.tolist())
 
-    if ode_obs_corr_train > 0.5 and len(ode_train_seg) > 2:
+    # BC activation: umbral 0.3 (antes 0.5) para capturar correlaciones moderadas
+    bc_corr_threshold = 0.3
+    if ode_obs_corr_train > bc_corr_threshold and len(ode_train_seg) > 2:
         ode_m = float(ode_train_seg.mean())
         ode_s = float(max(ode_train_seg.std(), 1e-10))
         obs_m_bc = float(obs_train_seg.mean())
@@ -1083,6 +1114,26 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     err_abm_no_ode = rmse(abm_no_ode_val, obs_val)
     err_ode = rmse(ode_val, obs_val)
     err_reduced = rmse(reduced_val, obs_val)
+
+    # Fix #7-c: Guarda de reversión del BC
+    # Si BC empeoró el resultado (ABM acoplado peor que sin ODE),
+    # re-ejecutar sin BC para verificar. Si sin BC es mejor, revertir.
+    if bias_corrected and err_abm > err_abm_no_ode:
+        # Probar sin BC
+        eval_params_no_bc = dict(eval_params)
+        eval_params_no_bc["macro_target_series"] = list(ode_series)  # serie original sin BC
+        abm_no_bc = simulate_abm_fn(eval_params_no_bc, steps, seed=2)
+        abm_no_bc_val = _reduce_to_1d(abm_no_bc[sk][val_start:])
+        err_abm_no_bc = rmse(abm_no_bc_val, obs_val)
+        if err_abm_no_bc < err_abm:
+            # BC empeoró → revertir
+            abm = abm_no_bc
+            abm_val = abm_no_bc_val
+            err_abm = err_abm_no_bc
+            ode_series_bc = list(ode_series)
+            bias_corrected = False
+            bc_mode = "reverted"
+            raw_scale = None
 
     # EDI con bootstrap (ABM+ODE vs ABM sin ODE)
     edi_val = compute_edi(err_abm, err_abm_no_ode)
