@@ -1,5 +1,8 @@
 # Defectos de Codigo Criticos — Referencia Tecnica
 
+> **Última actualización:** 2026-02-11 (commit c0bf312 — P4-P10 fixes). **overall_pass = 1/29** (Caso 16 Deforestación).
+> Defectos D1-D8 ya resueltos. Nuevos fixes: P4 (noise_sensitivity 5 bugs), P5 (criteria dict), P6/P7 (EDI clamp + log_transform), P8 (meta synth), P9 (persistence 1D + threshold).
+
 ## 1. DATA LEAKAGE EN FORCING — ✅ RESUELTO
 
 > **Estado:** Corregido en `hybrid_validator.py`. El `lag_forcing` ahora usa persistencia (`last_known`) para el periodo de validación en lugar de `obs[:-1]`. La tendencia se ajusta solo con datos de entrenamiento.
@@ -236,11 +239,11 @@ else:
 
 | Categoría | Criterios | Resultado actual (real, commit 3d0a9d1) |
 |-----------|-----------|-----------------|
-| **strong** | EDI ∈ [0.325, 0.90] + sig + no falsación | 2 casos (16, 24) |
+| **strong** | EDI ∈ [0.325, 0.90] + sig + no falsación | 2 casos (16, 24) — Caso 16: **overall_pass=True** (commit c0bf312) |
 | **weak** | EDI ∈ [0.10, 0.325) + sig | 1 caso (28) |
 | **suggestive** | EDI > 0 + sig | 4 casos (09, 14, 17, 29) |
 | **trend** | EDI > 0 + no sig | 6 casos (01, 11, 13, 18, 21, 27) |
 | **null** | Todo lo demás | 13 casos |
 | **falsification** | Controles de falsación | 3 casos (06, 07, 08) |
 
-**Impacto en la tesis:** La narrativa pasa de "0/29 → H1 rechazada" a "2 strong + 1 weak + 4 suggestive + 6 trend = espectro de emergencia compatible con metaestabilidad teórica".
+**Impacto en la tesis:** La narrativa pasa de "0/29 → H1 rechazada" a "**1/29 overall_pass + espectro de emergencia metaestable**: 2 strong + 1 weak + 4 suggestive + 6 trend".

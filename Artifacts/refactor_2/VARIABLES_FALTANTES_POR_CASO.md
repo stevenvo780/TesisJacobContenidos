@@ -1,9 +1,11 @@
 # Variables Faltantes por Caso — Oportunidades de Mejora
 
-> **Actualizado:** 2026-02-10 (post commit 3d0a9d1 — Fix #5/#7)
+> **Actualizado:** 2026-02-11 (post commit c0bf312 — P4-P10 fixes, overall_pass=1/29)
 
 Este documento lista las variables reales disponibles que podrian integrarse para mejorar
 cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibles.
+
+> **Estado global:** 0/29 casos tienen variables multivariadas adicionales integradas (driver_cols). La infraestructura existe en `hybrid_validator.py` pero no se usa. Este es el **principal pendiente técnico** para mejorar los 13 casos null y elevar los 6 trend a suggestive/weak.
 
 ---
 
