@@ -1,6 +1,6 @@
 # DEFECTOS DE CÓDIGO CRÍTICOS — Estado Final
 
-**Commit:** `eeb3001` — 4 fixes técnicos + 29 casos regenerados  
+**Commit:** `e0c2293` — scripts corregidos + docs actualizados  
 **Fecha:** 2026-02-09  
 **Estado:** ✅ **TODOS LOS DEFECTOS RESUELTOS**
 
@@ -8,7 +8,7 @@
 
 ## Resumen
 
-Se identificaron y resolvieron **20 defectos de código** a lo largo de 7 commits:
+Se identificaron y resolvieron **24 defectos de código** a lo largo de 8 commits:
 
 | Ronda | Commits | Defectos | Impacto |
 |-------|---------|----------|---------|
@@ -16,7 +16,8 @@ Se identificaron y resolvieron **20 defectos de código** a lo largo de 7 commit
 | 2 (P4-P10) | 3d0a9d1 → c0bf312 | D12-D13 | ns 18→25, bias correct guardas |
 | 3 (T1-T8) | e3db5c7 | D14-D15 | driver_cols, docs |
 | 4 (P2-P3) | 20072d1 | D16 | Persistence std 5× |
-| **5 (Final)** | **eeb3001** | **D17-D20** | **999 perms, seed, EDI gate, grid_size** |
+| 5 (Validator) | eeb3001 | D17-D20 | 999 perms, seed, EDI gate, grid_size |
+| **6 (Scripts)** | **e0c2293** | **D21-D24** | **4 scripts de auditoría corregidos** |
 
 ---
 
@@ -58,7 +59,7 @@ Se identificaron y resolvieron **20 defectos de código** a lo largo de 7 commit
 |---|---------|-----------|-----|
 | D16 | Persistence en varianza 10× (unidades²) | MEDIA | std 5× (mismas unidades que datos) |
 
-### D17–D20: Ronda 5 — FINAL (commit eeb3001)
+### D17–D20: Ronda 5 — Validator (commit eeb3001)
 
 | # | Defecto | Severidad | Fix | Impacto |
 |---|---------|-----------|-----|---------|
@@ -66,6 +67,15 @@ Se identificaron y resolvieron **20 defectos de código** a lo largo de 7 commit
 | **D18** | Resultados no reproducibles entre ejecuciones | **ALTA** | Seed global (np+random) | 100% reproducibilidad |
 | **D19** | Paradoja "cero significativo" (EDI≈0, p=0.0) | MEDIA | EDI>0.01 + p<0.05 | Eliminó 2 falsos positivos |
 | **D20** | **HYPER_GRID_SIZE destruía grid_size=1** | **ALTA** | Solo override si >1, max(caso,env) | Caso 09: EDI 0.004→0.040 |
+
+### D21–D24: Ronda 6 — Scripts de auditoría (commit e0c2293)
+
+| # | Defecto | Severidad | Fix | Impacto |
+|---|---------|-----------|-----|---------|
+| **D21** | auditar_simulaciones.py leía `coupling_ratio` (inexistente) en vez de `cr` | MEDIA | Usa `symploke.cr` directo; fallback `abs(int/ext)` | CR corregido (eliminó negativos falsos) |
+| **D22** | evaluar_simulaciones.py recalculaba EDI desde rmse (erróneo) | **ALTA** | Lee `edi.value` directo | EDI coincide con metrics.json |
+| **D23** | actualizar_tablas_002.py tenía LOE_MAP con nombres pre-renumerado (32 entradas obsoletas) | MEDIA | Eliminó LOE_MAP; tabla regenerada con campos actuales | Tabla en 02_Modelado.md actualizada |
+| **D24** | verificar_consistencia.py solo verificaba 3/29 casos (CASO_MAP hardcoded) | MEDIA | CASO_MAP dinámico desde carpetas | 29/29 casos verificados, 0 errores |
 
 ---
 

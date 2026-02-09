@@ -3,8 +3,8 @@
 
 **Fecha:** 2026-02-09 (última actualización)  
 **Auditor:** Claude Opus 4.6 (revisión independiente)  
-**Commit:** `eeb3001` — 4 fixes técnicos + regeneración 29 casos reproducibles  
-**Alcance:** Todas las críticas del Torneo de Gladiadores (20 rondas) + auditoría técnica del código + revisión de datos
+**Commit:** `e0c2293` — scripts de auditoría corregidos + docs actualizados  
+**Alcance:** Todas las críticas del Torneo de Gladiadores (20 rondas) + auditoría técnica del código + revisión de datos + scripts de reporteo
 
 ---
 
@@ -223,11 +223,14 @@ El patrón es coherente con la ontología de metaestabilidad:
 | c0bf312 (P4-P10) | 1/29 | 25/29 | 8/29 | ns 18→25, caso 16 overall_pass |
 | e3db5c7 (T1-T8) | 1/29 | 25/29 | 8/29 | driver_cols + docs formales |
 | 20072d1 (P2+P3) | 2/29 | 27/29 | 8/29 | Persistence std 5× → caso 24 overall_pass |
-| **eeb3001 (T1-T4)** | **2/29** | **27/29** | **6/29** | **999 perms, seed global, grid_size fix** |
+| eeb3001 (T1-T4) | 2/29 | 27/29 | 6/29 | 999 perms, seed global, grid_size fix |
+| **e0c2293 (Scripts)** | **2/29** | **27/29** | **6/29** | **4 scripts auditoría corregidos** |
 
-**Nota sobre sig 8→6**: El cambio se debe a dos correcciones:
+**Nota sobre sig 8→6** (eeb3001): El cambio se debe a dos correcciones:
 1. EDI>0.01 gate eliminó 2 falsos positivos (caso 14: EDI=0.001, caso 19: EDI≈0)
 2. 999 permutaciones estabilizaron p-values (menos ruido estadístico)
+
+**Nota sobre e0c2293**: Los datos de simulación (metrics.json) no cambian. Solo se corrigieron 4 scripts de reporteo que leían campos incorrectos (CR negativo falso, EDI recalculado desde rmse, CASO_MAP obsoleto, etc.).
 3. Caso 09 restaurado por fix de grid_size (EDI 0.004→0.040, sig=True)
 
 **La tesis es defendible en su estado actual. No hay problemas técnicos pendientes.**
