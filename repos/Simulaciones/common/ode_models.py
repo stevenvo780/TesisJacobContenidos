@@ -30,6 +30,12 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
     alpha = float(params.get("ode_alpha", 0.05))
     beta = float(params.get("ode_beta", 0.02))
 
+    # Fix C13: Coupling bidireccional ABM→ODE
+    # abm_feedback_series: serie temporal del ABM mean field
+    # abm_feedback_gamma: fuerza del feedback micro→macro
+    abm_fb = params.get("abm_feedback_series")
+    abm_gamma = float(params.get("abm_feedback_gamma", 0.0))
+
     if model == "seir":
         beta_seir = float(params.get("beta", 0.3))
         sigma = float(params.get("sigma", 0.2))
@@ -66,7 +72,10 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
         for t in range(steps):
             f = forcing[t]
             t_clamped = max(-5.0, min(5.0, t_state))
-            t_state = t_state + alpha * (f - beta * (t_clamped ** 4)) + random.uniform(-noise, noise)
+            dx = alpha * (f - beta * (t_clamped ** 4))
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - t_state)
+            t_state = t_state + dx + random.uniform(-noise, noise)
             if not math.isfinite(t_state):
                 t_state = 0.0
             t_state = _apply_assimilation(t_state, t, params)
@@ -99,7 +108,10 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
         series = []
         for t in range(steps):
             f = forcing[t]
-            x = x + inflow * f - decay * x + random.uniform(-noise, noise)
+            dx = inflow * f - decay * x
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
             x = _apply_assimilation(x, t, params)
             series.append(x)
         return {ode_key: series, "forcing": forcing}
@@ -114,7 +126,10 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
         series = []
         for t in range(steps):
             f = forcing[t]
-            x = x + r * x * (1.0 - x / max(1e-6, k)) + gamma * f - delta * x + random.uniform(-noise, noise)
+            dx = r * x * (1.0 - x / max(1e-6, k)) + gamma * f - delta * x
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
             x = _apply_assimilation(x, t, params)
             series.append(x)
         return {ode_key: series, "forcing": forcing}
@@ -126,7 +141,10 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
         series = []
         for t in range(steps):
             f = forcing[t]
-            x = x + (alpha * (f - x)) / max(1e-6, c) + random.uniform(-noise, noise)
+            dx = (alpha * (f - x)) / max(1e-6, c)
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
             x = _apply_assimilation(x, t, params)
             series.append(x)
         return {ode_key: series, "forcing": forcing}
@@ -138,7 +156,10 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
         series = []
         for t in range(steps):
             f = forcing[t]
-            x = x + alpha * (0.0 - x) - gamma * f + random.uniform(-noise, noise)
+            dx = alpha * (0.0 - x) - gamma * f
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
             x = _apply_assimilation(x, t, params)
             series.append(x)
         return {ode_key: series, "forcing": forcing}
@@ -151,7 +172,10 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
         series = []
         for t in range(steps):
             f = forcing[t]
-            x = x + recharge * f - extraction * x + random.uniform(-noise, noise)
+            dx = recharge * f - extraction * x
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
             x = _apply_assimilation(x, t, params)
             series.append(x)
         return {ode_key: series, "forcing": forcing}
@@ -175,12 +199,18 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
             series.append(x)
         return {ode_key: series, "forcing": forcing}
 
-    # Default: mean reversion (legacy)
+    # Default: mean reversion (legacy) + bidirectional feedback
     x = float(params.get("p0", 0.0))
     series = []
     for t in range(steps):
         f = forcing[t]
-        x = x + alpha * (f - beta * x) + random.uniform(-noise, noise)
+        # ODE base: dX = α*(F - β*X)
+        dx = alpha * (f - beta * x)
+        # Fix C13: Feedback bidireccional ABM→ODE
+        # Si hay serie ABM disponible, nudging hacia el campo medio micro
+        if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+            dx += abm_gamma * (abm_fb[t] - x)
+        x = x + dx + random.uniform(-noise, noise)
         x = _apply_assimilation(x, t, params)
         series.append(x)
     return {ode_key: series, "forcing": forcing}

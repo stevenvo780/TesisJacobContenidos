@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: Exogeneidad",
-  "generated_at": "2026-02-09T11:14:20.266962",
+  "generated_at": "2026-02-09T12:03:43.107831",
   "git": {
     "commit": "falsification_mode",
     "dirty": false
@@ -22,6 +22,8 @@
       "calibration": {
         "forcing_scale": 0.05,
         "macro_coupling": 0.2,
+        "ode_coupling_strength": 0.16000000000000003,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.02,
         "ode_alpha": 0.05,
         "ode_beta": 0.02,
@@ -59,7 +61,10 @@
         "ci_hi": -0.5795601831722987,
         "valid": false,
         "weighted_value": -0.12294160903656003,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 1.0,
+        "permutation_null_95": -0.606173637309896,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": true,

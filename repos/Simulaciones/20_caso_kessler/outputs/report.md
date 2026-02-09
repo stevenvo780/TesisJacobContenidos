@@ -1,6 +1,6 @@
 # Reporte de Validación — Síndrome de Kessler (NASA LEGEND + ORDEM)
 
-- generated_at: 2026-02-09T16:17:23.089285Z
+- generated_at: 2026-02-09T17:04:05.369196Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -34,7 +34,9 @@
 
 ### Calibración
 - forcing_scale: 0.0227
-- macro_coupling: 0.1000
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
+- abm_feedback_gamma: 0.0500
 - damping: 0.0099
 - ode_alpha: 0.1532
 - ode_beta: 1.0000
@@ -73,7 +75,9 @@
 
 ### Calibración
 - forcing_scale: 0.0033
-- macro_coupling: 0.1000
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
+- abm_feedback_gamma: 0.0500
 - damping: 0.0316
 - ode_alpha: 0.0010
 - ode_beta: 0.0010

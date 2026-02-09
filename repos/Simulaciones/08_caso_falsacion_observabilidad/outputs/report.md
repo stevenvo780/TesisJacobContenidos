@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: Observabilidad Escasa
 
-- generated_at: 2026-02-09T11:14:21.140783
+- generated_at: 2026-02-09T12:03:41.660091
 
 ## Fase real
 - **overall_pass**: False
@@ -35,6 +35,8 @@
 ### Calibración
 - forcing_scale: 0.0500
 - macro_coupling: 0.2000
+- ode_coupling_strength: 0.1600
+- abm_feedback_gamma: 0.0500
 - damping: 0.0200
 - ode_alpha: 0.0500
 - ode_beta: 0.0200

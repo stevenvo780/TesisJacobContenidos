@@ -1,8 +1,8 @@
 {
   "case": "S\u00edndrome de Kessler (NASA LEGEND + ORDEM)",
-  "generated_at": "2026-02-09T16:17:23.089285Z",
+  "generated_at": "2026-02-09T17:04:05.369196Z",
   "git": {
-    "commit": "2e70ddb2c9753cb650368dfe63cb2200b542fc50",
+    "commit": "519fa3a5696be700191dea054045014c5b428b71",
     "dirty": true
   },
   "phases": {
@@ -21,7 +21,9 @@
       },
       "calibration": {
         "forcing_scale": 0.022742095543895054,
-        "macro_coupling": 0.1,
+        "macro_coupling": 0.05,
+        "ode_coupling_strength": 0.04000000000000001,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.009875899536201658,
         "ode_alpha": 0.15320904316135053,
         "ode_beta": 1.0,
@@ -51,7 +53,10 @@
         "ci_hi": -3.2628929494813033,
         "valid": false,
         "weighted_value": -0.6838853353527328,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 1.0,
+        "permutation_null_95": -3.4194129149262333,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": false,
@@ -84,7 +89,7 @@
         "pass": false,
         "significance": "computed"
       },
-      "coupling_check": true,
+      "coupling_check": false,
       "rmse_fraud_check": true,
       "c1_convergence": false,
       "c2_robustness": true,
@@ -142,7 +147,9 @@
       },
       "calibration": {
         "forcing_scale": 0.00333890654090299,
-        "macro_coupling": 0.1,
+        "macro_coupling": 0.05,
+        "ode_coupling_strength": 0.04000000000000001,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.031577513993048825,
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
@@ -172,7 +179,10 @@
         "ci_hi": -3.269290009272971,
         "valid": false,
         "weighted_value": -0.6838966340316133,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 1.0,
+        "permutation_null_95": -3.4194791033590497,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": false,
@@ -205,7 +215,7 @@
         "pass": false,
         "significance": "computed"
       },
-      "coupling_check": true,
+      "coupling_check": false,
       "rmse_fraud_check": true,
       "c1_convergence": false,
       "c2_robustness": true,

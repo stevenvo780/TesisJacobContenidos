@@ -1,6 +1,6 @@
 # Reporte de Validación — Epidemiología (COVID-19 SEIR)
 
-- generated_at: 2026-02-09T16:14:05.279853Z
+- generated_at: 2026-02-09T17:04:02.156607Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -13,15 +13,15 @@
 - válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.3949
-- external: 0.2630
-- CR: 1.5012
+- internal: 0.3931
+- external: 0.2607
+- CR: 1.5080
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: False
 - c2_robustness: False
-- c3_replication: False
+- c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
@@ -34,7 +34,9 @@
 
 ### Calibración
 - forcing_scale: 1.0000
-- macro_coupling: 0.1000
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
+- abm_feedback_gamma: 0.0500
 - damping: 0.0000
 - ode_alpha: 0.0068
 - ode_beta: 0.8095
@@ -73,7 +75,9 @@
 
 ### Calibración
 - forcing_scale: 0.1000
-- macro_coupling: 0.1000
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
+- abm_feedback_gamma: 0.0500
 - damping: 0.0000
 - ode_alpha: 0.0010
 - ode_beta: 1.0000

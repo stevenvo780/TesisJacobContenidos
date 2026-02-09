@@ -1,8 +1,8 @@
 {
   "case": "Movilidad Urbana (Traffic)",
-  "generated_at": "2026-02-09T16:15:44.572767Z",
+  "generated_at": "2026-02-09T17:04:48.272627Z",
   "git": {
-    "commit": "2e70ddb2c9753cb650368dfe63cb2200b542fc50",
+    "commit": "519fa3a5696be700191dea054045014c5b428b71",
     "dirty": true
   },
   "phases": {
@@ -21,7 +21,9 @@
       },
       "calibration": {
         "forcing_scale": 0.805220044232213,
-        "macro_coupling": 0.1255690494921665,
+        "macro_coupling": 0.07556904949216649,
+        "ode_coupling_strength": 0.060455239593733195,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.10048108427017431,
         "ode_alpha": 0.2695108305890248,
         "ode_beta": 1.0,
@@ -51,7 +53,10 @@
         "ci_hi": 0.040939839323572196,
         "valid": false,
         "weighted_value": 0.003915239682132563,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 0.4,
+        "permutation_null_95": 0.01973723407914016,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": false,
@@ -84,7 +89,7 @@
         "pass": true,
         "significance": "computed"
       },
-      "coupling_check": true,
+      "coupling_check": false,
       "rmse_fraud_check": true,
       "c1_convergence": false,
       "c2_robustness": true,
@@ -139,7 +144,9 @@
       },
       "calibration": {
         "forcing_scale": 0.1433898023854741,
-        "macro_coupling": 0.1951012380581568,
+        "macro_coupling": 0.14510123805815683,
+        "ode_coupling_strength": 0.11608099044652548,
+        "abm_feedback_gamma": 0.05,
         "damping": 0.029094375366395628,
         "ode_alpha": 0.09098248373489348,
         "ode_beta": 0.7527563305433328,
@@ -177,7 +184,10 @@
         "ci_hi": 0.00925298897657654,
         "valid": false,
         "weighted_value": 0.000597827924064869,
-        "loe_factor": 0.2
+        "loe_factor": 0.2,
+        "permutation_pvalue": 0.425,
+        "permutation_null_95": 0.003044066013280906,
+        "permutation_significant": false
       },
       "viscosity": {
         "pass": false,

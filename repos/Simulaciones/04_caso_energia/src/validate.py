@@ -35,10 +35,15 @@ def make_synthetic(start_date, end_date, seed=101):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    forcing = [0.01 * t for t in range(steps)]
+    # Forcing: transición energética con estacionalidad (IEA 2023)
+    # Tendencia + componente estacional (demanda invernal)
+    forcing = [0.008 * t + 0.4 * np.sin(2 * np.pi * t / 12) for t in range(steps)]
     true_params = {
-        "p0": 0.0, "e0": 0.0, "ode_alpha": 0.08, "ode_beta": 0.03,
-        "ode_noise": 0.02, "forcing_series": forcing,
+        "p0": 0.0, "e0": 0.0,
+        "ode_alpha": 0.06,   # Tasa de ajuste de demanda (τ ≈ 17 meses)
+        "ode_beta": 0.04,    # Elasticidad precio-demanda (Labandeira et al. 2017)
+        "ode_noise": 0.03,   # Shocks de oferta
+        "forcing_series": forcing,
         "p0_ode": 0.0,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
@@ -46,7 +51,7 @@ def make_synthetic(start_date, end_date, seed=101):
     obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.08, "beta": 0.03}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"alpha": 0.06, "beta": 0.04}, "measurement_noise": 0.05}
     return df, meta
 
 

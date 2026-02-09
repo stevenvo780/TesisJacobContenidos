@@ -35,17 +35,21 @@ def make_synthetic(start_date, end_date, seed=101):
     dates = pd.date_range(start=start_date, end=end_date, freq="MS")
     steps = len(dates)
 
-    forcing = [0.01 * t for t in range(steps)]
+    # Forcing: drift de mercado con ciclos (Fama 1970, Cont 2001)
+    forcing = [0.003 * t + 0.2 * np.sin(2 * np.pi * t / 48) for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.08, "ode_beta": 0.03,
-        "ode_noise": 0.02, "forcing_series": forcing,
+        "p0": 0.0,
+        "ode_alpha": 0.15,   # Mean reversion rápida (vol clustering)
+        "ode_beta": 0.10,    # Decay de momentum (Taylor 2005)
+        "ode_noise": 0.08,   # Alta volatilidad (fat tails)
+        "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k != "forcing"][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.10, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.08, "beta": 0.03}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"alpha": 0.15, "beta": 0.10}, "measurement_noise": 0.10}
     return df, meta
 
 

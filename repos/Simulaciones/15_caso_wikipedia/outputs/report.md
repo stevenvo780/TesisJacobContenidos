@@ -1,15 +1,15 @@
 # Reporte de Validación — Wikipedia (Axelrod + Lotka-Volterra)
 
-- generated_at: 2026-02-09T16:16:26.948601Z
+- generated_at: 2026-02-09T17:03:56.584456Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.3171
-- bootstrap_mean: 0.3172
-- CI 95%: [0.3079, 0.3274]
-- weighted_value (LoE factor 0.20): 0.0634
+- valor: 0.2876
+- bootstrap_mean: 0.2876
+- CI 95%: [0.2797, 0.2967]
+- weighted_value (LoE factor 0.20): 0.0575
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -20,13 +20,13 @@
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: False
+- c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: False
 
 ### Errores
-- rmse_abm: 1.8904
+- rmse_abm: 1.9722
 - rmse_abm_no_ode: 2.7683
 - rmse_ode: 1.8747
 - rmse_reduced: 2.7683
@@ -34,7 +34,9 @@
 
 ### Calibración
 - forcing_scale: 0.0010
-- macro_coupling: 0.1000
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
+- abm_feedback_gamma: 0.0500
 - damping: 0.0000
 - ode_alpha: 0.0010
 - ode_beta: 0.0010
@@ -73,7 +75,9 @@
 
 ### Calibración
 - forcing_scale: 0.0010
-- macro_coupling: 0.1000
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
+- abm_feedback_gamma: 0.0500
 - damping: 0.0000
 - ode_alpha: 0.0985
 - ode_beta: 1.0000

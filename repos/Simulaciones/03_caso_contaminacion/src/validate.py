@@ -31,18 +31,22 @@ def make_synthetic(start_date, end_date, seed=101):
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
 
-    forcing = [0.01 * t for t in range(steps)]
+    # Forcing: emisiones crecientes con desaceleración (Seinfeld & Pandis 2016)
+    forcing = [0.015 * t - 0.0002 * t**2 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.08, "ode_beta": 0.03,
-        "ode_noise": 0.02, "forcing_series": forcing,
+        "p0": 0.0,
+        "ode_alpha": 0.12,   # Tasa acumulación rápida (PM2.5 vida media ~días-semanas)
+        "ode_beta": 0.08,    # Deposición húmeda+seca (τ ≈ 12 años en escala Z)
+        "ode_noise": 0.03,   # Variabilidad meteorológica
+        "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
-    obs = np.array(sim["p"]) + rng.normal(0.0, 0.05, size=steps)
+    obs = np.array(sim["p"]) + rng.normal(0.0, 0.04, size=steps)
 
     df = pd.DataFrame({"date": dates, "pm25": obs})
     meta = {
-        "ode_true": {"alpha": 0.08, "beta": 0.03, "noise": 0.02},
-        "measurement_noise": 0.05,
+        "ode_true": {"alpha": 0.12, "beta": 0.08, "noise": 0.03},
+        "measurement_noise": 0.04,
     }
     return df, meta
 

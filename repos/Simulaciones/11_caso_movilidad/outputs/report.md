@@ -1,6 +1,6 @@
 # Reporte de Validación — Movilidad Urbana (Traffic)
 
-- generated_at: 2026-02-09T16:15:44.572767Z
+- generated_at: 2026-02-09T17:04:48.272627Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -34,7 +34,9 @@
 
 ### Calibración
 - forcing_scale: 0.8052
-- macro_coupling: 0.1256
+- macro_coupling: 0.0756
+- ode_coupling_strength: 0.0605
+- abm_feedback_gamma: 0.0500
 - damping: 0.1005
 - ode_alpha: 0.2695
 - ode_beta: 1.0000
@@ -73,7 +75,9 @@
 
 ### Calibración
 - forcing_scale: 0.1434
-- macro_coupling: 0.1951
+- macro_coupling: 0.1451
+- ode_coupling_strength: 0.1161
+- abm_feedback_gamma: 0.0500
 - damping: 0.0291
 - ode_alpha: 0.0910
 - ode_beta: 0.7528

@@ -83,6 +83,39 @@ def compute_edi(rmse_abm, rmse_reduced):
     return (rmse_reduced - rmse_abm) / rmse_reduced
 
 
+def permutation_test_edi(obs_val, abm_val, reduced_val, n_perm=200, seed=42):
+    """
+    Test de permutación para EDI (Fix C12).
+    
+    Calcula EDI real y lo compara contra una distribución nula
+    generada permutando las observaciones. Si el EDI real no supera
+    el percentil 95 de la distribución nula, la estructura detectada
+    no es significativa.
+    
+    Returns:
+        (edi_real, p_value, edi_null_95)
+    """
+    obs_a = np.asarray(obs_val, dtype=np.float64)
+    abm_a = np.asarray(abm_val, dtype=np.float64)
+    red_a = np.asarray(reduced_val, dtype=np.float64)
+    
+    edi_real = compute_edi(rmse(abm_a, obs_a), rmse(red_a, obs_a))
+    
+    rng = np.random.RandomState(seed)
+    null_edis = np.empty(n_perm)
+    for i in range(n_perm):
+        obs_perm = rng.permutation(obs_a)
+        r_abm = float(np.sqrt(np.mean((abm_a - obs_perm) ** 2)))
+        r_red = float(np.sqrt(np.mean((red_a - obs_perm) ** 2)))
+        null_edis[i] = compute_edi(r_abm, r_red)
+    
+    # p-value: fracción de permutaciones con EDI >= EDI real
+    p_value = float(np.mean(null_edis >= edi_real))
+    edi_null_95 = float(np.percentile(null_edis, 95))
+    
+    return edi_real, p_value, edi_null_95
+
+
 def bootstrap_edi(obs_val, abm_val, reduced_val, n_boot=500, ci=0.95, seed=42):
     """Bootstrap CI para EDI — vectorizado con NumPy."""
     n = len(obs_val)
@@ -263,10 +296,13 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
     Objetivo: minimizar RMSE penalizado por baja correlación.
     """
     if param_grid is None:
-        # Grid Search reducido para velocidad (High Fidelity requires faster loops)
+        # Grid Search — macro_coupling acotado a [0.05, 0.45] para evitar
+        # esclavización del ABM al campo medio (C6 Informe Crítico).
+        # mc > 0.5 hace que grid → mean(grid) en pocos pasos → pérdida
+        # de autonomía micro y EDI artificialmente negativo.
         param_grid = {
             "forcing_scale": [0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
-            "macro_coupling": [0.1, 0.3, 0.5, 0.7, 0.9],
+            "macro_coupling": [0.05, 0.10, 0.15, 0.25, 0.35, 0.45],
             "damping": [0.0, 0.2, 0.5, 0.8],
         }
 
@@ -346,7 +382,7 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
             decay = 1.0 / (1.0 + i * 0.003)
             candidate = {
                 "forcing_scale": max(0.001, min(0.99, center_p["forcing_scale"] + rng.uniform(-radius_fs, radius_fs) * decay)),
-                "macro_coupling": max(0.1, min(1.0, center_p["macro_coupling"] + rng.uniform(-radius_mc, radius_mc) * decay)),
+                "macro_coupling": max(0.05, min(0.50, center_p["macro_coupling"] + rng.uniform(-radius_mc, radius_mc) * decay)),
                 "damping": max(0.0, min(0.95, center_p["damping"] + rng.uniform(-radius_dmp, radius_dmp) * decay)),
             }
             params = dict(base_params)
@@ -410,7 +446,7 @@ def perturb_params(params, pct, seed, keys=None):
                 delta = 0.01
             p[k] = max(0.0, p[k] + rng.uniform(-delta, delta))
             if k == "macro_coupling":
-                p[k] = min(1.0, p[k])
+                p[k] = min(0.50, p[k])
     return p
 
 
@@ -833,6 +869,10 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     eval_params = dict(base_params)
     eval_params["assimilation_strength"] = 0.0
     eval_params["assimilation_series"] = None
+    # Fix C2/C6: ode_coupling_strength separado de macro_coupling
+    # Usa valor moderado proporcional a mc pero acotado
+    mc_cal = base_params.get("macro_coupling", 0.2)
+    eval_params["ode_coupling_strength"] = min(0.30, mc_cal * 0.8)
 
     # Feedback micro→macro (opcional)
     feedback_series = None
@@ -847,12 +887,32 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         ]
         eval_params["forcing_series"] = forcing_series_fb
 
-    # Simulaciones ODE (macro) → ABM (micro)
-    ode = simulate_ode_fn(eval_params, steps, seed=3)
-    ode_key = _get_ode_key(ode)
+    # ── Fix C13: Coupling bidireccional ABM↔ODE (2 iteraciones) ──
+    # Iteración 0: ODE solo → ABM acoplado → extraer ABM mean field
+    # Iteración 1: ODE con feedback ABM → ABM acoplado (versión final)
+    abm_feedback_gamma = 0.05  # Fuerza moderada del feedback micro→macro
+
+    # Paso 0: ODE sin feedback → ABM
+    ode_params_0 = dict(eval_params)
+    ode_params_0["abm_feedback_series"] = None
+    ode_params_0["abm_feedback_gamma"] = 0.0
+    ode_0 = simulate_ode_fn(ode_params_0, steps, seed=3)
+    ode_key = _get_ode_key(ode_0)
+    ode_series_0 = ode_0[ode_key]
+
+    abm_params_0 = dict(eval_params)
+    abm_params_0["macro_target_series"] = ode_series_0
+    abm_0 = simulate_abm_fn(abm_params_0, steps, seed=2)
+    abm_mean_0 = abm_0[config.series_key]  # Serie mean field del ABM
+
+    # Paso 1: ODE con feedback ABM → ABM final
+    ode_params_1 = dict(eval_params)
+    ode_params_1["abm_feedback_series"] = abm_mean_0
+    ode_params_1["abm_feedback_gamma"] = abm_feedback_gamma
+    ode = simulate_ode_fn(ode_params_1, steps, seed=3)
     ode_series = ode[ode_key]
 
-    # ABM acoplado a ODE
+    # ABM acoplado a ODE (versión final con ODE bidireccional)
     eval_params_ode = dict(eval_params)
     eval_params_ode["macro_target_series"] = ode_series
     abm = simulate_abm_fn(eval_params_ode, steps, seed=2)
@@ -860,6 +920,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     # ABM sin ODE (baseline para EDI)
     eval_params_no_ode = dict(eval_params)
     eval_params_no_ode["macro_target_series"] = None
+    eval_params_no_ode["ode_coupling_strength"] = 0.0
     abm_no_ode = simulate_abm_fn(eval_params_no_ode, steps, seed=2)
 
     # Modelo nulo (sin acoplamiento macro ni forcing)
@@ -895,6 +956,12 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     edi_val = compute_edi(err_abm, err_abm_no_ode)
     edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, abm_no_ode_val)
     
+    # Fix C12: Permutation test para significancia del EDI
+    _, edi_pvalue, edi_null_95 = permutation_test_edi(
+        obs_val, abm_val, abm_no_ode_val, n_perm=200, seed=42
+    )
+    edi_significant = edi_pvalue < 0.05  # EDI es significativo al 5%
+
     # EDI Ponderado por LoE (Regla de Descuento Gladiadores)
     # edi_weighted = edi * (loe / 5)
     # Penaliza constructos débiles (LoE 1-2)
@@ -969,6 +1036,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         "calibration": {
             "forcing_scale": base_params["forcing_scale"],
             "macro_coupling": base_params["macro_coupling"],
+            "ode_coupling_strength": eval_params.get("ode_coupling_strength", 0.0),
+            "abm_feedback_gamma": abm_feedback_gamma,
             "damping": base_params.get("damping", 0.0),
             "ode_alpha": alpha,
             "ode_beta": beta,
@@ -999,6 +1068,9 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             "valid": edi_valid,
             "weighted_value": edi_weighted,
             "loe_factor": loe_factor,
+            "permutation_pvalue": edi_pvalue,
+            "permutation_null_95": edi_null_95,
+            "permutation_significant": edi_significant,
         },
         "viscosity": {
             "pass": c_visc,

@@ -1,21 +1,21 @@
 # Reporte de Validación — Conciencia Colectiva
 
-- generated_at: 2026-02-09T16:12:27.139106Z
+- generated_at: 2026-02-09T17:03:42.583828Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.1120
-- bootstrap_mean: 0.1122
-- CI 95%: [0.1003, 0.1248]
-- weighted_value (LoE factor 0.20): 0.0224
+- valor: 0.0142
+- bootstrap_mean: 0.0140
+- CI 95%: [0.0076, 0.0203]
+- weighted_value (LoE factor 0.20): 0.0028
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.5707
-- external: 0.6715
-- CR: 0.8498
+- internal: 0.5445
+- external: 0.6299
+- CR: 0.8644
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,35 +26,37 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.8346
-- rmse_abm_no_ode: 0.9399
-- rmse_ode: 0.7464
-- rmse_reduced: 0.6156
-- threshold: 0.5985
+- rmse_abm: 1.1064
+- rmse_abm_no_ode: 1.1223
+- rmse_ode: 1.0904
+- rmse_reduced: 1.1208
+- threshold: 1.0629
 
 ### Calibración
-- forcing_scale: 0.3253
-- macro_coupling: 0.2780
-- damping: 0.0574
+- forcing_scale: 0.9900
+- macro_coupling: 0.1368
+- ode_coupling_strength: 0.1094
+- abm_feedback_gamma: 0.0500
+- damping: 0.0000
 - ode_alpha: 0.5000
 - ode_beta: 0.8000
 - assimilation_strength: 0.0000
-- calibration_rmse: 1.1340
+- calibration_rmse: 1.3109
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0634
-- bootstrap_mean: -0.0662
-- CI 95%: [-0.1056, -0.0193]
-- weighted_value (LoE factor 0.20): -0.0127
+- valor: -0.0380
+- bootstrap_mean: -0.0397
+- CI 95%: [-0.0640, -0.0107]
+- weighted_value (LoE factor 0.20): -0.0076
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.7455
-- external: 0.8032
-- CR: 0.9281
+- internal: 0.7673
+- external: 0.8200
+- CR: 0.9357
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -65,7 +67,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.7632
+- rmse_abm: 0.7450
 - rmse_abm_no_ode: 0.7177
 - rmse_ode: 1.7923
 - rmse_reduced: 1.3440
@@ -73,7 +75,9 @@
 
 ### Calibración
 - forcing_scale: 0.4355
-- macro_coupling: 0.1225
+- macro_coupling: 0.0725
+- ode_coupling_strength: 0.0580
+- abm_feedback_gamma: 0.0500
 - damping: 0.1736
 - ode_alpha: 0.5000
 - ode_beta: 0.8000

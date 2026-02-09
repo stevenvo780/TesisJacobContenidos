@@ -35,24 +35,25 @@ def make_synthetic(start_date, end_date, seed=101):
         dates = pd.date_range(start=start_date, end=end_date, freq="YS")
         steps = len(dates)
 
-    # Forcing lineal: 0.01 W/m² por mes → 2.4 W/m² en 20 años
-    # Comparable a ~65% del forzamiento por duplicación de CO₂ (3.7 W/m²)
-    forcing = [0.01 * t for t in range(steps)]
+    # Forcing: forzamiento radiativo creciente (CO₂-like)
+    # 0.005*t: ~0.06 W/m² por año, comparable a IPCC AR6 Fig 7.7
+    # Componente estacional: amplitud 0.3 (variabilidad intra-anual)
+    forcing = [0.005 * t + 0.3 * np.sin(2 * np.pi * t / 12) for t in range(steps)]
     true_params = {
         "p0": 0.0, "t0": 0.0,
-        "ode_alpha": 0.08,   # Respuesta rápida (τ ≈ 12 meses, sintético)
-        "ode_beta": 0.03,    # Feedback moderado
-        "ode_noise": 0.02,   # σ ruido de proceso (gaussiano)
+        "ode_alpha": 0.04,   # τ ≈ 25 meses (inercia térmica oceánica)
+        "ode_beta": 0.015,   # Feedback moderado (λ ≈ 1.2 W/m²/K)
+        "ode_noise": 0.03,   # Variabilidad interna (ENSO, NAO)
         "forcing_series": forcing,
         "p0_ode": 0.0,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    # Ruido de medición: σ = 0.05 (típico para estaciones meteorológicas)
+    # Ruido de medición: σ = 0.05 (estaciones meteorológicas)
     obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.08, "beta": 0.03}, "measurement_noise": 0.05}
+    meta = {"ode_true": {"alpha": 0.04, "beta": 0.015}, "measurement_noise": 0.05}
     return df, meta
 
 

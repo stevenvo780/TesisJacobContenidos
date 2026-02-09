@@ -1,6 +1,6 @@
 # Reporte de Validación — Postverdad (SIS Infodemic)
 
-- generated_at: 2026-02-09T16:16:17.009081Z
+- generated_at: 2026-02-09T17:03:54.626571Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -34,7 +34,9 @@
 
 ### Calibración
 - forcing_scale: 0.0010
-- macro_coupling: 0.1000
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
+- abm_feedback_gamma: 0.0500
 - damping: 0.0000
 - ode_alpha: 0.0214
 - ode_beta: 1.0000
@@ -45,16 +47,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0031
-- bootstrap_mean: 0.0030
-- CI 95%: [0.0006, 0.0058]
-- weighted_value (LoE factor 0.20): 0.0006
+- valor: 0.0018
+- bootstrap_mean: 0.0016
+- CI 95%: [0.0000, 0.0034]
+- weighted_value (LoE factor 0.20): 0.0004
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.8027
-- external: 0.7605
-- CR: 1.0555
+- internal: 0.7931
+- external: 0.7547
+- CR: 1.0509
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -65,7 +67,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.9566
+- rmse_abm: 2.9604
 - rmse_abm_no_ode: 2.9658
 - rmse_ode: 2.9096
 - rmse_reduced: 2.9720
@@ -73,7 +75,9 @@
 
 ### Calibración
 - forcing_scale: 0.0010
-- macro_coupling: 0.1000
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
+- abm_feedback_gamma: 0.0500
 - damping: 0.0000
 - ode_alpha: 0.0010
 - ode_beta: 0.0010
