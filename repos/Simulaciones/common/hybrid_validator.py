@@ -897,6 +897,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     err_abm_no_ode = rmse(abm_no_ode_val, obs_val)
     err_ode = rmse(ode_val, obs_val)
     err_reduced = rmse(reduced_val, obs_val)
+    print(f"DEBUG_RMSE: err_abm={err_abm:.4f}, err_no_ode={err_abm_no_ode:.4f}, err_ode_direct={err_ode:.4f}, err_reduced={err_reduced:.4f}")
+    print(f"DEBUG_VALS: obs_val_mean={np.mean(obs_val):.4f}, abm_val_mean={np.mean(abm_val):.4f}, abm_no_mean={np.mean(abm_no_ode_val):.4f}, ode_val_mean={np.mean(ode_val):.4f}")
 
     # EDI con bootstrap (ABM+ODE vs ABM sin ODE)
     edi_val = compute_edi(err_abm, err_abm_no_ode)

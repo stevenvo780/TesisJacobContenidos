@@ -1,17 +1,23 @@
-Validation Results - 2026-02-08 21:52:44
+Validation Results - 2026-02-08 21:59:36
 ============================================================
 
-02_caso_conciencia: FAIL | EDI=0.0 | 1.5s
-  Error: Traceback (most recent call last):
-  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/02_caso_conciencia/src/validate.py", line 151, in <module>
-    main()
-    ~~~~^^
-  File "/datos/repos/Personal/TesisJacobContenidos/repos/Simulaciones/02_caso_conciencia/src/validate.py", line 129, in main
-    center_series = [grid_history[t][10][10] for t in range(steps)]
-                     ~~~~~~~~~~~~~~~^^^^
-IndexError: index 10 is out of bounds for axis 0 with size 4
+01_caso_clima: OK | EDI=0.0 | 17.4s
+02_caso_conciencia: OK | EDI=0.0 | 1.7s
+03_caso_contaminacion: OK | EDI=None | 38.1s
+05_caso_epidemiologia: OK | EDI=0.0 | 115.1s
+06_caso_falsacion_exogeneidad: OK | EDI=None | 2.0s
+07_caso_falsacion_no_estacionariedad: OK | EDI=None | 0.5s
+08_caso_falsacion_observabilidad: OK | EDI=None | 0.5s
+09_caso_finanzas: OK | EDI=0.0 | 3.4s
+10_caso_justicia: OK | EDI=0.0 | 7.3s
+11_caso_movilidad: OK | EDI=0.0 | 12.4s
+12_caso_paradigmas: OK | EDI=0.2281 | 68.0s
+13_caso_politicas_estrategicas: OK | EDI=-0.0036 | 40.7s
+14_caso_postverdad: OK | EDI=0.0025 | 13.1s
+15_caso_wikipedia: OK | EDI=0.4143 | 232.9s
+16_caso_deforestacion: OK | EDI=-1.001 | 11.8s
+17_caso_oceanos: OK | EDI=-0.069 | 83.5s
+18_caso_urbanizacion: OK | EDI=0.0011 | 13.8s
+19_caso_acidificacion_oceanica: OK | EDI=0.0 | 306.7s
 
-04_caso_energia: TIMEOUT | EDI=None | 600.0s
-  Error: Exceeded 10 minute timeout
-
-Total: 0/2 OK
+Total: 18/18 OK
