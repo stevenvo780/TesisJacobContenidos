@@ -1,6 +1,6 @@
 # Reporte de Validación — Movilidad Urbana (Traffic)
 
-- generated_at: 2026-02-09T14:46:51.033925Z
+- generated_at: 2026-02-09T15:35:04.216537Z
 
 ## Fase synthetic
 - **overall_pass**: False

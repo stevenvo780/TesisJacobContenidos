@@ -1,5 +1,18 @@
+"""abm.py — Caso 10: Justicia Algorítmica.
+
+Modelo Deffuant de Confianza Acotada (Deffuant et al. 2000) espacial.
+Agentes con opinión continua en [0,1] interactuan con vecinos si la
+diferencia de opinión es menor que ε (límite de confianza).
+
+Parámetros:
+    ε (epsilon) = 0.2   Límite de confianza (Deffuant et al. 2000: 0.1–0.5)
+    μ (mu)      = 0.3   Velocidad de convergencia (0.5 = par Deffuant clásico)
+    law_strength = 0.05  Influencia de la norma legal (forcing)
+    σ_noise      = 0.01  Ruido estocástico por paso
+    ×0.25        = 1/4   Normalización por 4 vecinos (grilla 4-conectada)
+"""
+
 import numpy as np
-import random
 
 def simulate_abm(params, steps, seed=42):
     """

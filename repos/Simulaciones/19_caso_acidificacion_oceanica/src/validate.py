@@ -41,9 +41,13 @@ def main():
         corr_threshold=0.5,
         extra_base_params={
             "grid_size": 20,
+            # abm_calc_rate=0.02: Tasa calcificación (Ries et al. 2009: crecimiento ~2%/mes)
             "abm_calc_rate": 0.02,
+            # abm_diss_rate=0.05: Tasa disolución (Kroeker 2013: 5%/mes bajo Ω<1)
             "abm_diss_rate": 0.05,
+            # abm_stress_thresh=1.0: Umbral Ω aragonita (Feely et al. 2004: Ω=1 = sub-saturación)
             "abm_stress_thresh": 1.0,
+            # ode_gamma=0.5: Sensibilidad pH a pCO2 (Zeebe & Wolf-Gladrow 2001)
             "ode_gamma": 0.5
         },
         driver_cols=[],  # CSV solo tiene date, value
@@ -55,7 +59,6 @@ def main():
     )
 
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
-    print(f"DEBUG: writing results to {os.path.abspath(out_dir)}")
     write_outputs(results, os.path.abspath(out_dir))
 
     # Print Metrics

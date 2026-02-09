@@ -1,6 +1,6 @@
 # Reporte de Validación — Políticas Estratégicas (Bass Diffusion + Inertia)
 
-- generated_at: 2026-02-09T14:46:08.953516Z
+- generated_at: 2026-02-09T15:36:57.480011Z
 
 ## Fase synthetic
 - **overall_pass**: False

@@ -39,7 +39,6 @@ def main():
     )
 
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
-    print(f"DEBUG: writing results to {os.path.abspath(out_dir)}")
     write_outputs(results, os.path.abspath(out_dir))
     
     # Print Metrics to Stdout

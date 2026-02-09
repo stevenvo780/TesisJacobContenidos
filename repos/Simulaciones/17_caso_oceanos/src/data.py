@@ -82,7 +82,7 @@ def make_synthetic(start_date, end_date, seed=201):
 
 
 def load_real_data(start_date, end_date):
-    """Carga datos reales de World Bank (Fossil fuel electricity %)."""
+    """Carga datos reales de Ocean Heat Content (NOAA/World Bank proxy)."""
     csv_path = os.path.join(os.path.dirname(__file__), "..", "data", "dataset.csv")
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"Datos reales no encontrados: {csv_path}")

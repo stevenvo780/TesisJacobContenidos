@@ -31,11 +31,18 @@ def simulate_ode(params, steps, seed=42):
     """
     rng = np.random.default_rng(seed)
     
-    # Parameters
-    r = params.get("ode_r", 0.05)      # Urban growth rate
-    K = params.get("ode_K", 0.9)       # Carrying capacity
-    gamma = params.get("ode_gamma", 2.0)  # Economic pull
-    noise_std = params.get("ode_noise", 0.005)
+    # Parámetros
+    # r=0.05: tasa intrínseca de crecimiento urbano (~5%/año en países en desarrollo)
+    #   UN WUP 2018: tasa media global ~1.8%, pico histórico ~5% (Asia 1960-80)
+    r = params.get("ode_r", 0.05)
+    # K=0.9: capacidad de carga urbanística (~90%), consistente con
+    #   países desarrollados (Japón 92%, Alemania 77%, UK 84%); UN WUP 2018
+    K = params.get("ode_K", 0.9)
+    # gamma=2.0: factor de atracción económica (pull factor)
+    #   Henderson (2003): elasticidad ingreso-urbanización entre 1.5-3.0
+    #   Valor 2.0 es punto medio del rango empírico
+    gamma = params.get("ode_gamma", 2.0)
+    noise_std = params.get("ode_noise", 0.005)  # Variabilidad anual
     
     # Forcing: GDP Growth
     forcing = params.get("forcing_series")

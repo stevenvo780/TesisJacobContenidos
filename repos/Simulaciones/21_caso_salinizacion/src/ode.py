@@ -14,7 +14,12 @@ Donde:
 
 Ref: Hillel (2000) "Salinity Management for Sustainable Irrigation"
 """
-import os, sys, math, random
+import os
+import sys
+import math
+
+import numpy as np
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 ODE_KEY = "sl"
@@ -32,7 +37,17 @@ def _apply_assimilation(value, t, params):
 
 
 def simulate_ode(params, steps, seed=3):
-    random.seed(seed)
+    """Richards-Solute ODE para salinización de suelos.
+
+    dS/dt = α(F − βS) + γ·F·S + ε
+
+    Parámetros:
+        α=0.05  Tasa de acumulación salina (~5%/año; Qadir et al. 2014)
+        β=0.015 Tasa de lavado natural (~1.5%/año; Hillel 2000)
+        γ=0.02  Interacción bilineal: evaporación × salinidad
+                (Rhoades et al. 1992: feedback no-lineal observado)
+    """
+    rng = np.random.default_rng(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.015))
 
@@ -51,7 +66,7 @@ def simulate_ode(params, steps, seed=3):
         core = alpha * (f - beta * S)
         # Bilineal: interacción forcing × estado (info no-lineal)
         bilinear = gamma * f * S
-        dS = core + bilinear + random.gauss(0, noise_std)
+        dS = core + bilinear + rng.normal(0, noise_std)
         S += dS
         S = max(-10.0, min(S, 10.0))
         S = _apply_assimilation(S, t, params)

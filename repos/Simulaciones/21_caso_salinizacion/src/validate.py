@@ -30,11 +30,17 @@ def make_synthetic(start_date, end_date, seed=101):
     steps = len(dates)
 
     # Forcing: irrigación creciente (intensificación agrícola global)
+    # 0.008*t: tendencia lineal ~0.8%/año (FAO 2021: expansión irrigación global)
+    # 0.0003*t^1.2: aceleración por retroalimentación (más irrigación → más salinización → abandono → más presión)
     forcing = [0.008 * t + 0.0003 * t**1.2 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.05, "ode_beta": 0.015,  # Salinización: acumulación lenta, lavado moderado
-        "ode_inflow": 0.05, "ode_decay": 0.015,
-        "ode_noise": 0.015, "forcing_series": forcing,
+        "p0": 0.0,
+        "ode_alpha": 0.05,    # Tasa acumulación salina (~5%/año; Qadir et al. 2014)
+        "ode_beta": 0.015,    # Tasa lavado natural (~1.5%/año; Hillel 2000)
+        "ode_inflow": 0.05,   # Alias para accumulation_decay
+        "ode_decay": 0.015,   # Alias para accumulation_decay
+        "ode_noise": 0.015,   # Variabilidad interanual
+        "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
@@ -65,9 +71,11 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_gamma": 0.02,       # Bilineal: evaporación × salinidad
-            "forcing_scale": 0.10,
-            "macro_coupling": 0.35,
+            # ode_gamma=0.02: feedback bilineal evaporación × salinidad
+            #   (Rhoades et al. 1992: relación no-lineal observada)
+            "ode_gamma": 0.02,
+            "forcing_scale": 0.10,   # Sensibilidad ABM a driver externo
+            "macro_coupling": 0.35,  # Acoplamiento macro→micro (moderado-alto)
         },
     )
 

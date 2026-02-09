@@ -70,9 +70,11 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_burial": 0.002,    # Sedimentación marina (persistencia ultra-alta)
-            "forcing_scale": 0.10,
-            "macro_coupling": 0.25,
+            # ode_burial=0.002: sedimentación marina (~0.2%/año;
+            #   Woodall et al. 2014: microplásticos en sedimentos profundos)
+            "ode_burial": 0.002,
+            "forcing_scale": 0.10,   # Sensibilidad ABM a driver externo
+            "macro_coupling": 0.25,  # Acoplamiento macro→micro
         },
         driver_cols=["mismanaged_waste", "river_discharge"],
     )

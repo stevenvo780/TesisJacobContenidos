@@ -16,7 +16,12 @@ La clave: λ ≈ 0.003 → persistencia de ~300-450 años
 Ref: Jambeck et al. (2015) "Plastic waste inputs from land into the ocean"
      Lebreton et al. (2017) "River plastic emissions to the world's oceans"
 """
-import os, sys, math, random
+import os
+import sys
+import math
+
+import numpy as np
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 ODE_KEY = "mp"
@@ -34,7 +39,19 @@ def _apply_assimilation(value, t, params):
 
 
 def simulate_ode(params, steps, seed=3):
-    random.seed(seed)
+    """Acumulación persistente de microplásticos (Jambeck 2015).
+
+    dM/dt = α(F − βM) − burial·M + ε
+
+    Parámetros:
+        α=0.09  Input desde tierra (~9% del flujo plástico llega al océano;
+                Jambeck et al. 2015, Science)
+        β=0.003 Degradación fotoquímica/mecánica (~0.3%/año;
+                Ward et al. 2019: t½ ≈ 300-450 años para PE/PP)
+        burial=0.002  Sedimentación marina (~0.2%/año;
+                Woodall et al. 2014: microplásticos en sedimentos profundos)
+    """
+    rng = np.random.default_rng(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.025))
 
@@ -53,7 +70,7 @@ def simulate_ode(params, steps, seed=3):
         core = alpha * (f - beta * M)
         # Domain: burial lento (sedimentación marina)
         burial = burial_rate * max(0.0, M)
-        dM = core - burial + random.gauss(0, noise_std)
+        dM = core - burial + rng.normal(0, noise_std)
         M += dM
         M = max(-10.0, min(M, 10.0))
         M = _apply_assimilation(M, t, params)

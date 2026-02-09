@@ -1,7 +1,7 @@
-"""
-validate.py — Justicia Algorítmica
-Validación híbrida ABM+ODE con protocolo C1-C5.
-Dominio: Sociotécnico
+"""validate.py — Caso 10: Justicia Algorítmica.
+
+Modelo híbrido: ODE logística forzada + ABM Deffuant de opinión.
+Datos: Índice de Estado de Derecho (World Justice Project / World Bank).
 """
 
 import os

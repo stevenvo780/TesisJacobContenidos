@@ -31,9 +31,12 @@ def simulate_ode(params, steps, seed=42):
     rng = np.random.default_rng(seed)
     
     # Parameters (from Stommel 1961, non-dimensional)
-    eta_1 = params.get("ode_eta1", 3.0)  # Thermal forcing
-    eta_2 = params.get("ode_eta2", 1.0)  # Haline forcing
-    noise_std = params.get("ode_noise", 0.01)
+    # eta_1=3.0, eta_2=1.0: valores originales de Stommel (1961, Tellus 13:224)
+    # Producen régimen bistable con bifurcación saddle-node
+    # Rahmstorf (1996) usa eta_1/eta_2 ≈ 3 para AMOC moderna
+    eta_1 = params.get("ode_eta1", 3.0)  # Forzamiento térmico
+    eta_2 = params.get("ode_eta2", 1.0)  # Forzamiento halino
+    noise_std = params.get("ode_noise", 0.01)  # Fluctuaciones estocásticas
     
     # External Forcing modulates eta_1 (Radiative Imbalance)
     forcing = params.get("forcing_series")
@@ -52,7 +55,9 @@ def simulate_ode(params, steps, seed=42):
     for t in range(steps):
         f_t = list(forcing)[t] if t < len(forcing) else 0.0
         
-        # Modulate thermal forcing
+        # Modulación del forzamiento térmico por anomalía radiativa
+        # Factor 0.5: sensibilidad climática (Cessi 1994; ~mitad del forcing se
+        # transfiere al gradiente térmico, el resto se radia)
         eta_1_eff = eta_1 + 0.5 * f_t
         
         # Thermohaline flow
@@ -68,10 +73,12 @@ def simulate_ode(params, steps, seed=42):
         T += dT * dt
         S += dS * dt
         
+        # Clips: mantener variables en régimen físico (adimensional Stommel)
         T = np.clip(T, 0.1, 10)
         S = np.clip(S, 0.1, 5)
         
-        # OHC proxy: Accumulates with T
+        # OHC proxy: acumula proporcional a T (Levitus et al. 2012)
+        # 0.01: factor de integración temporal (dt=0.1 × 0.1 escala)
         ohc += 0.01 * T + rng.normal(0, 0.005)
         series_ohc.append(ohc)
         

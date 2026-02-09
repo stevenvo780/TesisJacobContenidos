@@ -1,7 +1,8 @@
-"""
-validate.py — Movilidad Urbana
-Validación híbrida ABM+ODE con protocolo C1-C5.
-Dominio: Infraestructura
+"""validate.py — Caso 11: Movilidad Urbana.
+
+Modelo híbrido: ODE Diagrama Fundamental Macroscópico (MFD) + ABM de
+tráfico en red Scale-Free.  Datos: World Bank GDP per capita como
+proxy de demanda de movilidad.
 """
 
 import os
@@ -42,7 +43,6 @@ def main():
     )
 
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
-    print(f"DEBUG: writing results to {os.path.abspath(out_dir)}")
     write_outputs(results, os.path.abspath(out_dir))
     
     # Print Metrics to Stdout

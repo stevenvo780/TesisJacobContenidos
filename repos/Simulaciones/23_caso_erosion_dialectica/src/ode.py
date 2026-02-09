@@ -18,7 +18,12 @@ Donde:
 Ref: Abrams & Strogatz (2003) "Modelling the dynamics of language death"
      Crystal (2000) "Language Death"
 """
-import os, sys, math, random
+import os
+import sys
+import math
+
+import numpy as np
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 ODE_KEY = "ed"
@@ -36,7 +41,17 @@ def _apply_assimilation(value, t, params):
 
 
 def simulate_ode(params, steps, seed=3):
-    random.seed(seed)
+    """Competición lingüística Abrams-Strogatz (2003).
+
+    dx/dt = α(F − βx) + prestige·max(F,0)·(1+0.3|x|) + ε
+
+    Parámetros:
+        α=0.03  Tasa transición lingüística (Abrams & Strogatz 2003: ~3%/generación)
+        β=0.01  Resistencia dialectal/revitalización (~1%/año; Crystal 2000)
+        prestige=0.008  Asimetría prestigio lengua vehicular
+                (Mufwene 2001: prestige bias ~0.5-1.5%)
+    """
+    rng = np.random.default_rng(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.015))
 
@@ -55,7 +70,7 @@ def simulate_ode(params, steps, seed=3):
         core = alpha * (f - beta * x)
         # Domain: presión mediática asimétrica (más fuerte cuando forcing alto)
         media = prestige * max(0.0, f) * (1.0 + 0.3 * abs(x))
-        dx = core + media + random.gauss(0, noise_std)
+        dx = core + media + rng.normal(0, noise_std)
         x += dx
         x = max(-10.0, min(x, 10.0))
         x = _apply_assimilation(x, t, params)

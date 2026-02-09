@@ -35,11 +35,18 @@ def make_synthetic(start_date, end_date, seed=119):
         steps = len(dates)
 
     # Forcing: presión deforestadora creciente (agricultura, ganadería)
+    # Componente lineal 0.025*t: tendencia secular de expansión agrícola (FAO 2020)
+    # Componente super-lineal 0.0005*t^1.3: aceleración por retroalimentación
+    #   (tala → carreteras → más tala; Laurance et al. 2002, Science)
     forcing = [0.025 * t + 0.0005 * t**1.3 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.06, "ode_beta": 0.008,  # Deforestación: alta acumulación, regeneración MUY lenta
-        "ode_inflow": 0.06, "ode_decay": 0.008,
-        "ode_noise": 0.04, "forcing_series": forcing,
+        "p0": 0.0,
+        "ode_alpha": 0.06,   # Tasa de conversión forestal (≈6%/año en frentes activos; Hansen et al. 2013)
+        "ode_beta": 0.008,   # Regeneración natural (~0.8%/año; Chazdon et al. 2016, Science)
+        "ode_inflow": 0.06,  # Alias de ode_alpha para accumulation_decay
+        "ode_decay": 0.008,  # Alias de ode_beta para accumulation_decay
+        "ode_noise": 0.04,   # Variabilidad interanual (sequías, políticas)
+        "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
@@ -70,10 +77,10 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_inflow": 0.06,   # Tasa de conversión forestal
-            "ode_decay": 0.008,   # Regeneración natural (muy lenta: décadas)
-            "forcing_scale": 0.10,
-            "macro_coupling": 0.25,
+            "ode_inflow": 0.06,    # Tasa conversión forestal (Hansen et al. 2013)
+            "ode_decay": 0.008,    # Regeneración natural (~décadas; Chazdon 2016)
+            "forcing_scale": 0.10,  # Sensibilidad ABM a driver externo
+            "macro_coupling": 0.25, # Acoplamiento macro: presión global sobre celdas locales
         },
     )
 

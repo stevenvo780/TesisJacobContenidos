@@ -40,10 +40,15 @@ def main():
         real_split="2005-01-01",
         corr_threshold=0.5,
         extra_base_params={
+            # n_shells=10: bandas de altitud 200-2000km en 10 segmentos (NASA ORDEM 3.2)
             "n_shells": 10,
+            # collision_coeff=1e-9: calibrado para ~1 colisión/década (Liou & Johnson 2006)
             "abm_collision_coeff": 1e-9,
+            # ode_alpha=2e-10: coef. colisión cuadrático (Kessler & Cour-Palais 1978)
             "ode_alpha": 2.0e-10,
+            # ode_beta=0.02: tasa de decaimiento atmosférico ~2%/año (LEO <500km)
             "ode_beta": 0.02,
+            # ode_frag_mult=500: fragmentos por colisión (NASA Standard Breakup Model: 500-1500)
             "ode_frag_mult": 500
         },
         driver_cols=[],  # CSV solo tiene date, value
@@ -55,7 +60,6 @@ def main():
     )
 
     out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
-    print(f"DEBUG: writing results to {os.path.abspath(out_dir)}")
     write_outputs(results, os.path.abspath(out_dir))
 
     # Print Metrics

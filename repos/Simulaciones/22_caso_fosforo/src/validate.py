@@ -29,12 +29,18 @@ def make_synthetic(start_date, end_date, seed=101):
     dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
 
-    # Forcing: uso creciente de fertilizantes fosfatados (Carpenter 2005)
+    # Forcing: uso creciente de fertilizantes fosfatados
+    # 0.012*t: tendencia secular ~1.2%/año (Cordell et al. 2009: crecimiento demanda P)
+    # 0.0004*t^1.3: aceleración por intensificación agrícola (FAO 2020)
     forcing = [0.012 * t + 0.0004 * t**1.3 for t in range(steps)]
     true_params = {
-        "p0": 0.0, "ode_alpha": 0.07, "ode_beta": 0.02,  # Fósforo: alta acumulación, reciclaje MUY lento
-        "ode_inflow": 0.07, "ode_decay": 0.02,
-        "ode_noise": 0.018, "forcing_series": forcing,
+        "p0": 0.0,
+        "ode_alpha": 0.07,   # Input fertilizantes (~7%/año; Cordell 2009)
+        "ode_beta": 0.02,    # Sedimentación irreversible (~2%/año; Carpenter 2005)
+        "ode_inflow": 0.07,  # Alias para accumulation_decay
+        "ode_decay": 0.02,   # Alias para accumulation_decay
+        "ode_noise": 0.018,  # Variabilidad interanual
+        "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
@@ -65,9 +71,11 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_gamma": 0.02,       # Bilineal: runoff × concentración
-            "forcing_scale": 0.10,
-            "macro_coupling": 0.40,
+            # ode_gamma=0.02: feedback bilineal runoff×concentración
+            #   (Carpenter & Bennett 2011: eutrofización no-lineal)
+            "ode_gamma": 0.02,
+            "forcing_scale": 0.10,   # Sensibilidad ABM a driver externo
+            "macro_coupling": 0.40,  # Acoplamiento macro→micro alto
         },
     )
 

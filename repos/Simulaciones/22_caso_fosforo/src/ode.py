@@ -15,7 +15,12 @@ Donde:
 
 Ref: Carpenter (2005) "Eutrophication of aquatic ecosystems: bistability and soil phosphorus"
 """
-import os, sys, math, random
+import os
+import sys
+import math
+
+import numpy as np
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
 ODE_KEY = "ph"
@@ -33,7 +38,17 @@ def _apply_assimilation(value, t, params):
 
 
 def simulate_ode(params, steps, seed=3):
-    random.seed(seed)
+    """Ciclo biogeoquímico del fósforo (Carpenter 2005).
+
+    dP/dt = α(F − βP) + γ·F·P + ε
+
+    Parámetros:
+        α=0.07  Input fertilizantes+escorrentía (~7%/año; Cordell et al. 2009)
+        β=0.02  Sedimentación (~2%/año, irreversible; Carpenter 2005)
+        γ=0.015 Amplificación bilineal runoff×concentración
+                (eutrofización no-lineal; Carpenter & Bennett 2011)
+    """
+    rng = np.random.default_rng(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
     noise_std = float(params.get("ode_noise", 0.018))
 
@@ -52,7 +67,7 @@ def simulate_ode(params, steps, seed=3):
         core = alpha * (f - beta * P)
         # Bilineal: amplificación fosfato × forcing (eutrofización no-lineal)
         bilinear = gamma * f * P
-        dP = core + bilinear + random.gauss(0, noise_std)
+        dP = core + bilinear + rng.normal(0, noise_std)
         P += dP
         P = max(-10.0, min(P, 10.0))
         P = _apply_assimilation(P, t, params)

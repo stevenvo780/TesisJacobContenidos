@@ -1,6 +1,6 @@
 # Reporte de Validación — Ocean (Stommel + Thermohaline ABM)
 
-- generated_at: 2026-02-09T14:45:52.285919Z
+- generated_at: 2026-02-09T15:45:05.886398Z
 
 ## Fase synthetic
 - **overall_pass**: False

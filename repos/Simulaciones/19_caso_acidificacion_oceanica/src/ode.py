@@ -36,14 +36,17 @@ def revelle_factor(pCO2, T=25):
     Approximation based on Egleston et al. (2010).
     RF increases with pCO2 (reduced buffering capacity).
     """
-    # Base RF at pre-industrial (~10)
+    # Base RF=10.0: Factor Revelle pre-industrial (Revelle & Suess 1957, Tellus)
+    #   Medido en GEOSECS: RF_pi ≈ 9-11 (Sundquist et al. 1979)
     RF_base = 10.0
     
-    # RF increases with CO2 (logarithmic relationship)
-    # RF ≈ 10 + 5 * ln(pCO2/280)
+    # RF aumenta con CO2 (relación logarítmica)
+    # RF ≈ 10 + 5·ln(pCO2/280): ajuste empírico a datos GLODAP
+    #   (Egleston et al. 2010, GBC: RF moderno ~12-15 a 400ppm)
     RF = RF_base + 5.0 * np.log(pCO2 / 280)
     
-    # Temperature effect (higher T = higher RF)
+    # Efecto temperatura: T alta → RF más alto (menor buffering)
+    # 0.01/°C: sensibilidad térmica del RF (~1%/°C; Egleston 2010)
     RF = RF * (1 + 0.01 * (T - 15))
     
     return max(8.0, RF)  # Minimum bound

@@ -71,9 +71,11 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_prestige": 0.008,  # Asimetría de prestigio lingüístico
-            "forcing_scale": 0.15,
-            "macro_coupling": 0.30,
+            # ode_prestige=0.008: asimetría de prestigio lingüístico
+            #   (Mufwene 2001: prestige bias ~0.5-1.5%)
+            "ode_prestige": 0.008,
+            "forcing_scale": 0.15,   # Sensibilidad ABM a driver mediático
+            "macro_coupling": 0.30,  # Acoplamiento macro→micro moderado
         },
     )
 

@@ -45,9 +45,15 @@ def simulate_abm(params, steps, seed=42):
         forcing = np.ones(steps) * 0.02
         
     # Parameters
+    # new_city_prob=0.02: ~2% de probabilidad anual de nueva ciudad
+    #   (Rozenfeld et al. 2008, PNAS: tasa observada de aparición de clusters urbanos)
     new_city_prob = params.get("abm_new_city_prob", 0.02)
+    # migration_rate=0.05: ~5% de población rural migra/año
+    #   (UN WUP 2018: tasa media global de urbanización ~1-5%/año)
     migration_rate = params.get("abm_migration_rate", 0.05)
-    beta = params.get("abm_beta", 1.15)  # Bettencourt exponent
+    # beta=1.15: exponente superlineal de Bettencourt (2007, PNAS)
+    #   innovación, patentes, GDP escalan como N^1.15 (superlinear scaling)
+    beta = params.get("abm_beta", 1.15)
     
     # Macro Coupling
     macro_series = params.get("macro_target_series")
@@ -59,11 +65,14 @@ def simulate_abm(params, steps, seed=42):
     for t in range(steps):
         f_t = forcing[t] if t < len(forcing) else 0.02
         
-        # Migration from rural to urban
+        # Migración rural → urbana
+        # Factor (1 + 5*f_t): elasticidad migración-crecimiento económico
+        #   5.0: cada 1% de crecimiento GDP → 5% más migración
+        #   (Henderson 2003, JEG: elasticidad ingreso-urbanización ≈ 3-7)
         migrants = migration_rate * rural_pop * (1 + 5 * f_t)
         migrants = max(0, migrants)
         rural_pop -= migrants
-        rural_pop = max(100, rural_pop)  # Minimum rural
+        rural_pop = max(100, rural_pop)  # Mínimo rural (evita extinción)
         
         # Distribute migrants via preferential attachment
         if len(city_pop) > 0:

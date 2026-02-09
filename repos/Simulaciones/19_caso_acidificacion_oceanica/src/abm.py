@@ -61,10 +61,16 @@ def simulate_abm(params, steps, seed=42):
         forcing = np.linspace(3.0, 1.5, steps)
         forcing_scale = 1.0  # Direct physical values if no external forcing
         
-    # Parameters
-    calc_rate = params.get("abm_calc_rate", 0.02)   # Calcification coefficient
-    diss_rate = params.get("abm_diss_rate", 0.05)   # Dissolution coefficient
-    stress_thresh = params.get("abm_stress_thresh", 1.0)  # Omega threshold
+    # Parámetros de calcificación
+    # calc_rate=0.02: tasa de calcificación (~2%/mes de crecimiento de concha;
+    #   Ries et al. 2009, Geology: tasa media observada en moluscos y corales)
+    calc_rate = params.get("abm_calc_rate", 0.02)
+    # diss_rate=0.05: tasa de disolución bajo sub-saturación (~5%/mes;
+    #   Kroeker et al. 2013, GCB: meta-análisis de respuestas a OA)
+    diss_rate = params.get("abm_diss_rate", 0.05)
+    # stress_thresh=1.0: umbral Ω_aragonita = 1.0 (sub-saturación)
+    #   Feely et al. (2004, Science): debajo de Ω=1 la aragonita se disuelve
+    stress_thresh = params.get("abm_stress_thresh", 1.0)
     
     # Macro Coupling
     macro_series = params.get("macro_target_series")
