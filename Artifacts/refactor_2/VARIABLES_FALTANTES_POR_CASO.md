@@ -1,22 +1,27 @@
 # Variables Faltantes por Caso — Oportunidades de Mejora
 
-> **Actualizado:** 2026-02-11 (post commit c0bf312 — P4-P10 fixes, overall_pass=1/29)
+> **Actualizado:** 2026-02-12 (post commit 23214c0 — T1-T8 fixes, overall_pass=1/29)
 
 Este documento lista las variables reales disponibles que podrian integrarse para mejorar
 cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibles.
 
-> **Estado global:** 0/29 casos tienen variables multivariadas adicionales integradas (driver_cols). La infraestructura existe en `hybrid_validator.py` pero no se usa. Este es el **principal pendiente técnico** para mejorar los 13 casos null y elevar los 6 trend a suggestive/weak.
+> **Estado global:** **19/29** casos tienen `driver_cols` multivariados declarados en sus `validate.py` (T1, commit 23214c0). La infraestructura `driver_cols` en `hybrid_validator.py` está activa y los drivers se integran vía OLS en la construcción de forcing.
+>
+> **10 casos sin driver_cols:** 03 (Contaminación), 10 (Justicia), 13 (Políticas), 15 (Wikipedia), 16 (Deforestación), 17 (Océanos), 18 (Urbanización), 19 (Acidificación), 20 (Kessler), 22 (Fósforo).
+>
+> ⚠️ **Regresión detectada:** Agregar driver_cols en series cortas (≤30 puntos) puede empeorar EDI vía sobreajuste OLS. Casos 24 (EDI 0.427→0.289) y 27 (EDI +0.105→-1.000) empeoraron. Se recomienda: (a) regularización Ridge, (b) selección de features, (c) mínimo 2x puntos que drivers.
 
 ---
 
-## CASOS CON DATOS REALES (mejorar con variables adicionales) — ❌ Pendiente
+## CASOS CON DATOS REALES (mejorar con variables adicionales) — ⚠️ 19/29 con driver_cols
 
-> **Estado:** Las variables multivariadas adicionales (CO2, VIX, vacunación, etc.) **no se han integrado** en ningún caso. Cada caso sigue usando una sola variable observacional.
+> **Estado:** 19/29 casos tienen `driver_cols` declarados en `validate.py` (T1, commit 23214c0). Los drivers se usan en la construcción de forcing vía OLS. Resultados mixtos: algunos casos mejoran, 2 empeoran.
 
-### 01_caso_clima — ⚠️ ODE resuelta, variables pendientes
-**Actual:** Solo temperatura media mensual (Meteostat)
+### 01_caso_clima — ✅ driver_cols declarados
+**Actual:** Temperatura media mensual (Meteostat)
 **ODE:** ✅ Budyko-Sellers implementado en `ode_library.py`
-**Agregar variables:** ❌ Pendiente
+**driver_cols:** `["co2", "tsi", "ohc", "aod"]` ✔️ declarados en validate.py
+**Agregar variables:** ✅ Declaradas (pendiente verificar que data.py las sirve)
 | Variable | Fuente | API | Impacto |
 |----------|--------|-----|---------|
 | CO2 atmosferico | NOAA ESRL Mauna Loa | `ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt` | CRITICO — forcing real del clima |
@@ -43,10 +48,11 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 | Stringency index | OxCGRT | `https://github.com/OxCGRT/covid-policy-tracker` |
 | **ODE recomendada:** Ya tiene modelo SEIR — es el unico caso bueno |
 
-### 09_caso_finanzas — ⚠️ ODE resuelta, variables pendientes
-**Actual:** Solo log(SPY) mensual
+### 09_caso_finanzas — ✅ driver_cols declarados
+**Actual:** Log(SPY) mensual
 **ODE:** ✅ Heston implementado en `ode_library.py`
-**Agregar variables:** ❌ Pendiente
+**driver_cols:** `["vix", "fedfunds", "inflation", "credit_spread", "volume"]` ✔️ declarados
+**Agregar variables:** ✅ Declaradas
 | Variable | Fuente | API |
 |----------|--------|-----|
 | VIX (volatilidad) | Yahoo Finance | `yfinance.download("^VIX")` |
@@ -154,9 +160,10 @@ cada simulacion. Solo se incluyen fuentes gratuitas y programaticamente accesibl
 **Reemplazo original:** World Bank `SE.ADT.LITR.ZS` (alfabetizacion adultos %)
 **Esfuerzo:** BAJO
 
-### ~~02_caso_conciencia (DIFICIL)~~ [IMPLEMENTADO] — ⚠️ pytrends no instalado → fallback
+### ~~02_caso_conciencia (DIFICIL)~~ [IMPLEMENTADO] — ✅ driver_cols declarados
 **Actual:** Google Trends ("global news") validado como proxy de atencion.
-**Estado:** Código completado en Refactor Fase 2, pero **pytrends no instalado** → cae a fallback sintético en ejecución.
+**driver_cols:** `["suicide_rate", "tertiary_enrollment"]` ✔️ declarados
+**Estado:** Código completado, **pytrends no instalado** → cae a fallback sintético en ejecución.
 
 
 ---
@@ -176,7 +183,9 @@ https://celestrak.org/NORAD/elements/
 **Reemplazo implementado:** CelesTrak Starlink TLE count + SpaceX launch manifest
 **Alternativa:** Jonathan's Space Report (publicaciones semanales de lanzamientos)
 
-### 21_caso_salinizacion — ⚠️ PARCIALMENTE RESUELTO
-**Actual:** ~~Tierra arable %~~ → **Tierra irrigada % (AG.LND.IRIG.AG.ZS)** — proxy menos malo pero aún indirecto
+### 21_caso_salinizacion — ⚠️ MEJORADO (T3, commit 23214c0)
+**Actual:** ~~Tierra arable %~~ → **Tierra irrigada % (AG.LND.IRIG.AG.ZS)** + **freshwater_withdrawal (ER.H2O.FWTL.ZS)** como driver
+**driver_cols:** `["freshwater_withdrawal"]` ✔️
 **Reemplazo ideal pendiente:** FAO AQUASTAT + GLASOD soil degradation data
+**Nota T3:** data.py reescrito con `_fetch_indicator()` helper + API fallback. EDI bajó de 0.154 a 0.027 (sigue trend).
 **Alternativa:** World Bank AG.LND.IRIG.AG.ZS (irrigated land %) como proxy menos malo

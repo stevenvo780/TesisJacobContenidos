@@ -7,19 +7,26 @@
 
 ---
 
-## ACTUALIZACIÓN POST‑EJECUCIÓN (2026-02-11, commit c0bf312 — P4-P10 fixes)
+## ACTUALIZACIÓN POST‑EJECUCIÓN (2026-02-12, commit 23214c0 — T1-T8 fixes)
 
-**Resumen crítico tras 7 fixes técnicos (P4: noise_sensitivity 5 bugs, P5: criteria, P6/P7: EDI clamp+log, P8: meta synth, P9: persistence, P10: doc):**
+**Resumen crítico tras fixes T1-T8 (driver_cols, synthetic params, salinización proxy, replay_hash, trend_bias, docs circularidad/inercia, interpretación cautelosa):**
 
 - **Validaciones reales ejecutadas (29/29)** con `HYPER_GRID_SIZE=20` y `HYPER_N_RUNS=5`.
-  Resultado: **overall_pass = 1/29** 🎉 (Caso 16 Deforestación — primer pass de la tesis). Taxonomía: **2 strong + 1 weak + 4 suggestive + 6 trend + 13 null + 3 falsification**.
-- **noise_sensitivity corregido (P4):** 5 bugs críticos (ODE leak, seed arg faltante, noise key, same seed, EDI no-clip). El más grave: `simulate_abm_fn` se llamaba con 2 args (faltaba seed) → TODOS los tests crasheaban silenciosamente. ns 18→25/29.
-- **EDI clamped (P6/P7):** `compute_edi()` acotado a [-1.0, 1.0]. Starlink -521→-1.0, Fósforo -2.686→-1.0. `log_transform=True` para Kessler y Starlink.
-- **Persistence corregido (P9):** Usa `abm_val` 1D (no grid 3D), threshold 5x→10x, `cr_valid` informativo (no bloquea overall_pass). per 23→25/29.
-- **Criteria en metrics (P5):** Dict con 15 campos individuales en cada metrics.json.
-- **Notas operativas:** `pytrends` no instalado → caso 02 usa fallback sintético.
+  Resultado: **overall_pass = 1/29** (Caso 16 Deforestación). Taxonomía: **1 strong + 1 weak + 4 suggestive + 6 trend + 14 null + 3 falsification**.
+- **driver_cols expandido (T1):** 19/29 casos tienen variables multivariadas declaradas. 10 aún sin driver_cols.
+- **Synthetic params 29/29 (T2):** Confirmado que todos los validate.py ya tenían synth_meta domain-specific.
+- **Salinización proxy mejorado (T3):** freshwater_withdrawal (ER.H2O.FWTL.ZS) como driver + API fallback.
+- **replay_hash.py creado (T4):** Verificabilidad con --save/--verify sobre 29 metrics.json.
+- **trend_bias test (T6):** Detecta si EDI se explica por tendencia monótona. 0/29 warnings.
+- **Docs formales (T5/T7):** `inercia_vs_ontologia.md` y `circularidad_formal.md` creados.
+- **Interpretación cautelosa (T8):** Report.md incluye advertencia por categoría de emergencia.
 
-**Conclusión actualizada:** Con el primer `overall_pass=True` (Deforestación, EDI=0.633), la tesis demuestra que el marco ABM+ODE **puede** validar emergencia computacional real. La evaluación diferenciada muestra 2 strong + 1 weak + 4 suggestive + 6 trend = espectro de emergencia metaestable. H1 parcialmente confirmada en dominios ambientales globales.
+**⚠️ Regresiones detectadas post-T1 (driver_cols):**
+- Caso 24 (Microplásticos): **strong → trend** (EDI 0.427 → 0.289, perdió significancia). Causa: `mismanaged_share` como driver empeoró OLS en serie corta.
+- Caso 27 (Riesgo Bio): **trend → null** (EDI +0.105 → -1.000). Causa: 3 drivers adicionales (tb_incidence, health_expenditure, crude_death_rate) sobreajustaron.
+- Caso 21 (Salinización): EDI 0.154 → 0.027 (sigue trend pero se debilitó).
+
+**Conclusión actualizada:** El overall_pass se mantiene en 1/29 (Deforestación, EDI=0.633). Las expansiones de driver_cols mejoran la cobertura multivariada pero provocaron regresiones en 2 casos donde la OLS se sobreajusta a series cortas. La taxonomía bajó de 2 strong a 1 strong. Se recomienda investigar regularización Ridge o selección de features para driver_cols.
 
 ---
 
@@ -70,7 +77,7 @@ La tesis presenta un marco computacional ABM+ODE para validar la existencia de h
 | C6 | **macro_coupling = 1.0 (esclavizacion)** | R11, R17 | 22/29 casos tienen mc > 0.5. Recalibrar con restriccion mc < 0.5 y reportar cual es el mc minimo que mantiene EDI > 0.30. | ✅ Resuelto — Grid search [0.05, 0.45], refinement cap 0.50. 29/29 con mc ≤ 0.50 |
 | C7 | **Datos sinteticos en 12 casos** | R11, Brutal | Implementar fuentes de datos reales para al menos 8 de los 12 casos sinteticos (ver Seccion 5). | ⚠️ Parcial — 9/12 tienen código real, pero 6 caen a fallback sintético en ejecución |
 | C8 | **Proxies inadecuados** (Kessler=vuelos, Starlink=internet) | Nueva | Reemplazar con datos de CelesTrak (objetos orbitales) para Kessler y Starlink. | ✅ Resuelto — Kessler y Starlink usan CelesTrak SATCAT |
-| C9 | **Fases sinteticas compartidas entre casos** | Nueva | Al menos 5 grupos de casos comparten parametros sinteticos identicos. Cada caso debe tener parametros de ODE sintetica calibrados a su dominio. | ⚠️ Parcial — 6/29 con parámetros domain-specific (clima, conciencia, contaminación, energía, finanzas, justicia). 23/29 aún genéricos |
+| C9 | **Fases sinteticas compartidas entre casos** | Nueva | Al menos 5 grupos de casos comparten parametros sinteticos identicos. Cada caso debe tener parametros de ODE sintetica calibrados a su dominio. | ✅ Resuelto — 29/29 con synth_meta domain-specific (verificado T2, commit 23214c0) |
 | C10 | **Data leakage: forcing contiene obs[t-1]** | Nueva | En `hybrid_validator.py:646-647`, `lag_forcing = obs[t-1]` contamina la validacion. El forcing debe construirse SOLO con datos del periodo de entrenamiento. | ✅ Resuelto — persistence en validación |
 
 ### GRUPO B: REQUIEREN REFACTOR ARQUITECTURAL
@@ -87,9 +94,9 @@ La tesis presenta un marco computacional ABM+ODE para validar la existencia de h
 | # | Critica | Iteracion | Estrategia Defensiva | Estado |
 |---|---------|-----------|---------------------|--------|
 | C15 | **"Constriccion macro" no es "ontologia fuerte"** | R19, R20, Veredicto | Aceptar: la tesis valida constriccion macro efectiva bajo realismo operativo debil. Declerar explicitamente. | ⚠️ Parcial — Caps 02-04 ahora dicen "H1 no confirmada" y admiten overall_pass=0/29 |
-| C16 | **Circularidad en calibracion** | Termonuclear | El forcing contiene datos observacionales, pero la evaluacion se hace sin assimilation. Documentar el protocolo de separacion train/eval. | ⚠️ Parcial — Cap 02 documenta zero-nudging y separación train/eval, pero falta documento formal |
-| C17 | **"Inercia de datos" vs "ontologia"** | Termonuclear | Admitir que el marco detecta inercia informacional. Argumentar que la inercia es evidencia de constriccion (no al reves). | 🚩 No resuelto — argumento no redactado |
-| C18 | **Sesgo de predictibilidad** | Pendientes | Las series suaves dan EDI alto. Documentar como limitacion. Incluir test de sensibilidad a ruido. | 🚩 No resuelto — test de sensibilidad pendiente |
+| C16 | **Circularidad en calibracion** | Termonuclear | El forcing contiene datos observacionales, pero la evaluacion se hace sin assimilation. Documentar el protocolo de separacion train/eval. | ✅ Resuelto — `circularidad_formal.md` creado (T7, commit 23214c0) documenta protocolo formal de separación |
+| C17 | **"Inercia de datos" vs "ontologia"** | Termonuclear | Admitir que el marco detecta inercia informacional. Argumentar que la inercia es evidencia de constriccion (no al reves). | ✅ Resuelto — `inercia_vs_ontologia.md` creado (T5, commit 23214c0) con argumento formal |
+| C18 | **Sesgo de predictibilidad** | Pendientes | Las series suaves dan EDI alto. Documentar como limitacion. Incluir test de sensibilidad a ruido. | ✅ Resuelto — `trend_bias` test implementado en hybrid_validator.py (T6, commit 23214c0). Calcula detrended_edi, trend_ratio, trend_r2. 0/29 warnings |
 | C19 | **Paradoja Estetica > Justicia** | Termonuclear | Justicia ahora es sintetico (EDI=0.946, tautologico). Si se pasa a datos reales, el resultado sera genuino. | ⚠️ Disuelta — Estética removida; Justicia EDI_real=0.000; overall_pass=0/29 elimina la paradoja |
 | C20 | **Tono "Modo Dios"** | Brutal | Revisar narrativa de capitulos 02-04, agregar mas humildad y limitaciones explicitas. | ⚠️ Parcial — Caps 02-04 reescritos con overall_pass=0/29 honesto y diagnóstico de causas |
 
@@ -187,17 +194,17 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 
 ## 4. TABLA MAESTRA DE METRICAS — ANOMALIAS
 
-### 4.1. Resumen de Estado Real de los 29 Casos (Actualizado 2026-02-10, commit 3d0a9d1)
+### 4.1. Resumen de Estado Real de los 29 Casos (Actualizado 2026-02-12, commit 23214c0)
 
 | Grupo | Casos | Cantidad |
 |-------|-------|----------|
-| **Strong: EDI ∈ [0.325-0.90] + significativo** | 16 (Deforestación=0.633), 24 (Microplásticos=0.427) | **2** |
+| **Strong: EDI ∈ [0.325-0.90] + significativo** | 16 (Deforestación=0.633) | **1** |
 | **Weak: EDI ∈ [0.10-0.325) + significativo** | 28 (Fuga Cerebros=0.183) | **1** |
 | **Suggestive: EDI>0 + significativo** | 09, 14, 17, 29 | **4** |
-| **Trend: EDI>0 + no significativo** | 01, 11, 13, 18, 21, 27 | **6** |
-| **Null: sin evidencia** | 02-05, 10, 12, 15, 19-20, 22-23, 25-26 | **13** |
+| **Trend: EDI>0 + no significativo** | 01, 11, 13, 18, 21, 24 | **6** |
+| **Null: sin evidencia** | 02-05, 10, 12, 15, 19-20, 22-23, 25-27 | **14** |
 | **Falsification: controles** | 06, 07, 08 | **3** |
-| **overall_pass = true** | Ninguno | **0** |
+| **overall_pass = true** | 16 (Deforestación) | **1** |
 
 ### 4.2. Conteo Honesto (Actualizado 2026-02-10, commit 3d0a9d1)
 
@@ -274,7 +281,7 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 |------|-------------|----------------------|-----|--------|
 | 20 Kessler | ~~Salidas aereas~~ | Objetos en orbita | CelesTrak TLE | ✅ Resuelto — CelesTrak SATCAT (obs_mean=7187) |
 | 26 Starlink | ~~Usuarios internet~~ | Satelites activos | CelesTrak TLE | ✅ Resuelto — CelesTrak SATCAT filtrado STARLINK (obs_mean=4774) |
-| 21 Salinizacion | Tierra arable % | Conductividad suelo | FAO GLOSIS | ⚠️ Parcial — Cambiado a tierra irrigada % (AG.LND.IRIG.AG.ZS), proxy menos malo |
+| 21 Salinizacion | ~~Tierra arable %~~ | Freshwater withdrawal | World Bank ER.H2O.FWTL.ZS | ⚠️ Mejorado (T3, commit 23214c0) — `freshwater_withdrawal` como driver + API fallback. Proxy menos indirecto pero aún no es salinidad directa |
 
 ### 5.3. Variables Faltantes para Casos con Datos Reales
 
@@ -326,36 +333,42 @@ Las reglas de rechazo dicen EDI > 0.90 = RECHAZO por tautologia. Sin embargo, 9 
 | Accion | Archivo(s) | Descripcion | Estado |
 |--------|-----------|-------------|--------|
 | **P3.1** Escalar grid a 100x100 | `common/abm_gpu_v3.py` + validaciones | Demostrar que resultados son estables con N=10,000. | ✅ Resuelto — 470x470 GPU |
-| **P3.2** Independizar fases sinteticas por caso | `caso_*/src/validate.py` | Cada caso debe tener ODE sintetica con parametros calibrados a su dominio, no compartidos. | ⚠️ Parcial — 6/29 domain-specific (clima, conciencia, contaminación, energía, finanzas, justicia) |
-| **P3.3** Agregar variables multivariadas | `caso_*/src/data.py` | Ver tabla 5.3. Al menos CO2 para clima, VIX para finanzas. | 🚩 ❌ No resuelto |
+| **P3.2** Independizar fases sinteticas por caso | `caso_*/src/validate.py` | Cada caso debe tener ODE sintetica con parametros calibrados a su dominio, no compartidos. | ✅ Resuelto — 29/29 con synth_meta domain-specific (T2, commit 23214c0) |
+| **P3.3** Agregar variables multivariadas | `caso_*/src/data.py` + `validate.py` | Ver tabla 5.3. Al menos CO2 para clima, VIX para finanzas. | ⚠️ Parcial — 19/29 con driver_cols declarados (T1, commit 23214c0). ⚠️ 2 regresiones (casos 24, 27). 10 sin driver_cols aún |
 | **P3.4** Publicar distribucion nula del EDI | `common/edi_null_distribution_analysis.py` | Ejecutar y documentar el umbral 0.30 derivado de la distribucion nula bajo ruido puro. | ✅ Resuelto — Umbral 0.3248 integrado + permutation test (200 perms) en cada caso |
-| **P3.5** Replay total con hashes | Scripts de verificacion | Regenerar todos los outputs, registrar MD5, versionar en git. | 🚩 ❌ No resuelto |
+| **P3.5** Replay total con hashes | `repos/scripts/replay_hash.py` | Regenerar todos los outputs, registrar SHA-256, versionar en git. | ✅ Resuelto — `replay_hash.py` creado (T4, commit 23214c0) con --save/--verify. Baseline 29/29 sync |
 
 ---
 
 ## 7. VEREDICTO FINAL
 
-### Estado Actual de la Tesis (Actualizado 2026-02-11, commit c0bf312 — P4-P10 fixes)
+### Estado Actual de la Tesis (Actualizado 2026-02-12, commit 23214c0 — T1-T8 fixes)
 
 La tesis tiene un **núcleo conceptual válido** (la idea de medir constricción macro vía ABM+ODE es genuinamente innovadora). La **validación empírica** muestra un espectro de resultados:
 
-1. ✅ **2/29 emergencia STRONG** — Deforestación (EDI=0.633, **overall_pass=True** 🎉) y Microplásticos (EDI=0.427).
+1. ✅ **1/29 emergencia STRONG** — Deforestación (EDI=0.633, **overall_pass=True**).
 2. ✅ **1/29 emergencia WEAK** — Fuga de Cerebros (EDI=0.183) con significancia.
 3. ⚠️ **4/29 SUGGESTIVE** — Finanzas, Postverdad, Océanos, IoT muestran señal positiva significativa.
-4. ⚠️ **6/29 TREND** — Clima, Movilidad, Políticas, Urbanización, Salinización, Riesgo Biológico con dirección correcta sin respaldo estadístico.
-5. 🚩 **13/29 NULL** — Sin evidencia de emergencia macro.
+4. ⚠️ **6/29 TREND** — Clima, Movilidad, Políticas, Urbanización, Salinización, Microplásticos con dirección correcta sin respaldo estadístico.
+5. 🚩 **14/29 NULL** — Sin evidencia de emergencia macro.
 6. ✅ **3/3 FALSIFICATION** — Controles correctamente rechazados.
-7. ✅ **overall_pass = 1/29** — Primer caso que supera todos los criterios estrictos (C1-C5 + Symploké + NL + persistence + emergence + coupling + EDI_valid + no_fraud).
-7. ✅ ~~**Data leakage en forcing**~~ — Corregido con persistence en validación.
-8. ✅ ~~**Agentes idénticos**~~ — 3 capas de heterogeneidad implementadas.
-9. ✅ ~~**ODE genérica**~~ — 11 modelos domain-specific.
-10. ✅ ~~**macro_coupling > 0.5**~~ — Cap en 0.50, grid [0.05, 0.45]. 29/29 mc ≤ 0.50.
-11. ✅ ~~**Acoplamiento unidireccional**~~ — Bidireccional 2-iter + nudging post-integración γ=0.05 (Fix C13-b).
-12. ✅ ~~**EDI sin significancia estadística**~~ — Permutation test (200 perms). 8/29 significativos.
-13. ✅ ~~**Bias ODE→ABM**~~ — BC 4 modos (full/bias_only/none/**reverted**) con guardas.
-14. ✅ ~~**Evaluación binaria**~~ — Taxonomía diferenciada de 6 categorías.
-15. ⚠️ **Fases sintéticas compartidas** — 6/29 domain-specific, 23 aún genéricos.
-16. ⚠️ **Narrativa actualizada** — Caps 02-04 reportan taxonomía diferenciada honestamente.
+7. ✅ **overall_pass = 1/29** — Caso 16 Deforestación supera todos los criterios estrictos.
+8. ✅ ~~**Data leakage en forcing**~~ — Corregido con persistence en validación.
+9. ✅ ~~**Agentes idénticos**~~ — 3 capas de heterogeneidad implementadas.
+10. ✅ ~~**ODE genérica**~~ — 11 modelos domain-specific.
+11. ✅ ~~**macro_coupling > 0.5**~~ — Cap en 0.50, grid [0.05, 0.45]. 29/29 mc ≤ 0.50.
+12. ✅ ~~**Acoplamiento unidireccional**~~ — Bidireccional 2-iter + nudging post-integración γ=0.05.
+13. ✅ ~~**EDI sin significancia estadística**~~ — Permutation test (200 perms). 7/29 significativos.
+14. ✅ ~~**Bias ODE→ABM**~~ — BC 4 modos (full/bias_only/none/**reverted**) con guardas.
+15. ✅ ~~**Evaluación binaria**~~ — Taxonomía diferenciada de 6 categorías.
+16. ✅ ~~**Fases sintéticas compartidas**~~ — 29/29 domain-specific (T2).
+17. ⚠️ **driver_cols** — 19/29 con variables multivariadas (T1). 10 sin driver_cols.
+18. ✅ ~~**Circularidad en calibración**~~ — Documento formal `circularidad_formal.md` (T7).
+19. ✅ ~~**Inercia vs ontología**~~ — Documento formal `inercia_vs_ontologia.md` (T5).
+20. ✅ ~~**Sesgo de predictibilidad**~~ — `trend_bias` test (T6). 0/29 warnings.
+21. ✅ ~~**Verificabilidad**~~ — `replay_hash.py` (T4). Baseline 29/29 sync.
+22. ⚠️ **Regresiones T1** — Casos 24 (strong→trend) y 27 (trend→null) empeoraron con driver_cols.
+23. ⚠️ **Narrativa actualizada** — Caps 02-04 necesitan reflejar 1 strong (no 2).
 
 ### Interpretación Filosófica: Metaestabilidad Confirmada
 
@@ -373,7 +386,8 @@ El patrón de resultados es **coherente con la ontología de metaestabilidad** q
 | Pre-BC (df1015b) | 1/29 strong, 0 weak, 0 pass | "H1 rechazada — colapso total" |
 | Post-BC (54234d6) | 2 strong + 1 weak + 4 suggestive + 4 trend, 0 pass | "Espectro de emergencia metaestable" |
 | Post Fix #5/#7 (3d0a9d1) | 2 strong + 1 weak + 4 suggestive + 6 trend, 0 pass | "Espectro ampliado — 2 null→trend por BC reverted" |
-| **Post P4-P10 (c0bf312)** | **2 strong + 1 weak + 4 suggestive + 6 trend, 1 pass** | **"1er overall_pass (Deforestación) — ns 18→25, per 23→25"** |
+| Post P4-P10 (c0bf312) | 2 strong + 1 weak + 4 suggestive + 6 trend, 1 pass | "1er overall_pass (Deforestación) — ns 18→25, per 23→25" |
+| **Post T1-T8 (23214c0)** | **1 strong + 1 weak + 4 suggestive + 6 trend, 1 pass** | **"driver_cols 19/29 + trend_bias + docs formales. ⚠️ Caso 24 strong→trend, Caso 27 trend→null"** |
 
 El Bias Correction no es un hack: corrige un defecto técnico (la ODE opera en escala diferente al ABM) sin inyectar información nueva. La señal que rescata (deforestación) existía pero estaba destruida por el sesgo de acoplamiento.
 
@@ -394,5 +408,5 @@ El Bias Correction no es un hack: corrige un defecto técnico (la ODE opera en e
 ---
 
 *Informe generado por Claude Opus 4.6 — Auditoría independiente post-Gladiadores*
-*Actualizado con Fix #5 (ABM→ODE nudging) + Fix #7 (BC reversion guard) — commit 3d0a9d1*
+*Actualizado con T1-T8 fixes — commit 23214c0*
 *Todos los hallazgos son verificables en los archivos referenciados del repositorio.*

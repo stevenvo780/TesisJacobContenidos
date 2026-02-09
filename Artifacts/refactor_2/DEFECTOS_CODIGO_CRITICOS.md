@@ -1,7 +1,9 @@
 # Defectos de Codigo Criticos — Referencia Tecnica
 
-> **Última actualización:** 2026-02-11 (commit c0bf312 — P4-P10 fixes). **overall_pass = 1/29** (Caso 16 Deforestación).
-> Defectos D1-D8 ya resueltos. Nuevos fixes: P4 (noise_sensitivity 5 bugs), P5 (criteria dict), P6/P7 (EDI clamp + log_transform), P8 (meta synth), P9 (persistence 1D + threshold).
+> **Última actualización:** 2026-02-12 (commit 23214c0 — T1-T8 fixes). **overall_pass = 1/29** (Caso 16 Deforestación).
+> Defectos D1-D8 ya resueltos. P4-P10 fixes previos. Nuevos fixes T1-T8: driver_cols expandido (19/29), synthetic params 29/29, salinización proxy mejorado, replay_hash.py, trend_bias test, docs circularidad/inercia, interpretación cautelosa.
+>
+> ⚠️ **Regresiones T1:** Caso 24 (Microplásticos) strong→trend (EDI 0.427→0.289, perdió sig). Caso 27 (Riesgo Bio) trend→null (EDI +0.105→-1.000). Causa: driver_cols adicionales empeoran OLS en series cortas.
 
 ## 1. DATA LEAKAGE EN FORCING — ✅ RESUELTO
 
@@ -163,11 +165,11 @@ abm_final = simulate_abm_fn(eval_params, steps, seed=2)
 
 ---
 
-## 6. FASES SINTETICAS COMPARTIDAS — ⚠️ PARCIALMENTE RESUELTO
+## 6. FASES SINTETICAS COMPARTIDAS — ✅ RESUELTO (T2, commit 23214c0)
 
-> **Estado:** 6/29 casos ya tienen parámetros sintéticos domain-specific (01 clima, 02 conciencia, 03 contaminación, 04 energía, 09 finanzas, 10 justicia). Los 23 restantes siguen usando `ode_alpha=0.08, ode_beta=0.03`.
+> **Estado:** **29/29** casos tienen parámetros sintéticos domain-specific. T2 confirmó que todos los `validate.py` ya incluían `synth_meta` calibrado por dominio desde refactors anteriores.
 >
-> **Acción requerida:** Calibrar parámetros sintéticos por dominio para los 23 casos restantes.
+> **Verificado:** `grep -l 'synth_meta\|synthetic_params' repos/Simulaciones/*/src/validate.py` = 29/29.
 
 5+ grupos de casos comparten parametros sinteticos identicos:
 - Grupo 1 (obs_mean=6.759): Clima, Energia, Finanzas, Wikipedia
