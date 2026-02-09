@@ -1,6 +1,6 @@
 # Reporte de Validación — Microplásticos Oceánicos (Jambeck Persistent Accumulation)
 
-- generated_at: 2026-02-09T14:20:12.562892Z
+- generated_at: 2026-02-09T14:46:03.089810Z
 
 ## Fase synthetic
 - **overall_pass**: False

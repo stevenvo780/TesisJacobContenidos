@@ -1,6 +1,6 @@
 # Reporte de Validación — Paradigmas Cientificos (Ising)
 
-- generated_at: 2026-02-09T14:20:01.788045Z
+- generated_at: 2026-02-09T14:45:52.148954Z
 
 ## Fase synthetic
 - **overall_pass**: False
