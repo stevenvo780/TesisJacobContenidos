@@ -21,7 +21,7 @@ Observacion → Simulacion → Validacion. El modelo se mantiene solo si supera 
   Esto penaliza hipótesis con datos indirectos (ej. Conciencia, LoE=1) frente a sistemas físicos robustos (ej. Clima, LoE=5).
 
 ## Niveles de Evidencia (LoE)
-1. **LoE 1 (Especulativo):** Proxies indirectos, encuestas subjetivas, o datos sintéticos sin ground truth físico. (Ej. Conciencia, Estética).
+1. **LoE 1 (Especulativo):** Proxies indirectos, encuestas subjetivas, o datos sintéticos sin ground truth físico. (Ej. Conciencia).
 2. **LoE 2 (Débil):** Datos digitales traza (Google Trends, Twitter) con alto ruido semántico.
 3. **LoE 3 (Medio):** Datos estructurados pero incompletos o de corto plazo (< 5 años).
 4. **LoE 4 (Fuerte):** Series temporales consistentes, múltiples fuentes, > 10 años.
