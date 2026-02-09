@@ -43,12 +43,10 @@ def simulate_ode(params, steps, seed=5):
     # Parámetros orbitales
     launch_rate = float(params.get("ode_inflow", params.get("ode_alpha", 0.18)))
     deorbit = float(params.get("ode_decay", params.get("ode_beta", 0.015)))
-    # Kessler collision cascade: genera debris proporcional a N²
-    collision_k = float(params.get("ode_collision", 0.002))
-    # Capacidad orbital máxima (LEO ~40000 objetos rastreables)
-    capacity = float(params.get("ode_capacity", 30.0))
-    # Active debris removal (ADR) — mitigación tecnológica
-    adr_rate = float(params.get("ode_adr", 0.005))
+    # Tracking: ODE sigue al forcing (despliegue planificado)
+    tracking = float(params.get("ode_tracking", 0.10))
+    # Saturación orbital suave (no N²)
+    saturation = float(params.get("ode_saturation", 0.005))
 
     N = float(params.get("p0", 0.0))
     series = []
@@ -57,16 +55,16 @@ def simulate_ode(params, steps, seed=5):
         f = forcing[t] if t < len(forcing) else 0.0
         # Lanzamientos: proporcional al forcing (planes de despliegue)
         L = launch_rate * max(0.0, f)
-        # Desorbitado controlado
+        # Tracking hacia trayectoria de despliegue
+        track = tracking * (f - N)
+        # Desorbitado controlado (decay lineal)
         deorb = deorbit * N
-        # Colisiones (Kessler): N² escalado por densidad relativa
-        collision_debris = collision_k * N * N / (capacity + 1.0)
-        # ADR: remoción activa (sólo si N alto)
-        adr = adr_rate * max(0.0, N - 0.5 * capacity) if N > 0.5 * capacity else 0.0
+        # Saturación: resistencia al crecimiento en densidad alta
+        sat_loss = saturation * N * abs(N)
 
-        dN = L - deorb + collision_debris - adr + random.gauss(0, noise_std)
+        dN = L + track - deorb - sat_loss + random.gauss(0, noise_std)
         N += dN
-        N = max(0.0, min(N, 2.0 * capacity))
+        N = max(-5.0, min(N, 20.0))
         N = _apply_assimilation(N, t, params)
         if not math.isfinite(N):
             N = 0.0

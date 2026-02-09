@@ -71,10 +71,11 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_recharge": 0.04,    # Recarga por precipitación/infiltración
-            "ode_extraction": 0.06,  # Extracción agrícola > recarga = depleción
-            "forcing_scale": 0.10,
-            "macro_coupling": 0.25,
+            "ode_recharge": 0.08,    # Recarga por precipitación/infiltración (↑)
+            "ode_extraction": 0.03,  # Extracción agrícola (↓ para evitar divergencia)
+            "ode_tracking": 0.08,    # Tracking hacia forcing
+            "forcing_scale": 0.12,
+            "macro_coupling": 0.28,
         },
         driver_cols=["grace_gws", "precip", "extraction_usgs", "withdrawal"],
     )

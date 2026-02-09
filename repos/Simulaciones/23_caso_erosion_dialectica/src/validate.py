@@ -74,9 +74,10 @@ def main():
             "ode_r": 0.03,       # Tasa de sustitución lingüística
             "ode_k": 1.0,       # Capacidad: dominio completo
             "ode_delta": 0.01,   # Attrition dialectal
-            "ode_gamma": 0.08,   # Sensibilidad a presión mediática
-            "forcing_scale": 0.10,
-            "macro_coupling": 0.25,
+            "ode_gamma": 0.15,   # Sensibilidad a presión mediática (↑ forcing-led)
+            "ode_tracking": 0.10, # Tracking hacia forcing
+            "forcing_scale": 0.15,
+            "macro_coupling": 0.30,
         },
     )
 

@@ -41,36 +41,35 @@ def _apply_assimilation(value, t, params):
 def simulate_ode(params, steps, seed=6):
     random.seed(seed)
     forcing = params.get("forcing_series") or [0.0] * steps
-    noise_std = float(params.get("ode_noise", 0.03))
+    noise_std = float(params.get("ode_noise", 0.025))
 
     # Parámetros epidemiológicos/ecológicos
     r = float(params.get("ode_r", params.get("ode_alpha", 0.06)))
     K = float(params.get("ode_k", params.get("ode_beta", 2.0)))
-    # Tasa de spillover zoonótico
+    # Tasa de spillover zoonótico (forcing-led)
     gamma = float(params.get("ode_gamma", 0.10))
     # Mitigación (respuesta sanitaria)
     delta = float(params.get("ode_delta", 0.025))
-    # Probabilidad de brote estocástico por paso
-    outbreak_prob = float(params.get("ode_outbreak_prob", 0.03))
-    outbreak_intensity = float(params.get("ode_outbreak_intensity", 0.8))
+    # Tracking: ODE sigue la señal de forcing
+    tracking = float(params.get("ode_tracking", 0.08))
 
     R = float(params.get("p0", 0.0))
     series = []
 
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
-        # Crecimiento logístico basal
-        growth = r * R * (1.0 - R / K) if K > 0 else 0.0
-        # Spillover zoonótico desde interfaz (forcing)
+        # Crecimiento logístico basal (suave)
+        growth = r * R * (1.0 - R / K) if K > 0 and R > 0 else 0.0
+        # Spillover zoonótico desde interfaz (forcing-led)
         spillover = gamma * max(0.0, f)
+        # Tracking hacia forcing
+        track = tracking * (f - R)
         # Mitigación sanitaria
         mitigation = delta * R
-        # Pulso estocástico de brote (cola pesada)
-        outbreak = outbreak_intensity * random.expovariate(1.0) if random.random() < outbreak_prob else 0.0
 
-        dR = growth + spillover - mitigation + outbreak + random.gauss(0, noise_std)
+        dR = growth + spillover + track - mitigation + random.gauss(0, noise_std)
         R += dR
-        R = max(0.0, min(R, 3.0 * K))
+        R = max(-3.0, min(R, 3.0 * K))
         R = _apply_assimilation(R, t, params)
         if not math.isfinite(R):
             R = 0.0
