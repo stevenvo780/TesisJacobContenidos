@@ -1,6 +1,6 @@
 # Reporte de Validación — Acidificación Oceánica (CO2SYS + Revelle Factor)
 
-- generated_at: 2026-02-09T15:49:36.825426Z
+- generated_at: 2026-02-09T16:17:16.135440Z
 
 ## Fase synthetic
 - **overall_pass**: False

@@ -1,6 +1,6 @@
 # Reporte de Validación — Riesgo Biológico Global (TB Incidence — Woolhouse)
 
-- generated_at: 2026-02-09T16:04:20.954509Z
+- generated_at: 2026-02-09T16:18:50.779837Z
 
 ## Fase synthetic
 - **overall_pass**: False

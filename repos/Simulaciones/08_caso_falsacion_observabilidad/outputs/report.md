@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: Observabilidad Escasa
 
-- generated_at: 2026-02-09T10:27:57.232758
+- generated_at: 2026-02-09T11:14:21.140783
 
 ## Fase real
 - **overall_pass**: False

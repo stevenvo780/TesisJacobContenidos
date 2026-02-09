@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: No-Estacionariedad",
-  "generated_at": "2026-02-09T10:25:57.821935",
+  "generated_at": "2026-02-09T11:14:20.713902",
   "git": {
     "commit": "falsification_trend",
     "dirty": false
@@ -50,13 +50,13 @@
       },
       "correlations": {
         "abm_obs": 0.9948604674083807,
-        "ode_obs": -0.6466926329542885
+        "ode_obs": -0.6466926329542886
       },
       "edi": {
         "value": -7.836933628667629,
         "bootstrap_mean": -7.861117024330798,
         "ci_lo": -8.920844613063636,
-        "ci_hi": -6.890136443855307,
+        "ci_hi": -6.890136443855305,
         "valid": false,
         "weighted_value": -1.5673867257335259,
         "loe_factor": 0.2
@@ -65,7 +65,7 @@
         "pass": true,
         "detail": {
           "relaxation_time": 13,
-          "peak_impact": 2.0,
+          "peak_impact": 1.9999999999999998,
           "shock_step": 157,
           "recovered": true
         }
@@ -73,18 +73,18 @@
       "effective_information": -0.593296617276103,
       "symploke": {
         "internal": 0.9989425188254026,
-        "external": 0.848710347205025,
-        "cr": 1.1770123012110345,
+        "external": 0.8487103472050249,
+        "cr": 1.1770123012110347,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0025119031624904068,
+        "dominance_share": 0.002511903162490406,
         "pass": true
       },
       "persistence": {
         "model": 9.23066612877867e-05,
-        "obs": 0.024497364429204457,
+        "obs": 0.024497364429204416,
         "pass": true
       },
       "emergence": {
@@ -105,18 +105,18 @@
         "rmse_abm": 4.705231402911597,
         "rmse_ode": 5.379355823407406,
         "corr_abm": 0.9948604674083807,
-        "corr_ode": -0.6466926329542885,
+        "corr_ode": -0.6466926329542886,
         "threshold": 1.0297291523794263
       },
       "c2_detail": {
         "mean_delta": 0.011539812289526986,
-        "var_delta": 0.0012332679318055907,
+        "var_delta": 0.0012332679318055935,
         "relative_mean": 0.010564086869508982,
-        "relative_var": 0.0012332679318055907
+        "relative_var": 0.0012332679318055935
       },
       "c3_detail": {
         "persistence_1": 9.23066612877867e-05,
-        "persistence_2": 9.280198031247588e-05
+        "persistence_2": 9.280198031247691e-05
       },
       "c4_detail": {
         "diff": 0.09989382572493333
@@ -130,5 +130,5 @@
     }
   },
   "falsification_success": true,
-  "spurious_correlation": 0.9979029209289584
+  "spurious_correlation": 0.9979029209289585
 }
