@@ -78,7 +78,7 @@ def main():
             "forcing_scale": 0.12,   # Sensibilidad ABM a lanzamientos
             "macro_coupling": 0.28,  # Acoplamiento macro→micro
         },
-        driver_cols=["launches", "collision_events"],
+        driver_cols=["launches", "collision_events", "debris_new"],  # +basura espacial nueva
         log_transform=True,  # Fix P7: crecimiento exponencial necesita log-transform
     )
 

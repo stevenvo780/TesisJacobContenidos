@@ -1,6 +1,6 @@
 # Reporte de Validación — Justicia Algorítmica
 
-- generated_at: 2026-02-09T20:23:44.866112Z
+- generated_at: 2026-02-09T20:55:58.175207Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -11,6 +11,9 @@
 - CI 95%: [0.0000, 0.0000]
 - weighted_value (LoE factor 0.20): 0.0000
 - válido (0.30-0.90): False
+- detrended_edi: 0.0000
+- trend_ratio: 1.000
+- trend_r2: 0.938
 
 ### Symploké y CR
 - internal: 0.9980
@@ -43,6 +46,9 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.7782
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 
 ## Fase real
 - **overall_pass**: False
@@ -85,4 +91,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.8940
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

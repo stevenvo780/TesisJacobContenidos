@@ -1,6 +1,6 @@
 # Reporte de Validación — Postverdad (SIS Infodemic)
 
-- generated_at: 2026-02-09T20:23:51.448121Z
+- generated_at: 2026-02-09T20:56:03.761417Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,6 +44,9 @@
 - calibration_rmse: 1.0027
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +56,9 @@
 - CI 95%: [0.0000, 0.0020]
 - weighted_value (LoE factor 0.20): 0.0002
 - válido (0.30-0.90): False
+- detrended_edi: 0.0012
+- trend_ratio: 1.000
+- trend_r2: 0.987
 
 ### Symploké y CR
 - internal: 0.7932
@@ -85,4 +91,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.7794
 - ode_rolling: None
+
+### Interpretación
+Los resultados muestran señal de emergencia **suggestive**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
 

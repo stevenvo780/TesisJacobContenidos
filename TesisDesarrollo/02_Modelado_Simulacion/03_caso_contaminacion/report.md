@@ -1,6 +1,6 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-09T20:23:42.960273Z
+- generated_at: 2026-02-09T20:55:55.894234Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,6 +44,9 @@
 - calibration_rmse: 1.0000
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -85,4 +88,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 1.0000
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

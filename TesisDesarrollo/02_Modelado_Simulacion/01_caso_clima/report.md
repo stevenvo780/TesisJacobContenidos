@@ -1,6 +1,6 @@
 # Reporte de Validación — Clima Regional (CONUS)
 
-- generated_at: 2026-02-09T20:23:53.678505Z
+- generated_at: 2026-02-09T20:56:06.978009Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -11,6 +11,9 @@
 - CI 95%: [-0.0570, -0.0451]
 - weighted_value (LoE factor 1.00): -0.0505
 - válido (0.30-0.90): False
+- detrended_edi: -0.0505
+- trend_ratio: 1.000
+- trend_r2: 0.996
 
 ### Symploké y CR
 - internal: 0.9999
@@ -43,6 +46,9 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.2539
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 
 ## Fase real
 - **overall_pass**: False
@@ -85,4 +91,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.6353
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

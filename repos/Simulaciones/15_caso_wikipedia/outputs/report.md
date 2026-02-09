@@ -1,6 +1,6 @@
 # Reporte de Validación — Wikipedia (Axelrod + Lotka-Volterra)
 
-- generated_at: 2026-02-09T20:23:52.372193Z
+- generated_at: 2026-02-09T20:56:05.272753Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,6 +44,9 @@
 - calibration_rmse: 2.2095
 - ode_rolling: None
 
+### Interpretación
+Los resultados muestran señal de emergencia **weak**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -85,4 +88,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 1.9966
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

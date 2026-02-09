@@ -1157,6 +1157,47 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     )
     edi_significant = edi_pvalue < 0.05  # EDI es significativo al 5%
 
+    # Fix T6: Test de sesgo de predictibilidad (trend bias)
+    # Si la serie tiene tendencia lineal fuerte, el EDI puede inflarse
+    # porque predecir una recta es trivial. Calculamos EDI sobre residuos
+    # detrended y reportamos el ratio como indicador de sesgo.
+    trend_bias = {"detrended_edi": None, "trend_ratio": None, "trend_r2": None,
+                  "warning": False}
+    try:
+        n_val = len(obs_val)
+        if n_val >= 6:
+            t_axis = np.arange(n_val, dtype=np.float64)
+            # Ajuste lineal a observaciones
+            coeffs = np.polyfit(t_axis, np.asarray(obs_val, dtype=np.float64), 1)
+            trend_line = np.polyval(coeffs, t_axis)
+            ss_res = np.sum((np.asarray(obs_val) - trend_line) ** 2)
+            ss_tot = np.sum((np.asarray(obs_val) - np.mean(obs_val)) ** 2)
+            trend_r2 = 1.0 - ss_res / max(ss_tot, 1e-15)
+
+            # Solo reportar si R² de tendencia es alto
+            if trend_r2 > 0.5:
+                # Remover tendencia de las 3 series
+                obs_dt = np.asarray(obs_val) - trend_line
+                abm_dt = np.asarray(abm_val) - trend_line
+                red_dt = np.asarray(abm_no_ode_val) - trend_line
+                err_abm_dt = float(np.sqrt(np.mean(obs_dt ** 2 - 2 * obs_dt * abm_dt + abm_dt ** 2)))
+                err_red_dt = float(np.sqrt(np.mean(obs_dt ** 2 - 2 * obs_dt * red_dt + red_dt ** 2)))
+                # Corrección: usar RMSE estándar sobre residuos
+                err_abm_dt = float(np.sqrt(np.mean((abm_dt - obs_dt) ** 2)))
+                err_red_dt = float(np.sqrt(np.mean((red_dt - obs_dt) ** 2)))
+                edi_detrended = compute_edi(err_abm_dt, err_red_dt)
+                # Ratio: si EDI_detrended / EDI_original < 0.5, la mayoría del EDI
+                # viene de la tendencia (sesgo de predictibilidad)
+                ratio = edi_detrended / max(edi_val, 1e-10) if edi_val > 0.01 else 1.0
+                trend_bias = {
+                    "detrended_edi": round(edi_detrended, 4),
+                    "trend_ratio": round(ratio, 3),
+                    "trend_r2": round(trend_r2, 3),
+                    "warning": ratio < 0.5 and trend_r2 > 0.7,
+                }
+    except Exception:
+        pass  # No bloquear pipeline por error en test informativo
+
     # EDI Ponderado por LoE (Regla de Descuento Gladiadores)
     # edi_weighted = edi * (loe / 5)
     # Penaliza constructos débiles (LoE 1-2)
@@ -1346,6 +1387,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             "permutation_pvalue": edi_pvalue,
             "permutation_null_95": edi_null_95,
             "permutation_significant": edi_significant,
+            "trend_bias": trend_bias,
         },
         "viscosity": {
             "pass": c_visc,
@@ -1508,7 +1550,17 @@ def write_outputs(results, output_dir):
                 f.write(f"- bootstrap_mean: {edi.get('bootstrap_mean', 0):.4f}\n")
                 f.write(f"- CI 95%: [{edi.get('ci_lo', 0):.4f}, {edi.get('ci_hi', 0):.4f}]\n")
                 f.write(f"- weighted_value (LoE factor {edi.get('loe_factor', 1.0):.2f}): {edi.get('weighted_value', 0):.4f}\n")
-                f.write(f"- válido (0.30-0.90): {edi.get('valid', False)}\n\n")
+                f.write(f"- válido (0.30-0.90): {edi.get('valid', False)}\n")
+                # Trend bias (T6)
+                tb = edi.get("trend_bias", {})
+                if tb and tb.get("detrended_edi") is not None:
+                    f.write(f"- detrended_edi: {tb['detrended_edi']:.4f}\n")
+                    f.write(f"- trend_ratio: {tb['trend_ratio']:.3f}\n")
+                    f.write(f"- trend_r2: {tb['trend_r2']:.3f}\n")
+                    if tb.get("warning"):
+                        f.write(f"- ⚠️ **Advertencia**: trend_ratio < 0.5 — "
+                                f"la mayor parte del EDI podría provenir de la tendencia lineal\n")
+                f.write("\n")
 
             if "symploke" in phase:
                 s = phase["symploke"]
@@ -1535,6 +1587,32 @@ def write_outputs(results, output_dir):
                 for k, v in phase["calibration"].items():
                     f.write(f"- {k}: {v:.4f}\n" if isinstance(v, float) else f"- {k}: {v}\n")
                 f.write("\n")
+
+            # Interpretación con tono cauteloso (Fix T8)
+            etax = phase.get("emergence_taxonomy", {})
+            emergence = etax.get("category", "null")
+            if emergence == "strong":
+                f.write("### Interpretación\n")
+                f.write("Los resultados **sugieren** emergencia macro significativa. "
+                        "El EDI se encuentra en el rango válido y el test de permutación "
+                        "confirma significancia estadística. No obstante, estos resultados "
+                        "deben interpretarse en el contexto de las limitaciones del proxy "
+                        "utilizado y del nivel de evidencia (LoE) del caso.\n\n")
+            elif emergence in ("weak", "suggestive"):
+                f.write("### Interpretación\n")
+                f.write(f"Los resultados muestran señal de emergencia **{emergence}**. "
+                        "La estructura macro es detectable pero no alcanza robustez "
+                        "suficiente para confirmar emergencia fuerte. Se recomienda "
+                        "cautela en la interpretación ontológica.\n\n")
+            elif emergence == "falsification":
+                f.write("### Interpretación\n")
+                f.write("Este es un caso de **falsación por diseño**. El rechazo del EDI "
+                        "es el resultado esperado y valida la sensibilidad del protocolo.\n\n")
+            else:
+                f.write("### Interpretación\n")
+                f.write(f"Categoría de emergencia: **{emergence}**. "
+                        "No se detecta estructura macro significativa con los datos "
+                        "y parámetros actuales.\n\n")
 
 
 def _get_git_info():

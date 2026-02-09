@@ -1,6 +1,6 @@
 # Reporte de Validación — Políticas Estratégicas (Bass Diffusion + Inertia)
 
-- generated_at: 2026-02-09T20:24:02.791662Z
+- generated_at: 2026-02-09T20:56:15.402714Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,6 +44,9 @@
 - calibration_rmse: 0.7386
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +56,9 @@
 - CI 95%: [0.0107, 0.0116]
 - weighted_value (LoE factor 0.20): 0.0022
 - válido (0.30-0.90): False
+- detrended_edi: 0.0111
+- trend_ratio: 1.000
+- trend_r2: 0.534
 
 ### Symploké y CR
 - internal: 0.4633
@@ -85,4 +91,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 1.3319
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

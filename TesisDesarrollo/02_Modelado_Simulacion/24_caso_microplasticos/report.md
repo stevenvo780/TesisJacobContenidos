@@ -1,6 +1,6 @@
 # Reporte de Validación — Microplásticos Oceánicos (Jambeck Persistent Accumulation)
 
-- generated_at: 2026-02-09T20:23:56.754836Z
+- generated_at: 2026-02-09T20:56:09.201894Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,20 +44,26 @@
 - calibration_rmse: 0.2154
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.4265
-- bootstrap_mean: 0.4272
-- CI 95%: [0.4144, 0.4465]
-- weighted_value (LoE factor 0.80): 0.3412
-- válido (0.30-0.90): True
+- valor: 0.2889
+- bootstrap_mean: 0.2841
+- CI 95%: [0.2381, 0.3132]
+- weighted_value (LoE factor 0.80): 0.2312
+- válido (0.30-0.90): False
+- detrended_edi: 0.2889
+- trend_ratio: 1.000
+- trend_r2: 0.970
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9984
-- CR: 1.0016
+- external: 0.9995
+- CR: 1.0005
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -68,9 +74,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 10.4284
-- rmse_abm_no_ode: 18.1839
-- rmse_ode: 2.7865
+- rmse_abm: 23.8877
+- rmse_abm_no_ode: 33.5944
+- rmse_ode: 9.9870
 - rmse_reduced: 4.5301
 - threshold: 1.4633
 
@@ -85,4 +91,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.3876
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

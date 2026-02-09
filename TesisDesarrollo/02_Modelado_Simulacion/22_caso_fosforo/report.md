@@ -1,6 +1,6 @@
 # Reporte de Validación — Ciclo del Fósforo (Carpenter Biogeoquímico)
 
-- generated_at: 2026-02-09T20:23:46.105118Z
+- generated_at: 2026-02-09T20:55:58.944416Z
 
 ## Fase synthetic
 - **overall_pass**: True
@@ -11,6 +11,9 @@
 - CI 95%: [0.3191, 0.3858]
 - weighted_value (LoE factor 0.60): 0.2072
 - válido (0.30-0.90): True
+- detrended_edi: 0.3453
+- trend_ratio: 1.000
+- trend_r2: 0.960
 
 ### Symploké y CR
 - internal: 0.9999
@@ -44,6 +47,9 @@
 - calibration_rmse: 0.2112
 - ode_rolling: None
 
+### Interpretación
+Los resultados **sugieren** emergencia macro significativa. El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística. No obstante, estos resultados deben interpretarse en el contexto de las limitaciones del proxy utilizado y del nivel de evidencia (LoE) del caso.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +59,9 @@
 - CI 95%: [-3.3267, -2.1635]
 - weighted_value (LoE factor 0.60): -0.6000
 - válido (0.30-0.90): False
+- detrended_edi: -1.0000
+- trend_ratio: 1.000
+- trend_r2: 0.774
 
 ### Symploké y CR
 - internal: 0.9986
@@ -85,4 +94,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.2782
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

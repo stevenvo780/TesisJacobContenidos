@@ -1,6 +1,6 @@
 # Reporte de Validación — Finanzas (SPY)
 
-- generated_at: 2026-02-09T20:23:43.979790Z
+- generated_at: 2026-02-09T20:55:56.832704Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,6 +44,9 @@
 - calibration_rmse: 4.7318
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +56,9 @@
 - CI 95%: [0.0388, 0.0410]
 - weighted_value (LoE factor 1.00): 0.0398
 - válido (0.30-0.90): False
+- detrended_edi: 0.0398
+- trend_ratio: 1.000
+- trend_r2: 0.979
 
 ### Symploké y CR
 - internal: 0.0000
@@ -85,4 +91,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 10.2667
 - ode_rolling: None
+
+### Interpretación
+Los resultados muestran señal de emergencia **suggestive**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
 

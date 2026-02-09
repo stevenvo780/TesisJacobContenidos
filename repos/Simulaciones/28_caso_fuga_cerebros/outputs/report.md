@@ -1,6 +1,6 @@
 # Reporte de Validación — Fuga de Cerebros Global (Docquier-Rapoport)
 
-- generated_at: 2026-02-09T20:23:42.544129Z
+- generated_at: 2026-02-09T20:55:56.187664Z
 
 ## Fase synthetic
 - **overall_pass**: True
@@ -11,6 +11,9 @@
 - CI 95%: [0.6625, 0.8093]
 - weighted_value (LoE factor 0.60): 0.4347
 - válido (0.30-0.90): True
+- detrended_edi: 0.7245
+- trend_ratio: 1.000
+- trend_r2: 0.978
 
 ### Symploké y CR
 - internal: 0.9999
@@ -44,6 +47,9 @@
 - calibration_rmse: 0.2390
 - ode_rolling: None
 
+### Interpretación
+Los resultados **sugieren** emergencia macro significativa. El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística. No obstante, estos resultados deben interpretarse en el contexto de las limitaciones del proxy utilizado y del nivel de evidencia (LoE) del caso.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +59,9 @@
 - CI 95%: [0.0359, 0.2881]
 - weighted_value (LoE factor 0.60): 0.1097
 - válido (0.30-0.90): False
+- detrended_edi: 0.1829
+- trend_ratio: 1.000
+- trend_r2: 0.794
 
 ### Symploké y CR
 - internal: 0.9995
@@ -85,4 +94,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.4387
 - ode_rolling: None
+
+### Interpretación
+Los resultados muestran señal de emergencia **weak**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
 

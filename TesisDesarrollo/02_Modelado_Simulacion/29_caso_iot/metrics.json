@@ -1,8 +1,8 @@
 {
   "case": "Ecosistema IoT Global (Bass-Metcalfe)",
-  "generated_at": "2026-02-09T20:23:43.540775Z",
+  "generated_at": "2026-02-09T20:55:56.652053Z",
   "git": {
-    "commit": "0ea4bf874ef2200062def3c5acdd39093b25f7a0",
+    "commit": "2ecb459af0d2a5563517cd15ae31254f6849680b",
     "dirty": true
   },
   "phases": {
@@ -57,7 +57,13 @@
         "loe_factor": 0.8,
         "permutation_pvalue": 0.0,
         "permutation_null_95": 0.22845299468040361,
-        "permutation_significant": true
+        "permutation_significant": true,
+        "trend_bias": {
+          "detrended_edi": 0.3011,
+          "trend_ratio": 1.0,
+          "trend_r2": 0.898,
+          "warning": false
+        }
       },
       "viscosity": {
         "pass": true,
@@ -207,13 +213,15 @@
             "internet_users",
             "broadband",
             "gdp_pc",
-            "gdp_growth"
+            "gdp_growth",
+            "secure_servers"
           ],
           "weights": [
             0.0,
             1.5228141231910323e-26,
             0.8046829818996777,
-            -0.03379363895114106
+            -0.03379363895114106,
+            -2.7588989341103775e-24
           ],
           "reg": 0.001
         },
@@ -241,7 +249,13 @@
         "loe_factor": 0.8,
         "permutation_pvalue": 0.0,
         "permutation_null_95": 0.015466724576432032,
-        "permutation_significant": true
+        "permutation_significant": true,
+        "trend_bias": {
+          "detrended_edi": 0.0204,
+          "trend_ratio": 1.0,
+          "trend_r2": 0.874,
+          "warning": false
+        }
       },
       "viscosity": {
         "pass": true,

@@ -1,6 +1,6 @@
 # Reporte de Validación — Acidificación Oceánica (CO2SYS + Revelle Factor)
 
-- generated_at: 2026-02-09T20:23:43.268574Z
+- generated_at: 2026-02-09T20:55:56.926114Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,6 +44,9 @@
 - calibration_rmse: 1.3061
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +56,9 @@
 - CI 95%: [-0.0000, -0.0000]
 - weighted_value (LoE factor 0.20): -0.0000
 - válido (0.30-0.90): False
+- detrended_edi: -0.0000
+- trend_ratio: 1.000
+- trend_r2: 0.861
 
 ### Symploké y CR
 - internal: 0.9992
@@ -85,4 +91,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.9496
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

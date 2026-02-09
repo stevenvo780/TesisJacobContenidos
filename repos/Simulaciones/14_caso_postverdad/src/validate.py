@@ -41,7 +41,7 @@ def main():
             "ode_beta": 0.3,
             "ode_gamma": 0.15
         },
-        driver_cols=["mobile_subs"],  # Suscripciones móviles WB
+        driver_cols=["mobile_subs", "literacy"],  # WB: suscripciones móviles + alfabetización
     )
 
     results = run_full_validation(

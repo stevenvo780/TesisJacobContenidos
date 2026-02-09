@@ -1,6 +1,6 @@
 # Reporte de Validación — Urbanización (Bettencourt + Preferential Attachment)
 
-- generated_at: 2026-02-09T20:23:59.650639Z
+- generated_at: 2026-02-09T20:56:11.982958Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -11,6 +11,9 @@
 - CI 95%: [0.0000, 0.0000]
 - weighted_value (LoE factor 0.20): 0.0000
 - válido (0.30-0.90): False
+- detrended_edi: 0.0000
+- trend_ratio: 1.000
+- trend_r2: 0.955
 
 ### Symploké y CR
 - internal: 0.0014
@@ -44,6 +47,9 @@
 - calibration_rmse: 1.1699
 - ode_rolling: None
 
+### Interpretación
+Los resultados muestran señal de emergencia **suggestive**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +59,9 @@
 - CI 95%: [0.0000, 0.0000]
 - weighted_value (LoE factor 0.20): 0.0000
 - válido (0.30-0.90): False
+- detrended_edi: 0.0000
+- trend_ratio: 1.000
+- trend_r2: 0.997
 
 ### Symploké y CR
 - internal: 0.0040
@@ -85,4 +94,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 1.1743
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

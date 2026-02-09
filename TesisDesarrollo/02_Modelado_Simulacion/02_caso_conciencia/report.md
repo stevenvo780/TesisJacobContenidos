@@ -1,6 +1,6 @@
 # Reporte de Validación — Conciencia Colectiva
 
-- generated_at: 2026-02-09T20:23:41.059471Z
+- generated_at: 2026-02-09T20:55:54.411317Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,20 +44,23 @@
 - calibration_rmse: 1.3109
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0361
-- bootstrap_mean: -0.0377
-- CI 95%: [-0.0610, -0.0101]
-- weighted_value (LoE factor 0.20): -0.0072
+- valor: -0.0236
+- bootstrap_mean: -0.0243
+- CI 95%: [-0.0354, -0.0116]
+- weighted_value (LoE factor 0.20): -0.0047
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.7687
-- external: 0.8211
-- CR: 0.9362
+- internal: 0.7449
+- external: 0.8105
+- CR: 0.9190
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -68,21 +71,24 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.7437
-- rmse_abm_no_ode: 0.7177
-- rmse_ode: 1.7348
+- rmse_abm: 0.8034
+- rmse_abm_no_ode: 0.7849
+- rmse_ode: 1.7581
 - rmse_reduced: 1.3440
 - threshold: 0.6211
 
 ### Calibración
-- forcing_scale: 0.4355
-- macro_coupling: 0.0725
-- ode_coupling_strength: 0.0580
+- forcing_scale: 0.3491
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
 - abm_feedback_gamma: 0.0500
-- damping: 0.1736
+- damping: 0.0671
 - ode_alpha: 0.5000
 - ode_beta: 0.8000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.8698
+- calibration_rmse: 0.8711
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

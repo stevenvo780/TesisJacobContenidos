@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: No-Estacionariedad
 
-- generated_at: 2026-02-09T15:23:39.551245
+- generated_at: 2026-02-09T15:55:53.024147
 
 ## Fase real
 - **overall_pass**: False
@@ -11,6 +11,9 @@
 - CI 95%: [-5.6393, -4.1781]
 - weighted_value (LoE factor 0.20): -0.2000
 - válido (0.30-0.90): False
+- detrended_edi: -1.0000
+- trend_ratio: 1.000
+- trend_r2: 0.991
 
 ### Symploké y CR
 - internal: 0.9990
@@ -43,4 +46,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.0000
 - ode_rolling: None
+
+### Interpretación
+Este es un caso de **falsación por diseño**. El rechazo del EDI es el resultado esperado y valida la sensibilidad del protocolo.
 

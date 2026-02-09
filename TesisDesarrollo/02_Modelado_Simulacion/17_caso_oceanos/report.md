@@ -1,6 +1,6 @@
 # Reporte de Validación — Ocean (Stommel + Thermohaline ABM)
 
-- generated_at: 2026-02-09T20:23:45.293068Z
+- generated_at: 2026-02-09T20:55:58.498598Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -11,6 +11,9 @@
 - CI 95%: [0.0940, 0.1308]
 - weighted_value (LoE factor 0.20): 0.0230
 - válido (0.30-0.90): False
+- detrended_edi: 0.1149
+- trend_ratio: 1.000
+- trend_r2: 0.961
 
 ### Symploké y CR
 - internal: 0.9612
@@ -44,6 +47,9 @@
 - calibration_rmse: 2.2767
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +59,9 @@
 - CI 95%: [0.0361, 0.1256]
 - weighted_value (LoE factor 0.20): 0.0107
 - válido (0.30-0.90): False
+- detrended_edi: 0.0534
+- trend_ratio: 1.000
+- trend_r2: 0.615
 
 ### Symploké y CR
 - internal: 0.9186
@@ -85,4 +94,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 2.5036
 - ode_rolling: None
+
+### Interpretación
+Los resultados muestran señal de emergencia **suggestive**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
 

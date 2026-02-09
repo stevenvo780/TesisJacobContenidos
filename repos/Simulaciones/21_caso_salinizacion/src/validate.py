@@ -77,6 +77,10 @@ def main():
             "forcing_scale": 0.10,   # Sensibilidad ABM a driver externo
             "macro_coupling": 0.35,  # Acoplamiento macro→micro (moderado-alto)
         },
+        # Freshwater withdrawal (WB ER.H2O.FWTL.ZS) como driver multivariado:
+        #   Qadir et al. (2014): extracción de agua es correlato directo de
+        #   salinización secundaria por riego excesivo.
+        driver_cols=["freshwater_withdrawal"],
     )
 
     results = run_full_validation(

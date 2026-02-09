@@ -17,11 +17,11 @@
 | 13_caso_politicas_estrategicas | 0.021 | -1.626 | False | `13_caso_politicas_estrategicas/report.md` |
 | 14_caso_postverdad | 0.003 | 1.054 | False | `14_caso_postverdad/report.md` |
 | 15_caso_wikipedia | 0.000 | -1.158 | False | `15_caso_wikipedia/report.md` |
-| 16_caso_deforestacion | 0.879 | 1.017 | False | `16_caso_deforestacion/report.md` |
+| 16_caso_deforestacion | 0.879 | 1.017 | True | `16_caso_deforestacion/report.md` |
 | 17_caso_oceanos | 0.058 | -1.334 | False | `17_caso_oceanos/report.md` |
 | 18_caso_urbanizacion | -0.001 | -30.069 | False | `18_caso_urbanizacion/report.md` |
 | 19_caso_acidificacion_oceanica | -0.021 | 1.211 | False | `19_caso_acidificacion_oceanica/report.md` |
-| 20_caso_kessler | -0.238 | 1.198 | False | `20_caso_kessler/report.md` |
+| 20_caso_kessler | -0.351 | 1.204 | False | `20_caso_kessler/report.md` |
 | 21_caso_salinizacion | 0.396 | 1.047 | False | `21_caso_salinizacion/report.md` |
 | 22_caso_fosforo | 0.481 | 1.065 | False | `22_caso_fosforo/report.md` |
 | 23_caso_erosion_dialectica | 0.747 | 1.000 | False | `23_caso_erosion_dialectica/report.md` |

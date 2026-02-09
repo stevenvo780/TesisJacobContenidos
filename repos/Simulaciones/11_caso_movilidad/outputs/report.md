@@ -1,6 +1,6 @@
 # Reporte de Validación — Movilidad Urbana (Traffic)
 
-- generated_at: 2026-02-09T20:24:47.853211Z
+- generated_at: 2026-02-09T20:56:59.394622Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,14 +44,17 @@
 - calibration_rmse: 93.3991
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0067
-- bootstrap_mean: 0.0065
-- CI 95%: [-0.0051, 0.0191]
-- weighted_value (LoE factor 0.20): 0.0013
+- valor: 0.0033
+- bootstrap_mean: 0.0032
+- CI 95%: [-0.0045, 0.0118]
+- weighted_value (LoE factor 0.20): 0.0007
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -68,21 +71,24 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 177.6707
-- rmse_abm_no_ode: 178.8619
-- rmse_ode: 9.9827
+- rmse_abm: 183.4348
+- rmse_abm_no_ode: 184.0497
+- rmse_ode: 10.0609
 - rmse_reduced: 85.8555
 - threshold: 1.8501
 
 ### Calibración
-- forcing_scale: 0.1434
-- macro_coupling: 0.1451
-- ode_coupling_strength: 0.1161
+- forcing_scale: 0.1725
+- macro_coupling: 0.1178
+- ode_coupling_strength: 0.0943
 - abm_feedback_gamma: 0.0500
-- damping: 0.0291
-- ode_alpha: 0.0910
-- ode_beta: 0.7528
+- damping: 0.0039
+- ode_alpha: 0.0989
+- ode_beta: 0.7941
 - assimilation_strength: 0.0000
-- calibration_rmse: 88.9972
+- calibration_rmse: 90.2730
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

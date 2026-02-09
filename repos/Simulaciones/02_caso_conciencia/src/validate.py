@@ -83,7 +83,9 @@ def main():
         # Tasa de suicidio (World Bank) como proxy de malestar social.
         # Justificación: Durkheim (1897) establece la tasa de suicidio como
         # indicador sociológico clásico de cohesión/anomia social.
-        driver_cols=["suicide_rate"],
+        # Tasa de suicidio (Durkheim 1897) + matrícula terciaria (proxy de
+        # participación cognitiva colectiva, Habermas 1981: esfera pública).
+        driver_cols=["suicide_rate", "tertiary_enrollment"],
     )
 
     results = run_full_validation(

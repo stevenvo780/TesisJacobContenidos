@@ -83,6 +83,9 @@ def main():
             "forcing_scale": 0.15,   # Sensibilidad ABM a driver mediático
             "macro_coupling": 0.30,  # Acoplamiento macro→micro moderado
         },
+        # Alfabetización (WB) como proxy inverso de presión erosiva:
+        #   Crystal (2000): mayor literacy → menor pérdida dialectal
+        driver_cols=["literacy"],
     )
 
     results = run_full_validation(

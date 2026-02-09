@@ -1,6 +1,6 @@
 # Reporte de Validación — Depleción de Acuíferos (Darcy-Theis)
 
-- generated_at: 2026-02-09T20:23:53.773081Z
+- generated_at: 2026-02-09T20:56:06.780130Z
 
 ## Fase synthetic
 - **overall_pass**: True
@@ -44,6 +44,9 @@
 - calibration_rmse: 0.1401
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +56,9 @@
 - CI 95%: [-0.1938, -0.1629]
 - weighted_value (LoE factor 0.60): -0.1073
 - válido (0.30-0.90): False
+- detrended_edi: -0.1788
+- trend_ratio: 1.000
+- trend_r2: 0.984
 
 ### Symploké y CR
 - internal: 0.9999
@@ -85,4 +91,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.5410
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

@@ -30,7 +30,7 @@ def main():
             "ode_alpha": 1.0,
             "ode_beta": 1.0
         },
-        driver_cols=["journal_articles"],  # Publicaciones científicas WB
+        driver_cols=["journal_articles", "patent_residents"],  # WB: publicaciones + patentes
     )
 
     results = run_full_validation(

@@ -81,7 +81,9 @@ def main():
             "forcing_scale": 0.12,   # Sensibilidad ABM a precipitación
             "macro_coupling": 0.28,  # Acoplamiento macro→micro
         },
-        driver_cols=["grace_gws", "precip", "extraction_usgs", "withdrawal"],
+        # grace_gws se usa como 'value' principal (se renombra en data.py).
+        # Solo declarar columnas que persisten como driver (no como target).
+        driver_cols=["precip", "extraction_usgs", "withdrawal"],
     )
 
     results = run_full_validation(

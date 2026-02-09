@@ -82,7 +82,7 @@ def main():
             "forcing_scale": 0.10,   # Sensibilidad ABM a driver externo
             "macro_coupling": 0.25,  # Acoplamiento macro→micro
         },
-        driver_cols=["mismanaged_waste", "river_discharge"],
+        driver_cols=["mismanaged_waste", "river_discharge", "mismanaged_share"],  # +share proxy
     )
 
     results = run_full_validation(

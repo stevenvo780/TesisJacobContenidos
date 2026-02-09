@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: Exogeneidad
 
-- generated_at: 2026-02-09T15:23:43.261061
+- generated_at: 2026-02-09T15:55:56.245617
 
 ## Fase real
 - **overall_pass**: False
@@ -43,4 +43,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.0000
 - ode_rolling: None
+
+### Interpretación
+Este es un caso de **falsación por diseño**. El rechazo del EDI es el resultado esperado y valida la sensibilidad del protocolo.
 

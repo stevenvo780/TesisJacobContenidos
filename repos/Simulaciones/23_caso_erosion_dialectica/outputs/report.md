@@ -1,6 +1,6 @@
 # Reporte de Validación — Erosión Dialéctica (Abrams-Strogatz)
 
-- generated_at: 2026-02-09T20:23:52.022546Z
+- generated_at: 2026-02-09T20:56:04.886894Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -11,6 +11,9 @@
 - CI 95%: [0.0460, 0.0484]
 - weighted_value (LoE factor 0.60): 0.0283
 - válido (0.30-0.90): False
+- detrended_edi: 0.0471
+- trend_ratio: 1.000
+- trend_r2: 0.990
 
 ### Symploké y CR
 - internal: 1.0000
@@ -44,45 +47,54 @@
 - calibration_rmse: 0.1941
 - ode_rolling: None
 
+### Interpretación
+Los resultados muestran señal de emergencia **suggestive**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
+
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
 - valor: -1.0000
-- bootstrap_mean: -2.8639
-- CI 95%: [-4.7327, -1.8798]
+- bootstrap_mean: -3.8504
+- CI 95%: [-4.3526, -3.2359]
 - weighted_value (LoE factor 0.60): -0.6000
 - válido (0.30-0.90): False
+- detrended_edi: -1.0000
+- trend_ratio: 1.000
+- trend_r2: 0.988
 
 ### Symploké y CR
-- internal: 0.9963
-- external: 0.9961
-- CR: 1.0002
+- internal: 0.9975
+- external: 0.9968
+- CR: 1.0007
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.6173
-- rmse_abm_no_ode: 0.1672
-- rmse_ode: 3.5265
+- rmse_abm: 0.9831
+- rmse_abm_no_ode: 0.2030
+- rmse_ode: 3.6060
 - rmse_reduced: 2.4425
 - threshold: 0.3672
 
 ### Calibración
-- forcing_scale: 0.9342
+- forcing_scale: 0.9900
 - macro_coupling: 0.5000
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.9500
+- damping: 0.6882
 - ode_alpha: 0.0010
-- ode_beta: 0.0010
+- ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1547
+- calibration_rmse: 0.1477
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

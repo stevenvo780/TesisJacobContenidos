@@ -1,6 +1,6 @@
 # Reporte de Validación — Constelaciones Satelitales Starlink (Mega-Constellation)
 
-- generated_at: 2026-02-09T20:24:05.722099Z
+- generated_at: 2026-02-09T20:56:18.286619Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -44,6 +44,9 @@
 - calibration_rmse: 0.3349
 - ode_rolling: None
 
+### Interpretación
+Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+
 ## Fase real
 - **overall_pass**: False
 
@@ -53,6 +56,9 @@
 - CI 95%: [-587.7953, -456.5154]
 - weighted_value (LoE factor 0.80): -0.8000
 - válido (0.30-0.90): False
+- detrended_edi: -1.0000
+- trend_ratio: 1.000
+- trend_r2: 1.000
 
 ### Symploké y CR
 - internal: 0.9865
@@ -85,4 +91,7 @@
 - assimilation_strength: 0.0000
 - calibration_rmse: 0.0002
 - ode_rolling: None
+
+### Interpretación
+Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
 

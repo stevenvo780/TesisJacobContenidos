@@ -96,7 +96,7 @@ def main():
             "forcing_scale": 0.15,   # Sensibilidad ABM a driver económico
             "macro_coupling": 0.40,  # Acoplamiento macro→micro alto
         },
-        driver_cols=["internet_users", "broadband", "gdp_pc", "gdp_growth"],
+        driver_cols=["internet_users", "broadband", "gdp_pc", "gdp_growth", "secure_servers"],
     )
 
     results = run_full_validation(
