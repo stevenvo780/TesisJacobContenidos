@@ -1,6 +1,6 @@
 # Reporte de Validación — Clima Regional (CONUS)
 
-- generated_at: 2026-02-09T03:40:01.127643Z
+- generated_at: 2026-02-09T03:48:08.000225Z
 
 ## Fase synthetic
 - **overall_pass**: False
