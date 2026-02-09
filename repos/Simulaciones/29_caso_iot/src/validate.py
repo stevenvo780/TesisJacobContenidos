@@ -88,9 +88,8 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_metcalfe": 0.015,   # Bilineal: efecto red × adopción
-            "forcing_scale": 0.10,
-            "macro_coupling": 0.35,
+            "forcing_scale": 0.12,
+            "macro_coupling": 0.45,
         },
         driver_cols=["internet_users", "broadband", "gdp_pc", "gdp_growth"],
     )

@@ -71,9 +71,8 @@ def main():
         n_runs=7,
         ode_calibration=True,
         extra_base_params={
-            "ode_gamma": 0.01,       # Bilineal saturada: zoonótica × riesgo
-            "forcing_scale": 0.10,
-            "macro_coupling": 0.40,
+            "forcing_scale": 0.12,
+            "macro_coupling": 0.45,
         },
     )
 

@@ -38,16 +38,13 @@ def simulate_ode(params, steps, seed=42):
     """
     Bass Diffusion simplificado operando en espacio Z.
 
-    Usa alpha*(f - beta*N) como core tracking (calibrado por hybrid_validator)
-    con corrección de saturación suave (Metcalfe).
+    Usa alpha*(f - beta*N) como core tracking (calibrado por hybrid_validator).
     """
     rng = np.random.default_rng(seed)
 
     # Core tracking (calibrado por hybrid_validator)
     alpha = float(params.get("ode_alpha", 0.10))
     beta = float(params.get("ode_beta", 0.02))
-    # Domain: saturación por efecto red (cuadrático suave)
-    metcalfe = float(params.get("ode_metcalfe", 0.003))
     noise_std = float(params.get("ode_noise", 0.03))
 
     # Forcing
@@ -68,11 +65,8 @@ def simulate_ode(params, steps, seed=42):
     for t in range(steps):
         f = forcing[t] if t < len(forcing) else 0.0
 
-        # Core: mean-reversion tracking hacia forcing (espacio Z)
-        core = alpha * (f - beta * N)
-        # Bilineal: efecto red × adopción (Metcalfe)
-        bilinear = metcalfe * f * N
-        dN = core + bilinear + rng.normal(0, noise_std)
+        # Core puro: mean-reversion tracking hacia forcing (espacio Z)
+        dN = alpha * (f - beta * N) + rng.normal(0, noise_std)
 
         N += dN
         N = np.clip(N, -10.0, 10.0)
