@@ -9,14 +9,107 @@
 
 ## Tabla de Contenidos
 
-1. [00 Marco Conceptual](#00-marco-conceptual)
-2. [01 Metodología de Medición](#01-metodología-de-medición)
-3. [02 Modelado y Simulación](#02-modelado-y-simulación)
-4. [03 Validación y Praxis](#03-validación-y-praxis)
-5. [04 Casos de Estudio (29 Casos)](#04-casos-de-estudio-29-casos)
-6. [Anexos](#anexos)
-7. [Resumen de Simulaciones](#resumen-de-simulaciones)
-
+- [00 Marco Conceptual](#00-marco-conceptual)
+  - [Propósito](#propósito)
+  - [Postura Filosófica: Irrealismo Operativo](#postura-filosófica-irrealismo-operativo)
+    - [El problema pre-ontológico](#el-problema-pre-ontológico)
+    - [Fundamentos del irrealismo](#fundamentos-del-irrealismo)
+    - [Consecuencia central](#consecuencia-central)
+  - [Emergentismo Gradual con Niveles](#emergentismo-gradual-con-niveles)
+    - [Anclaje teórico](#anclaje-teórico)
+  - [Hipótesis Central (H1)](#hipótesis-central-h1)
+    - [La analogía del ribosoma](#la-analogía-del-ribosoma)
+    - [Condición de "hiperobjeto con límites"](#condición-de-hiperobjeto-con-límites)
+  - [Relación con Morton y la Tradición OOO](#relación-con-morton-y-la-tradición-ooo)
+  - [Posición frente a la causalidad descendente](#posición-frente-a-la-causalidad-descendente)
+  - [Presupuestos Filosóficos](#presupuestos-filosóficos)
+  - [Axiomas Operativos del Modelado Híbrido](#axiomas-operativos-del-modelado-híbrido)
+  - [Interpretación de Resultados (No Forzar el Marco)](#interpretación-de-resultados-no-forzar-el-marco)
+  - [Delimitación del Objeto de Estudio](#delimitación-del-objeto-de-estudio)
+  - [Evidencia de Ablación Parcial (Refutación de Tautología)](#evidencia-de-ablación-parcial-refutación-de-tautología)
+  - [Extensión: Topologías Heterogéneas (Fase 9)](#extensión-topologías-heterogéneas-fase-9)
+  - [Glosario Operativo](#glosario-operativo)
+  - [Dialéctica y Límites](#dialéctica-y-límites)
+  - [Riesgos y Mitigación](#riesgos-y-mitigación)
+  - [Mapa de la Tesis](#mapa-de-la-tesis)
+  - [Dependencias Teóricas (Resumen)](#dependencias-teóricas-resumen)
+  - [Bibliografía Nuclear (37 fuentes)](#bibliografía-nuclear-37-fuentes)
+  - [Fuentes de Datos (Repositorios Principales)](#fuentes-de-datos-repositorios-principales)
+  - [Apéndice de Autoría IA](#apéndice-de-autoría-ia)
+  - [Síntesis](#síntesis)
+- [01 Metodología de Medición](#01-metodología-de-medición)
+  - [Protocolo de Rigor (C1-C5)](#protocolo-de-rigor-c1-c5)
+  - [Pipeline de Validación](#pipeline-de-validación)
+  - [Métricas y su Interpretación bajo Irrealismo Operativo](#métricas-y-su-interpretación-bajo-irrealismo-operativo)
+    - [EDI (Effective Dependence Index)](#edi-effective-dependence-index)
+    - [Regla de Descuento por Nivel de Evidencia (LoE)](#regla-de-descuento-por-nivel-de-evidencia-loe)
+  - [Niveles de Evidencia (LoE)](#niveles-de-evidencia-loe)
+  - [Reglas de Clasificación](#reglas-de-clasificación)
+  - [EI (Información Efectiva) — Indicador Complementario](#ei-información-efectiva-indicador-complementario)
+  - [Reproducibilidad](#reproducibilidad)
+  - [Validez y Límites](#validez-y-límites)
+  - [Datos e Instrumentos](#datos-e-instrumentos)
+  - [Gobernanza de Datos](#gobernanza-de-datos)
+  - [Casos Piloto](#casos-piloto)
+  - [Síntesis](#síntesis)
+- [02 Modelado y Simulación](#02-modelado-y-simulación)
+  - [Arquitectura Detallada del Motor Híbrido](#arquitectura-detallada-del-motor-híbrido)
+    - [Pseudocódigo de la Lógica de Acoplamiento:](#pseudocódigo-de-la-lógica-de-acoplamiento)
+  - [Rol Instrumental de la ODE: Sonda Operativa](#rol-instrumental-de-la-ode-sonda-operativa)
+  - [Implementación de los 29 Casos](#implementación-de-los-29-casos)
+    - [Protocolo de Simulación](#protocolo-de-simulación)
+  - [Criterios Técnicos de Clasificación](#criterios-técnicos-de-clasificación)
+  - [Trazabilidad y Resultados](#trazabilidad-y-resultados)
+    - [Regla Operacional: Divergencia EDI/CR](#regla-operacional-divergencia-edicr)
+  - [Auditoría de Consistencia](#auditoría-de-consistencia)
+- [03 Validación y Praxis](#03-validación-y-praxis)
+  - [Enfoque de Clasificación Operativa](#enfoque-de-clasificación-operativa)
+  - [Umbrales de Clasificación (no de rechazo)](#umbrales-de-clasificación-no-de-rechazo)
+  - [Resultados Consolidados (29 Casos — Protocolo Completo)](#resultados-consolidados-29-casos-protocolo-completo)
+    - [Taxonomía de Emergencia con Niveles Operativos](#taxonomía-de-emergencia-con-niveles-operativos)
+    - [Clasificación por Resultado](#clasificación-por-resultado)
+      - [Nivel 4 — Cierre Operativo Fuerte (overall_pass=True)](#nivel-4-cierre-operativo-fuerte-overall_passtrue)
+      - [Nivel 3 — Componente Funcional](#nivel-3-componente-funcional)
+      - [Nivel 2 — Señal Sugestiva](#nivel-2-señal-sugestiva)
+      - [Nivel 1 — Tendencia no Significativa](#nivel-1-tendencia-no-significativa)
+      - [Nivel 0 — Sin Señal Operativa (13 Casos)](#nivel-0-sin-señal-operativa-13-casos)
+      - [Controles de Falsación (3/3 Correctos)](#controles-de-falsación-33-correctos)
+    - [Métricas Globales de Robustez](#métricas-globales-de-robustez)
+  - [Análisis de Selectividad](#análisis-de-selectividad)
+    - [Distribución del paisaje (26 casos genuinos)](#distribución-del-paisaje-26-casos-genuinos)
+    - [Diversidad de Dominios](#diversidad-de-dominios)
+    - [El Patrón de la Inercia Material](#el-patrón-de-la-inercia-material)
+    - [Diagnóstico: ¿Por Qué la Mayoría se Clasifica en Nivel 0-1?](#diagnóstico-por-qué-la-mayoría-se-clasifica-en-nivel-0-1)
+  - [Diálogo Dialéctico y Falsación del Instrumento](#diálogo-dialéctico-y-falsación-del-instrumento)
+    - [1. El Caso Clima (EDI=0.010 vs Umbral 0.30)](#1-el-caso-clima-edi0010-vs-umbral-030)
+    - [2. Información Efectiva (EI) y sus Limitaciones](#2-información-efectiva-ei-y-sus-limitaciones)
+    - [3. Resolución 20×20 (400 agentes)](#3-resolución-2020-400-agentes)
+    - [4. Circularidad en la Calibración](#4-circularidad-en-la-calibración)
+  - [Conclusiones](#conclusiones)
+    - [Resultado principal: Paisaje de Emergencia Operativa completamente mapeado](#resultado-principal-paisaje-de-emergencia-operativa-completamente-mapeado)
+    - [Valor epistemológico bajo irrealismo operativo](#valor-epistemológico-bajo-irrealismo-operativo)
+    - [H1 — Hipótesis Central](#h1-hipótesis-central)
+- [04 Casos de Estudio (29 Casos)](#04-casos-de-estudio-29-casos)
+  - [Paisaje de Emergencia Operativa](#paisaje-de-emergencia-operativa)
+  - [1. Casos de Cierre Operativo Fuerte (Nivel 4)](#1-casos-de-cierre-operativo-fuerte-nivel-4)
+  - [2. Componente Funcional y Señales Sugestivas (Niveles 2-3)](#2-componente-funcional-y-señales-sugestivas-niveles-2-3)
+  - [3. Otros Fenómenos del Paisaje (Niveles 0-1)](#3-otros-fenómenos-del-paisaje-niveles-0-1)
+  - [4. Controles de Falsación (3/3 Correctos)](#4-controles-de-falsación-33-correctos)
+  - [5. Casos Removidos (Archivo)](#5-casos-removidos-archivo)
+  - [Conclusión: El Paisaje como Resultado Principal](#conclusión-el-paisaje-como-resultado-principal)
+- [Anexos](#anexos)
+  - [00_Marco_Conceptual](#00_marco_conceptual)
+  - [01_Metodologia_Medicion](#01_metodologia_medicion)
+  - [02_Modelado_Simulacion](#02_modelado_simulacion)
+  - [03_Validacion_Praxis](#03_validacion_praxis)
+  - [04_Casos_De_Estudio](#04_casos_de_estudio)
+- [Indice: EjersiciosCriticos](#indice-ejersicioscriticos)
+- [Registros historicos](#registros-historicos)
+  - [registro_racionalizacion_glosarios_casos.md](#registro_racionalizacion_glosarios_casosmd)
+  - [registro_resecuencia_indices.md](#registro_resecuencia_indicesmd)
+- [Resumen de Simulaciones](#resumen-de-simulaciones)
+  - [Matriz de Clasificación Operativa (29 casos × 11 criterios + Nivel)](#matriz-de-clasificación-operativa-29-casos-11-criterios-nivel)
+  - [Distribución de Modos de Fallo](#distribución-de-modos-de-fallo)
 
 ---
 
@@ -381,21 +474,17 @@ class HybridModel:
 
 ## Rol Instrumental de la ODE: Sonda Operativa
 
-La ODE no es la representación del hiperobjeto. Es una **sonda operativa**: un instrumento que genera una señal macro candidata para probar si la dinámica micro responde a constricciones de ese nivel. La ODE es al constructo macro lo que el acelerador de partículas es al bosón de Higgs: no es la entidad, es la herramienta que revela el efecto.
+La ODE no es la representación del hiperobjeto. Es una **sonda operativa**: un instrumento que genera una señal macro candidata para probar si la dinámica micro responde a constricciones de ese nivel. Bajo irrealismo operativo, lo que se mide no es "existencia" sino **grado de cierre operativo**. Si la eliminación de la constricción macro (ablación: forcing_scale=0, macro_coupling=0) degrada la predicción micro (EDI > 0.30), el constructo macro es operativamente indispensable.
 
-Bajo irrealismo operativo, lo que se mide no es "existencia" sino **grado de cierre operativo**. Si la eliminación de la constricción macro (ablación: forcing_scale=0, macro_coupling=0) degrada la predicción micro (EDI > 0.30), el constructo macro es operativamente indispensable. La ODE es un modelo auxiliar cuya función es:
+La ODE es un modelo auxiliar cuya función es:
 1. Generar la señal macro que alimenta al ABM (como condición de contorno).
 2. Permitir la comparación ABM_completo vs ABM_reducido (el EDI no mide calidad de la ODE).
 3. Servir de benchmark para evaluar la coherencia macro-micro (correlación ODE-ABM).
 
-Esta distinción resuelve la objeción "Phantom ODE" (Gladiadores R15): una ODE con correlación baja puede coexistir con un EDI positivo porque lo que el EDI mide es la diferencia entre ABM con y sin constricción macro, no la calidad de la ODE como predictor independiente.
+Esta distinción resuelve la objeción "Phantom ODE": una ODE con correlación baja puede coexistir con un EDI positivo porque lo que el EDI mide es la diferencia entre ABM con y sin constricción macro, no la calidad de la ODE como predictor independiente.
 
-## Arquitectura y Ejecución de los 29 Casos
-La arquitectura actual del proyecto integra **29 motores de simulación completamente funcionales** y ejecutables. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas.
-
-Esta infraestructura permite una reproducibilidad total del EDI y CR reportados, eliminando la dependencia de métricas pre-generadas. El sistema utiliza datos reales de fuentes como World Bank, Meteostat, Yahoo Finance, OWID, OPSD, Wikimedia, CelesTrak y yfinance para los casos de alta fidelidad, y generadores estocásticos controlados para los casos de falsación. Los casos 19-29 amplían la cobertura a dominios como acidificación oceánica, uso de fósforo, acuíferos, conectividad digital (IoT/Starlink), capital intelectual, erosión discursiva, microplásticos, basura espacial y riesgo biológico.
-
-> **Nota:** Tres casos originales (Estética Global, Moderación Adversarial, RTB Publicidad) fueron removidos por inviabilidad de datos reales. Los 29 casos restantes constituyen el universo oficial de la tesis.
+## Implementación de los 29 Casos
+La arquitectura actual integra **29 motores de simulación completamente funcionales**. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas. Se utilizan datos reales de fuentes como World Bank, Meteostat, Yahoo Finance, OWID, Wikimedia y CelesTrak.
 
 ### Protocolo de Simulación
 - **Fase sintética:** calibración interna y verificación lógica.
@@ -403,77 +492,26 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 - **Zero-Nudging:** En la versión final, la evaluación se realiza sin nudging (`assimilation_strength=0.0`) para medir el cierre operativo puro del acoplamiento macro.
 
 ## Criterios Técnicos de Clasificación
-- **EDI ≥ 0.30:** condición necesaria para Nivel 4 (cierre operativo fuerte).
-- **Permutation test (p<0.05):** significancia estadística del EDI contra distribución nula (999 permutaciones, seed=42).
-- **Bias Correction:** transformación afín condicional del target ODE para eliminar sesgo de nivel/escala.
-- **CR > 2.0:** indicador complementario de frontera sistémica (no condición de clasificación).
-- **C1-C5:** Protocolo de rigor aplicado a la convergencia, robustez, replicación, validez y gestión de incertidumbre.
-- **overall_pass:** 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento ≥ 0.1, no-fraude RMSE).
-- **C1 v2.0:** Criterio relativo (acoplado mejor que reducido) OR absoluto relajado (RMSE < 2·obs_std, corr > 0.3). Anterior v1.0 era demasiado estricto (RMSE < obs_std, corr > 0.7).
-- **emergence_taxonomy:** Clasificación diferenciada en 6 niveles: strong, weak, suggestive, trend, null, falsification.
-- **noise_sensitivity:** Test de estabilidad del EDI bajo perturbaciones de ruido (CV < 0.5).
+- **EDI ≥ 0.30:** Nivel 4 (cierre operativo fuerte).
+- **Permutation test (p<0.05):** significancia estadística (999 permutaciones).
+- **Bias Correction:** transformación afín condicional del target ODE para eliminar sesgo.
+- **CR > 2.0:** indicador complementario de frontera sistémica.
+- **overall_pass:** 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude).
 
-## Resultados Consolidados (Matriz de Clasificación Operativa)
+## Trazabilidad y Resultados
+Los resultados detallados de la ejecución de estos 29 casos se consolidan exclusivamente en la sección **03 Validación y Praxis**. La arquitectura permite una trazabilidad total: cada simulación genera un archivo `metrics.json` con el timestamp y el hash del commit.
 
-| Caso | EDI | p-perm | sig | CR | Cat | Nivel | Reporte |
-| :--- | ---: | ---: | :---: | ---: | :--- | :---: | :--- |
-| 01_caso_clima | 0.010 | 0.591 | ❌ | 1.000 | trend | 1 | `01_caso_clima/report.md` |
-| 02_caso_conciencia | -0.024 | 0.938 | ❌ | 0.919 | null | 0 | `02_caso_conciencia/report.md` |
-| 03_caso_contaminacion | -0.000 | 0.474 | ❌ | 2.780 | null | 0 | `03_caso_contaminacion/report.md` |
-| 04_caso_energia | -0.003 | 0.937 | ❌ | 1.096 | null | 0 | `04_caso_energia/report.md` |
-| 05_caso_epidemiologia | 0.000 | 1.000 | ❌ | 0.000 | null | 0 | `05_caso_epidemiologia/report.md` |
-| 06_caso_falsacion_exogeneidad | 0.055 | 1.000 | ❌ | 1.006 | falsification | — | `06_caso_falsacion_exogeneidad/report.md` |
-| 07_caso_falsacion_no_estacionariedad | -1.000 | 1.000 | ❌ | 1.004 | falsification | — | `07_caso_falsacion_no_estacionariedad/report.md` |
-| 08_caso_falsacion_observabilidad | -1.000 | 1.000 | ❌ | 1.005 | falsification | — | `08_caso_falsacion_observabilidad/report.md` |
-| 09_caso_finanzas | 0.040 | 0.000 | ✅ | 0.000 | suggestive | 2 | `09_caso_finanzas/report.md` |
-| 10_caso_justicia | 0.000 | 1.000 | ❌ | 1.053 | null | 0 | `10_caso_justicia/report.md` |
-| 11_caso_movilidad | 0.003 | 0.361 | ❌ | 0.000 | trend | 1 | `11_caso_movilidad/report.md` |
-| 12_caso_paradigmas | 0.000 | 1.000 | ❌ | 0.000 | null | 0 | `12_caso_paradigmas/report.md` |
-| 13_caso_politicas_estrategicas | 0.011 | 0.719 | ❌ | 1.626 | trend | 1 | `13_caso_politicas_estrategicas/report.md` |
-| 14_caso_postverdad | 0.001 | 0.030 | ❌ | 1.054 | trend | 1 | `14_caso_postverdad/report.md` |
-| 15_caso_wikipedia | 0.000 | 1.000 | ❌ | 1.158 | null | 0 | `15_caso_wikipedia/report.md` |
-| 16_caso_deforestacion | 0.633 | 0.000 | ✅ | 1.017 | strong | 4 | `16_caso_deforestacion/report.md` |
-| 17_caso_oceanos | 0.053 | 0.000 | ✅ | 1.334 | suggestive | 2 | `17_caso_oceanos/report.md` |
-| 18_caso_urbanizacion | 0.000 | 0.220 | ❌ | 30.069 | trend | 1 | `18_caso_urbanizacion/report.md` |
-| 19_caso_acidificacion_oceanica | -0.000 | 0.000 | ❌ | 1.211 | null | 0 | `19_caso_acidificacion_oceanica/report.md` |
-| 20_caso_kessler | -0.420 | 1.000 | ❌ | 1.204 | null | 0 | `20_caso_kessler/report.md` |
-| 21_caso_salinizacion | 0.027 | 0.724 | ❌ | ∞ | trend | 1 | `21_caso_salinizacion/report.md` |
-| 22_caso_fosforo | -1.000 | 1.000 | ❌ | 1.065 | null | 0 | `22_caso_fosforo/report.md` |
-| 23_caso_erosion_dialectica | -1.000 | 1.000 | ❌ | 1.001 | null | 0 | `23_caso_erosion_dialectica/report.md` |
-| 24_caso_microplasticos | 0.427 | 0.000 | ✅ | 1.002 | strong | 4 | `24_caso_microplasticos/report.md` |
-| 25_caso_acuiferos | -0.179 | 1.000 | ❌ | 1.001 | null | 0 | `25_caso_acuiferos/report.md` |
-| 26_caso_starlink | -1.000 | 1.000 | ❌ | ∞ | null | 0 | `26_caso_starlink/report.md` |
-| 27_caso_riesgo_biologico | 0.105 | 0.365 | ❌ | 1.002 | trend | 1 | `27_caso_riesgo_biologico/report.md` |
-| 28_caso_fuga_cerebros | 0.183 | 0.001 | ✅ | 1.008 | weak | 3 | `28_caso_fuga_cerebros/report.md` |
-| 29_caso_iot | 0.020 | 0.000 | ✅ | 1.053 | suggestive | 2 | `29_caso_iot/report.md` |
-
-Para recalcular este reporte de forma automatica, usar:
-`python3 scripts/actualizar_tablas_002.py`
-## Análisis del Paisaje de Emergencia
-
-Los 29 casos demuestran que el modelo híbrido funciona como **instrumento de clasificación operativa**: posiciona fenómenos en un gradiente de cierre operativo sin pronunciarse sobre su estatuto ontológico.
-
-## Resultados y Trazabilidad
-
-Los resultados detallados de la ejecución de estos 29 casos, incluyendo las métricas de EDI, CR, p-valores y la clasificación en el paisaje de emergencia, se consolidan exclusivamente en la sección **03 Validación y Praxis**. La arquitectura del motor híbrido permite una trazabilidad total: cada simulación genera un archivo `metrics.json` con el timestamp de ejecución y el hash del commit correspondiente.
-
-Para recalcular el reporte completo de forma automática, se utiliza el script de auditoría:
+Para recalcular el reporte completo:
 `python3 repos/scripts/actualizar_tablas_002.py`
 
 ### Regla Operacional: Divergencia EDI/CR
-
-El CR (Cohesion Ratio = internal/external) es un indicador complementario de frontera, no una condición de clasificación. La clasificación se define exclusivamente por EDI + C1-C5. El CR informa sobre la topología del acoplamiento. CR ≈ 1.0 es la predicción teórica para agentes acoplados en sistemas con simetría translacional y difusión isotrópica (Haken, 1983, §4.3).
-
-> La bitácora detallada de correcciones (C5), defensas técnicas ante vectores de ataque, y limitaciones del marco de Hoel se documenta en `TesisFinal/documentacion_procedimental.md`.
+El CR (Cohesion Ratio) es un indicador complementario de frontera. CR ≈ 1.0 es la predicción teórica para agentes acoplados en sistemas con simetría translacional y difusión isotrópica (Haken, 1983).
 
 ## Auditoría de Consistencia
-
 Para auditar la consistencia estructural de los casos, ejecutar:
 ```bash
 python3 repos/scripts/tesis.py audit
 ```
-
-Este comando verifica presencia de archivos requeridos, sincronización de timestamps, y rangos válidos de métricas (EDI, CR).
 
 ---
 

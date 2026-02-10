@@ -199,37 +199,91 @@ def effective_information(obs, full_pred, reduced_pred):
 # ─── Cohesión y Symploké ─────────────────────────────────────────────────────
 
 def internal_vs_external_cohesion(grid_series, forcing_series):
-    """Cohesión interna vs externa — vectorizada con NumPy."""
+    """
+    Cohesión interna vs externa — TOTALMENTE VECTORIZADA.
+    
+    Reemplaza el doble for loop O(n²) con operaciones de np.roll
+    para construir vecindarios y correlaciones matriciales masivas.
+    Para grid_size=50 esto computa 2500 correlaciones en un solo paso.
+    """
     steps = len(grid_series)
     if steps == 0:
         return 0.0, 0.0
     n = len(grid_series[0])
 
-    # Convertir a array 3D: (steps, n, n)
-    gs = np.array(grid_series, dtype=np.float64)  # (T, N, N)
+    # Array 3D: (T, N, N)
+    gs = np.array(grid_series, dtype=np.float64)
     fs_arr = np.asarray(forcing_series[:steps], dtype=np.float64) if len(forcing_series) >= steps else None
 
-    # Cada celda es una serie temporal: gs[:, i, j] shape (T,)
-    # Vecinos: usar roll + máscara de bordes
-    int_corrs = []
-    ext_corrs = []
-
-    for i in range(n):
-        for j in range(n):
-            cell = gs[:, i, j]  # (T,)
-            # Promedio de vecinos por timestep
-            nb_list = []
-            if i > 0: nb_list.append(gs[:, i-1, j])
-            if i < n-1: nb_list.append(gs[:, i+1, j])
-            if j > 0: nb_list.append(gs[:, i, j-1])
-            if j < n-1: nb_list.append(gs[:, i, j+1])
-            nb_mean = np.mean(nb_list, axis=0)  # (T,)
-            int_corrs.append(float(np.corrcoef(cell, nb_mean)[0, 1]) if cell.std() > 1e-15 and nb_mean.std() > 1e-15 else 0.0)
-            if fs_arr is not None:
-                ext_corrs.append(float(np.corrcoef(cell, fs_arr)[0, 1]) if cell.std() > 1e-15 and fs_arr.std() > 1e-15 else 0.0)
-
+    # Promedio de vecinos por celda usando np.roll con máscara de bordes
+    # Para cada celda (i,j), promedio de hasta 4 vecinos válidos
+    nb_sum = np.zeros_like(gs)
+    nb_count = np.zeros((n, n), dtype=np.float64)
+    
+    # Vecino arriba (i-1): roll down, enmascarar fila 0
+    rolled = np.roll(gs, 1, axis=1)
+    mask = np.ones((n, n), dtype=np.float64)
+    mask[0, :] = 0.0
+    nb_sum += rolled * mask[np.newaxis, :, :]
+    nb_count += mask
+    
+    # Vecino abajo (i+1): roll up, enmascarar fila n-1
+    rolled = np.roll(gs, -1, axis=1)
+    mask = np.ones((n, n), dtype=np.float64)
+    mask[n-1, :] = 0.0
+    nb_sum += rolled * mask[np.newaxis, :, :]
+    nb_count += mask
+    
+    # Vecino izquierda (j-1): roll right, enmascarar col 0
+    rolled = np.roll(gs, 1, axis=2)
+    mask = np.ones((n, n), dtype=np.float64)
+    mask[:, 0] = 0.0
+    nb_sum += rolled * mask[np.newaxis, :, :]
+    nb_count += mask
+    
+    # Vecino derecha (j+1): roll left, enmascarar col n-1
+    rolled = np.roll(gs, -1, axis=2)
+    mask = np.ones((n, n), dtype=np.float64)
+    mask[:, n-1] = 0.0
+    nb_sum += rolled * mask[np.newaxis, :, :]
+    nb_count += mask
+    
+    # Promedio de vecinos: (T, N, N)
+    nb_count[nb_count == 0] = 1.0  # evitar div by zero (no debería pasar con n>=2)
+    nb_mean = nb_sum / nb_count[np.newaxis, :, :]
+    
+    # Correlación interna vectorizada: para cada celda, corr(cell, nb_mean)
+    # Reshape a (N*N, T) para batch
+    cells_flat = gs.reshape(steps, -1).T      # (N*N, T)
+    nb_flat = nb_mean.reshape(steps, -1).T     # (N*N, T)
+    
+    # Correlación batch: estandarizar y multiplicar
+    cells_m = cells_flat - cells_flat.mean(axis=1, keepdims=True)
+    nb_m = nb_flat - nb_flat.mean(axis=1, keepdims=True)
+    cells_std = cells_flat.std(axis=1)
+    nb_std = nb_flat.std(axis=1)
+    
+    valid = (cells_std > 1e-15) & (nb_std > 1e-15)
+    int_corrs = np.zeros(cells_flat.shape[0])
+    if valid.any():
+        num = np.sum(cells_m[valid] * nb_m[valid], axis=1)
+        den = cells_std[valid] * nb_std[valid] * steps
+        int_corrs[valid] = num / den
+    
     internal = float(np.nanmean(int_corrs))
-    external = float(np.nanmean(ext_corrs)) if ext_corrs else 0.0
+    
+    # Correlación externa vectorizada
+    external = 0.0
+    if fs_arr is not None and fs_arr.std() > 1e-15:
+        fs_m = fs_arr - fs_arr.mean()
+        fs_std_val = fs_arr.std()
+        num_ext = np.sum(cells_m * fs_m[np.newaxis, :], axis=1)
+        den_ext = cells_std * fs_std_val * steps
+        ext_corrs = np.zeros(cells_flat.shape[0])
+        valid_ext = cells_std > 1e-15
+        ext_corrs[valid_ext] = num_ext[valid_ext] / den_ext[valid_ext]
+        external = float(np.nanmean(ext_corrs))
+    
     return internal, external
 
 
@@ -240,7 +294,13 @@ def cohesion_ratio(internal, external):
 
 
 def dominance_share(grid_series):
-    """Dominancia: qué celda controla más la dinámica global — vectorizada."""
+    """
+    Dominancia: qué celda controla más la dinámica global — VECTORIZADA.
+    
+    Reemplaza el double for loop con correlación batch usando
+    operaciones matriciales NumPy. Para grid_size=50, computa
+    2500 correlaciones de una sola vez.
+    """
     steps = len(grid_series)
     if steps == 0:
         return 1.0
@@ -249,14 +309,22 @@ def dominance_share(grid_series):
     regional = gs.mean(axis=(1, 2))  # (T,)
     if regional.std() < 1e-15:
         return 1.0 / (n * n)
-    scores = np.zeros(n * n)
-    for i in range(n):
-        for j in range(n):
-            cell = gs[:, i, j]
-            if cell.std() < 1e-15:
-                scores[i * n + j] = 0.0
-            else:
-                scores[i * n + j] = abs(float(np.corrcoef(cell, regional)[0, 1]))
+    
+    # Batch correlation: reshape to (N*N, T)
+    cells_flat = gs.reshape(steps, -1).T  # (N*N, T)
+    cells_m = cells_flat - cells_flat.mean(axis=1, keepdims=True)
+    cells_std = cells_flat.std(axis=1)
+    reg_m = regional - regional.mean()
+    reg_std = regional.std()
+    
+    # Correlación vectorizada
+    scores = np.zeros(cells_flat.shape[0])
+    valid = cells_std > 1e-15
+    if valid.any():
+        num = np.sum(cells_m[valid] * reg_m[np.newaxis, :], axis=1)
+        den = cells_std[valid] * reg_std * steps
+        scores[valid] = np.abs(num / den)
+    
     total_s = scores.sum()
     if total_s < 1e-15:
         return 1.0 / (n * n)
@@ -359,16 +427,15 @@ def calibrate_ode_rolling(obs_train, forcing_train, window_size=None,
 def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
                    param_grid=None, seed=2, n_refine=5000):
     """
-    Grid search masivo + refinamiento local con early stopping.
-    Fase 1: Grid coarse (~6000 combos) con podado por percentil.
-    Fase 2: Refinamiento adaptativo alrededor de top 10 candidates con n_refine iters.
+    Grid search masivo + refinamiento local con early stopping — PARALELO.
+    
+    Fase 1: Grid coarse paralelo con joblib (todos los cores).
+    Fase 2: Refinamiento adaptativo en batches paralelos con early stopping global.
     Objetivo: minimizar RMSE penalizado por baja correlación.
     """
     if param_grid is None:
         # Grid Search — macro_coupling acotado a [0.05, 0.45] para evitar
         # esclavización del ABM al campo medio (C6 Informe Crítico).
-        # mc > 0.5 hace que grid → mean(grid) en pocos pasos → pérdida
-        # de autonomía micro y EDI artificialmente negativo.
         param_grid = {
             "forcing_scale": [0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
             "macro_coupling": [0.05, 0.10, 0.15, 0.25, 0.35, 0.45],
@@ -377,67 +444,81 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
 
     obs_arr = np.asarray(obs_train, dtype=np.float64)
     n_obs = len(obs_train)
-    obs_std = float(np.std(obs_arr)) if len(obs_arr) > 1 else 1.0
 
     def _score(pred_arr):
         """Objetivo combinado: RMSE + penalización por baja correlación."""
-        # Ensure dimensionality match
         if pred_arr.ndim == 3 and obs_arr.ndim == 1:
             pred_arr = pred_arr.mean(axis=(1, 2))
         elif pred_arr.ndim == 3 and pred_arr.shape[1] == 1 and pred_arr.shape[2] == 1:
             pred_arr = pred_arr.ravel()
-            
         err = float(np.sqrt(np.mean((pred_arr - obs_arr) ** 2)))
-        
-        # Correlación
         if len(pred_arr) > 1 and np.std(pred_arr) > 1e-10:
             corr = float(np.corrcoef(pred_arr, obs_arr)[0, 1])
         else:
             corr = 0.0
-        # Penalizar RMSE cuando correlación es baja
-        # score = RMSE * (2 - corr): buena corr (1.0) → factor 1.0; mala (0.0) → factor 2.0
         penalty = max(0.5, 2.0 - corr)
         return err * penalty
 
-    # Fase 1: Grid search completo
-    candidates = []
-    for fs in param_grid["forcing_scale"]:
-        for mc in param_grid["macro_coupling"]:
-            for dmp in param_grid["damping"]:
-                params = dict(base_params)
-                params["forcing_scale"] = fs
-                params["macro_coupling"] = mc
-                params["damping"] = dmp
-                params["assimilation_strength"] = 0.0
-                params["assimilation_series"] = None
-                params["_store_grid"] = False
-                sim = simulate_abm_fn(params, steps, seed=seed)
-                key = _get_series_key(sim)
-                pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
-                
-                # Spatial Reduction: If pred is 3D (Grid) and obs is 1D (Scalar), take the mean
-                if pred.ndim == 3 and obs_arr.ndim == 1:
-                    pred = pred.mean(axis=(1, 2))
-                
-                score = _score(pred)
-                err = float(np.sqrt(np.mean((pred - obs_arr) ** 2)))
-                candidates.append((score, fs, mc, dmp, err))
-                del sim
+    def _eval_one_grid(fs, mc, dmp):
+        """Evalúa una combinación del grid (para paralelizar)."""
+        params = dict(base_params)
+        params["forcing_scale"] = fs
+        params["macro_coupling"] = mc
+        params["damping"] = dmp
+        params["assimilation_strength"] = 0.0
+        params["assimilation_series"] = None
+        params["_store_grid"] = False
+        sim = simulate_abm_fn(params, steps, seed=seed)
+        key = _get_series_key(sim)
+        pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
+        if pred.ndim == 3 and obs_arr.ndim == 1:
+            pred = pred.mean(axis=(1, 2))
+        score = _score(pred)
+        err = float(np.sqrt(np.mean((pred - obs_arr) ** 2)))
+        return (score, fs, mc, dmp, err)
 
+    # Fase 1: Grid search PARALELO con joblib
+    grid_combos = [
+        (fs, mc, dmp)
+        for fs in param_grid["forcing_scale"]
+        for mc in param_grid["macro_coupling"]
+        for dmp in param_grid["damping"]
+    ]
+    
+    n_jobs = min(len(grid_combos), os.cpu_count() or 4)
+    candidates = Parallel(n_jobs=n_jobs, backend="loky")(
+        delayed(_eval_one_grid)(fs, mc, dmp) for fs, mc, dmp in grid_combos
+    )
+    
     candidates.sort(key=lambda x: x[0])
     best = candidates[0]
 
-    # Fase 2: Refinamiento adaptativo multi-punto
-    # Tomar top 10 candidates y refinar alrededor de cada uno
+    # Fase 2: Refinamiento adaptativo multi-punto en BATCHES PARALELOS
     top_k = min(10, len(candidates))
     best_params = {"forcing_scale": best[1], "macro_coupling": best[2], "damping": best[3]}
     best_score = best[0]
     best_err = best[4]
     rng = random.Random(seed + 100)
     
-    # Radio de búsqueda adaptativo: empieza amplio, se reduce
     stalled = 0
     refine_per_point = n_refine // top_k
+    batch_size = max(n_jobs, 32)  # Evaluar en batches paralelos
+    
+    def _eval_one_refine(candidate_params):
+        """Evalúa un candidato de refinamiento (para paralelizar)."""
+        params = dict(base_params)
+        params.update(candidate_params)
+        params["assimilation_strength"] = 0.0
+        params["assimilation_series"] = None
+        params["_store_grid"] = False
+        sim = simulate_abm_fn(params, steps, seed=seed)
+        key = _get_series_key(sim)
+        pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
+        if pred.ndim == 3 and obs_arr.ndim == 1:
+            pred = pred.mean(axis=(1, 2))
+        score = _score(pred)
+        err = float(np.sqrt(np.mean((pred - obs_arr) ** 2)))
+        return (score, candidate_params, err)
     
     for rank in range(top_k):
         center = candidates[rank]
@@ -446,39 +527,40 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
         radius_mc = 0.15
         radius_dmp = 0.1
         
-        for i in range(refine_per_point):
-            # Reducir radio progresivamente
-            decay = 1.0 / (1.0 + i * 0.003)
-            candidate = {
-                "forcing_scale": max(0.001, min(0.99, center_p["forcing_scale"] + rng.uniform(-radius_fs, radius_fs) * decay)),
-                "macro_coupling": max(0.05, min(0.50, center_p["macro_coupling"] + rng.uniform(-radius_mc, radius_mc) * decay)),
-                "damping": max(0.0, min(0.95, center_p["damping"] + rng.uniform(-radius_dmp, radius_dmp) * decay)),
-            }
-            params = dict(base_params)
-            params.update(candidate)
-            params["assimilation_strength"] = 0.0
-            params["assimilation_series"] = None
-            params["_store_grid"] = False
-            sim = simulate_abm_fn(params, steps, seed=seed)
-            key = _get_series_key(sim)
-            pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
+        i = 0
+        while i < refine_per_point:
+            # Generar un batch de candidatos
+            this_batch = min(batch_size, refine_per_point - i)
+            batch_candidates = []
+            for b in range(this_batch):
+                step_idx = i + b
+                decay = 1.0 / (1.0 + step_idx * 0.003)
+                cand = {
+                    "forcing_scale": max(0.001, min(0.99, center_p["forcing_scale"] + rng.uniform(-radius_fs, radius_fs) * decay)),
+                    "macro_coupling": max(0.05, min(0.50, center_p["macro_coupling"] + rng.uniform(-radius_mc, radius_mc) * decay)),
+                    "damping": max(0.0, min(0.95, center_p["damping"] + rng.uniform(-radius_dmp, radius_dmp) * decay)),
+                }
+                batch_candidates.append(cand)
             
-            # Spatial Reduction: If pred is 3D (Grid) and obs is 1D (Scalar), take the mean
-            if pred.ndim == 3 and obs_arr.ndim == 1:
-                pred = pred.mean(axis=(1, 2))
-                
-            score = _score(pred)
-            err = float(np.sqrt(np.mean((pred - obs_arr) ** 2)))
-            del sim
-            if score < best_score:
-                best_params = candidate
-                best_score = score
-                best_err = err
-                center_p = dict(candidate)  # Recentrar
-                stalled = 0
-            else:
-                stalled += 1
-            # Early stop si no mejora en 500 iteraciones consecutivas
+            # Evaluar batch en paralelo
+            results = Parallel(n_jobs=n_jobs, backend="loky")(
+                delayed(_eval_one_refine)(c) for c in batch_candidates
+            )
+            
+            # Procesar resultados secuencialmente para mantener early stopping
+            improved = False
+            for score, cand_params, err in results:
+                if score < best_score:
+                    best_params = cand_params
+                    best_score = score
+                    best_err = err
+                    center_p = dict(cand_params)
+                    stalled = 0
+                    improved = True
+                else:
+                    stalled += 1
+            
+            i += this_batch
             if stalled > 500:
                 break
         if stalled > 500:

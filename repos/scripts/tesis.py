@@ -227,10 +227,37 @@ def cmd_build(args):
         parts.append(case_table)
         toc_entries.append(f"{loaded + 1}. [Resumen de Simulaciones](#resumen-de-simulaciones)")
 
-    # Componer documento final
-    toc = "## Tabla de Contenidos\n\n" + "\n".join(toc_entries) + "\n"
+    # Componer documento final (temporal para extraer headers)
     separator = "\n\n---\n\n"
+    temp_content = parts[0] + "\n\n" + separator.join(parts[1:])
+    
+    # Generar nueva TOC detallada
+    toc_lines = ["## Tabla de Contenidos\n"]
+    headers = []
+    lines = temp_content.splitlines()
+    for i, line in enumerate(lines):
+        if line.startswith("#"):
+            # Ignorar el título principal (# ) si está al inicio
+            if line.startswith("# ") and i < 10:
+                continue
+            headers.append(line)
 
+    for header in headers:
+        level = 0
+        while level < len(header) and header[level] == '#':
+            level += 1
+        if level > 4: continue # Limitar profundidad
+        
+        title = header.replace('#', '').strip()
+        # Generar anchor
+        anchor = title.lower()
+        anchor = re.sub(r'[^\w\s-]', '', anchor).strip().replace(' ', '-')
+        anchor = re.sub(r'-+', '-', anchor)
+        
+        indent = "  " * (level - 1)
+        toc_lines.append(f"{indent}- [{title}](#{anchor})")
+    
+    toc = "\n".join(toc_lines) + "\n"
     final = parts[0] + "\n\n" + toc + separator + separator.join(parts[1:])
 
     # Escribir
@@ -241,7 +268,7 @@ def cmd_build(args):
     line_count = final.count("\n") + 1
     print(f"✅ Tesis ensamblada: {output.relative_to(ROOT)}")
     print(f"   Secciones: {loaded} | Líneas: {line_count}")
-    print(f"   TOC generada con {len(toc_entries)} entradas")
+    print(f"   Índice detallado generado.")
     return 0
 
 
