@@ -1,0 +1,1795 @@
+[
+  {
+    "case": "01_caso_clima",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 420
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 1
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "Meteostat",
+        "NOAA"
+      ],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 47,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "02_caso_conciencia",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=4 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check",
+        "Symplok\u00e9 falla \u2014 cohesi\u00f3n interna < externa",
+        "Non-locality falla \u2014 una celda domina"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]",
+        "Grid m\u00e1s grande + heterogeneidad"
+      ],
+      "current_params": {
+        "grid_size": 4,
+        "data_rows": 20
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "logistic_forced",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 46,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 4,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "03_caso_contaminacion",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 31
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API",
+        "HTTP API (gen\u00e9rica)"
+      ],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": false,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 46,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 5
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "04_caso_energia",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": false,
+      "execution": true,
+      "post_coherence": false
+    },
+    "issues": [
+      "[COH] real: symploke external=-0.5703622267222961 fuera de [0,1]",
+      "[POST-COH] real: symploke external=-0.5703622267222961 fuera de [0,1]"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "macro_coupling=0.0741 < 0.1 \u2014 no pasa coupling_check"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 50401
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "Meteostat",
+        "HTTP API (gen\u00e9rica)"
+      ],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 69,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "05_caso_epidemiologia",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": false,
+      "execution": true,
+      "post_coherence": false
+    },
+    "issues": [
+      "[COH] real: symploke external=-0.0003971566000971659 fuera de [0,1]",
+      "[POST-COH] real: symploke external=-0.0003971566000971659 fuera de [0,1]"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check",
+        "Non-locality falla \u2014 una celda domina",
+        "Inestable bajo ruido"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]",
+        "Grid m\u00e1s grande + heterogeneidad",
+        "Reducir noise_scale o mejorar calibraci\u00f3n"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 201
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "Our World in Data",
+        "HTTP API (gen\u00e9rica)"
+      ],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": false,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "unknown",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 65,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 8
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "06_caso_falsacion_exogeneidad",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": false,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [
+      "[ODE] No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+      "[ODE] No tiene loop de integraci\u00f3n temporal"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "EDI=0.0551 positivo pero p=1.0000 no significativo"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "M\u00e1s iteraciones de calibraci\u00f3n ABM (10000-20000)",
+        "Grid m\u00e1s grande (50\u00d750) para mejor difusi\u00f3n"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 1462
+      },
+      "estimated_improvement": "posible subir 1 nivel",
+      "current_nivel": 1
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": false,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "unknown",
+      "has_simulate": true,
+      "has_ode_params": false,
+      "has_temporal_loop": false,
+      "code_lines": 12,
+      "issues": [
+        "No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+        "No tiene loop de integraci\u00f3n temporal"
+      ]
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 6
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "07_caso_falsacion_no_estacionariedad",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": false,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [
+      "[ODE] No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+      "[ODE] No tiene loop de integraci\u00f3n temporal"
+    ],
+    "scalability": {
+      "can_improve": false,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "EDI=-1.0000 negativo \u2014 modelo inadecuado"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 1462
+      },
+      "estimated_improvement": "none (modelo inadecuado)",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": false,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "unknown",
+      "has_simulate": true,
+      "has_ode_params": false,
+      "has_temporal_loop": false,
+      "code_lines": 12,
+      "issues": [
+        "No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+        "No tiene loop de integraci\u00f3n temporal"
+      ]
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 6
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "08_caso_falsacion_observabilidad",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": false,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [
+      "[ODE] No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+      "[ODE] No tiene loop de integraci\u00f3n temporal"
+    ],
+    "scalability": {
+      "can_improve": false,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "EDI=-1.0000 negativo \u2014 modelo inadecuado"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 217
+      },
+      "estimated_improvement": "none (modelo inadecuado)",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "unknown",
+      "has_simulate": true,
+      "has_ode_params": false,
+      "has_temporal_loop": false,
+      "code_lines": 12,
+      "issues": [
+        "No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+        "No tiene loop de integraci\u00f3n temporal"
+      ]
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 3
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "09_caso_finanzas",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": false,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [
+      "[ODE] No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+      "[ODE] No tiene loop de integraci\u00f3n temporal"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=1 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check",
+        "Symplok\u00e9 falla \u2014 cohesi\u00f3n interna < externa",
+        "Non-locality falla \u2014 una celda domina",
+        "Significativo (p=0.0000) con EDI=0.0398"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]",
+        "Grid m\u00e1s grande + heterogeneidad",
+        "Recalibraci\u00f3n con grid expandido + m\u00e1s iteraciones"
+      ],
+      "current_params": {
+        "grid_size": 1,
+        "data_rows": 385
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 2
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "Yahoo Finance",
+        "HTTP API (gen\u00e9rica)"
+      ],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "heston",
+      "has_simulate": true,
+      "has_ode_params": false,
+      "has_temporal_loop": false,
+      "code_lines": 12,
+      "issues": [
+        "No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+        "No tiene loop de integraci\u00f3n temporal"
+      ]
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 1,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "10_caso_justicia",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": false,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [
+      "[ODE] No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+      "[ODE] No tiene loop de integraci\u00f3n temporal"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 61
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "logistic_forced",
+      "has_simulate": true,
+      "has_ode_params": false,
+      "has_temporal_loop": false,
+      "code_lines": 12,
+      "issues": [
+        "No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+        "No tiene loop de integraci\u00f3n temporal"
+      ]
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "11_caso_movilidad",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": false,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [
+      "[ODE] No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial"
+    ],
+    "scalability": {
+      "can_improve": false,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "Non-locality falla \u2014 una celda domina"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Grid m\u00e1s grande + heterogeneidad"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 53
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 1
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "accumulation_decay",
+      "has_simulate": true,
+      "has_ode_params": false,
+      "has_temporal_loop": true,
+      "code_lines": 31,
+      "issues": [
+        "No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial"
+      ]
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 24
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "12_caso_paradigmas",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=10 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check",
+        "Inestable bajo ruido"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]",
+        "Reducir noise_scale o mejorar calibraci\u00f3n"
+      ],
+      "current_params": {
+        "grid_size": 10,
+        "data_rows": 27
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 24,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 10,
+        "log_transform": false,
+        "persistence_window": 20
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "13_caso_politicas_estrategicas",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": false,
+      "execution": true,
+      "post_coherence": false
+    },
+    "issues": [
+      "[COH] real: symploke external=-0.2848867875751129 fuera de [0,1]",
+      "[POST-COH] real: symploke external=-0.2848867875751129 fuera de [0,1]"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=7 es bajo",
+        "EDI=0.0111 muy bajo, dif\u00edcilmente escalable",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check",
+        "Inestable bajo ruido"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]",
+        "Reducir noise_scale o mejorar calibraci\u00f3n"
+      ],
+      "current_params": {
+        "grid_size": 7,
+        "data_rows": 43
+      },
+      "estimated_improvement": "marginal",
+      "current_nivel": 1
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 40,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 7,
+        "log_transform": false,
+        "persistence_window": 24
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "14_caso_postverdad",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": false,
+      "execution": true,
+      "post_coherence": false
+    },
+    "issues": [
+      "[COH] synthetic: symploke external=-0.01329902763476318 fuera de [0,1]",
+      "[POST-COH] synthetic: symploke external=-0.01329902763476318 fuera de [0,1]"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=10 es bajo",
+        "Solo 19 data points \u2014 limitado por datos",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]"
+      ],
+      "current_params": {
+        "grid_size": 10,
+        "data_rows": 19
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 1
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "unknown",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 33,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 10,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "15_caso_wikipedia",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": false,
+      "execution": true,
+      "post_coherence": false
+    },
+    "issues": [
+      "[COH] real: symploke external=-0.2462605520627616 fuera de [0,1]",
+      "[POST-COH] real: symploke external=-0.2462605520627616 fuera de [0,1]"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=7 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]"
+      ],
+      "current_params": {
+        "grid_size": 7,
+        "data_rows": 114
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 42,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 7,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "16_caso_deforestacion",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": false,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [
+      "[ODE] No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+      "[ODE] No tiene loop de integraci\u00f3n temporal"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "Nivel 4 con CR=1.02 < 2.0"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Optimizar para CR > 2.0 (potencial N5)"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 31
+      },
+      "estimated_improvement": "posible N4 \u2192 N5",
+      "current_nivel": 4
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API",
+        "HTTP API (gen\u00e9rica)"
+      ],
+      "wb_indicators": [
+        "AG.LND.FRST.ZS"
+      ],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "accumulation_decay",
+      "has_simulate": true,
+      "has_ode_params": false,
+      "has_temporal_loop": false,
+      "code_lines": 12,
+      "issues": [
+        "No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+        "No tiene loop de integraci\u00f3n temporal"
+      ]
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": false,
+        "persistence_window": 5
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "17_caso_oceanos",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": false,
+      "execution": true,
+      "post_coherence": false
+    },
+    "issues": [
+      "[COH] real: symploke external=-0.6887836291705977 fuera de [0,1]",
+      "[POST-COH] real: symploke external=-0.6887836291705977 fuera de [0,1]"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=15 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check",
+        "Significativo (p=0.0000) con EDI=0.0534"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]",
+        "Recalibraci\u00f3n con grid expandido + m\u00e1s iteraciones"
+      ],
+      "current_params": {
+        "grid_size": 15,
+        "data_rows": 34
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 2
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API",
+        "NOAA"
+      ],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "radiative_balance",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 46,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 15,
+        "log_transform": false,
+        "persistence_window": 24
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "18_caso_urbanizacion",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": false,
+      "pipeline": true,
+      "coherence": false,
+      "execution": true,
+      "post_coherence": false
+    },
+    "issues": [
+      "[ODE] No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial",
+      "[COH] real: symploke external=-0.00013180902829936143 fuera de [0,1]",
+      "[POST-COH] real: symploke external=-0.00013180902829936143 fuera de [0,1]"
+    ],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=20 es bajo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check",
+        "Non-locality falla \u2014 una celda domina",
+        "Inestable bajo ruido"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]",
+        "Grid m\u00e1s grande + heterogeneidad",
+        "Reducir noise_scale o mejorar calibraci\u00f3n"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 63
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 1
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API"
+      ],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "logistic_forced",
+      "has_simulate": true,
+      "has_ode_params": false,
+      "has_temporal_loop": true,
+      "code_lines": 39,
+      "issues": [
+        "No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial"
+      ]
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 10
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "19_caso_acidificacion_oceanica",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": false,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [
+      "[ODE] No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial"
+    ],
+    "scalability": {
+      "can_improve": false,
+      "reasons": [
+        "grid_size=20 es bajo"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50"
+      ],
+      "current_params": {
+        "grid_size": 20,
+        "data_rows": 31
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API"
+      ],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "revelle_acidification",
+      "has_simulate": true,
+      "has_ode_params": false,
+      "has_temporal_loop": true,
+      "code_lines": 60,
+      "issues": [
+        "No tiene par\u00e1metros \u03b1/\u03b2 de ecuaci\u00f3n diferencial"
+      ]
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 20,
+        "log_transform": false,
+        "persistence_window": 24
+      },
+      "issues": []
+    },
+    "verdict": "CHECK (issues menores)"
+  },
+  {
+    "case": "20_caso_kessler",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "EDI=-0.4203 negativo \u2014 modelo inadecuado",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 65
+      },
+      "estimated_improvement": "none (modelo inadecuado)",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "kessler_liou",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 47,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "log_transform": true,
+        "persistence_window": 10
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "21_caso_salinizacion",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": false,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "EDI=0.0265 muy bajo, dif\u00edcilmente escalable"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 62
+      },
+      "estimated_improvement": "marginal",
+      "current_nivel": 1
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API",
+        "HTTP API (gen\u00e9rica)"
+      ],
+      "wb_indicators": [
+        "AG.LND.IRIG.AG.ZS",
+        "ER.H2O.FWTL.ZS"
+      ],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 52,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": false,
+        "persistence_window": 5
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "22_caso_fosforo",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": false,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "EDI=-1.0000 negativo \u2014 modelo inadecuado"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 57
+      },
+      "estimated_improvement": "none (modelo inadecuado)",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API",
+        "HTTP API (gen\u00e9rica)"
+      ],
+      "wb_indicators": [
+        "AG.CON.FERT.ZS"
+      ],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 53,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": false,
+        "persistence_window": 5
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "23_caso_erosion_dialectica",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": false,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "Solo 19 data points \u2014 limitado por datos",
+        "EDI=-1.0000 negativo \u2014 modelo inadecuado"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 19
+      },
+      "estimated_improvement": "none (modelo inadecuado)",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 55,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "24_caso_microplasticos",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "Nivel 4 con CR=1.00 < 2.0"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Optimizar para CR > 2.0 (potencial N5)"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 69
+      },
+      "estimated_improvement": "posible N4 \u2192 N5",
+      "current_nivel": 4
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API",
+        "World Bank (universal fetcher)",
+        "Our World in Data"
+      ],
+      "wb_indicators": [
+        "ER.H2O.INTR.K3"
+      ],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 55,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "25_caso_acuiferos",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": false,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "EDI=-0.1788 negativo \u2014 modelo inadecuado"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 21
+      },
+      "estimated_improvement": "none (modelo inadecuado)",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API",
+        "World Bank (universal fetcher)"
+      ],
+      "wb_indicators": [
+        "AG.LND.PRCP.MM",
+        "ER.H2O.FWTL.ZS"
+      ],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 57,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": false,
+        "persistence_window": 12
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "26_caso_starlink",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": false,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "EDI=-1.0000 negativo \u2014 modelo inadecuado"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 385
+      },
+      "estimated_improvement": "none (modelo inadecuado)",
+      "current_nivel": 0
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": false,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "kessler_liou",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 57,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": true,
+        "persistence_window": 5
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "27_caso_riesgo_biologico",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "EDI=0.1051 positivo pero p=0.3654 no significativo",
+        "macro_coupling=0.0500 < 0.1 \u2014 no pasa coupling_check"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "M\u00e1s iteraciones de calibraci\u00f3n ABM (10000-20000)",
+        "Grid m\u00e1s grande (50\u00d750) para mejor difusi\u00f3n",
+        "Expandir rango de macro_coupling en grid search [0.1, 0.5]"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 25
+      },
+      "estimated_improvement": "posible subir 1-2 niveles",
+      "current_nivel": 1
+    },
+    "data_info": {
+      "source_type": "CACHE",
+      "real_sources": [],
+      "wb_indicators": [],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 51,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": false,
+        "persistence_window": 5
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "28_caso_fuga_cerebros",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "Significativo (p=0.0010) con EDI=0.1829"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Recalibraci\u00f3n con grid expandido + m\u00e1s iteraciones"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 27
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 3
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API",
+        "World Bank (universal fetcher)"
+      ],
+      "wb_indicators": [
+        "GB.XPD.RSDV.GD.ZS",
+        "SP.POP.SCIE.RD.P6",
+        "SE.TER.ENRR",
+        "BX.TRF.PWKR.DT.GD.ZS",
+        "NY.GDP.PCAP.KD",
+        "SM.POP.NETM"
+      ],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 56,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": false,
+        "persistence_window": 10
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  },
+  {
+    "case": "29_caso_iot",
+    "checks": {
+      "structure": true,
+      "data_source": true,
+      "ode": true,
+      "pipeline": true,
+      "coherence": true,
+      "execution": true,
+      "post_coherence": true
+    },
+    "issues": [],
+    "scalability": {
+      "can_improve": true,
+      "reasons": [
+        "grid_size=25 es bajo",
+        "Significativo (p=0.0000) con EDI=0.0204"
+      ],
+      "recommended_changes": [
+        "grid_size \u2192 40-50",
+        "Recalibraci\u00f3n con grid expandido + m\u00e1s iteraciones"
+      ],
+      "current_params": {
+        "grid_size": 25,
+        "data_rows": 38
+      },
+      "estimated_improvement": "none",
+      "current_nivel": 2
+    },
+    "data_info": {
+      "source_type": "REAL",
+      "real_sources": [
+        "World Bank API",
+        "World Bank (universal fetcher)"
+      ],
+      "wb_indicators": [
+        "IT.CEL.SETS.P2",
+        "IT.NET.USER.ZS",
+        "IT.NET.BBND.P2",
+        "IT.NET.SECR.P6",
+        "NY.GDP.PCAP.KD",
+        "NY.GDP.MKTP.KD.ZG"
+      ],
+      "has_cache": true,
+      "has_synthetic_fallback": true,
+      "issues": []
+    },
+    "ode_info": {
+      "model_type": "mean_reversion",
+      "has_simulate": true,
+      "has_ode_params": true,
+      "has_temporal_loop": true,
+      "code_lines": 51,
+      "issues": []
+    },
+    "pipeline_info": {
+      "uses_hybrid_validator": true,
+      "params": {
+        "grid_size": 25,
+        "n_runs": 7,
+        "log_transform": false,
+        "persistence_window": 8
+      },
+      "issues": []
+    },
+    "verdict": "PERFECTO"
+  }
+]

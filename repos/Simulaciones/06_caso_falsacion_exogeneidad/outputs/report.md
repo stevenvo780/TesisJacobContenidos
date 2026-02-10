@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: Exogeneidad
 
-- generated_at: 2026-02-09T20:20:00.829110
+- generated_at: 2026-02-09T21:09:44.861331
 
 ## Fase real
 - **overall_pass**: False
