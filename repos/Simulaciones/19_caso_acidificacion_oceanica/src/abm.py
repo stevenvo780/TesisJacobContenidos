@@ -78,6 +78,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_ac = []  # Average calcification health
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         # Global Omega from forcing
@@ -113,6 +114,7 @@ def simulate_abm(params, steps, seed=42):
         # Calcification Health Index: Mean shell mass anomaly
         health_idx = np.mean(shell_mass) - 1.0  # Deviation from baseline
         series_ac.append(health_idx)
-        series_grid.append(shell_mass.copy())
+        if store_grid:
+            series_grid.append(shell_mass.copy())
         
     return {"ac": series_ac, "forcing": forcing, "grid": series_grid}

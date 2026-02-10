@@ -74,6 +74,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_tbar = []
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     heat_capacity = 4e8  # J/m2/K (effective)
     dt_seconds = 30 * 24 * 3600  # Monthly timestep
@@ -129,6 +130,7 @@ def simulate_abm(params, steps, seed=42):
         tbar = np.mean(temp) - baseline
         
         series_tbar.append(tbar)
-        series_grid.append(temp.copy())
+        if store_grid:
+            series_grid.append(temp.copy())
         
     return {"tbar": series_tbar, "forcing": forcing, "grid": series_grid}

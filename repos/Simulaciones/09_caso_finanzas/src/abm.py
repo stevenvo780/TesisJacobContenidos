@@ -142,6 +142,7 @@ def simulate_spatial_ham(params, steps, seed, forcing):
     
     series_x = []
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     n_agents = grid_size * grid_size
     lambda_depth = max(1.0, float(n_agents) * 0.1)
@@ -183,7 +184,8 @@ def simulate_spatial_ham(params, steps, seed, forcing):
         strategies = (random_draws < prob_c).astype(int)
         
         grid_state = np.full((grid_size, grid_size), price)
-        series_grid.append(grid_state)
+        if store_grid:
+            series_grid.append(grid_state)
         series_x.append(float(price))
         
         prev_price = price

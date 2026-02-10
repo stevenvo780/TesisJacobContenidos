@@ -81,6 +81,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_p = []
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         activity = forcing[t] if t < len(forcing) else 1.0
@@ -136,6 +137,7 @@ def simulate_abm(params, steps, seed=42):
                 concentration *= scale
                 
         series_p.append(np.mean(concentration))
-        series_grid.append(concentration.copy())
+        if store_grid:
+            series_grid.append(concentration.copy())
         
     return {"p": series_p, "forcing": forcing, "grid": series_grid}

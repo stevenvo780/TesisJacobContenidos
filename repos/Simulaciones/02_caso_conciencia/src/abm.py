@@ -102,6 +102,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_c = []
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         # ── Estímulo externo ────────────────────────────────────────────
@@ -166,6 +167,7 @@ def simulate_abm(params, steps, seed=42):
         # Grid representation (sqrt(n_modules) x sqrt(n_modules))
         actual_grid_size = int(np.sqrt(n_modules))
         grid = activations[:actual_grid_size**2].reshape((actual_grid_size, actual_grid_size))
-        series_grid.append(grid.copy())
+        if store_grid:
+            series_grid.append(grid.copy())
         
     return {"c": series_c, "forcing": forcing, "grid": series_grid}

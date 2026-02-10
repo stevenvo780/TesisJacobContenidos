@@ -68,6 +68,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_k = []  # Total debris count
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         f_t = forcing[t] if t < len(forcing) else 0.0
@@ -155,6 +156,7 @@ def simulate_abm(params, steps, seed=42):
         grid_rep = np.zeros((grid_size, grid_size))
         flat_pop = population.flatten()
         grid_rep.flat[:len(flat_pop)] = flat_pop
-        series_grid.append(grid_rep)
+        if store_grid:
+            series_grid.append(grid_rep)
         
     return {"k": series_k, "forcing": forcing, "grid": series_grid}

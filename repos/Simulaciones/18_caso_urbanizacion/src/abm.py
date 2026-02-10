@@ -61,6 +61,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_u = []  # Urbanization rate
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         f_t = forcing[t] if t < len(forcing) else 0.02
@@ -122,6 +123,7 @@ def simulate_abm(params, steps, seed=42):
             log_sizes = np.log10(city_pop + 1)
             hist, _ = np.histogram(log_sizes, bins=grid_size, range=(0, 6))
             grid_rep[0, :] = hist / hist.max() if hist.max() > 0 else 0
-        series_grid.append(grid_rep.copy())
+        if store_grid:
+            series_grid.append(grid_rep.copy())
         
     return {"u": series_u, "forcing": forcing, "grid": series_grid}

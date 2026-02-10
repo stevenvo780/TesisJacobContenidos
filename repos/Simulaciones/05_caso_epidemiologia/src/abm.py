@@ -80,6 +80,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_incidence = []
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         # Intervention effect (modulates transmission around base beta)
@@ -152,6 +153,7 @@ def simulate_abm(params, steps, seed=42):
         gy = (inf_idx // grid_size) % grid_size
         np.add.at(grid, (gx, gy), 1)
                 
-        series_grid.append(grid)
+        if store_grid:
+            series_grid.append(grid)
         
     return {"incidence": series_incidence, "forcing": forcing, "grid": series_grid}

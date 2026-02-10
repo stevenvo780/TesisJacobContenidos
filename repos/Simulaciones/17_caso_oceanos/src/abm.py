@@ -62,6 +62,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_e = [] # OHC proxy
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         f_t = forcing[t] if t < len(forcing) else 0.0
@@ -101,6 +102,7 @@ def simulate_abm(params, steps, seed=42):
         # OHC proxy: Mean temperature anomaly
         ohc_proxy = np.mean(T) - 15  # Anomaly from baseline
         series_e.append(ohc_proxy)
-        series_grid.append(T.copy())
+        if store_grid:
+            series_grid.append(T.copy())
         
     return {"e": series_e, "forcing": forcing, "grid": series_grid}

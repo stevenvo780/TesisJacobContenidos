@@ -51,6 +51,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_e = []
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     cumulative_capacity = capacity.sum(axis=0)
     
@@ -133,6 +134,7 @@ def simulate_abm(params, steps, seed=42):
             gx = i % grid_size
             gy = (i // grid_size) % grid_size
             grid[gx, gy] = (capacity[i, 2] + capacity[i, 3]) / (capacity[i].sum() + 1e-6)
-        series_grid.append(grid)
+        if store_grid:
+            series_grid.append(grid)
         
     return {"e": series_e, "forcing": forcing, "grid": series_grid}

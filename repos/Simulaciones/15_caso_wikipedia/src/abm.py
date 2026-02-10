@@ -89,6 +89,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_w = []
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         f_t = forcing[t] if t < len(forcing) else 0.0
@@ -144,6 +145,7 @@ def simulate_abm(params, steps, seed=42):
         # Grid: Show opinion state (flatten to 2D for viz)
         grid_rep = np.zeros((7, 7))
         grid_rep.flat[:min(49, n_agents)] = opinions[:min(49, n_agents), 0]
-        series_grid.append(grid_rep.copy())
+        if store_grid:
+            series_grid.append(grid_rep.copy())
         
     return {"w": series_w, "forcing": forcing, "grid": series_grid}

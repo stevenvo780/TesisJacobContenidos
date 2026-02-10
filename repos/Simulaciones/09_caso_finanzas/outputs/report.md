@@ -1,6 +1,6 @@
 # Reporte de Validación — Finanzas (SPY)
 
-- generated_at: 2026-02-10T04:21:48.773979Z
+- generated_at: 2026-02-10T04:41:51.870406Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -53,7 +53,7 @@
 ### EDI
 - valor: 0.0398
 - bootstrap_mean: 0.0399
-- CI 95%: [0.0388, 0.0410]
+- CI 95%: [0.0388, 0.0411]
 - weighted_value (LoE factor 1.00): 0.0398
 - válido (0.30-0.90): False
 - detrended_edi: 0.0398

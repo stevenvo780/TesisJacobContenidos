@@ -53,6 +53,7 @@ def simulate_abm(params, steps, seed=42):
     # Validator expects 'x' to be a list of grids if spatial, or scalars.
     # We'll return grids.
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         # 1. Global Forcing (The Law influence)
@@ -117,6 +118,7 @@ def simulate_abm(params, steps, seed=42):
         # Primary series 'j' should be SCALAR to match Observation (Rule of Law Index)
         series_x.append(np.mean(opinions))
         # Store full grid for potential spatial analysis
-        series_grid.append(opinions.copy())
+        if store_grid:
+            series_grid.append(opinions.copy())
         
     return {"j": series_x, "grid": series_grid, "forcing": forcing}

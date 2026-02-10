@@ -47,6 +47,7 @@ def simulate_abm(params, steps, seed=42):
         
     series_flow = []
     series_grid = [] # Store aggregate density map?
+    store_grid = params.get("_store_grid", True)
     
     # Traffic State tracking
     # edges: (u, v) -> current_occupancy
@@ -225,6 +226,7 @@ def simulate_abm(params, steps, seed=42):
             except KeyError:
                 pass
                 
-        series_grid.append(grid)
+        if store_grid:
+            series_grid.append(grid)
         
     return {"v": series_flow, "forcing": forcing}

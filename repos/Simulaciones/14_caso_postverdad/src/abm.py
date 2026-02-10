@@ -54,6 +54,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_pv = [] # Prevalence (Infected Fraction)
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         # Modulate beta by virality
@@ -96,6 +97,7 @@ def simulate_abm(params, steps, seed=42):
         else:
             grid_rep = np.zeros((10, 10))
             grid_rep.flat[:n_agents] = state
-        series_grid.append(grid_rep.copy())
+        if store_grid:
+            series_grid.append(grid_rep.copy())
         
     return {"pv": series_pv, "forcing": forcing, "grid": series_grid}

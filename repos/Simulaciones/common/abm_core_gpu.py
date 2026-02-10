@@ -200,7 +200,7 @@ def simulate_abm_core(
     assim_strength = float(params.get("assimilation_strength", 0.0))
     perturbation_event = params.get("perturbation_event")
 
-    store_grid = params.get("_store_grid", True)
+    store_grid = params.get("_store_grid", False)
     grid_series = [] if store_grid else None
     main_series = []
 

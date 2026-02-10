@@ -42,6 +42,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_m = [] # Magnetization (Average Spin)
     series_grid = [] # Pattern (spins)
+    store_grid = params.get("_store_grid", True)
     
     # Pre-compute sparse adjacency matrix for vectorized local field
     adj_sparse = nx.adjacency_matrix(G).astype(np.float64)
@@ -93,6 +94,7 @@ def simulate_abm(params, steps, seed=42):
         else:
             grid_rep = np.zeros((10,10)) # fallback
             
-        series_grid.append(grid_rep.copy())
+        if store_grid:
+            series_grid.append(grid_rep.copy())
         
     return {"j": series_m, "forcing": forcing, "grid": series_grid}

@@ -1396,19 +1396,24 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     # Usa serie BC para coupling (elimina sesgo), pero mantiene serie original para evaluación
     eval_params_ode = dict(eval_params)
     eval_params_ode["macro_target_series"] = ode_series_bc
+    eval_params_ode["_store_grid"] = True   # Necesario para symploké/dominance
     abm = simulate_abm_fn(eval_params_ode, steps, seed=2)
 
-    # ABM sin ODE (baseline para EDI)
+    # ABM sin ODE (baseline para EDI) — sin grids para ahorrar RAM
     eval_params_no_ode = dict(eval_params)
     eval_params_no_ode["macro_target_series"] = None
     eval_params_no_ode["ode_coupling_strength"] = 0.0
+    eval_params_no_ode["_store_grid"] = False
     abm_no_ode = simulate_abm_fn(eval_params_no_ode, steps, seed=2)
+    abm_no_ode.pop("grid", None)  # Liberar si ABM legacy lo creó igualmente
 
-    # Modelo nulo (sin acoplamiento macro ni forcing)
+    # Modelo nulo (sin acoplamiento macro ni forcing) — sin grids
     reduced_params = dict(eval_params_no_ode)
     reduced_params["macro_coupling"] = 0.0
     reduced_params["forcing_scale"] = 0.0
+    reduced_params["_store_grid"] = False
     abm_reduced = simulate_abm_fn(reduced_params, steps, seed=4)
+    abm_reduced.pop("grid", None)
 
     sk = config.series_key
     
@@ -1440,6 +1445,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         # Probar sin BC
         eval_params_no_bc = dict(eval_params)
         eval_params_no_bc["macro_target_series"] = list(ode_series)  # serie original sin BC
+        eval_params_no_bc["_store_grid"] = True  # Puede reemplazar abm principal
         abm_no_bc = simulate_abm_fn(eval_params_no_bc, steps, seed=2)
         abm_no_bc_val = _reduce_to_1d(abm_no_bc[sk][val_start:])
         err_abm_no_bc = rmse(abm_no_bc_val, obs_val)
@@ -1562,6 +1568,9 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     sym_ok = internal >= external - 1e-3
     dom = dominance_share(abm.get("grid", []))
     non_local_ok = dom < 0.05
+    # Liberar grids inmediatamente — ya no se necesitan.
+    # Con grid=600, T=100: ~288MB por simulación; 10 casos × 3 sims = 8.6GB innecesarios.
+    abm.pop("grid", None)
     obs_persistence = window_variance(obs_val, config.persistence_window)
     # Fix P9: usar la serie 1D reducida (mean-field) para consistencia con obs_val 1D
     # Antes usaba abm[sk][val_start:] que puede ser 3D (T,N,N) → varianza inflada

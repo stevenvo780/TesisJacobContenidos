@@ -10,10 +10,13 @@
 #   # Todo de golpe (29 en paralelo, grid=200 — cabe en 16GB)
 #   ./gpu_run.sh
 #
-#   # Grid 500 en 2 tandas (14+15 casos), auto-distribuye entre GPUs
-#   ./gpu_run.sh --grid 500 --parts 2
+#   # AUTO-ESCALADO: grid = 200 × parts (si no se pasa --grid)
+#   ./gpu_run.sh --parts 2          # grid=400 auto, 2 tandas de ~15
+#   ./gpu_run.sh --parts 3          # grid=600 auto, 3 tandas de ~10
+#   ./gpu_run.sh --parts 5          # grid=1000 auto, 5 tandas de ~6
 #
-#   # Grid 1000 en 5 tandas (~6 casos c/u), solo parte 3
+#   # Forzar grid explícito (desactiva auto-escalado)
+#   ./gpu_run.sh --grid 500 --parts 2
 #   ./gpu_run.sh --grid 1000 --parts 5 --part 3
 #
 #   # Forzar GPU específica
@@ -21,15 +24,16 @@
 #   ./gpu_run.sh --grid 200 --gpu 1              # solo 2060
 #
 #   # Distribuir entre 2 GPUs por VRAM (automático)
-#   ./gpu_run.sh --grid 500 --parts 2 --distribute
+#   ./gpu_run.sh --parts 2 --distribute
 #
 #   # Dry-run (muestra plan sin ejecutar)
-#   ./gpu_run.sh --grid 1000 --parts 5 --dry-run
+#   ./gpu_run.sh --parts 5 --dry-run
 #
 # ── FLAGS ─────────────────────────────────────────────────────────────────────
 #
-#   --grid SIZE     Grid size del ABM (default: 200)
+#   --grid SIZE     Grid size del ABM (default: auto = 200 × parts)
 #   --parts N       Dividir en N tandas (1-10, default: 1 = todos de golpe)
+#                   Sin --grid: auto-escala grid = 200 × N
 #   --part K        Ejecutar solo tanda K de N (default: todas)
 #   --gpu ID        Forzar GPU (0=5070Ti, 1=2060)
 #   --distribute    Auto-distribuir entre GPUs por proporción VRAM
@@ -46,6 +50,7 @@ set -euo pipefail
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 GRID=200
+GRID_EXPLICIT=0
 PARTS=1
 PART=0          # 0 = todas las partes
 GPU_ID=""       # vacío = no forzar
@@ -67,7 +72,7 @@ GPU1_VRAM=6144
 # ── Parse args ────────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --grid)      GRID="$2";      shift 2 ;;
+        --grid)      GRID="$2"; GRID_EXPLICIT=1; shift 2 ;;
         --parts)     PARTS="$2";     shift 2 ;;
         --part)      PART="$2";      shift 2 ;;
         --gpu)       GPU_ID="$2";    shift 2 ;;
@@ -84,6 +89,13 @@ while [[ $# -gt 0 ]]; do
         *) echo "Flag desconocido: $1"; exit 1 ;;
     esac
 done
+
+# ── Auto-escalado de grid ─────────────────────────────────────────────────────
+BASE_GRID=200
+if [[ $GRID_EXPLICIT -eq 0 && $PARTS -gt 1 ]]; then
+    GRID=$(( BASE_GRID * PARTS ))
+    echo "[auto-grid] grid = ${BASE_GRID} × ${PARTS} partes = ${GRID}"
+fi
 
 # ── Detectar GPUs ─────────────────────────────────────────────────────────────
 detect_gpus() {

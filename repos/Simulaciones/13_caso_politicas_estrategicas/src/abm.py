@@ -55,6 +55,7 @@ def simulate_abm(params, steps, seed=42):
     
     series_s = [] # Adoption rate
     series_grid = []
+    store_grid = params.get("_store_grid", True)
     
     for t in range(steps):
         # External Forcing modulates p
@@ -103,6 +104,7 @@ def simulate_abm(params, steps, seed=42):
         else:
             grid_rep = np.zeros((7, 7)) # Fallback for 50 agents
             grid_rep.flat[:n_agents] = state
-        series_grid.append(grid_rep.copy())
+        if store_grid:
+            series_grid.append(grid_rep.copy())
         
     return {"s": series_s, "forcing": forcing, "grid": series_grid}
