@@ -26,6 +26,20 @@ La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, 
 
 Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido:
 
+```mermaid
+graph LR
+    N0[Nivel 0: Null] --> N1[Nivel 1: Trend]
+    N1 --> N2[Nivel 2: Suggestive]
+    N2 --> N3[Nivel 3: Weak]
+    N3 --> N4[Nivel 4: Strong]
+    N4 --> N5[Nivel 5: Hiperobjeto]
+    
+    style N0 fill:#f9f,stroke:#333,stroke-width:1px
+    style N3 fill:#bbf,stroke:#333,stroke-width:2px
+    style N4 fill:#6f6,stroke:#333,stroke-width:4px
+    style N5 fill:#gold,stroke:#333,stroke-width:4px
+```
+
 | Nivel | Categoría | Criterio operativo | Interpretación |
 |:-----:|-----------|-------------------|----------------|
 | 0 | **null** | EDI ≤ 0 o sin señal | Sin cierre operativo. El fenómeno no presenta constricción macro detectable. No es un objeto sino una agregación sin estructura identificable por este instrumento. |
@@ -60,6 +74,15 @@ Un fenómeno exhibe **cierre operativo de grado G** si y solo si:
 - Si G ≤ 0: **sin cierre operativo** (Nivel 0).
 
 H1 no afirma "este fenómeno es un hiperobjeto real". H1 mide y clasifica el grado de cierre operativo. El **resultado** de la tesis es el paisaje completo de 29 fenómenos clasificados, no solo los 2 que alcanzan Nivel 4.
+
+```mermaid
+flowchart TD
+    A[Modelo Completo ABM + ODE] -->|Error RMSE_full| C{Comparación}
+    B[Modelo Reducido ABM solo] -->|Error RMSE_reduced| C
+    C -->|Calculo EDI| D[EDI = 1 - RMSE_full/RMSE_reduced]
+    D -->|Si EDI > 0.30| E[Emergencia Fuerte]
+    D -->|Si EDI < 0| F[Anti-emergencia]
+```
 
 ### La analogía del ribosoma
 Los fenómenos de Nivel 2-3 (suggestive, weak) son análogos a **ribosomas** en biología: componentes funcionales imprescindibles para la célula, pero que por sí solos no constituyen un organismo. La deforestación (Nivel 4) es análoga a una célula completa: tiene cierre operativo suficiente para ser tratada como unidad funcional autónoma. Un caso null es análogo a moléculas dispersas en solución: materia sin organización detectable.

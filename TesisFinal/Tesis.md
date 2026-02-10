@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 02:52 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 02:56 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -142,6 +142,20 @@ La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, 
 
 Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido:
 
+```mermaid
+graph LR
+    N0[Nivel 0: Null] --> N1[Nivel 1: Trend]
+    N1 --> N2[Nivel 2: Suggestive]
+    N2 --> N3[Nivel 3: Weak]
+    N3 --> N4[Nivel 4: Strong]
+    N4 --> N5[Nivel 5: Hiperobjeto]
+    
+    style N0 fill:#f9f,stroke:#333,stroke-width:1px
+    style N3 fill:#bbf,stroke:#333,stroke-width:2px
+    style N4 fill:#6f6,stroke:#333,stroke-width:4px
+    style N5 fill:#gold,stroke:#333,stroke-width:4px
+```
+
 | Nivel | Categoría | Criterio operativo | Interpretación |
 |:-----:|-----------|-------------------|----------------|
 | 0 | **null** | EDI ≤ 0 o sin señal | Sin cierre operativo. El fenómeno no presenta constricción macro detectable. No es un objeto sino una agregación sin estructura identificable por este instrumento. |
@@ -176,6 +190,15 @@ Un fenómeno exhibe **cierre operativo de grado G** si y solo si:
 - Si G ≤ 0: **sin cierre operativo** (Nivel 0).
 
 H1 no afirma "este fenómeno es un hiperobjeto real". H1 mide y clasifica el grado de cierre operativo. El **resultado** de la tesis es el paisaje completo de 29 fenómenos clasificados, no solo los 2 que alcanzan Nivel 4.
+
+```mermaid
+flowchart TD
+    A[Modelo Completo ABM + ODE] -->|Error RMSE_full| C{Comparación}
+    B[Modelo Reducido ABM solo] -->|Error RMSE_reduced| C
+    C -->|Calculo EDI| D[EDI = 1 - RMSE_full/RMSE_reduced]
+    D -->|Si EDI > 0.30| E[Emergencia Fuerte]
+    D -->|Si EDI < 0| F[Anti-emergencia]
+```
 
 ### La analogía del ribosoma
 Los fenómenos de Nivel 2-3 (suggestive, weak) son análogos a **ribosomas** en biología: componentes funcionales imprescindibles para la célula, pero que por sí solos no constituyen un organismo. La deforestación (Nivel 4) es análoga a una célula completa: tiene cierre operativo suficiente para ser tratada como unidad funcional autónoma. Un caso null es análogo a moléculas dispersas en solución: materia sin organización detectable.
@@ -372,16 +395,57 @@ El marco define un gradiente computacional de cierre operativo para fenómenos d
 # 01 Metodología de Medición
 
 ## Protocolo de Rigor (C1-C5)
+
 1. **C1 Convergencia:** ABM acoplado mejora sobre ABM reducido en datos reales.
+
 2. **C2 Robustez:** Estabilidad ante perturbaciones de parámetros.
+
 3. **C3 Determinismo aleatorio:** Semillas fijas para replicabilidad.
+
 4. **C4 Linter de realidad:** Coherencia con leyes del dominio.
+
 5. **C5 Reporte de fallos:** Sensibilidad y límites explicitados.
 
-Estos criterios surgen de auditorías internas. La metodología no se justifica por resultados favorables, sino por su capacidad para discriminar fenómenos de forma explícita y reproducible.
+
+
+```mermaid
+
+flowchart LR
+
+    C1[C1: Convergencia] --> C2[C2: Robustez]
+
+    C2 --> C3[C3: Replicabilidad]
+
+    C3 --> C4[C4: Validez]
+
+    C4 --> C5[C5: Incertidumbre]
+
+    C5 --> Pass{¿Todo OK?}
+
+    Pass -->|Sí| Valid[Nivel 4: Objeto Operativo]
+
+    Pass -->|No| Reject[Clasificación Nivel 0-3]
+
+```
+
+
+
+Estos criterios surgen de auditorías internas.
+
+ La metodología no se justifica por resultados favorables, sino por su capacidad para discriminar fenómenos de forma explícita y reproducible.
 
 ## Pipeline de Validación
 Observación → Simulación → Clasificación. El modelo asigna un grado de cierre operativo (EDI) que posiciona al fenómeno en el paisaje de emergencia. El pipeline no "valida" o "invalida" — **clasifica** en un gradiente.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Datos: WorldBank, OWID, etc.
+    Datos --> Sintetico: Fase de Calibración
+    Sintetico --> Real: Fase de Validación (Zero-Nudging)
+    Real --> Protocolo: C1-C5 + EDI
+    Protocolo --> Clasificacion: Nivel 0-4
+    Clasificacion --> [*]
+```
 
 ## Métricas y su Interpretación bajo Irrealismo Operativo
 
@@ -473,6 +537,25 @@ class HybridModel:
             self.ode.adjust(self.obs[t], self.assimilation_strength)
 ```
 
+```mermaid
+graph TD
+    subgraph Macro[Nivel Macro: ODE]
+        M1[dX/dt] --> M2[Estado X]
+    end
+    
+    subgraph Micro[Nivel Micro: ABM]
+        A1[Agente i] --> A2[Acción local]
+        A2 --> A3[Estado x_i]
+    end
+    
+    M2 -->|Nudging / Causalidad Descendente| Micro
+    A3 -->|Agregación / Causalidad Ascendente| Macro
+    D[Datos Reales] -->|Asimilación| Macro
+    
+    style Macro fill:#e1f5fe,stroke:#01579b
+    style Micro fill:#fff3e0,stroke:#e65100
+```
+
 ## Rol Instrumental de la ODE: Sonda Operativa
 
 La ODE no es la representación del hiperobjeto. Es una **sonda operativa**: un instrumento que genera una señal macro candidata para probar si la dinámica micro responde a constricciones de ese nivel. Bajo irrealismo operativo, lo que se mide no es "existencia" sino **grado de cierre operativo**. Si la eliminación de la constricción macro (ablación: forcing_scale=0, macro_coupling=0) degrada la predicción micro (EDI > 0.30), el constructo macro es operativamente indispensable.
@@ -536,6 +619,14 @@ La validación bajo irrealismo operativo no busca "confirmar" ni "refutar" la ex
 El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso alcanza **Nivel 4** solo si las 11 condiciones son ✓ simultáneamente. La significancia estadística se evalúa mediante permutation test con 999 permutaciones (seed=42).
 
 > **Estado actual:** Bajo el pipeline limpio (sin data leakage, zero-nudging, 999 permutaciones): **2/29 en Nivel 4** (Deforestación y Microplásticos). El paisaje de emergencia queda completamente mapeado.
+
+```mermaid
+pie title Distribución del Paisaje de Emergencia (29 Casos)
+    "Nivel 4: Cierre Fuerte (Validados)" : 2
+    "Nivel 2-3: Componente/Sugestiva" : 4
+    "Nivel 0-1: Tendencia/Sin Señal" : 20
+    "Controles de Falsación" : 3
+```
 
 ### Taxonomía de Emergencia con Niveles Operativos
 
@@ -688,7 +779,41 @@ Los 29 casos cubren dominios físicos (clima, energía, océanos, acidificación
 
 ### El Patrón de la Inercia Material
 
-Los dos casos Nivel 4 (Deforestación EDI=0.633 y Microplásticos EDI=0.427) comparten una propiedad: **inercia material**. La frontera agrícola se desplaza lentamente; los plásticos se acumulan persistentemente. El caso Nivel 3 (Fuga de Cerebros EDI=0.183) exhibe inercia demográfica.
+
+
+```mermaid
+
+quadrantChart
+
+    title Matriz de Emergencia: EDI vs CR
+
+    x-axis "Baja Cohesión (CR < 2.0)" --> "Alta Cohesión (CR > 2.0)"
+
+    y-axis "Baja Eficacia (EDI < 0.30)" --> "Alta Eficacia (EDI > 0.30)"
+
+    quadrant-1 "Emergencia Completa (Hiperobjeto)"
+
+    quadrant-2 "Emergencia Funcional (Frontera difusa)"
+
+    quadrant-3 "Agregación Simple"
+
+    quadrant-4 "Cohesión sin Eficacia"
+
+    "Deforestación": [0.3, 0.6]
+
+    "Microplásticos": [0.25, 0.5]
+
+    "Fuga Cerebros": [0.2, 0.35]
+
+    "Clima": [0.2, 0.1]
+
+```
+
+
+
+Los dos casos Nivel 4 (Deforestación EDI=0.633 y Microplásticos EDI=0.427) comparten una propiedad: **inercia material**.
+
+ La frontera agrícola se desplaza lentamente; los plásticos se acumulan persistentemente. El caso Nivel 3 (Fuga de Cerebros EDI=0.183) exhibe inercia demográfica.
 
 Interpretación bajo irrealismo operativo: el instrumento detecta cierre operativo donde la constricción macro opera sobre sustratos con inercia física o biológica. Esto no demuestra que "los hiperobjetos son reales en sistemas con inercia" — demuestra que **el instrumento es sensible a la inercia del sustrato**. Los sistemas con alta reflexividad (finanzas), alta volatilidad (clima regional), o datos indirectos (conciencia) no alcanzan el umbral, consistente con las limitaciones teóricas del instrumento.
 

@@ -24,6 +24,25 @@ class HybridModel:
             self.ode.adjust(self.obs[t], self.assimilation_strength)
 ```
 
+```mermaid
+graph TD
+    subgraph Macro[Nivel Macro: ODE]
+        M1[dX/dt] --> M2[Estado X]
+    end
+    
+    subgraph Micro[Nivel Micro: ABM]
+        A1[Agente i] --> A2[Acción local]
+        A2 --> A3[Estado x_i]
+    end
+    
+    M2 -->|Nudging / Causalidad Descendente| Micro
+    A3 -->|Agregación / Causalidad Ascendente| Macro
+    D[Datos Reales] -->|Asimilación| Macro
+    
+    style Macro fill:#e1f5fe,stroke:#01579b
+    style Micro fill:#fff3e0,stroke:#e65100
+```
+
 ## Rol Instrumental de la ODE: Sonda Operativa
 
 La ODE no es la representación del hiperobjeto. Es una **sonda operativa**: un instrumento que genera una señal macro candidata para probar si la dinámica micro responde a constricciones de ese nivel. Bajo irrealismo operativo, lo que se mide no es "existencia" sino **grado de cierre operativo**. Si la eliminación de la constricción macro (ablación: forcing_scale=0, macro_coupling=0) degrada la predicción micro (EDI > 0.30), el constructo macro es operativamente indispensable.

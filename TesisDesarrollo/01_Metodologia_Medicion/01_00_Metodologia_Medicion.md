@@ -1,16 +1,57 @@
 # 01 Metodología de Medición
 
 ## Protocolo de Rigor (C1-C5)
+
 1. **C1 Convergencia:** ABM acoplado mejora sobre ABM reducido en datos reales.
+
 2. **C2 Robustez:** Estabilidad ante perturbaciones de parámetros.
+
 3. **C3 Determinismo aleatorio:** Semillas fijas para replicabilidad.
+
 4. **C4 Linter de realidad:** Coherencia con leyes del dominio.
+
 5. **C5 Reporte de fallos:** Sensibilidad y límites explicitados.
 
-Estos criterios surgen de auditorías internas. La metodología no se justifica por resultados favorables, sino por su capacidad para discriminar fenómenos de forma explícita y reproducible.
+
+
+```mermaid
+
+flowchart LR
+
+    C1[C1: Convergencia] --> C2[C2: Robustez]
+
+    C2 --> C3[C3: Replicabilidad]
+
+    C3 --> C4[C4: Validez]
+
+    C4 --> C5[C5: Incertidumbre]
+
+    C5 --> Pass{¿Todo OK?}
+
+    Pass -->|Sí| Valid[Nivel 4: Objeto Operativo]
+
+    Pass -->|No| Reject[Clasificación Nivel 0-3]
+
+```
+
+
+
+Estos criterios surgen de auditorías internas.
+
+ La metodología no se justifica por resultados favorables, sino por su capacidad para discriminar fenómenos de forma explícita y reproducible.
 
 ## Pipeline de Validación
 Observación → Simulación → Clasificación. El modelo asigna un grado de cierre operativo (EDI) que posiciona al fenómeno en el paisaje de emergencia. El pipeline no "valida" o "invalida" — **clasifica** en un gradiente.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Datos: WorldBank, OWID, etc.
+    Datos --> Sintetico: Fase de Calibración
+    Sintetico --> Real: Fase de Validación (Zero-Nudging)
+    Real --> Protocolo: C1-C5 + EDI
+    Protocolo --> Clasificacion: Nivel 0-4
+    Clasificacion --> [*]
+```
 
 ## Métricas y su Interpretación bajo Irrealismo Operativo
 

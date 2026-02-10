@@ -19,6 +19,14 @@ El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 crite
 
 > **Estado actual:** Bajo el pipeline limpio (sin data leakage, zero-nudging, 999 permutaciones): **2/29 en Nivel 4** (Deforestación y Microplásticos). El paisaje de emergencia queda completamente mapeado.
 
+```mermaid
+pie title Distribución del Paisaje de Emergencia (29 Casos)
+    "Nivel 4: Cierre Fuerte (Validados)" : 2
+    "Nivel 2-3: Componente/Sugestiva" : 4
+    "Nivel 0-1: Tendencia/Sin Señal" : 20
+    "Controles de Falsación" : 3
+```
+
 ### Taxonomía de Emergencia con Niveles Operativos
 
 | Categoría | Nivel | Criterio | Conteo | Función en el paisaje |
@@ -115,7 +123,41 @@ Los 29 casos cubren dominios físicos (clima, energía, océanos, acidificación
 
 ### El Patrón de la Inercia Material
 
-Los dos casos Nivel 4 (Deforestación EDI=0.633 y Microplásticos EDI=0.427) comparten una propiedad: **inercia material**. La frontera agrícola se desplaza lentamente; los plásticos se acumulan persistentemente. El caso Nivel 3 (Fuga de Cerebros EDI=0.183) exhibe inercia demográfica.
+
+
+```mermaid
+
+quadrantChart
+
+    title Matriz de Emergencia: EDI vs CR
+
+    x-axis "Baja Cohesión (CR < 2.0)" --> "Alta Cohesión (CR > 2.0)"
+
+    y-axis "Baja Eficacia (EDI < 0.30)" --> "Alta Eficacia (EDI > 0.30)"
+
+    quadrant-1 "Emergencia Completa (Hiperobjeto)"
+
+    quadrant-2 "Emergencia Funcional (Frontera difusa)"
+
+    quadrant-3 "Agregación Simple"
+
+    quadrant-4 "Cohesión sin Eficacia"
+
+    "Deforestación": [0.3, 0.6]
+
+    "Microplásticos": [0.25, 0.5]
+
+    "Fuga Cerebros": [0.2, 0.35]
+
+    "Clima": [0.2, 0.1]
+
+```
+
+
+
+Los dos casos Nivel 4 (Deforestación EDI=0.633 y Microplásticos EDI=0.427) comparten una propiedad: **inercia material**.
+
+ La frontera agrícola se desplaza lentamente; los plásticos se acumulan persistentemente. El caso Nivel 3 (Fuga de Cerebros EDI=0.183) exhibe inercia demográfica.
 
 Interpretación bajo irrealismo operativo: el instrumento detecta cierre operativo donde la constricción macro opera sobre sustratos con inercia física o biológica. Esto no demuestra que "los hiperobjetos son reales en sistemas con inercia" — demuestra que **el instrumento es sensible a la inercia del sustrato**. Los sistemas con alta reflexividad (finanzas), alta volatilidad (clima regional), o datos indirectos (conciencia) no alcanzan el umbral, consistente con las limitaciones teóricas del instrumento.
 
