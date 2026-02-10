@@ -10,7 +10,7 @@ La tesis adopta un **irrealismo operativo**: lo pre-ontológico — la realidad 
 
 - **Realismo fuerte** (Bunge, 1979; Ladyman & Ross, 2007): que afirma que la estructura descubierta preexiste al marco.
 - **Instrumentalismo puro** (van Fraassen, 1980): que reduce los constructos a herramientas predictivas sin contenido ontológico.
-- **Realismo inferencial** (postura anterior de esta tesis): que infería existencia desde eficacia predictiva.
+- **Realismo inferencial** (Psillos, 1999): que infiere existencia desde eficacia predictiva.
 
 El irrealismo operativo ocupa una posición intermedia: nuestros constructos son **operativamente suficientes** para tratar fenómenos de gran escala, sin que esa suficiencia implique existencia metafísica. Un "hiperobjeto" es un objeto del entendimiento — un constructo que el marco detecta, mide y clasifica — cuya utilidad operativa se demuestra por su capacidad de reducir incertidumbre predictiva de forma robusta y falsable.
 
@@ -24,10 +24,7 @@ La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, 
 
 ## Emergentismo Gradual con Niveles
 
-### De la emergencia fuerte a la emergencia por grados
-La postura anterior de esta tesis adoptaba un "emergentismo fuerte por irreducibilidad causal demostrada" (Humphreys, 2016; Batterman, 2002). Tras el proceso adversarial de validación (Gladiadores, 20 rondas), y consistente con el irrealismo operativo, se adopta un **emergentismo gradual por niveles de cierre operativo**.
-
-Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido:
+Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido:
 
 | Nivel | Categoría | Criterio operativo | Interpretación |
 |:-----:|-----------|-------------------|----------------|
@@ -126,7 +123,7 @@ Este marco no fuerza validaciones. Un caso con EDI bajo o negativo **no es un fr
 
 Bajo irrealismo operativo, la distinción entre estas causas es **epistémica, no ontológica**: no afirmamos "no es un hiperobjeto", sino "este instrumento no detecta cierre operativo en este fenómeno".
 
-## Delimitación del Objeto: De la Ontología a la Operatividad
+## Delimitación del Objeto de Estudio
 Siguiendo a Morton (2013), los hiperobjetos poseen propiedades que desafían el modelado clásico:
 1. **Viscosidad:** Se traduce en acoplamiento activo (nudging). El modelo no puede desacoplarse completamente del sistema. En evaluación, assimilation_strength=0 simula el máximo desacoplamiento posible.
 2. **No-localidad:** El ABM captura la dispersión espacial; la ODE captura la unidad funcional que los organiza.
@@ -165,7 +162,7 @@ La topología Scale-Free produce heterogeneidad 10× mayor que la grilla regular
 ## Glosario Operativo
 - **Hiperobjeto (operativo):** Constructo del entendimiento que designa un fenómeno de gran escala con cierre operativo alto (Nivel 4+). No implica existencia metafísica.
 - **Cierre operativo:** Propiedad de un fenómeno cuya constricción macro es irreducible, significativa y robusta bajo el protocolo C1-C5. Medido por EDI.
-- **EDI (Effective Dependence Index):** Grado de cierre operativo. Mide la degradación predictiva al eliminar la constricción macro. Basado en la teoría de la información de Shannon (1948), cuantifica cuánta información estructurada se pierde en la transición del modelo completo al reducido. EDI ∈ [-1, 1].
+- **EDI (Effective Dependence Index):** Grado de cierre operativo. Mide la degradación predictiva al eliminar la constricción macro. Cuantifica cuánta información estructurada aporta el nivel macro al modelo completo respecto al modelo reducido (ablación). EDI ∈ [-1, 1].
 - **CR (Cohesion Ratio):** Indicador complementario de frontera funcional. CR > 2.0 sugiere frontera espacial nítida. No es condición de H1.
 - **Nudging:** Acople macro-micro para asimilación de datos. Desactivado (=0) en evaluación.
 - **Componente funcional:** Fenómeno de Nivel 2-3 que exhibe constricción detectable pero insuficiente para cierre. Análogo a ribosomas en biología.

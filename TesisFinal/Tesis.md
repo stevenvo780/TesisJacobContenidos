@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 00:35 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 00:38 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -32,7 +32,7 @@ La tesis adopta un **irrealismo operativo**: lo pre-ontológico — la realidad 
 
 - **Realismo fuerte** (Bunge, 1979; Ladyman & Ross, 2007): que afirma que la estructura descubierta preexiste al marco.
 - **Instrumentalismo puro** (van Fraassen, 1980): que reduce los constructos a herramientas predictivas sin contenido ontológico.
-- **Realismo inferencial** (postura anterior de esta tesis): que infería existencia desde eficacia predictiva.
+- **Realismo inferencial** (Psillos, 1999): que infiere existencia desde eficacia predictiva.
 
 El irrealismo operativo ocupa una posición intermedia: nuestros constructos son **operativamente suficientes** para tratar fenómenos de gran escala, sin que esa suficiencia implique existencia metafísica. Un "hiperobjeto" es un objeto del entendimiento — un constructo que el marco detecta, mide y clasifica — cuya utilidad operativa se demuestra por su capacidad de reducir incertidumbre predictiva de forma robusta y falsable.
 
@@ -46,10 +46,7 @@ La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, 
 
 ## Emergentismo Gradual con Niveles
 
-### De la emergencia fuerte a la emergencia por grados
-La postura anterior de esta tesis adoptaba un "emergentismo fuerte por irreducibilidad causal demostrada" (Humphreys, 2016; Batterman, 2002). Tras el proceso adversarial de validación (Gladiadores, 20 rondas), y consistente con el irrealismo operativo, se adopta un **emergentismo gradual por niveles de cierre operativo**.
-
-Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido:
+Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido:
 
 | Nivel | Categoría | Criterio operativo | Interpretación |
 |:-----:|-----------|-------------------|----------------|
@@ -148,7 +145,7 @@ Este marco no fuerza validaciones. Un caso con EDI bajo o negativo **no es un fr
 
 Bajo irrealismo operativo, la distinción entre estas causas es **epistémica, no ontológica**: no afirmamos "no es un hiperobjeto", sino "este instrumento no detecta cierre operativo en este fenómeno".
 
-## Delimitación del Objeto: De la Ontología a la Operatividad
+## Delimitación del Objeto de Estudio
 Siguiendo a Morton (2013), los hiperobjetos poseen propiedades que desafían el modelado clásico:
 1. **Viscosidad:** Se traduce en acoplamiento activo (nudging). El modelo no puede desacoplarse completamente del sistema. En evaluación, assimilation_strength=0 simula el máximo desacoplamiento posible.
 2. **No-localidad:** El ABM captura la dispersión espacial; la ODE captura la unidad funcional que los organiza.
@@ -187,7 +184,7 @@ La topología Scale-Free produce heterogeneidad 10× mayor que la grilla regular
 ## Glosario Operativo
 - **Hiperobjeto (operativo):** Constructo del entendimiento que designa un fenómeno de gran escala con cierre operativo alto (Nivel 4+). No implica existencia metafísica.
 - **Cierre operativo:** Propiedad de un fenómeno cuya constricción macro es irreducible, significativa y robusta bajo el protocolo C1-C5. Medido por EDI.
-- **EDI (Effective Dependence Index):** Grado de cierre operativo. Mide la degradación predictiva al eliminar la constricción macro. Basado en la teoría de la información de Shannon (1948), cuantifica cuánta información estructurada se pierde en la transición del modelo completo al reducido. EDI ∈ [-1, 1].
+- **EDI (Effective Dependence Index):** Grado de cierre operativo. Mide la degradación predictiva al eliminar la constricción macro. Cuantifica cuánta información estructurada aporta el nivel macro al modelo completo respecto al modelo reducido (ablación). EDI ∈ [-1, 1].
 - **CR (Cohesion Ratio):** Indicador complementario de frontera funcional. CR > 2.0 sugiere frontera espacial nítida. No es condición de H1.
 - **Nudging:** Acople macro-micro para asimilación de datos. Desactivado (=0) en evaluación.
 - **Componente funcional:** Fenómeno de Nivel 2-3 que exhibe constricción detectable pero insuficiente para cierre. Análogo a ribosomas en biología.
@@ -299,8 +296,8 @@ Esto penaliza fenómenos con datos indirectos (ej. Conciencia, LoE=1) frente a s
 4. **LoE 4 (Fuerte):** Series temporales consistentes, múltiples fuentes, > 10 años.
 5. **LoE 5 (Robusto):** Datos físicos directos (sensores), estandarizados internacionalmente, > 30 años.
 
-## Reglas de Clasificación (ya no "Reglas de Rechazo")
-Bajo irrealismo operativo, los umbrales no "rechazan" fenómenos — los **clasifican** en el gradiente de emergencia:
+## Reglas de Clasificación
+Los umbrales **clasifican** fenómenos en el gradiente de emergencia:
 
 1. **EDI < 0.01:** Sin señal detectable → Nivel 0 (null)
 2. **EDI > 0.01, p < 0.05:** Señal sugestiva → Nivel 2
@@ -731,19 +728,17 @@ El resultado no es "2/29 pasan" — es un **mapa completo** de 29 fenómenos pos
 
 ### Valor epistemológico bajo irrealismo operativo
 
-1. **El instrumento es falsable:** La corrección del data leakage colapsó los EDI inflados de versiones anteriores. El instrumento no es un rubber-stamp.
+1. **El instrumento es falsable:** El protocolo de validación con zero-nudging y permutation test descarta EDI inflados. El instrumento no es un rubber-stamp.
 2. **Los controles de falsación funcionan:** 3/3 correctamente rechazados.
 3. **La selectividad es alta:** Solo 7.7% de casos genuinos alcanzan Nivel 4.
 4. **El gradiente es coherente:** Los fenómenos con inercia material se clasifican más alto, consistente con la teoría.
 5. **Sin compromiso ontológico:** Nunca afirmamos "X es un hiperobjeto". Afirmamos "X exhibe cierre operativo de grado G según este instrumento".
 
-### Reformulación de H1
+### H1 — Hipótesis Central
 
-H1 original: "un hiperobjeto es real si su modelo macroscópico reduce la entropía de sus componentes microscópicos en >30%."
+**Un fenómeno exhibe cierre operativo de grado G cuando la eliminación de su constructo macro degrada la predicción micro en una proporción EDI ≥ G/100, verificable mediante el protocolo C1-C5 con zero-nudging.**
 
-H1 reformulada bajo irrealismo operativo: **"Un fenómeno exhibe cierre operativo de grado G cuando la eliminación de su constructo macro degrada la predicción micro en una proporción EDI ≥ G/100, verificable mediante el protocolo C1-C5 con zero-nudging."**
-
-La tesis no demuestra que los hiperobjetos "existan" — demuestra que ciertos fenómenos **funcionan como si tuvieran estructura macro autónoma**, y proporciona un instrumento calibrado para medir ese "como si" con precisión y honestidad.
+La tesis demuestra que ciertos fenómenos **funcionan como si tuvieran estructura macro autónoma**, y proporciona un instrumento calibrado para medir ese "como si" con precisión y honestidad.
 
 ---
 

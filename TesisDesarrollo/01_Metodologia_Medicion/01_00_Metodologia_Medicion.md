@@ -31,8 +31,8 @@ Esto penaliza fenómenos con datos indirectos (ej. Conciencia, LoE=1) frente a s
 4. **LoE 4 (Fuerte):** Series temporales consistentes, múltiples fuentes, > 10 años.
 5. **LoE 5 (Robusto):** Datos físicos directos (sensores), estandarizados internacionalmente, > 30 años.
 
-## Reglas de Clasificación (ya no "Reglas de Rechazo")
-Bajo irrealismo operativo, los umbrales no "rechazan" fenómenos — los **clasifican** en el gradiente de emergencia:
+## Reglas de Clasificación
+Los umbrales **clasifican** fenómenos en el gradiente de emergencia:
 
 1. **EDI < 0.01:** Sin señal detectable → Nivel 0 (null)
 2. **EDI > 0.01, p < 0.05:** Señal sugestiva → Nivel 2

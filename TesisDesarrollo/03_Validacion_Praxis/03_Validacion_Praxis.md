@@ -165,16 +165,14 @@ El resultado no es "2/29 pasan" — es un **mapa completo** de 29 fenómenos pos
 
 ### Valor epistemológico bajo irrealismo operativo
 
-1. **El instrumento es falsable:** La corrección del data leakage colapsó los EDI inflados de versiones anteriores. El instrumento no es un rubber-stamp.
+1. **El instrumento es falsable:** El protocolo de validación con zero-nudging y permutation test descarta EDI inflados. El instrumento no es un rubber-stamp.
 2. **Los controles de falsación funcionan:** 3/3 correctamente rechazados.
 3. **La selectividad es alta:** Solo 7.7% de casos genuinos alcanzan Nivel 4.
 4. **El gradiente es coherente:** Los fenómenos con inercia material se clasifican más alto, consistente con la teoría.
 5. **Sin compromiso ontológico:** Nunca afirmamos "X es un hiperobjeto". Afirmamos "X exhibe cierre operativo de grado G según este instrumento".
 
-### Reformulación de H1
+### H1 — Hipótesis Central
 
-H1 original: "un hiperobjeto es real si su modelo macroscópico reduce la entropía de sus componentes microscópicos en >30%."
+**Un fenómeno exhibe cierre operativo de grado G cuando la eliminación de su constructo macro degrada la predicción micro en una proporción EDI ≥ G/100, verificable mediante el protocolo C1-C5 con zero-nudging.**
 
-H1 reformulada bajo irrealismo operativo: **"Un fenómeno exhibe cierre operativo de grado G cuando la eliminación de su constructo macro degrada la predicción micro en una proporción EDI ≥ G/100, verificable mediante el protocolo C1-C5 con zero-nudging."**
-
-La tesis no demuestra que los hiperobjetos "existan" — demuestra que ciertos fenómenos **funcionan como si tuvieran estructura macro autónoma**, y proporciona un instrumento calibrado para medir ese "como si" con precisión y honestidad.
+La tesis demuestra que ciertos fenómenos **funcionan como si tuvieran estructura macro autónoma**, y proporciona un instrumento calibrado para medir ese "como si" con precisión y honestidad.

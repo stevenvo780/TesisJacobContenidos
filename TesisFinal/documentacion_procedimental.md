@@ -162,6 +162,48 @@ Esta limitación se descubrió durante el proceso adversarial de validación (Gl
 
 ---
 
+## Pivot Filosófico: De Realismo Inferencial a Irrealismo Operativo (2026-02-09)
+
+### Postura anterior
+La tesis adoptaba originalmente un **realismo inferencial con emergentismo fuerte por irreducibilidad causal demostrada** (Humphreys, 2016; Batterman, 2002). Bajo esta postura:
+- H1 afirmaba: "un hiperobjeto es *real* si su modelo macroscópico reduce la entropía de sus componentes microscópicos en >30%".
+- Los resultados se interpretaban como "validación" o "rechazo" ontológico.
+- Las reglas se denominaban "reglas de rechazo" (no de clasificación).
+- El EDI medía "eficacia causal" e "indispensabilidad causal".
+- Los 27 casos no-validados se presentaban como "fallos" del marco.
+
+### Problemas identificados (proceso adversarial, 20 rondas)
+1. **E1 (Compromiso ontológico excesivo):** Afirmar "X es real" excede lo que el instrumento mide (reducción de error predictivo).
+2. **E2 (2/29 como fracaso narrativo):** Bajo realismo, 93% de rechazo parece un fracaso. Bajo irrealismo, es un paisaje informativo.
+3. **E3 (Exclusión causal de Kim):** El emergentismo fuerte es vulnerable a la objeción de Kim (1999): no se puede afirmar causalidad descendente fuerte sin resolver la exclusión causal.
+4. **E5 (Asimetría ambiental/social):** Bajo realismo, la asimetría era un problema. Bajo irrealismo, es un resultado descriptivo del instrumento.
+5. **E7 (null ≠ inexistencia):** Bajo realismo, "null" sugiere "no existe". Bajo irrealismo, "null" = "no detectado por esta sonda".
+
+### Postura adoptada
+**Irrealismo operativo con emergentismo gradual por niveles de cierre operativo.** Fundada en:
+- Chalmers (2006): emergencia débil vs fuerte
+- Bedau (1997): emergencia débil como estado por defecto
+- Kim (1999): exclusión causal esquivada por renuncia a afirmación causal metafísica
+- O'Connor & Wong (2005): emergencia epistemológica vs ontológica
+- Analogía del ribosoma: cierre operativo sin compromiso ontológico
+
+### Cambios implementados
+- H1 reformulada: "cierre operativo de grado G" en lugar de "realidad causal"
+- "Reglas de rechazo" → "reglas de clasificación"
+- "Eficacia causal" → "cierre operativo" / "indispensabilidad operativa"
+- "Validado/Rechazado" → "Nivel 0-5 en paisaje de emergencia"
+- "H1 parcialmente confirmada" → "Paisaje completamente mapeado"
+- Título: "Irrealismo Operativo de Hiperobjetos" en lugar de "Validación de Hiperobjetos mediante Eficacia Causal"
+- Taxonomía de 6 niveles (0-5) con interpretaciones operativas
+- Bibliografía ampliada (+4 fuentes: Chalmers, Bedau, Kim, O'Connor & Wong)
+
+### Verificación técnica previa al pivot
+- **E4 (circularidad BC):** `assimilation_strength=0.0` verificado en 9 ubicaciones de `hybrid_validator.py`. Sin circularidad.
+- **E6 (mc=0.50 cap):** `macro_coupling` acotado en [0.05, 0.50], `forcing_scale` acotado en [0.001, 0.99]. Caps honestos.
+- **Código sin cambios:** El pivot es exclusivamente filosófico/interpretativo. Ningún archivo de simulación fue modificado.
+
+---
+
 ## Trazabilidad
 
 Cada `metrics.json` contiene `generated_at` (timestamp ISO) y `git.commit` (hash del código ejecutado). Los resultados se generan ejecutando `validate.py` desde `repos/Simulaciones/{NN}_caso_*/src/`. Para auditar consistencia:
