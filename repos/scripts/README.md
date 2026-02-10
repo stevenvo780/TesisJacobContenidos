@@ -96,9 +96,9 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 ./gpu_run.sh --gpu 0                   # solo RTX 5070 Ti (16 GB)
 ./gpu_run.sh --gpu 1 --case clima      # solo RTX 2060 (6 GB)
 
-# ─── Secuencial (grids enormes → toda la VRAM para 1 caso) ──
-./gpu_run.sh --step-by-step --grid 5000
-./gpu_run.sh --step-by-step --gpu 0 --grid 3000
+# ─── Secuencial (grids enormes → toda la VRAM para 1 caso/GPU) ──
+./gpu_run.sh --step-by-step --grid 5000           # 2 GPUs: 2 casos simultáneos (1/GPU)
+./gpu_run.sh --step-by-step --gpu 0 --grid 3000   # 1 GPU: puramente secuencial
 
 # ─── Previsualizar sin ejecutar ──────────────────────────────
 ./gpu_run.sh --dry-run
@@ -114,7 +114,7 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 | `--part K` | todas | Ejecutar solo la tanda K de N |
 | `--case NOMBRE` | — | Filtrar por nombre (match parcial, case-insensitive) |
 | `--gpu N` | auto | Forzar GPU N (0 o 1). Auto = ambas GPUs |
-| `--step-by-step` | off | Secuencial: 1 caso a la vez, toda la VRAM disponible |
+| `--step-by-step` | off | Secuencial: 1 caso/GPU. Con 2 GPUs → 2 simultáneos |
 | `--perm N` | 9999 | Permutaciones para test EDI |
 | `--boot N` | 5000 | Bootstrap samples para intervalos de confianza |
 | `--refine N` | 50000 | Iteraciones de refinamiento en calibración |

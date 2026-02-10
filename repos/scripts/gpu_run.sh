@@ -575,7 +575,7 @@ echo "║  GPUs:     ${N_GPUS} detectadas$( [[ $FORCE_GPU -ge 0 ]] && echo " →
 echo "║  GPU 0:    ${GPU0_NAME} — ${GPU0_VRAM} MB"
 [[ $N_GPUS -ge 2 ]] && \
 echo "║  GPU 1:    ${GPU1_NAME} — ${GPU1_VRAM} MB"
-echo "║  Distrib:  $( [[ $STEP_BY_STEP -eq 1 ]] && echo "SECUENCIAL — 1 caso a la vez" || echo "cola dinámica — N workers/GPU, overlap CPU+GPU" )"
+echo "║  Distrib:  $( [[ $STEP_BY_STEP -eq 1 ]] && { [[ $FORCE_GPU -ge 0 || $N_GPUS -lt 2 ]] && echo "SECUENCIAL — 1 caso a la vez, 1 GPU" || echo "SECUENCIAL — 1 caso/GPU, ${N_GPUS} GPUs en paralelo"; } || echo "cola dinámica — N workers/GPU, overlap CPU+GPU" )"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
 echo "║  Contendr: ${CONTAINER}"
 echo "║  VRAM/proc: ~$(estimate_vram_per_process $GRID) MB"
@@ -598,26 +598,48 @@ START_GLOBAL=$SECONDS
 
 # ── Ejecutar por tandas ───────────────────────────────────────────────────────────────────
 if [[ $STEP_BY_STEP -eq 1 ]]; then
-    # ── Modo secuencial: un caso a la vez, toda la VRAM disponible ──
-    echo "═══ Modo SECUENCIAL — ${TOTAL} casos, 1 a la vez ═══"
-    # Elegir GPU (la forzada o la de más VRAM libre)
-    local_gpu=${FORCE_GPU}
-    if [[ $local_gpu -lt 0 ]]; then
-        local_gpu=$(nvidia-smi --query-gpu=index,memory.free --format=csv,noheader,nounits 2>/dev/null | sort -t',' -k2 -rn | head -1 | cut -d',' -f1 | tr -d ' ')
-        [[ -z "$local_gpu" ]] && local_gpu=0
+    # ── Modo secuencial: 1 caso por GPU, todas las GPUs en paralelo ──
+    # Con --gpu N: solo 1 GPU → puramente secuencial
+    # Sin --gpu: N GPUs → N casos simultáneos (1 por GPU)
+    
+    # Determinar GPUs disponibles para step-by-step
+    sbs_gpus=()
+    if [[ $FORCE_GPU -ge 0 ]]; then
+        sbs_gpus=($FORCE_GPU)
+    else
+        for ((g=0; g<N_GPUS; g++)); do
+            sbs_gpus+=($g)
+        done
     fi
-    echo "  GPU: ${local_gpu} (toda la VRAM para cada caso)"
+    n_sbs_gpus=${#sbs_gpus[@]}
+    
+    if [[ $n_sbs_gpus -eq 1 ]]; then
+        echo "═══ Modo SECUENCIAL — ${TOTAL} casos, 1 a la vez ═══"
+        echo "  GPU: ${sbs_gpus[0]} (toda la VRAM para cada caso)"
+    else
+        echo "═══ Modo SECUENCIAL — ${TOTAL} casos, ${n_sbs_gpus} GPUs (1 caso/GPU) ═══"
+        for g in "${sbs_gpus[@]}"; do
+            echo "  GPU ${g}: 1 caso a la vez"
+        done
+    fi
+    
     TOTAL_OK=0; TOTAL_FAIL=0; TOTAL_SKIP=0
-    for ((i=0; i<TOTAL; i++)); do
-        caso=${ALL_CASES[$i]}
-        echo ""
-        echo "  [$((i+1))/${TOTAL}] ▶ ${caso}"
+    
+    # Función para ejecutar un caso en una GPU específica
+    _run_step_case() {
+        local caso=$1
+        local gpu=$2
+        local idx=$3
+        local total=$4
+        local tag="GPU${gpu}"
+        
+        echo "  [${idx}/${total}] ▶ ${caso} (${tag})"
         if [[ $DRY_RUN -eq 1 ]]; then
             echo "  [DRY-RUN] ${caso}"
-            continue
+            return 0
         fi
-        local_log="/tmp/gpu_run_g${GRID}_logs/${caso}.log"
-        local_inner="
+        
+        local inner="
 export PYTHONIOENCODING=utf-8
 export HYPER_GRID_SIZE=${GRID}
 export HYPER_N_PERM=${PERM}
@@ -627,21 +649,54 @@ export HYPER_N_RUNS=${RUNS}
 mkdir -p /tmp/gpu_run_g${GRID}_logs
 SRC=/workspace/repos/Simulaciones/${caso}/src
 if [ ! -f \"\${SRC}/validate.py\" ]; then echo SKIP; exit 0; fi
-cd \"\${SRC}\" && HYPER_GPU_DEVICE=${local_gpu} python3 validate.py
+cd \"\${SRC}\" && HYPER_GPU_DEVICE=${gpu} python3 validate.py
 "
-        START_CASE=$SECONDS
-        docker exec "$CONTAINER" bash -c "$local_inner" > >(tee /tmp/gpu_step_${caso}.log) 2>&1
-        RC=$?
-        ELAPSED_CASE=$(( SECONDS - START_CASE ))
-        EDI=$(grep -oP 'EDI[=:]\s*-?[\d.]+' /tmp/gpu_step_${caso}.log 2>/dev/null | tail -1 || echo '?')
-        if [[ $RC -eq 0 ]]; then
-            echo "  [$((i+1))/${TOTAL}] ✓ ${caso} — ${ELAPSED_CASE}s — ${EDI}"
-            TOTAL_OK=$((TOTAL_OK+1))
+        local t0=$SECONDS
+        docker exec "$CONTAINER" bash -c "$inner" > >(tee /tmp/gpu_step_${caso}.log) 2>&1
+        local rc=$?
+        local elapsed=$(( SECONDS - t0 ))
+        local edi=$(grep -oP 'EDI[=:]\s*-?[\d.]+' /tmp/gpu_step_${caso}.log 2>/dev/null | tail -1 || echo '?')
+        
+        if [[ $rc -eq 0 ]]; then
+            echo "  [${idx}/${total}] ✓ ${caso} (${tag}) — ${elapsed}s — ${edi}"
+            return 0
         else
-            echo "  [$((i+1))/${TOTAL}] ✗ ${caso} — ${ELAPSED_CASE}s (exit ${RC})"
-            TOTAL_FAIL=$((TOTAL_FAIL+1))
+            echo "  [${idx}/${total}] ✗ ${caso} (${tag}) — ${elapsed}s (exit ${rc})"
+            return 1
         fi
+    }
+    
+    i=0
+    while [[ $i -lt $TOTAL ]]; do
+        echo ""
+        # Lanzar hasta n_sbs_gpus casos en paralelo (1 por GPU)
+        pids=()
+        pid_casos=()
+        pid_gpus=()
+        
+        for ((g_idx=0; g_idx<n_sbs_gpus && i<TOTAL; g_idx++)); do
+            caso=${ALL_CASES[$i]}
+            gpu=${sbs_gpus[$g_idx]}
+            i=$((i+1))
+            
+            _run_step_case "$caso" "$gpu" "$i" "$TOTAL" &
+            pids+=($!)
+            pid_casos+=("$caso")
+            pid_gpus+=("$gpu")
+        done
+        
+        # Esperar a que terminen todos los de esta ronda
+        for ((p_idx=0; p_idx<${#pids[@]}; p_idx++)); do
+            wait ${pids[$p_idx]}
+            rc=$?
+            if [[ $rc -eq 0 ]]; then
+                TOTAL_OK=$((TOTAL_OK+1))
+            else
+                TOTAL_FAIL=$((TOTAL_FAIL+1))
+            fi
+        done
     done
+    
     echo ""
     echo "  ═══ Resumen secuencial ═══"
     echo "  OK: ${TOTAL_OK}  FAIL: ${TOTAL_FAIL}"
