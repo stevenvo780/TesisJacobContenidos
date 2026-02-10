@@ -22,11 +22,26 @@ import math
 import os
 import random
 import subprocess
+import sys
+import time
 from datetime import datetime
 
 import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
+
+
+# ─── Progress Reporting ───────────────────────────────────────────────────────
+# Imprime estado a stderr para que sea visible incluso con stdout redirigido.
+# Formato: [PROGRESS] fase │ etapa │ detalle
+
+def _progress(phase: str, step: str, detail: str = ""):
+    """Emite una línea de progreso a stderr."""
+    ts = time.strftime("%H:%M:%S")
+    parts = [f"[{ts}]", phase, step]
+    if detail:
+        parts.append(detail)
+    print(" | ".join(parts), file=sys.stderr, flush=True)
 
 
 # ─── Métricas básicas (NumPy vectorizadas) ───────────────────────────────────
@@ -516,6 +531,8 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
         # ── GPU BATCH: todas las combinaciones en una pasada ──────────
         import sys
         print(f"[calibrate] GPU batch: {len(grid_combos)} sims simultáneas en VRAM", file=sys.stderr)
+        _progress("calibración", "1/2 Grid search",
+                  f"{len(grid_combos)} combos {'GPU' if _batch_fn else 'CPU'}")
         
         # Preparar base_params para batch (sin store_grid, sin assimilation)
         bp = dict(base_params)
@@ -544,6 +561,8 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
         candidates.sort(key=lambda x: x[0])
     else:
         # ── CPU PARALELO: joblib/loky con todos los cores ─────────────
+        _progress("calibración", "1/2 Grid search",
+                  f"{len(grid_combos)} combos CPU ({os.cpu_count()} cores)")
         def _eval_one_grid(fs, mc, dmp):
             params = dict(base_params)
             params["forcing_scale"] = fs
@@ -580,6 +599,8 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
     
     stalled = 0
     refine_per_point = n_refine // top_k
+    _progress("calibración", "2/2 Refinamiento",
+              f"n_refine={n_refine}, top_k={top_k}, {refine_per_point}/candidato")
     
     # Batch sizes: GPU puede hacer 500+ simultáneos, CPU usa cores
     if _batch_fn is not None:
@@ -594,6 +615,7 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
         radius_fs = 0.15
         radius_mc = 0.15
         radius_dmp = 0.1
+        _refine_t0 = time.time()
         
         i = 0
         while i < refine_per_point:
@@ -652,6 +674,11 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
                     stalled += 1
             
             i += this_batch
+            # Progreso granular dentro del refinamiento
+            if i % (batch_size * 5) < this_batch or i >= refine_per_point:
+                elapsed = time.time() - _refine_t0
+                _progress("calibración", f"  candidato {rank+1}/{top_k}",
+                          f"iter {i}/{refine_per_point}, err={best_err:.4f}, {elapsed:.0f}s")
             if stalled > 500:
                 break
         if stalled > 500:
@@ -1244,6 +1271,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     base_params.update(config.extra_base_params)
 
     # Calibración ODE
+    _progress(phase_name, "1/6 Calibración ODE")
     ode_rolling_meta = None
     if config.ode_calibration:
         if config.ode_rolling:
@@ -1261,6 +1289,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         base_params["ode_beta"] = beta
 
     # Calibración ABM
+    _progress(phase_name, "2/6 Calibración ABM",
+              f"n_refine={config.n_refine}, grid={config.grid_size}")
     if config.abm_calibration:
         best_abm, best_err, top_5 = calibrate_abm(
             obs[:val_start], base_params, val_start, simulate_abm_fn,
@@ -1298,6 +1328,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     # ── Fix C13: Coupling bidireccional ABM↔ODE (2 iteraciones) ──
     # Iteración 0: ODE solo → ABM acoplado → extraer ABM mean field
     # Iteración 1: ODE con feedback ABM → ABM acoplado (versión final)
+    _progress(phase_name, "3/6 ODE bidireccional", "2 iteraciones")
     abm_feedback_gamma = 0.05  # Fuerza moderada del feedback micro→macro
 
     # Paso 0: ODE sin feedback → ABM
@@ -1394,6 +1425,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
 
     # ABM acoplado a ODE (versión final con ODE bidireccional)
     # Usa serie BC para coupling (elimina sesgo), pero mantiene serie original para evaluación
+    _progress(phase_name, "4/6 Simulaciones ABM", "acoplado + no_ode + reducido")
     eval_params_ode = dict(eval_params)
     eval_params_ode["macro_target_series"] = ode_series_bc
     eval_params_ode["_store_grid"] = True   # Necesario para symploké/dominance
@@ -1528,6 +1560,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     base_params_ode["macro_target_series"] = ode_series_bc
 
     # C1-C5 (sobre modelo acoplado)
+    _progress(phase_name, "5/6 Evaluación C1-C5",
+              f"n_runs={config.n_runs}, n_perm={config.n_perm}, n_boot={config.n_boot}")
     c1, c1_detail = evaluate_c1(abm_val, ode_val, obs_val, obs_std,
                                  config.threshold_factor, config.corr_threshold,
                                  reduced_val=abm_no_ode_val)
@@ -1544,6 +1578,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
                                  obs_std_raw=obs_std_raw)
                                  
     # Viscosity Test (Variables faltantes Fase 3)
+    _progress(phase_name, "6/6 Tests adicionales", "viscosidad + ruido + Symploké")
     c_visc, c_visc_detail = evaluate_viscosity(base_params_ode, steps, val_start, 
                                                simulate_abm_fn, sk)
 
@@ -1824,7 +1859,11 @@ def run_full_validation(config, load_real_data_fn, make_synthetic_fn,
     Ejecuta validación completa: sintético → real (con gating).
     Retorna dict con ambas fases + metadata.
     """
+    _t0_total = time.time()
+    _progress("INICIO", config.case_name, f"grid={config.grid_size}")
+
     # Fase sintética
+    _progress("synthetic", "▶ Comenzando fase sintética")
     synth_df, synth_meta = make_synthetic_fn(
         config.synthetic_start, config.synthetic_end, seed=101
     )
@@ -1835,6 +1874,7 @@ def run_full_validation(config, load_real_data_fn, make_synthetic_fn,
     )
 
     # Fase real
+    _progress("real", "▶ Comenzando fase real")
     real_df = load_real_data_fn(config.real_start, config.real_end)
     real = evaluate_phase(
         config, real_df, config.real_start, config.real_end,
@@ -1854,6 +1894,14 @@ def run_full_validation(config, load_real_data_fn, make_synthetic_fn,
     if not syn_structural:
         real["overall_pass"] = False
         real["gated_by_synthetic"] = True
+
+    _elapsed_total = time.time() - _t0_total
+    _edi_val = real.get('edi', {}).get('value', None)
+    _edi_str = f"{_edi_val:.4f}" if isinstance(_edi_val, (int, float)) else "?"
+    _progress("FIN", config.case_name,
+              f"EDI={_edi_str}, "
+              f"pass={real.get('overall_pass', '?')}, "
+              f"tiempo={_elapsed_total:.0f}s")
 
     return {
         "case": config.case_name,
