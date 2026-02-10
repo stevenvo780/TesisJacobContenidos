@@ -1,24 +1,24 @@
 # Reporte de Validación — Salinización de Suelos (Richards-Solute)
 
-- generated_at: 2026-02-10T04:21:24.031311Z
+- generated_at: 2026-02-10T06:23:00.655705Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.2356
-- bootstrap_mean: 0.2397
-- CI 95%: [0.2014, 0.2871]
-- weighted_value (LoE factor 0.60): 0.1414
+- valor: 0.0627
+- bootstrap_mean: 0.0637
+- CI 95%: [0.0524, 0.0760]
+- weighted_value (LoE factor 0.60): 0.0376
 - válido (0.30-0.90): False
-- detrended_edi: 0.2356
+- detrended_edi: 0.0627
 - trend_ratio: 1.000
 - trend_r2: 0.854
 
 ### Symploké y CR
-- internal: 1.0000
-- external: 0.9989
-- CR: 1.0011
+- internal: 0.9999
+- external: 0.9998
+- CR: 1.0001
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -29,39 +29,39 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.5803
-- rmse_abm_no_ode: 0.7592
-- rmse_ode: 1.0565
+- rmse_abm: 0.6660
+- rmse_abm_no_ode: 0.7105
+- rmse_ode: 1.0472
 - rmse_reduced: 2.9447
 - threshold: 0.6860
 
 ### Calibración
-- forcing_scale: 0.6937
-- macro_coupling: 0.1794
-- ode_coupling_strength: 0.1435
+- forcing_scale: 0.8930
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
 - abm_feedback_gamma: 0.0500
-- damping: 0.6874
+- damping: 0.8813
 - ode_alpha: 0.2739
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.3046
+- calibration_rmse: 0.2994
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 3 — Cierre operativo weak.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
+**Nivel 2 — Cierre operativo suggestive.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0246
-- bootstrap_mean: 0.0247
-- CI 95%: [0.0220, 0.0275]
-- weighted_value (LoE factor 0.60): 0.0147
+- valor: 0.0151
+- bootstrap_mean: 0.0152
+- CI 95%: [0.0137, 0.0168]
+- weighted_value (LoE factor 0.60): 0.0091
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9988
+- internal: 0.9987
 - external: 0.0000
 - CR: inf
 - CR indicador (>2.0 = frontera nítida): True
@@ -74,22 +74,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.1623
-- rmse_abm_no_ode: 2.2167
-- rmse_ode: 3.5067
-- rmse_reduced: 2.2174
+- rmse_abm: 2.1673
+- rmse_abm_no_ode: 2.2005
+- rmse_ode: 3.4992
+- rmse_reduced: 2.2008
 - threshold: 0.4144
 
 ### Calibración
-- forcing_scale: 0.9829
-- macro_coupling: 0.2026
-- ode_coupling_strength: 0.1620
+- forcing_scale: 0.0010
+- macro_coupling: 0.1643
+- ode_coupling_strength: 0.1315
 - abm_feedback_gamma: 0.0500
-- damping: 0.0778
+- damping: 0.1052
 - ode_alpha: 0.0010
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.8065
+- calibration_rmse: 0.7982
 - ode_rolling: None
 
 ### Interpretación

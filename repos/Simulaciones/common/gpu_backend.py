@@ -85,13 +85,27 @@ if not _FORCE_CPU:
                     "total_gb": round(s["total_mb"] / 1024, 2),
                 })
 
-            if preferred >= 0 and any(s["id"] == preferred for s in smi_info):
-                _GPU_DEVICE = preferred
-            elif len(smi_info) > 1:
-                best = max(smi_info, key=lambda s: s["free_mb"])
-                _GPU_DEVICE = best["id"]
-            else:
-                _GPU_DEVICE = smi_info[0]["id"]
+        # ══════════════════════════════════════════════════════════════
+        # SELECCIÓN DE GPU: prioridad HYPER_GPU_DEVICE > nvidia-smi > 0
+        # HYPER_GPU_DEVICE se respeta SIEMPRE (viene de gpu_run.sh),
+        # incluso si nvidia-smi falla (Docker sin NVML).
+        # ══════════════════════════════════════════════════════════════
+        if preferred >= 0:
+            # Pre-asignado desde bash → usar directamente
+            _GPU_DEVICE = preferred
+        elif smi_info and len(smi_info) > 1:
+            # Auto-detección: GPU con más VRAM libre
+            best = max(smi_info, key=lambda s: s["free_mb"])
+            _GPU_DEVICE = best["id"]
+        elif smi_info:
+            _GPU_DEVICE = smi_info[0]["id"]
+        else:
+            # Sin nvidia-smi y sin HYPER_GPU_DEVICE → GPU 0
+            _GPU_DEVICE = 0
+
+        # Si nvidia-smi falló pero tenemos preferred, estimar N_GPUS
+        if _N_GPUS == 0 and preferred >= 0:
+            _N_GPUS = preferred + 1  # al menos tantas GPUs como el índice pedido
 
         # ══════════════════════════════════════════════════════════════════
         # PASO 2: CUDA_VISIBLE_DEVICES ANTES de import cupy
@@ -129,12 +143,23 @@ if not _FORCE_CPU:
 
             # Log de asignación
             pid = os.getpid()
-            smi_info = _nvidia_smi_free_vram()  # re-query fresh
-            smi_map = {s["id"]: s for s in smi_info}
+            src = "HYPER_GPU_DEVICE" if preferred >= 0 else ("nvidia-smi" if smi_info else "default")
+            smi_info_fresh = _nvidia_smi_free_vram()  # re-query fresh
+            smi_map = {s["id"]: s for s in smi_info_fresh}
             my_free = smi_map.get(_REAL_GPU_ID, {}).get("free_mb", 0)
+            # Si nvidia-smi no funciona, mostrar VRAM desde CuPy
+            if my_free == 0:
+                try:
+                    free_bytes, total_bytes = cp.cuda.runtime.memGetInfo()
+                    my_free = int(free_bytes / (1024**2))
+                    vram_src = "CuPy"
+                except Exception:
+                    vram_src = "?"
+            else:
+                vram_src = "nvidia-smi"
             print(f"[gpu_backend] PID {pid} → GPU {_REAL_GPU_ID} "
-                  f"({_GPU_NAME}, {my_free}MB libre vía nvidia-smi) "
-                  f"[CUDA_VISIBLE_DEVICES={_REAL_GPU_ID}]",
+                  f"({_GPU_NAME}, {my_free}MB libre vía {vram_src}) "
+                  f"[CUDA_VISIBLE_DEVICES={_REAL_GPU_ID}, src={src}]",
                   file=sys.stderr)
             if len(_ALL_GPUS) > 1:
                 for g in _ALL_GPUS:
@@ -177,7 +202,7 @@ def get_free_vram(device_id: int | None = None) -> float:
     """
     Retorna VRAM libre ACTUAL (en GB) de la GPU asignada a este proceso.
     Usa nvidia-smi para ver la VRAM real (incluye otros procesos).
-    Fallback a CuPy memGetInfo si nvidia-smi no disponible.
+    Fallback a CuPy memGetInfo si nvidia-smi no disponible (ej. Docker sin NVML).
     """
     if not _GPU_AVAILABLE:
         return 0.0
@@ -188,10 +213,13 @@ def get_free_vram(device_id: int | None = None) -> float:
     for s in smi:
         if s["id"] == dev:
             return s["free_mb"] / 1024.0
-    # Fallback a CuPy (solo ve este proceso)
-    import cupy as cp
-    free, _ = cp.cuda.runtime.memGetInfo()
-    return free / (1024**3)
+    # Fallback a CuPy (solo ve este proceso — común en Docker sin NVML)
+    try:
+        import cupy as cp
+        free, _ = cp.cuda.runtime.memGetInfo()
+        return free / (1024**3)
+    except Exception:
+        return 0.0
 
 
 def get_all_free_vram() -> list[dict]:
