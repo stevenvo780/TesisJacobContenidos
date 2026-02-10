@@ -1,6 +1,6 @@
 # Simulaciones
 
-29 casos de simulación híbrida ABM+ODE para la tesis "Ontología Operativa de Hiperobjetos".
+29 casos de simulación híbrida ABM+ODE para la tesis "Irrealismo Operativo de Hiperobjetos".
 
 ## Estructura por caso
 

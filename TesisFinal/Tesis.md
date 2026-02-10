@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 00:43 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 00:58 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -415,41 +415,40 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 
 ## Resultados Consolidados (Matriz de Clasificación Operativa)
 
-| Caso | EDI | p-perm | sig | CR | Cat | Pass | Reporte |
+| Caso | EDI | p-perm | sig | CR | Cat | Nivel | Reporte |
 | :--- | ---: | ---: | :---: | ---: | :--- | :---: | :--- |
-| 01_caso_clima | 0.010 | 0.591 | ❌ | 1.000 | trend | ❌ | `01_caso_clima/report.md` |
-| 02_caso_conciencia | -0.024 | 0.938 | ❌ | 0.919 | null | ❌ | `02_caso_conciencia/report.md` |
-| 03_caso_contaminacion | -0.000 | 0.474 | ❌ | 2.780 | null | ❌ | `03_caso_contaminacion/report.md` |
-| 04_caso_energia | -0.003 | 0.937 | ❌ | 1.096 | null | ❌ | `04_caso_energia/report.md` |
-| 05_caso_epidemiologia | 0.000 | 1.000 | ❌ | 0.000 | null | ❌ | `05_caso_epidemiologia/report.md` |
-| 06_caso_falsacion_exogeneidad | 0.055 | 1.000 | ❌ | 1.006 | falsification | ❌ | `06_caso_falsacion_exogeneidad/report.md` |
-| 07_caso_falsacion_no_estacionariedad | -1.000 | 1.000 | ❌ | 1.004 | falsification | ❌ | `07_caso_falsacion_no_estacionariedad/report.md` |
-| 08_caso_falsacion_observabilidad | -1.000 | 1.000 | ❌ | 1.005 | falsification | ❌ | `08_caso_falsacion_observabilidad/report.md` |
-| 09_caso_finanzas | 0.040 | 0.000 | ✅ | 0.000 | suggestive | ❌ | `09_caso_finanzas/report.md` |
-| 10_caso_justicia | 0.000 | 1.000 | ❌ | 1.053 | null | ❌ | `10_caso_justicia/report.md` |
-| 11_caso_movilidad | 0.003 | 0.361 | ❌ | 0.000 | trend | ❌ | `11_caso_movilidad/report.md` |
-| 12_caso_paradigmas | 0.000 | 1.000 | ❌ | 0.000 | null | ❌ | `12_caso_paradigmas/report.md` |
-| 13_caso_politicas_estrategicas | 0.011 | 0.719 | ❌ | 1.626 | trend | ❌ | `13_caso_politicas_estrategicas/report.md` |
-| 14_caso_postverdad | 0.001 | 0.030 | ❌ | 1.054 | trend | ❌ | `14_caso_postverdad/report.md` |
-| 15_caso_wikipedia | 0.000 | 1.000 | ❌ | 1.158 | null | ❌ | `15_caso_wikipedia/report.md` |
-| 16_caso_deforestacion | 0.633 | 0.000 | ✅ | 1.017 | strong | ✅ | `16_caso_deforestacion/report.md` |
-| 17_caso_oceanos | 0.053 | 0.000 | ✅ | 1.334 | suggestive | ❌ | `17_caso_oceanos/report.md` |
-| 18_caso_urbanizacion | 0.000 | 0.220 | ❌ | 30.069 | trend | ❌ | `18_caso_urbanizacion/report.md` |
-| 19_caso_acidificacion_oceanica | -0.000 | 0.000 | ❌ | 1.211 | null | ❌ | `19_caso_acidificacion_oceanica/report.md` |
-| 20_caso_kessler | -0.420 | 1.000 | ❌ | 1.204 | null | ❌ | `20_caso_kessler/report.md` |
-| 21_caso_salinizacion | 0.027 | 0.724 | ❌ | ∞ | trend | ❌ | `21_caso_salinizacion/report.md` |
-| 22_caso_fosforo | -1.000 | 1.000 | ❌ | 1.065 | null | ❌ | `22_caso_fosforo/report.md` |
-| 23_caso_erosion_dialectica | -1.000 | 1.000 | ❌ | 1.001 | null | ❌ | `23_caso_erosion_dialectica/report.md` |
-| 24_caso_microplasticos | 0.427 | 0.000 | ✅ | 1.002 | strong | ✅ | `24_caso_microplasticos/report.md` |
-| 25_caso_acuiferos | -0.179 | 1.000 | ❌ | 1.001 | null | ❌ | `25_caso_acuiferos/report.md` |
-| 26_caso_starlink | -1.000 | 1.000 | ❌ | ∞ | null | ❌ | `26_caso_starlink/report.md` |
-| 27_caso_riesgo_biologico | 0.105 | 0.365 | ❌ | 1.002 | trend | ❌ | `27_caso_riesgo_biologico/report.md` |
-| 28_caso_fuga_cerebros | 0.183 | 0.001 | ✅ | 1.008 | weak | ❌ | `28_caso_fuga_cerebros/report.md` |
-| 29_caso_iot | 0.020 | 0.000 | ✅ | 1.053 | suggestive | ❌ | `29_caso_iot/report.md` |
+| 01_caso_clima | 0.010 | 0.591 | ❌ | 1.000 | trend | 1 | `01_caso_clima/report.md` |
+| 02_caso_conciencia | -0.024 | 0.938 | ❌ | 0.919 | null | 0 | `02_caso_conciencia/report.md` |
+| 03_caso_contaminacion | -0.000 | 0.474 | ❌ | 2.780 | null | 0 | `03_caso_contaminacion/report.md` |
+| 04_caso_energia | -0.003 | 0.937 | ❌ | 1.096 | null | 0 | `04_caso_energia/report.md` |
+| 05_caso_epidemiologia | 0.000 | 1.000 | ❌ | 0.000 | null | 0 | `05_caso_epidemiologia/report.md` |
+| 06_caso_falsacion_exogeneidad | 0.055 | 1.000 | ❌ | 1.006 | falsification | — | `06_caso_falsacion_exogeneidad/report.md` |
+| 07_caso_falsacion_no_estacionariedad | -1.000 | 1.000 | ❌ | 1.004 | falsification | — | `07_caso_falsacion_no_estacionariedad/report.md` |
+| 08_caso_falsacion_observabilidad | -1.000 | 1.000 | ❌ | 1.005 | falsification | — | `08_caso_falsacion_observabilidad/report.md` |
+| 09_caso_finanzas | 0.040 | 0.000 | ✅ | 0.000 | suggestive | 2 | `09_caso_finanzas/report.md` |
+| 10_caso_justicia | 0.000 | 1.000 | ❌ | 1.053 | null | 0 | `10_caso_justicia/report.md` |
+| 11_caso_movilidad | 0.003 | 0.361 | ❌ | 0.000 | trend | 1 | `11_caso_movilidad/report.md` |
+| 12_caso_paradigmas | 0.000 | 1.000 | ❌ | 0.000 | null | 0 | `12_caso_paradigmas/report.md` |
+| 13_caso_politicas_estrategicas | 0.011 | 0.719 | ❌ | 1.626 | trend | 1 | `13_caso_politicas_estrategicas/report.md` |
+| 14_caso_postverdad | 0.001 | 0.030 | ❌ | 1.054 | trend | 1 | `14_caso_postverdad/report.md` |
+| 15_caso_wikipedia | 0.000 | 1.000 | ❌ | 1.158 | null | 0 | `15_caso_wikipedia/report.md` |
+| 16_caso_deforestacion | 0.633 | 0.000 | ✅ | 1.017 | strong | 4 | `16_caso_deforestacion/report.md` |
+| 17_caso_oceanos | 0.053 | 0.000 | ✅ | 1.334 | suggestive | 2 | `17_caso_oceanos/report.md` |
+| 18_caso_urbanizacion | 0.000 | 0.220 | ❌ | 30.069 | trend | 1 | `18_caso_urbanizacion/report.md` |
+| 19_caso_acidificacion_oceanica | -0.000 | 0.000 | ❌ | 1.211 | null | 0 | `19_caso_acidificacion_oceanica/report.md` |
+| 20_caso_kessler | -0.420 | 1.000 | ❌ | 1.204 | null | 0 | `20_caso_kessler/report.md` |
+| 21_caso_salinizacion | 0.027 | 0.724 | ❌ | ∞ | trend | 1 | `21_caso_salinizacion/report.md` |
+| 22_caso_fosforo | -1.000 | 1.000 | ❌ | 1.065 | null | 0 | `22_caso_fosforo/report.md` |
+| 23_caso_erosion_dialectica | -1.000 | 1.000 | ❌ | 1.001 | null | 0 | `23_caso_erosion_dialectica/report.md` |
+| 24_caso_microplasticos | 0.427 | 0.000 | ✅ | 1.002 | strong | 4 | `24_caso_microplasticos/report.md` |
+| 25_caso_acuiferos | -0.179 | 1.000 | ❌ | 1.001 | null | 0 | `25_caso_acuiferos/report.md` |
+| 26_caso_starlink | -1.000 | 1.000 | ❌ | ∞ | null | 0 | `26_caso_starlink/report.md` |
+| 27_caso_riesgo_biologico | 0.105 | 0.365 | ❌ | 1.002 | trend | 1 | `27_caso_riesgo_biologico/report.md` |
+| 28_caso_fuga_cerebros | 0.183 | 0.001 | ✅ | 1.008 | weak | 3 | `28_caso_fuga_cerebros/report.md` |
+| 29_caso_iot | 0.020 | 0.000 | ✅ | 1.053 | suggestive | 2 | `29_caso_iot/report.md` |
 
-Para recalcular este reporte de forma automática, usar:
+Para recalcular este reporte de forma automatica, usar:
 `python3 scripts/actualizar_tablas_002.py`
-
 ## Análisis del Paisaje de Emergencia
 
 Los 29 casos demuestran que el modelo híbrido funciona como **instrumento de clasificación operativa**: posiciona fenómenos en un gradiente de cierre operativo sin pronunciarse sobre su estatuto ontológico.
@@ -953,43 +952,43 @@ Acciones:
 
 > Tabla generada automáticamente desde `metrics.json` de cada caso.
 
-## Matriz de Protocolo Completa (29 casos × 11 criterios)
+## Matriz de Clasificación Operativa (29 casos × 11 criterios + Nivel)
 
-Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). **Validado** = 11 condiciones ✓ simultáneamente.
+Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). **Nivel** = grado de cierre operativo (0–4, control = —). **Validado** = 11 condiciones ✓ simultáneamente.
 
-| # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Result |
-| :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| 16 | Deforestacion | 0.633 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
-| 24 | Microplasticos | 0.427 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **Validado** |
-| 06 | Falsacion Exogeneidad | 0.055 | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Control ❌ |
-| 07 | Falsacion No Estacionariedad | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Control ❌ |
-| 08 | Falsacion Observabilidad | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Control ❌ |
-| 01 | Clima | 0.010 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Rechazado |
-| 02 | Conciencia | -0.024 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ | Rechazado |
-| 03 | Contaminacion | -0.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Rechazado |
-| 04 | Energia | -0.003 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Rechazado |
-| 05 | Epidemiologia | 0.000 | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ | Rechazado |
-| 09 | Finanzas | 0.040 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | Rechazado |
-| 10 | Justicia | 0.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Rechazado |
-| 11 | Movilidad | 0.003 | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | Rechazado |
-| 12 | Paradigmas | 0.000 | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ | Rechazado |
-| 13 | Politicas Estrategicas | 0.011 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Rechazado |
-| 14 | Postverdad | 0.001 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Rechazado |
-| 15 | Wikipedia | 0.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Rechazado |
-| 17 | Oceanos | 0.053 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Rechazado |
-| 18 | Urbanizacion | 0.000 | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ | Rechazado |
-| 19 | Acidificacion Oceanica | -0.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
-| 20 | Kessler | -0.420 | ✗ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | Rechazado |
-| 21 | Salinizacion | 0.027 | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
-| 22 | Fosforo | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
-| 23 | Erosion Dialectica | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
-| 25 | Acuiferos | -0.179 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
-| 26 | Starlink | -1.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
-| 27 | Riesgo Biologico | 0.105 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | Rechazado |
-| 28 | Fuga Cerebros | 0.183 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
-| 29 | Iot | 0.020 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | Rechazado |
+| # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Nivel | Result |
+| :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| 16 | Deforestacion | 0.633 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 4 | **Validado** |
+| 24 | Microplasticos | 0.427 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 4 | **Validado** |
+| 06 | Falsacion Exogeneidad | 0.055 | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | Control ❌ |
+| 07 | Falsacion No Estacionariedad | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | — | Control ❌ |
+| 08 | Falsacion Observabilidad | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | — | Control ❌ |
+| 01 | Clima | 0.010 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 1 | Rechazado |
+| 02 | Conciencia | -0.024 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ | 0 | Rechazado |
+| 03 | Contaminacion | -0.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
+| 04 | Energia | -0.003 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
+| 05 | Epidemiologia | 0.000 | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ | 0 | Rechazado |
+| 09 | Finanzas | 0.040 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | 2 | Rechazado |
+| 10 | Justicia | 0.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
+| 11 | Movilidad | 0.003 | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | 1 | Rechazado |
+| 12 | Paradigmas | 0.000 | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
+| 13 | Politicas Estrategicas | 0.011 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 1 | Rechazado |
+| 14 | Postverdad | 0.001 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 1 | Rechazado |
+| 15 | Wikipedia | 0.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
+| 17 | Oceanos | 0.053 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 2 | Rechazado |
+| 18 | Urbanizacion | 0.000 | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ | 1 | Rechazado |
+| 19 | Acidificacion Oceanica | -0.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
+| 20 | Kessler | -0.420 | ✗ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | 0 | Rechazado |
+| 21 | Salinizacion | 0.027 | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 1 | Rechazado |
+| 22 | Fosforo | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
+| 23 | Erosion Dialectica | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
+| 25 | Acuiferos | -0.179 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
+| 26 | Starlink | -1.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
+| 27 | Riesgo Biologico | 0.105 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | 1 | Rechazado |
+| 28 | Fuga Cerebros | 0.183 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 3 | Rechazado |
+| 29 | Iot | 0.020 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 2 | Rechazado |
 
-**Resumen:** 2 validados, 0 rechazados con EDI > 0.30 (selectividad), 3 controles de falsación, 24 rechazados con EDI bajo.
+**Resumen:** 2 validados (Nivel 4), 0 rechazados con EDI > 0.30 (selectividad), 3 controles de falsación, 24 rechazados con EDI bajo (Nivel 0–1).
 
 ## Distribución de Modos de Fallo
 

@@ -14,6 +14,12 @@ CASES_ROOT = ROOT / 'TesisDesarrollo' / '02_Modelado_Simulacion'
 MAIN_DOC = CASES_ROOT / '02_Modelado_Simulacion.md'
 REPORT_DOC = CASES_ROOT / 'Reporte_General_Simulaciones.md'
 
+# Mapeo categoría → nivel de cierre operativo (Irrealismo Operativo)
+NIVEL_MAP = {
+    'strong': 4, 'weak': 3, 'suggestive': 2, 'trend': 1, 'null': 0,
+    'falsification': None,  # Control — no se clasifica
+}
+
 
 def read_metrics(case_dir: Path):
     p = case_dir / 'metrics.json'
@@ -43,6 +49,10 @@ def compute_metrics(metrics_obj):
     # Taxonomía
     taxonomy = ph.get('emergence_taxonomy', {})
     category = taxonomy.get('category', '?')
+    # Nivel: leer de metrics.json si existe, si no mapear desde categoría
+    nivel = taxonomy.get('nivel')
+    if nivel is None:
+        nivel = NIVEL_MAP.get(category)
     return {
         'edi': edi,
         'edi_pval': edi_pval,
@@ -50,6 +60,7 @@ def compute_metrics(metrics_obj):
         'cr': cr,
         'overall_pass': ph.get('overall_pass'),
         'category': category,
+        'nivel': nivel,
     }
 
 
@@ -77,7 +88,7 @@ def build_rows():
 
 def build_table(rows):
     lines = []
-    lines.append("| Caso | EDI | p-perm | sig | CR | Cat | Pass | Reporte |")
+    lines.append("| Caso | EDI | p-perm | sig | CR | Cat | Nivel | Reporte |")
     lines.append("| :--- | ---: | ---: | :---: | ---: | :--- | :---: | :--- |")
     for case, m, report_link in rows:
         if m:
@@ -86,12 +97,14 @@ def build_table(rows):
             sig = '✅' if m.get('edi_sig') else '❌'
             cr = fmt(m['cr'])
             cat = m.get('category', '?')
-            state = '✅' if m.get('overall_pass') else '❌'
+            nivel = m.get('nivel')
+            nivel_s = str(nivel) if nivel is not None else '—'
         else:
             edi = pval = cr = 'n/a'
-            sig = state = 'n/a'
+            sig = 'n/a'
             cat = 'n/a'
-        lines.append(f"| {case} | {edi} | {pval} | {sig} | {cr} | {cat} | {state} | {report_link} |")
+            nivel_s = 'n/a'
+        lines.append(f"| {case} | {edi} | {pval} | {sig} | {cr} | {cat} | {nivel_s} | {report_link} |")
     return "\n".join(lines)
 
 
@@ -104,7 +117,7 @@ def update_report(rows):
 def update_main(rows):
     table = build_table(rows)
     block = "\n".join([
-        "## Resultados Consolidados (Matriz de Validación Técnica)",
+        "## Resultados Consolidados (Matriz de Clasificación Operativa)",
         "",
         table,
         "",
@@ -115,7 +128,7 @@ def update_main(rows):
     text = MAIN_DOC.read_text(encoding='utf-8', errors='ignore')
     # Match both old and new header variants
     text = re.sub(
-        r"## Resultados[^\n]*?Matriz de Validaci.n T.cnica\)[\s\S]*?(?=\n## |\Z)",
+        r"## Resultados[^\n]*?Matriz de (?:Validaci.n T.cnica|Clasificaci.n Operativa)\)[\s\S]*?(?=\n## |\Z)",
         block.rstrip(), text
     )
     MAIN_DOC.write_text(text.strip() + "\n", encoding='utf-8')

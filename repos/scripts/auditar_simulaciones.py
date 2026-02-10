@@ -14,6 +14,12 @@ ROOT = Path(__file__).resolve().parents[2]
 CASES_ROOT = ROOT / 'TesisDesarrollo' / '02_Modelado_Simulacion'
 OUTPUT = CASES_ROOT / 'Auditoria_Simulaciones.md'
 
+# Mapeo categoría → nivel de cierre operativo
+NIVEL_MAP = {
+    'strong': 4, 'weak': 3, 'suggestive': 2, 'trend': 1, 'null': 0,
+    'falsification': None,
+}
+
 
 def read_metrics(case_dir: Path):
     p = case_dir / 'metrics.json'
@@ -61,9 +67,10 @@ def compute_metrics(metrics_obj):
         'cr_valid': cr_valid,
         'overall_pass': ph.get('overall_pass'),
         'c1': ph.get('c1_convergence'),
-        'c1_relative': c1_detail.get('c1_relative'),
-        'c1_absolute': c1_detail.get('c1_absolute'),
+        'c1_relative': c1_detail.get('c1_relative', False),
+        'c1_absolute': c1_detail.get('c1_absolute', False),
         'category': taxonomy.get('category', '?'),
+        'nivel': taxonomy.get('nivel', NIVEL_MAP.get(taxonomy.get('category', 'null'))),
         'noise_stable': noise.get('stable'),
         'noise_cv': noise.get('cv'),
         'persistence_pass': persistence.get('pass'),
@@ -172,8 +179,8 @@ def main():
             cats[cat] = cats.get(cat, 0) + 1
 
     # Tabla principal
-    lines.append('| Caso | EDI | p-perm | sig | CR | C1 | Categoría | NS | Per | Pass | Hallazgos |')
-    lines.append('| :--- | ---: | ---: | :---: | ---: | :---: | :--- | :---: | :---: | :---: | :--- |')
+    lines.append('| Caso | EDI | p-perm | sig | CR | C1 | Categoría | Nivel | NS | Per | Pass | Hallazgos |')
+    lines.append('| :--- | ---: | ---: | :---: | ---: | :---: | :--- | :---: | :---: | :---: | :---: | :--- |')
     for case, m, issues in rows:
         if m:
             edi = fmt(m['edi'])
@@ -182,6 +189,8 @@ def main():
             cr = fmt(m['cr'])
             c1 = '✅' if m.get('c1') else '❌'
             cat = m.get('category', '?')
+            nivel = m.get('nivel')
+            nivel_s = str(nivel) if nivel is not None else '—'
             ns = '✅' if m.get('noise_stable') else '❌'
             per = '✅' if m.get('persistence_pass') else '❌'
             state = '✅' if m.get('overall_pass') else '❌'
@@ -189,8 +198,9 @@ def main():
             edi = pval = cr = 'n/a'
             sig = c1 = ns = per = state = 'n/a'
             cat = 'n/a'
+            nivel_s = 'n/a'
         hall = '; '.join(issues) if issues else 'OK'
-        lines.append(f'| {case} | {edi} | {pval} | {sig} | {cr} | {c1} | {cat} | {ns} | {per} | {state} | {hall} |')
+        lines.append(f'| {case} | {edi} | {pval} | {sig} | {cr} | {c1} | {cat} | {nivel_s} | {ns} | {per} | {state} | {hall} |')
 
     # Resumen
     lines.append('')
@@ -206,14 +216,16 @@ def main():
     lines.append('')
     lines.append('### Distribución por categoría')
     lines.append('')
-    lines.append('| Categoría | Casos |')
-    lines.append('| :--- | ---: |')
+    lines.append('| Categoría | Nivel | Casos |')
+    lines.append('| :--- | :---: | ---: |')
     for cat in ['strong', 'weak', 'suggestive', 'trend', 'null', 'falsification']:
         if cat in cats:
-            lines.append(f'| {cat} | {cats[cat]} |')
+            nv = NIVEL_MAP.get(cat)
+            nv_s = str(nv) if nv is not None else '—'
+            lines.append(f'| {cat} | {nv_s} | {cats[cat]} |')
     for cat in sorted(cats):
         if cat not in ['strong', 'weak', 'suggestive', 'trend', 'null', 'falsification']:
-            lines.append(f'| {cat} | {cats[cat]} |')
+            lines.append(f'| {cat} | ? | {cats[cat]} |')
 
     lines.append('')
     lines.append('## Recomendaciones')

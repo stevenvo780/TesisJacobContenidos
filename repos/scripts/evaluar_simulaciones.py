@@ -16,6 +16,12 @@ ROOT = Path(__file__).resolve().parents[2]
 CASES_ROOT = ROOT / 'TesisDesarrollo' / '02_Modelado_Simulacion'
 OUTPUT = CASES_ROOT / 'Reporte_General_Simulaciones.md'
 
+# Mapeo categoría → nivel de cierre operativo
+NIVEL_MAP = {
+    'strong': 4, 'weak': 3, 'suggestive': 2, 'trend': 1, 'null': 0,
+    'falsification': None,
+}
+
 
 def read_metrics(case_dir: Path):
     p = case_dir / 'metrics.json'
@@ -40,10 +46,17 @@ def compute_metrics(metrics_obj):
         external = symploke.get('external')
         if internal is not None and external not in (None, 0):
             cr = abs(internal / external)
+    taxonomy = ph.get('emergence_taxonomy', {})
+    category = taxonomy.get('category', '?')
+    nivel = taxonomy.get('nivel')
+    if nivel is None:
+        nivel = NIVEL_MAP.get(category)
     return {
         'edi': edi,
         'cr': cr,
-        'overall_pass': ph.get('overall_pass')
+        'overall_pass': ph.get('overall_pass'),
+        'category': category,
+        'nivel': nivel,
     }
 
 
@@ -70,13 +83,15 @@ def build_table():
     lines = []
     lines.append("# Reporte General de Simulaciones")
     lines.append("")
-    lines.append("| Caso | EDI | CR | Estado | Reporte |")
-    lines.append("| :--- | ---: | ---: | :--- | :--- |")
+    lines.append("| Caso | EDI | CR | Cat | Nivel | Reporte |")
+    lines.append("| :--- | ---: | ---: | :--- | :---: | :--- |")
     for case, m, report_link in rows:
         edi = fmt(m['edi']) if m else 'n/a'
         cr = fmt(m['cr']) if m else 'n/a'
-        state = str(m['overall_pass']) if m else 'n/a'
-        lines.append(f"| {case} | {edi} | {cr} | {state} | {report_link} |")
+        cat = m.get('category', '?') if m else 'n/a'
+        nivel = m.get('nivel') if m else None
+        nivel_s = str(nivel) if nivel is not None else '—'
+        lines.append(f"| {case} | {edi} | {cr} | {cat} | {nivel_s} | {report_link} |")
     lines.append("")
     return "\n".join(lines)
 

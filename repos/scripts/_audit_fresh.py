@@ -11,9 +11,16 @@ per_fail = []
 op_pass = []
 cats = {}
 bcs = {}
+niveles = {}  # Conteo por nivel de cierre operativo
 
-header = "{:<4} {:<35} {:>8} {:>10} {:>5} {:>5} {:>5} {:>5} {:<25} {:<12}".format(
-    '#', 'Caso', 'EDI', 'perm_p', 'sig', 'ns', 'per', 'op', 'category', 'bc')
+# Mapeo categoría → nivel de cierre operativo
+NIVEL_MAP = {
+    'strong': 4, 'weak': 3, 'suggestive': 2, 'trend': 1, 'null': 0,
+    'falsification': None,
+}
+
+header = "{:<4} {:<35} {:>8} {:>10} {:>5} {:>5} {:>5} {:>5} {:<25} {:>3} {:<12}".format(
+    '#', 'Caso', 'EDI', 'perm_p', 'sig', 'ns', 'per', 'op', 'category', 'nv', 'bc')
 print(header)
 print('-' * len(header))
 
@@ -45,8 +52,15 @@ for c in cases:
     edi_s = "{:.4f}".format(edi_val) if isinstance(edi_val, (int, float)) else 'N/A'
     p_s = "{:.4f}".format(pval) if isinstance(pval, (int, float)) else 'MISSING'
 
-    line = "{:<4} {:<35} {:>8} {:>10} {:>5} {:>5} {:>5} {:>5} {:<25} {:<12}".format(
-        num, c[3:38], edi_s, p_s, str(sig), str(ns), str(per), str(op), cat, bc)
+    # Nivel de cierre operativo
+    tax = ph.get('emergence_taxonomy', {})
+    nivel = tax.get('nivel')
+    if nivel is None:
+        nivel = NIVEL_MAP.get(cat)
+    nv_s = str(nivel) if nivel is not None else '—'
+
+    line = "{:<4} {:<35} {:>8} {:>10} {:>5} {:>5} {:>5} {:>5} {:<25} {:>3} {:<12}".format(
+        num, c[3:38], edi_s, p_s, str(sig), str(ns), str(per), str(op), cat, nv_s, bc)
     print(line)
 
     if sig:
@@ -59,6 +73,8 @@ for c in cases:
         op_pass.append(num)
     cats[cat] = cats.get(cat, 0) + 1
     bcs[bc] = bcs.get(bc, 0) + 1
+    if nivel is not None:
+        niveles[nivel] = niveles.get(nivel, 0) + 1
 
 print()
 print("=" * 60)
@@ -69,6 +85,7 @@ print(f"  sig (perm)   : {len(sig_cases)}/29 → {sig_cases}")
 print(f"  ns stable    : {29 - len(ns_fail)}/29 (fail: {ns_fail})")
 print(f"  per pass     : {29 - len(per_fail)}/29 (fail: {per_fail})")
 print(f"  Categories   : {dict(sorted(cats.items()))}")
+print(f"  Niveles      : {dict(sorted(niveles.items()))}")
 print(f"  BC modes     : {dict(sorted(bcs.items()))}")
 
 # Check for missing fields

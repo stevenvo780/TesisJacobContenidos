@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-tesis.py — CLI para operativizar la tesis "Ontología Operativa de Hiperobjetos"
+tesis.py — CLI para operativizar la tesis "Irrealismo Operativo de Hiperobjetos"
 
 Subcomandos:
     scaffold   Genera estructura completa de un caso nuevo desde plantillas
@@ -277,6 +277,12 @@ LOE_MAP = {
     "29_caso_iot": 3,
 }
 
+# Mapeo categoría → nivel de cierre operativo (Irrealismo Operativo)
+NIVEL_MAP = {
+    'strong': 4, 'weak': 3, 'suggestive': 2, 'trend': 1, 'null': 0,
+    'falsification': None,  # Control — no se clasifica
+}
+
 
 
 def _build_case_summary_table():
@@ -338,15 +344,29 @@ def _build_case_summary_table():
 
         if is_falsacion:
             result = "Control ❌"
+            nivel_s = "—"
         elif overall:
+            # Leer nivel de metrics o mapear
+            etax = phase.get("emergence_taxonomy", {})
+            nivel = etax.get("nivel")
+            if nivel is None:
+                cat = etax.get("category", "null")
+                nivel = NIVEL_MAP.get(cat, 0)
+            nivel_s = str(nivel)
             result = "**Validado**"
         else:
+            etax = phase.get("emergence_taxonomy", {})
+            nivel = etax.get("nivel")
+            if nivel is None:
+                cat = etax.get("category", "null")
+                nivel = NIVEL_MAP.get(cat, 0)
+            nivel_s = str(nivel) if nivel is not None else "0"
             result = "Rechazado"
 
         row = (f"| {num} | {pretty} | {edi:.3f} "
                f"| {yn(c1)} | {yn(c2)} | {yn(c3)} | {yn(c4)} | {yn(c5)} "
                f"| {yn(sym)} | {yn(nl)} | {yn(per)} | {yn(emr)} | {yn(cp)} "
-               f"| {result} |")
+               f"| {nivel_s} | {result} |")
 
         if is_falsacion:
             rows_falsacion.append(row)
@@ -389,13 +409,14 @@ def _build_case_summary_table():
         "",
         "> Tabla generada automáticamente desde `metrics.json` de cada caso.",
         "",
-        "## Matriz de Protocolo Completa (29 casos × 11 criterios)",
+        "## Matriz de Clasificación Operativa (29 casos × 11 criterios + Nivel)",
         "",
         "Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). "
+        "**Nivel** = grado de cierre operativo (0–4, control = —). "
         "**Validado** = 11 condiciones ✓ simultáneamente.",
         "",
-        "| # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Result |",
-        "| :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |",
+        "| # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Nivel | Result |",
+        "| :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |",
     ]
 
     # Validated first, then falsación, then rejected high EDI, then low EDI
@@ -409,10 +430,10 @@ def _build_case_summary_table():
         lines.append(row)
 
     lines.append("")
-    lines.append(f"**Resumen:** {len(rows_validated)} validados, "
+    lines.append(f"**Resumen:** {len(rows_validated)} validados (Nivel 4), "
                  f"{len(rows_rejected_high)} rechazados con EDI > 0.30 (selectividad), "
                  f"{len(rows_falsacion)} controles de falsación, "
-                 f"{len(rows_rejected_low)} rechazados con EDI bajo.")
+                 f"{len(rows_rejected_low)} rechazados con EDI bajo (Nivel 0–1).")
     lines.append("")
 
     # Failure mode table
@@ -711,7 +732,7 @@ def cmd_validate(args):
 def main():
     parser = argparse.ArgumentParser(
         prog="tesis",
-        description="CLI para operativizar la tesis «Ontología Operativa de Hiperobjetos»",
+        description="CLI para operativizar la tesis «Irrealismo Operativo de Hiperobjetos»",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Ejemplos:\n"

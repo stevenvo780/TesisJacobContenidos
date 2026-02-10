@@ -1321,9 +1321,10 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         "cr_valid": cr_valid,
     }
 
-    # ── Taxonomía de emergencia diferenciada ──
-    # Clasifica el resultado en categorías que permiten interpretar QUÉ falla:
-    # la ontología del hiperobjeto, el modelo técnico, o nada (emergencia genuina).
+    # ── Taxonomía de cierre operativo (Irrealismo Operativo) ──
+    # Clasifica el grado de cierre operativo del fenómeno: qué tan fuerte
+    # es la constricción macro→micro medida por EDI y significancia.
+    # Niveles 0-5 (5 = hiperobjeto fuerte, reservado para cierre + CR>2 + persistencia extendida).
     ode_obs_corr = c1_detail["corr_ode"]
     if abs(ode_obs_corr) > 0.7:
         ode_quality = "good"
@@ -1335,25 +1336,31 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     is_falsification = any(w in config.case_name.lower() for w in ["falsacion", "falsación"])
     if is_falsification:
         emergence_category = "falsification"
+        emergence_nivel = None  # Control — no se clasifica
     elif edi_valid and edi_significant:
         emergence_category = "strong"
+        emergence_nivel = 4
     elif edi_val > 0.10 and edi_significant:
         emergence_category = "weak"
+        emergence_nivel = 3
     elif edi_val > 0 and edi_significant:
         emergence_category = "suggestive"
+        emergence_nivel = 2
     elif edi_val > 0 and not edi_significant:
         emergence_category = "trend"
+        emergence_nivel = 1
     else:
         emergence_category = "null"
+        emergence_nivel = 0
 
-    # Interpretación automática
+    # Interpretación automática (bajo irrealismo operativo)
     _interp_map = {
-        "strong": "Emergencia macro fuerte: el ODE reduce significativamente la incertidumbre del ABM",
-        "weak": "Emergencia débil: señal macro significativa pero bajo umbral robusto",
-        "suggestive": "Señal sugestiva: EDI positivo y significativo pero muy bajo",
-        "trend": "Tendencia no significativa: EDI positivo pero permutation test no lo confirma",
-        "null": "Emergencia nula: sin evidencia de constricción macro efectiva",
-        "falsification": "Caso de falsificación: rechazo esperado por diseño experimental",
+        "strong": "Cierre operativo fuerte (Nivel 4): la macro constriñe significativamente la dinámica micro",
+        "weak": "Cierre operativo débil (Nivel 3): señal macro significativa pero bajo umbral robusto",
+        "suggestive": "Cierre sugestivo (Nivel 2): EDI positivo y significativo pero muy bajo",
+        "trend": "Tendencia no confirmada (Nivel 1): EDI positivo pero sin significancia estadística",
+        "null": "Sin cierre operativo (Nivel 0): sin evidencia de constricción macro efectiva",
+        "falsification": "Control de falsación: rechazo esperado por diseño experimental",
     }
 
     results = {
@@ -1472,6 +1479,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         "criteria": criteria_breakdown,
         "emergence_taxonomy": {
             "category": emergence_category,
+            "nivel": emergence_nivel,
             "ode_quality": ode_quality,
             "ode_obs_corr": ode_obs_corr,
             "interpretation": _interp_map.get(emergence_category, ""),
@@ -1498,7 +1506,7 @@ def _empty_phase(phase_name, start, end, split, reason):
         "error": reason,
         "data": {"start": start, "end": end, "split": split},
         "edi": {"value": 0.0, "bootstrap_mean": 0.0, "ci_lo": 0.0, "ci_hi": 0.0, "valid": False},
-        "emergence_taxonomy": {"category": "null", "ode_quality": "unknown", "ode_obs_corr": 0.0, "interpretation": "Fase fallida"},
+        "emergence_taxonomy": {"category": "null", "nivel": 0, "ode_quality": "unknown", "ode_obs_corr": 0.0, "interpretation": "Fase fallida"},
         "bias_correction": {"applied": False},
         "c1_convergence": False, "c2_robustness": False,
         "c3_replication": False, "c4_validity": False, "c5_uncertainty": False,
@@ -1613,30 +1621,37 @@ def write_outputs(results, output_dir):
                     f.write(f"- {k}: {v:.4f}\n" if isinstance(v, float) else f"- {k}: {v}\n")
                 f.write("\n")
 
-            # Interpretación con tono cauteloso (Fix T8)
+            # Interpretación bajo irrealismo operativo
             etax = phase.get("emergence_taxonomy", {})
             emergence = etax.get("category", "null")
+            nivel = etax.get("nivel", 0)
+            nivel_str = f"Nivel {nivel}" if nivel is not None else "Control"
             if emergence == "strong":
                 f.write("### Interpretación\n")
-                f.write("Los resultados **sugieren** emergencia macro significativa. "
+                f.write(f"**{nivel_str} — Cierre operativo fuerte.** "
                         "El EDI se encuentra en el rango válido y el test de permutación "
-                        "confirma significancia estadística. No obstante, estos resultados "
-                        "deben interpretarse en el contexto de las limitaciones del proxy "
-                        "utilizado y del nivel de evidencia (LoE) del caso.\n\n")
+                        "confirma significancia estadística, indicando constricción macro→micro "
+                        "robusta. No obstante, estos resultados no implican compromiso "
+                        "ontológico: el cierre es operativo, no sustancial.\n\n")
             elif emergence in ("weak", "suggestive"):
                 f.write("### Interpretación\n")
-                f.write(f"Los resultados muestran señal de emergencia **{emergence}**. "
-                        "La estructura macro es detectable pero no alcanza robustez "
-                        "suficiente para confirmar emergencia fuerte. Se recomienda "
-                        "cautela en la interpretación ontológica.\n\n")
+                f.write(f"**{nivel_str} — Cierre operativo {emergence}.** "
+                        "La constricción macro es detectable pero no alcanza robustez "
+                        "suficiente para cierre operativo fuerte. El fenómeno muestra "
+                        "grados parciales de organización macro→micro.\n\n")
             elif emergence == "falsification":
                 f.write("### Interpretación\n")
-                f.write("Este es un caso de **falsación por diseño**. El rechazo del EDI "
+                f.write("**Control de falsación.** El rechazo del EDI "
                         "es el resultado esperado y valida la sensibilidad del protocolo.\n\n")
+            elif emergence == "trend":
+                f.write("### Interpretación\n")
+                f.write(f"**{nivel_str} — Tendencia no confirmada.** "
+                        "Se detecta EDI positivo pero sin significancia estadística. "
+                        "El fenómeno no muestra cierre operativo verificable.\n\n")
             else:
                 f.write("### Interpretación\n")
-                f.write(f"Categoría de emergencia: **{emergence}**. "
-                        "No se detecta estructura macro significativa con los datos "
+                f.write(f"**{nivel_str} — Sin cierre operativo.** "
+                        "No se detecta constricción macro→micro significativa con los datos "
                         "y parámetros actuales.\n\n")
 
 

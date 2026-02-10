@@ -1,6 +1,6 @@
-# Protocolo Formal de Validación — Ontología Operativa de Hiperobjetos
+# Protocolo Formal de Validación — Irrealismo Operativo de Hiperobjetos
 
-**Versión**: 2.0  
+**Versión**: 3.0  
 **Fecha**: 2025-07-11  
 **Autor**: Jacob (generado por framework de validación)
 
@@ -8,7 +8,7 @@
 
 ## 1. Objetivo
 
-Este protocolo define los criterios formales para determinar si un **hiperobjeto** (en el sentido de Morton, 2013) exhibe **emergencia computacional genuina** — es decir, si su modelo macroscópico (ODE) reduce la entropía de sus componentes microscópicos (ABM) de forma medible, reproducible y no trivial.
+Este protocolo define los criterios formales para clasificar el **grado de cierre operativo** de un fenómeno candidato a hiperobjeto (en el sentido de Morton, 2013). El marco teórico es el **irrealismo operativo**: no se asume compromiso ontológico sobre la existencia sustancial de los hiperobjetos; se mide únicamente si su modelo macroscópico (ODE) constriñe operativamente la dinámica de sus componentes microscópicos (ABM), expresado como un gradiente de niveles (0–4).
 
 ## 2. Arquitectura del Modelo Híbrido
 
@@ -92,25 +92,27 @@ El modelo cuantifica correctamente su incertidumbre (ensemble spread vs. error r
 
 | Criterio | Umbral | Significado |
 |----------|--------|-------------|
-| EDI ∈ [0.325, 0.90] | PASS | Emergencia significativa sin tautología |
+| EDI ∈ [0.325, 0.90] | Nivel ≥ 4 | Cierre operativo fuerte |
 | EDI permutation p < 0.05 | Significativo | No es artefacto aleatorio |
-| Coupling ≥ 0.10 | No epifenomenal | La macro tiene efecto real |
+| Coupling ≥ 0.10 | No epifenomenal | La macro tiene efecto medible |
 | RMSE > 1e-10 | No fraude | No hay sobreajuste trivial |
-| CR > 2.0 | Cohesión interna > externa | Symploké |
+| CR > 2.0 | Indicador (informativo) | Symploké — cohesión interna > externa |
 | No-localidad: dom < 0.05 | Descentralizado | No hay agente dominante |
 | Persistencia: var_modelo < 5·var_obs | Temporal | La estructura persiste |
 | Viscosity pass | Inercia | El sistema resiste perturbaciones |
 
-## 5. Taxonomía de Emergencia
+## 5. Taxonomía de Cierre Operativo
 
-| Categoría | Condición | Interpretación |
-|-----------|-----------|----------------|
-| **Strong** | EDI ∈ [0.325, 0.90] + p < 0.05 | Emergencia macro fuerte |
-| **Weak** | EDI ∈ [0.10, 0.325) + p < 0.05 | Señal macro significativa pero bajo umbral |
-| **Suggestive** | EDI > 0 + p < 0.05 | Señal débil pero significativa |
-| **Trend** | EDI > 0 + p ≥ 0.05 | Tendencia no confirmada |
-| **Null** | EDI ≤ 0 | Sin evidencia de emergencia |
-| **Falsification** | Diseño de control | Rechazo esperado |
+| Categoría | Nivel | Condición | Interpretación |
+|-----------|:-----:|-----------|----------------|
+| **Strong** | 4 | EDI ∈ [0.325, 0.90] + p < 0.05 | Cierre operativo fuerte: constricción macro→micro robusta |
+| **Weak** | 3 | EDI ∈ [0.10, 0.325) + p < 0.05 | Cierre parcial: señal macro significativa pero bajo umbral |
+| **Suggestive** | 2 | EDI > 0 + p < 0.05 | Cierre sugestivo: señal débil pero significativa |
+| **Trend** | 1 | EDI > 0 + p ≥ 0.05 | Tendencia no confirmada estadísticamente |
+| **Null** | 0 | EDI ≤ 0 | Sin evidencia de cierre operativo |
+| **Falsification** | — | Diseño de control | Rechazo esperado por diseño |
+
+> **Nivel 5** (hiperobjeto fuerte) se reserva teóricamente para fenómenos que además de Nivel 4 exhiban CR > 2.0 y persistencia extendida verificada longitudinalmente. Ningún caso actual alcanza este nivel.
 
 ## 6. Corrección de Sesgo (Bias Correction)
 
@@ -128,7 +130,7 @@ Para cada caso, se re-ejecuta con 5 niveles de `base_noise` (0.5×, 0.75×, 1.0�
 
 | Condición | Acción | Razón |
 |-----------|--------|-------|
-| EDI < 0.325 | No pasa overall | Sin estructura macro detectada |
+| EDI < 0.325 | No alcanza Nivel 4 | Sin cierre operativo fuerte |
 | EDI > 0.90 | REJECT | Tautología / error de calibración |
 | Coupling < 0.10 | REJECT | Epifenomenalismo |
 | RMSE < 1e-10 | REJECT | Sobreajuste fraudulento |
@@ -155,16 +157,16 @@ EDI_weighted = EDI × (LoE / 5)
 - Script `replay_and_verify.py` re-ejecuta todos los casos y verifica hashes MD5 de `metrics.json`
 - Todos los datos cacheados en `data/dataset.csv` por caso
 
-## 11. Interpretación Filosófica
+## 11. Interpretación bajo Irrealismo Operativo
 
-Un hiperobjeto es **computacionalmente real** si:
-1. Su modelo macro (ODE) mejora la predicción del modelo micro (ABM) — C1 + EDI
-2. Esta mejora no es trivial ni tautológica — EDI ∈ [0.325, 0.90]
-3. La mejora es estadísticamente significativa — permutation p < 0.05
-4. El sistema exhibe propiedades colectivas genuinas — Symploké, no-localidad, persistencia
+Un fenómeno exhibe **cierre operativo de grado G** si:
+1. Su modelo macro (ODE) constriñe la dinámica del modelo micro (ABM) — C1 + EDI
+2. Esta constricción no es trivial ni tautológica — EDI ∈ [0.325, 0.90]
+3. La constricción es estadísticamente significativa — permutation p < 0.05
+4. El sistema exhibe propiedades colectivas medibles — Symploké, no-localidad, persistencia
 5. El resultado es reproducible — C2, C3, C5
 
-La **metaestabilidad** de la emergencia es un hallazgo, no un defecto: los hiperobjetos son atractores metaestables cuya realidad ontológica depende de la escala temporal de observación.
+El grado G se expresa en la escala de niveles 0–4. No se predica existencia sustancial del hiperobjeto: el EDI mide grado de constricción operativa macro→micro, no realidad ontológica. La **metaestabilidad** de la emergencia es un hallazgo, no un defecto: los hiperobjetos son atractores metaestables cuyo grado de cierre operativo depende de la escala temporal de observación.
 
 ---
 
