@@ -52,6 +52,16 @@ RUNS=50
 CONTAINER="tesis-gpu"
 DRY_RUN=0
 
+# ── Cleanup trap: al cancelar, matar todos los validate.py dentro del contenedor
+cleanup() {
+    echo ""
+    echo "⚠ Ctrl+C detectado — matando procesos Python en ${CONTAINER}..."
+    docker exec "$CONTAINER" bash -c 'pkill -f "python3 validate.py" 2>/dev/null; sleep 1; pkill -9 -f "python3 validate.py" 2>/dev/null' 2>/dev/null || true
+    echo "✓ Procesos Python terminados dentro del contenedor."
+    exit 130
+}
+trap cleanup INT TERM
+
 # ── GPU inventory (VRAM en MB) ────────────────────────────────────────────────
 # Se detecta en runtime, estos son fallbacks
 GPU0_NAME="RTX 5070 Ti"
@@ -178,8 +188,63 @@ get_partition() {
     echo "${_arr[@]:$start:$((end - start))}"
 }
 
+# ── Pre-asignar GPUs proporcionalmente a VRAM libre ──────────────────────────
+# Evita race condition: si 29 procesos arrancan juntos, todos verían la misma
+# VRAM libre y elegirían la misma GPU. Asignamos desde bash ANTES de lanzar.
+compute_gpu_assignments() {
+    local ncases=$1
+    # Obtener VRAM libre de cada GPU
+    local gpu_free
+    gpu_free=$(nvidia-smi --query-gpu=index,memory.free --format=csv,noheader,nounits 2>/dev/null)
+    
+    if [[ -z "$gpu_free" ]]; then
+        # Sin nvidia-smi, todo a GPU 0
+        for ((i=0; i<ncases; i++)); do echo 0; done
+        return
+    fi
+    
+    local -a gpu_ids=()
+    local -a gpu_mbs=()
+    local total_free=0
+    while IFS=', ' read -r gid gmb; do
+        gid=$(echo "$gid" | tr -d ' ')
+        gmb=$(echo "$gmb" | tr -d ' ')
+        gpu_ids+=("$gid")
+        gpu_mbs+=("$gmb")
+        total_free=$((total_free + gmb))
+    done <<< "$gpu_free"
+    
+    local ngpus=${#gpu_ids[@]}
+    if [[ $ngpus -le 1 || $total_free -eq 0 ]]; then
+        for ((i=0; i<ncases; i++)); do echo "${gpu_ids[0]:-0}"; done
+        return
+    fi
+    
+    # Asignar proporcionalmente: GPU con 15GB libre y GPU con 3GB libre
+    # → 83% y 17% de los procesos respectivamente
+    local -a gpu_count=()
+    local assigned=0
+    for ((g=0; g<ngpus; g++)); do
+        if [[ $g -eq $((ngpus-1)) ]]; then
+            gpu_count+=($((ncases - assigned)))
+        else
+            local cnt=$(( ncases * gpu_mbs[g] / total_free ))
+            [[ $cnt -lt 1 && ${gpu_mbs[g]} -gt 500 ]] && cnt=1
+            gpu_count+=("$cnt")
+            assigned=$((assigned + cnt))
+        fi
+    done
+    
+    # Emitir asignaciones
+    for ((g=0; g<ngpus; g++)); do
+        for ((c=0; c<${gpu_count[g]}; c++)); do
+            echo "${gpu_ids[g]}"
+        done
+    done
+}
+
 # ── Ejecutar un grupo de casos en el contenedor ──────────────────────────────
-# Cada proceso Python elige su GPU automáticamente (la de más VRAM libre)
+# Pre-asigna GPU a cada proceso para usar ambos núcleos al máximo
 run_batch() {
     local cases=("$@")
     local ncases=${#cases[@]}
@@ -189,7 +254,26 @@ run_batch() {
         return 0
     fi
     
+    # Pre-calcular asignación de GPU por caso
+    local -a gpu_assign
+    mapfile -t gpu_assign < <(compute_gpu_assignments "$ncases")
+    
+    # Mostrar plan de distribución
+    local -A gpu_summary
+    for gid in "${gpu_assign[@]}"; do
+        gpu_summary[$gid]=$(( ${gpu_summary[$gid]:-0} + 1 ))
+    done
+    echo -n "  Distribución: "
+    for gid in $(echo "${!gpu_summary[@]}" | tr ' ' '\n' | sort -n); do
+        echo -n "GPU${gid}=${gpu_summary[$gid]} "
+    done
+    echo ""
+    
     local log_dir="/tmp/gpu_run_g${GRID}_logs"
+    
+    # Construir arrays de casos y sus GPUs asignadas
+    local cases_str="${cases[*]}"
+    local gpus_str="${gpu_assign[*]}"
     
     # Construir el comando interno
     local inner_script="
@@ -199,21 +283,32 @@ export HYPER_N_BOOT=${BOOT}
 export HYPER_N_REFINE=${REFINE}
 export HYPER_N_RUNS=${RUNS}
 
+# Trap interno: si recibe señal, matar procesos hijos
+trap 'kill \$(jobs -p) 2>/dev/null; wait; exit 130' INT TERM
+
 mkdir -p ${log_dir}
-echo \"[${ncases} casos, grid=${GRID}, ambas GPUs visibles]\"
+
+CASES_ARR=(${cases_str})
+GPUS_ARR=(${gpus_str})
+NCASES=\${#CASES_ARR[@]}
+
+echo \"[\${NCASES} casos, grid=${GRID}, GPUs pre-asignadas]\"
 
 PIDS=()
 NAMES=()
-for case in ${cases[*]}; do
+for i in \"\${!CASES_ARR[@]}\"; do
+    case=\${CASES_ARR[\$i]}
+    gpu=\${GPUS_ARR[\$i]}
     SRC=\"/workspace/repos/Simulaciones/\${case}/src\"
     LOG=\"${log_dir}/\${case}.log\"
     if [ ! -f \"\${SRC}/validate.py\" ]; then
         echo \"  [SKIP] \${case}\"
         continue
     fi
-    (cd \"\$SRC\" && START=\$SECONDS && python3 validate.py > \"\$LOG\" 2>&1 && echo \"ELAPSED=\$((\$SECONDS - \$START))s\" >> \"\$LOG\") &
+    (cd \"\$SRC\" && export HYPER_GPU_DEVICE=\$gpu && START=\$SECONDS && python3 validate.py > \"\$LOG\" 2>&1 && echo \"ELAPSED=\$((\$SECONDS - \$START))s\" >> \"\$LOG\") &
     PIDS+=(\$!)
     NAMES+=(\"\$case\")
+    echo \"  → \${case} → GPU \${gpu} (PID \$!)\"
 done
 
 FAIL=0
@@ -222,15 +317,18 @@ for i in \"\${!NAMES[@]}\"; do
     LOG=\"${log_dir}/\${NAMES[\$i]}.log\"
     ELAPSED=\$(grep '^ELAPSED' \"\$LOG\" 2>/dev/null | cut -d= -f2 || echo '?')
     EDI=\$(grep -oP 'EDI[=:]\s*-?[\d.]+' \"\$LOG\" 2>/dev/null | tail -1 || echo '?')
-    echo \"  [\$S] \${NAMES[\$i]} — \$ELAPSED — \$EDI\"
+    GPU_USED=\$(grep -oP 'GPU \d+' \"\$LOG\" 2>/dev/null | head -1 || echo '?')
+    echo \"  [\$S] \${NAMES[\$i]} — \$ELAPSED — \$EDI [\$GPU_USED]\"
 done
-echo \"  Failures: \$FAIL/${ncases}\"
+echo \"  Failures: \$FAIL/\${NCASES}\"
 "
 
     if [[ $DRY_RUN -eq 1 ]]; then
         echo "  [DRY-RUN] ${ncases} casos: ${cases[*]}"
         echo "  VRAM estimada: $(estimate_vram_per_sim $GRID) MB/sim"
-        echo "  (cada proceso elige GPU con más VRAM libre automáticamente)"
+        for i in "${!cases[@]}"; do
+            echo "    ${cases[$i]} → GPU ${gpu_assign[$i]}"
+        done
         return 0
     fi
     
@@ -250,7 +348,7 @@ echo "║  GPUs:     ${N_GPUS} detectadas"
 echo "║  GPU 0:    ${GPU0_NAME} — ${GPU0_VRAM} MB"
 [[ $N_GPUS -ge 2 ]] && \
 echo "║  GPU 1:    ${GPU1_NAME} — ${GPU1_VRAM} MB"
-echo "║  Distrib:  auto (cada proceso elige GPU con más VRAM libre)"
+echo "║  Distrib:  proporcional a VRAM libre (pre-asignado desde bash)"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
 echo "║  Contendr: ${CONTAINER}"
 echo "║  VRAM/sim: ~$(estimate_vram_per_sim $GRID) MB"

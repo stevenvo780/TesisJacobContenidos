@@ -1,6 +1,6 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-10T05:32:14.720063Z
+- generated_at: 2026-02-10T05:50:30.324600Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -28,20 +28,20 @@
 ### Errores
 - rmse_abm: 0.8190
 - rmse_abm_no_ode: 0.8190
-- rmse_ode: 9.7647
+- rmse_ode: 7.9918
 - rmse_reduced: 0.8190
 - threshold: 0.7999
 
 ### Calibración
-- forcing_scale: 0.8836
-- macro_coupling: 0.4192
+- forcing_scale: 0.7171
+- macro_coupling: 0.4698
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.7353
+- damping: 0.6065
 - ode_alpha: 0.8000
 - ode_beta: 0.2000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.5782
+- calibration_rmse: 0.5714
 - ode_rolling: None
 
 ### Interpretación
@@ -52,7 +52,7 @@
 
 ### EDI
 - valor: -0.0000
-- bootstrap_mean: -0.0000
+- bootstrap_mean: 0.0000
 - CI 95%: [-0.0000, 0.0000]
 - weighted_value (LoE factor 0.20): -0.0000
 - válido (0.30-0.90): False

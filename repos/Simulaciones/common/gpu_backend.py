@@ -31,6 +31,7 @@ _GPU_DEVICE = 0
 _GPU_NAME = "none"
 _GPU_MEM_GB = 0.0
 _N_GPUS = 0
+_REAL_GPU_ID = 0  # ID real de nvidia-smi (antes de CUDA_VISIBLE_DEVICES)
 
 # Info de TODAS las GPUs: [{id, name, total_gb, free_gb}, ...]
 _ALL_GPUS = []
@@ -68,75 +69,82 @@ def _nvidia_smi_free_vram() -> list[dict]:
 
 if not _FORCE_CPU:
     try:
+        # ══════════════════════════════════════════════════════════════════
+        # PASO 1: nvidia-smi ANTES de importar CuPy para elegir GPU
+        #         sin crear contextos CUDA en GPUs que no vamos a usar.
+        # ══════════════════════════════════════════════════════════════════
+        smi_info = _nvidia_smi_free_vram()
+        preferred = int(os.environ.get("HYPER_GPU_DEVICE", -1))
+
+        if smi_info:
+            _N_GPUS = len(smi_info)
+            for s in smi_info:
+                _ALL_GPUS.append({
+                    "id": s["id"],
+                    "name": "gpu",  # se actualiza después con CuPy
+                    "total_gb": round(s["total_mb"] / 1024, 2),
+                })
+
+            if preferred >= 0 and any(s["id"] == preferred for s in smi_info):
+                _GPU_DEVICE = preferred
+            elif len(smi_info) > 1:
+                best = max(smi_info, key=lambda s: s["free_mb"])
+                _GPU_DEVICE = best["id"]
+            else:
+                _GPU_DEVICE = smi_info[0]["id"]
+
+        # ══════════════════════════════════════════════════════════════════
+        # PASO 2: CUDA_VISIBLE_DEVICES ANTES de import cupy
+        #         Así CuPy solo crea contexto en 1 GPU — cero VRAM en las demás.
+        # ══════════════════════════════════════════════════════════════════
+        _REAL_GPU_ID = _GPU_DEVICE  # ID real para nvidia-smi queries
+        os.environ["CUDA_VISIBLE_DEVICES"] = str(_GPU_DEVICE)
+
         import cupy as cp
-        _N_GPUS = cp.cuda.runtime.getDeviceCount()
-        if _N_GPUS > 0:
-            # Probar TODAS las GPUs con CuPy (funcionalidad)
-            for dev_id in range(_N_GPUS):
-                try:
-                    cp.cuda.Device(dev_id).use()
-                    _test = cp.ones(1000, dtype=cp.float64)
-                    _result = float(cp.sum(_test))
-                    assert abs(_result - 1000.0) < 1e-6
-                    del _test, _result
-                    props = cp.cuda.runtime.getDeviceProperties(dev_id)
-                    name = props.get("name", b"unknown")
-                    if isinstance(name, bytes):
-                        name = name.decode()
-                    _, total = cp.cuda.runtime.memGetInfo()
-                    _ALL_GPUS.append({
-                        "id": dev_id,
-                        "name": name,
-                        "total_gb": round(total / (1024**3), 2),
-                    })
-                except Exception:
-                    pass
 
-            _N_GPUS = len(_ALL_GPUS)
+        # Con CUDA_VISIBLE_DEVICES, CuPy ve solo 1 GPU como device 0
+        _cupy_dev_count = cp.cuda.runtime.getDeviceCount()
+        if _cupy_dev_count > 0:
+            cp.cuda.Device(0).use()  # siempre device 0 (la única visible)
+            _test = cp.ones(1000, dtype=cp.float64)
+            _result = float(cp.sum(_test))
+            assert abs(_result - 1000.0) < 1e-6
+            del _test, _result
 
-            if _N_GPUS > 0:
-                # ── Elegir UNA GPU usando VRAM libre REAL (nvidia-smi) ─
-                preferred = int(os.environ.get("HYPER_GPU_DEVICE", -1))
-                if preferred >= 0 and any(g["id"] == preferred for g in _ALL_GPUS):
-                    _GPU_DEVICE = preferred
-                else:
-                    # nvidia-smi ve VRAM usada por OTROS procesos
-                    smi_info = _nvidia_smi_free_vram()
-                    if smi_info and len(smi_info) > 1:
-                        # Solo considerar GPUs que CuPy validó
-                        valid_ids = {g["id"] for g in _ALL_GPUS}
-                        smi_valid = [s for s in smi_info if s["id"] in valid_ids]
-                        if smi_valid:
-                            best = max(smi_valid, key=lambda s: s["free_mb"])
-                            _GPU_DEVICE = best["id"]
-                        else:
-                            _GPU_DEVICE = _ALL_GPUS[0]["id"]
-                    else:
-                        _GPU_DEVICE = max(_ALL_GPUS, key=lambda g: g.get("total_gb", 0))["id"]
+            props = cp.cuda.runtime.getDeviceProperties(0)
+            name = props.get("name", b"unknown")
+            if isinstance(name, bytes):
+                name = name.decode()
+            _, total = cp.cuda.runtime.memGetInfo()
 
-                cp.cuda.Device(_GPU_DEVICE).use()
-                gpu_entry = next(g for g in _ALL_GPUS if g["id"] == _GPU_DEVICE)
-                _GPU_NAME = gpu_entry["name"]
-                _GPU_MEM_GB = gpu_entry["total_gb"]
-                _GPU_AVAILABLE = True
+            _GPU_NAME = name
+            _GPU_MEM_GB = round(total / (1024**3), 2)
+            _GPU_DEVICE = 0  # CuPy ve device 0 (mapeado a _REAL_GPU_ID)
+            _GPU_AVAILABLE = True
 
-                # Log de asignación
-                pid = os.getpid()
-                smi_info = _nvidia_smi_free_vram()
-                smi_map = {s["id"]: s for s in smi_info}
-                my_free = smi_map.get(_GPU_DEVICE, {}).get("free_mb", 0)
-                print(f"[gpu_backend] PID {pid} → GPU {_GPU_DEVICE} "
-                      f"({_GPU_NAME}, {my_free}MB libre vía nvidia-smi)",
-                      file=sys.stderr)
-                if _N_GPUS > 1:
-                    for g in _ALL_GPUS:
-                        s = smi_map.get(g["id"], {})
-                        free_mb = s.get("free_mb", 0)
-                        total_mb = s.get("total_mb", 0)
-                        marker = " ← ASIGNADA" if g["id"] == _GPU_DEVICE else ""
-                        print(f"  GPU {g['id']}: {g['name']} — "
-                              f"{free_mb}MB/{total_mb}MB libre{marker}",
-                              file=sys.stderr)
+            # Actualizar nombre real en _ALL_GPUS
+            for g in _ALL_GPUS:
+                if g["id"] == _REAL_GPU_ID:
+                    g["name"] = name
+
+            # Log de asignación
+            pid = os.getpid()
+            smi_info = _nvidia_smi_free_vram()  # re-query fresh
+            smi_map = {s["id"]: s for s in smi_info}
+            my_free = smi_map.get(_REAL_GPU_ID, {}).get("free_mb", 0)
+            print(f"[gpu_backend] PID {pid} → GPU {_REAL_GPU_ID} "
+                  f"({_GPU_NAME}, {my_free}MB libre vía nvidia-smi) "
+                  f"[CUDA_VISIBLE_DEVICES={_REAL_GPU_ID}]",
+                  file=sys.stderr)
+            if len(_ALL_GPUS) > 1:
+                for g in _ALL_GPUS:
+                    s = smi_map.get(g["id"], {})
+                    free_mb = s.get("free_mb", 0)
+                    total_mb = s.get("total_mb", 0)
+                    marker = " ← ASIGNADA" if g["id"] == _REAL_GPU_ID else " (oculta a CuPy)"
+                    print(f"  GPU {g['id']}: {g['name']} — "
+                          f"{free_mb}MB/{total_mb}MB libre{marker}",
+                          file=sys.stderr)
     except Exception as e:
         _GPU_AVAILABLE = False
         if os.environ.get("HYPER_GPU_DEBUG", ""):
@@ -173,7 +181,8 @@ def get_free_vram(device_id: int | None = None) -> float:
     """
     if not _GPU_AVAILABLE:
         return 0.0
-    dev = device_id if device_id is not None else _GPU_DEVICE
+    # Usar ID real de nvidia-smi (no el device 0 de CuPy)
+    dev = device_id if device_id is not None else _REAL_GPU_ID
     # Preferir nvidia-smi (ve TODOS los procesos)
     smi = _nvidia_smi_free_vram()
     for s in smi:
@@ -181,16 +190,8 @@ def get_free_vram(device_id: int | None = None) -> float:
             return s["free_mb"] / 1024.0
     # Fallback a CuPy (solo ve este proceso)
     import cupy as cp
-    if dev == _GPU_DEVICE:
-        free, _ = cp.cuda.runtime.memGetInfo()
-        return free / (1024**3)
-    old = cp.cuda.runtime.getDevice()
-    try:
-        cp.cuda.Device(dev).use()
-        free, _ = cp.cuda.runtime.memGetInfo()
-        return free / (1024**3)
-    finally:
-        cp.cuda.Device(old).use()
+    free, _ = cp.cuda.runtime.memGetInfo()
+    return free / (1024**3)
 
 
 def get_all_free_vram() -> list[dict]:
