@@ -31,6 +31,8 @@ El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 crite
 | **falsification** | — | Controles negativos diseñados | 3 | Correctamente rechazados |
 | **Total** | | | **29** | |
 
+<!-- AUTO:MATRIZ_DETALLADA -->
+
 ### Clasificación por Resultado
 
 #### Nivel 4 — Cierre Operativo Fuerte (overall_pass=True)

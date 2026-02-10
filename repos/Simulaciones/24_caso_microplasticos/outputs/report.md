@@ -1,21 +1,21 @@
 # Reporte de Validación — Microplásticos Oceánicos (Jambeck Persistent Accumulation)
 
-- generated_at: 2026-02-10T02:32:46.612801Z
+- generated_at: 2026-02-10T02:49:57.322448Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.2964
-- bootstrap_mean: 0.2965
-- CI 95%: [0.2892, 0.3048]
-- weighted_value (LoE factor 0.80): 0.2371
+- valor: 0.1105
+- bootstrap_mean: 0.1105
+- CI 95%: [0.1077, 0.1137]
+- weighted_value (LoE factor 0.80): 0.0884
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9999
-- external: 0.9978
-- CR: 1.0021
+- internal: 1.0000
+- external: 0.9998
+- CR: 1.0002
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,16 +26,16 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.0938
-- rmse_abm_no_ode: 1.5546
-- rmse_ode: 1.7299
+- rmse_abm: 1.3821
+- rmse_abm_no_ode: 1.5538
+- rmse_ode: 1.6993
 - rmse_reduced: 0.9685
 - threshold: 0.1000
 
 ### Calibración
-- forcing_scale: 0.9236
-- macro_coupling: 0.4094
-- ode_coupling_strength: 0.3000
+- forcing_scale: 0.9212
+- macro_coupling: 0.1188
+- ode_coupling_strength: 0.0950
 - abm_feedback_gamma: 0.0500
 - damping: 0.9500
 - ode_alpha: 0.0010
@@ -51,12 +51,12 @@
 - **overall_pass**: True
 
 ### EDI
-- valor: 0.4273
-- bootstrap_mean: 0.4280
-- CI 95%: [0.4158, 0.4464]
-- weighted_value (LoE factor 0.80): 0.3418
+- valor: 0.4269
+- bootstrap_mean: 0.4275
+- CI 95%: [0.4153, 0.4460]
+- weighted_value (LoE factor 0.80): 0.3415
 - válido (0.30-0.90): True
-- detrended_edi: 0.4273
+- detrended_edi: 0.4269
 - trend_ratio: 1.000
 - trend_r2: 0.970
 
@@ -74,22 +74,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 10.4047
-- rmse_abm_no_ode: 18.1683
-- rmse_ode: 2.7860
+- rmse_abm: 10.3984
+- rmse_abm_no_ode: 18.1432
+- rmse_ode: 2.7858
 - rmse_reduced: 4.5301
 - threshold: 1.4633
 
 ### Calibración
-- forcing_scale: 0.7390
+- forcing_scale: 0.7394
 - macro_coupling: 0.5000
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.4320
+- damping: 0.4329
 - ode_alpha: 0.0444
 - ode_beta: 0.0134
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.3878
+- calibration_rmse: 0.3877
 - ode_rolling: None
 
 ### Interpretación

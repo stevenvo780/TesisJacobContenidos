@@ -1,14 +1,14 @@
 # Reporte de Validación — Falsación: Exogeneidad
 
-- generated_at: 2026-02-09T21:47:00.020038
+- generated_at: 2026-02-09T21:52:13.868902
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
 - valor: 0.0549
-- bootstrap_mean: 0.0552
-- CI 95%: [0.0341, 0.0741]
+- bootstrap_mean: 0.0550
+- CI 95%: [0.0363, 0.0737]
 - weighted_value (LoE factor 0.20): 0.0110
 - válido (0.30-0.90): False
 

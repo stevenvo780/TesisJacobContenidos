@@ -201,6 +201,9 @@ def cmd_build(args):
 
     # Ensamblar secciones
     loaded = 0
+    case_table = _build_case_summary_table()
+    case_table_injected = False
+    
     for sec in sections:
         source = ROOT / sec["source"]
         if not source.exists():
@@ -210,6 +213,12 @@ def cmd_build(args):
             continue
 
         content = source.read_text(encoding="utf-8").strip()
+        
+        # Inyectar tabla de casos si hay placeholder
+        if "<!-- AUTO:MATRIZ_DETALLADA -->" in content and case_table:
+            content = content.replace("<!-- AUTO:MATRIZ_DETALLADA -->", case_table)
+            case_table_injected = True
+        
         loaded += 1
 
         # Extraer título para TOC
@@ -221,11 +230,9 @@ def cmd_build(args):
 
         parts.append(content)
 
-    # Generar tabla resumen de casos
-    case_table = _build_case_summary_table()
-    if case_table:
+    # Generar tabla resumen de casos al final SOLO si no fue inyectada antes
+    if case_table and not case_table_injected:
         parts.append(case_table)
-        toc_entries.append(f"{loaded + 1}. [Resumen de Simulaciones](#resumen-de-simulaciones)")
 
     # Componer documento final (temporal para extraer headers)
     separator = "\n\n---\n\n"
@@ -235,10 +242,15 @@ def cmd_build(args):
     toc_lines = ["## Tabla de Contenidos\n"]
     headers = []
     lines = temp_content.splitlines()
+    thesis_title = meta.get('title', 'Tesis')
+    
     for i, line in enumerate(lines):
         if line.startswith("#"):
-            # Ignorar el título principal (# ) si está al inicio
-            if line.startswith("# ") and i < 10:
+            # Ignorar el título principal exacto si está al inicio
+            if i == 0 and thesis_title in line:
+                continue
+            # Ignorar la propia tabla de contenidos si ya existe o se detecta
+            if "Tabla de Contenidos" in line:
                 continue
             headers.append(line)
 
@@ -248,7 +260,7 @@ def cmd_build(args):
             level += 1
         if level > 4: continue # Limitar profundidad
         
-        title = header.replace('#', '').strip()
+        title = header.lstrip('#').strip()
         # Generar anchor
         anchor = title.lower()
         anchor = re.sub(r'[^\w\s-]', '', anchor).strip().replace(' ', '-')

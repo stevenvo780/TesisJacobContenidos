@@ -1,21 +1,21 @@
 # Reporte de Validación — Políticas Estratégicas (Bass Diffusion + Inertia)
 
-- generated_at: 2026-02-10T02:11:24.040858Z
+- generated_at: 2026-02-10T02:52:05.319173Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0005
-- bootstrap_mean: 0.0005
-- CI 95%: [0.0001, 0.0011]
-- weighted_value (LoE factor 0.20): 0.0001
+- valor: 0.0009
+- bootstrap_mean: 0.0009
+- CI 95%: [0.0008, 0.0010]
+- weighted_value (LoE factor 0.20): 0.0002
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9117
-- external: 0.8593
-- CR: 1.0610
+- internal: 0.9351
+- external: 0.8562
+- CR: 1.0921
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,10 +26,10 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.3978
-- rmse_abm_no_ode: 1.3985
-- rmse_ode: 0.5470
-- rmse_reduced: 1.4052
+- rmse_abm: 1.3998
+- rmse_abm_no_ode: 1.4011
+- rmse_ode: 0.5471
+- rmse_reduced: 1.3994
 - threshold: 0.3900
 
 ### Calibración
@@ -41,7 +41,7 @@
 - ode_alpha: 0.3436
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.7386
+- calibration_rmse: 0.7388
 - ode_rolling: None
 
 ### Interpretación
@@ -51,19 +51,19 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0111
-- bootstrap_mean: 0.0111
-- CI 95%: [0.0107, 0.0116]
-- weighted_value (LoE factor 0.20): 0.0022
+- valor: 0.0022
+- bootstrap_mean: 0.0022
+- CI 95%: [0.0018, 0.0025]
+- weighted_value (LoE factor 0.20): 0.0004
 - válido (0.30-0.90): False
-- detrended_edi: 0.0111
+- detrended_edi: 0.0022
 - trend_ratio: 1.000
 - trend_r2: 0.534
 
 ### Symploké y CR
-- internal: 0.4633
-- external: -0.2849
-- CR: 1.6262
+- internal: 0.4679
+- external: -0.3254
+- CR: 1.4379
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -74,10 +74,10 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.7745
-- rmse_abm_no_ode: 1.7944
-- rmse_ode: 1.0011
-- rmse_reduced: 1.8131
+- rmse_abm: 1.8332
+- rmse_abm_no_ode: 1.8372
+- rmse_ode: 1.0036
+- rmse_reduced: 1.8293
 - threshold: 0.1452
 
 ### Calibración
@@ -89,7 +89,7 @@
 - ode_alpha: 0.0010
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 1.3319
+- calibration_rmse: 1.3605
 - ode_rolling: None
 
 ### Interpretación
