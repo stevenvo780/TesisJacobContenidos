@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: Exogeneidad",
-  "generated_at": "2026-02-10T03:24:08.672079",
+  "generated_at": "2026-02-10T04:18:37.118840",
   "git": {
     "commit": "falsification_mode",
     "dirty": false
@@ -82,9 +82,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0006705873593753545,
-        "edi_mean": 0.005153899687532043,
-        "edi_std": 3.4561399819475778e-06,
+        "cv": 1.3434101133967778e-05,
+        "edi_mean": -0.054847447932367434,
+        "edi_std": 7.36826162463456e-07,
         "monotonic_decrease": false
       },
       "effective_information": 1.0418755621985574,
@@ -118,7 +118,7 @@
       "coupling_check": true,
       "rmse_fraud_check": true,
       "c1_convergence": true,
-      "c2_robustness": true,
+      "c2_robustness": false,
       "c3_replication": true,
       "c4_validity": false,
       "c5_uncertainty": true,
@@ -134,10 +134,10 @@
         "relative_improvement": 0.13121176888077057
       },
       "c2_detail": {
-        "mean_delta": 4.026396348251193e-05,
-        "var_delta": 0.0004906656131310656,
-        "relative_mean": 4.026396348251193e-05,
-        "relative_var": 0.0004906656131310656
+        "mean_delta": 0.008210164459438077,
+        "var_delta": 0.6269922103311482,
+        "relative_mean": 0.008210164459438077,
+        "relative_var": 0.6269922103311482
       },
       "c3_detail": {
         "persistence_1": 1.5720006093541126e-05,
@@ -147,10 +147,10 @@
         "diff": 1.470940150157321e-06
       },
       "c5_detail": {
-        "sensitivity_min": -0.00932097214929805,
-        "sensitivity_max": -0.009025145031160208,
-        "range": 0.00029582711813784177,
-        "relative_range": 7.845459996296468e-08
+        "sensitivity_min": -0.0011421310953904408,
+        "sensitivity_max": -0.000754304018883156,
+        "range": 0.00038782707650728476,
+        "relative_range": 1.0285337711334371e-07
       },
       "bias_correction": {
         "applied": true,
@@ -164,7 +164,7 @@
         "c1_convergence": true,
         "c1_relative": true,
         "c1_absolute": false,
-        "c2_robustness": true,
+        "c2_robustness": false,
         "c3_replication": true,
         "c4_validity": false,
         "c5_uncertainty": true,

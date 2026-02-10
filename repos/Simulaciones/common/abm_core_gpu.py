@@ -495,9 +495,13 @@ def simulate_abm_batch(
     hetero_seed = int(base_params.get("heterogeneity_seed", seed))
     if hetero > 1e-8:
         rng_h = np.random.RandomState(hetero_seed)
-        diff_map = to_device(np.clip(diff * (1.0 + hetero * rng_h.normal(0, 1, (n, n))), 0, 1).astype(np.float64))
+        # Usar diff_default / noise_default siempre para el mapa heterogéneo base
+        # (diff y noise_amp pueden ser None cuando varían por simulación)
+        _diff_for_hetero = diff if diff is not None else diff_default
+        _noise_for_hetero = noise_amp if noise_amp is not None else noise_default
+        diff_map = to_device(np.clip(_diff_for_hetero * (1.0 + hetero * rng_h.normal(0, 1, (n, n))), 0, 1).astype(np.float64))
         dmp_base_map = to_device(np.clip(float(base_params.get("damping", 0.02)) * (1.0 + hetero * rng_h.normal(0, 1, (n, n))), 0, 1).astype(np.float64))
-        noise_map = to_device(np.clip(noise_amp * (1.0 + hetero * rng_h.normal(0, 1, (n, n))), 0, None).astype(np.float64))
+        noise_map = to_device(np.clip(_noise_for_hetero * (1.0 + hetero * rng_h.normal(0, 1, (n, n))), 0, None).astype(np.float64))
         use_hetero = True
     else:
         use_hetero = False
