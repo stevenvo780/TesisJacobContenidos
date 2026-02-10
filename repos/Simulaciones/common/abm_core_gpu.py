@@ -411,9 +411,9 @@ def simulate_abm_batch(
             all_results.append(chunk_result)
         return np.concatenate(all_results, axis=0)
     
-    # ─── Extraer parámetros compartidos ────────────────────────────────
-    diff = float(base_params.get("diffusion", 0.2))
-    noise_amp = float(base_params.get("noise", 0.02))
+    # ─── Extraer parámetros compartidos (con override por variante) ────
+    diff_default = float(base_params.get("diffusion", 0.2))
+    noise_default = float(base_params.get("noise", 0.02))
     
     # Parámetros que varían: arrays (B,) en GPU
     fs_arr = _xp.array([float(pv.get("forcing_scale", base_params.get("forcing_scale", 0.01)))
@@ -422,6 +422,16 @@ def simulate_abm_batch(
                          for pv in param_variants], dtype=_xp.float64)
     dmp_arr = _xp.array([float(pv.get("damping", base_params.get("damping", 0.02)))
                           for pv in param_variants], dtype=_xp.float64)
+    # Diffusion y noise pueden variar por simulación (para C2/C5/noise_sensitivity)
+    diff_arr = _xp.array([float(pv.get("diffusion", diff_default))
+                           for pv in param_variants], dtype=_xp.float64)
+    noise_arr = _xp.array([float(pv.get("noise", pv.get("base_noise", noise_default)))
+                            for pv in param_variants], dtype=_xp.float64)
+    # Detectar si varían (para optimizar: escalar vs array)
+    _diff_varies = not _xp.all(diff_arr == diff_arr[0])
+    _noise_varies = not _xp.all(noise_arr == noise_arr[0])
+    diff = diff_default if not _diff_varies else None
+    noise_amp = noise_default if not _noise_varies else None
     
     # Forcing — construir en CPU, enviar a GPU como vector (steps,)
     forcing = base_params.get("forcing_series")
@@ -509,6 +519,8 @@ def simulate_abm_batch(
         # Noise batch: (B, n, n)
         if use_hetero:
             noise = rng.uniform(-1.0, 1.0, (B, n, n)) * noise_map[None, :, :]
+        elif _noise_varies:
+            noise = rng.uniform(-1.0, 1.0, (B, n, n)) * noise_arr[:, None, None]
         else:
             noise = rng.uniform(-noise_amp, noise_amp, (B, n, n))
         
@@ -522,10 +534,19 @@ def simulate_abm_batch(
                 - dmp_base_map[None, :, :] * dmp_arr[:, None, None] / float(base_params.get("damping", 0.02) or 0.02) * grids
                 + noise
             )
+        elif _diff_varies:
+            grids = (
+                grids
+                + diff_arr[:, None, None] * (nb_mean - grids)
+                + fs_arr[:, None, None] * f_spatial
+                + mc_arr[:, None, None] * (macro_mean[:, None, None] - grids)
+                - dmp_arr[:, None, None] * grids
+                + noise
+            )
         else:
             grids = (
                 grids
-                + diff * (nb_mean - grids)
+                + diff_default * (nb_mean - grids)
                 + fs_arr[:, None, None] * f_spatial
                 + mc_arr[:, None, None] * (macro_mean[:, None, None] - grids)
                 - dmp_arr[:, None, None] * grids

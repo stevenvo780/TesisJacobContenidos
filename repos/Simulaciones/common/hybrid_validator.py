@@ -748,32 +748,67 @@ def evaluate_c2(base_params, eval_params, steps, val_start,
     base_var = variance(sim_base[series_key][val_start:])
     del sim_base
 
-    def _eval_one_c2(i):
-        p = perturb_params(base_params, pct, seed=seed_base + i)
-        p["assimilation_series"] = None
-        p["assimilation_strength"] = 0.0
-        if "forcing_series" in eval_params:
-            p["forcing_series"] = eval_params["forcing_series"]
-        sim = simulate_abm_fn(p, steps, seed=2 + i + 10)
-        dm = abs(mean(sim[series_key][val_start:]) - base_mean)
-        dv = abs(variance(sim[series_key][val_start:]) - base_var)
-        return dm, dv
-
+    # Detectar GPU batch
+    _batch_fn = None
+    _has_gpu = False
     try:
         from gpu_backend import using_gpu as _ug
         _has_gpu = _ug()
+        if _has_gpu:
+            from abm_core_gpu import simulate_abm_batch as _sbatch
+            _batch_fn = _sbatch
     except ImportError:
-        _has_gpu = False
+        pass
     
-    if _has_gpu:
-        results = [_eval_one_c2(i) for i in range(n_pert)]
+    if _batch_fn is not None:
+        # ── GPU BATCH: n_pert simulaciones perturbadas de una pasada ──
+        param_variants = []
+        for i in range(n_pert):
+            p = perturb_params(base_params, pct, seed=seed_base + i)
+            variant = {
+                "forcing_scale": p.get("forcing_scale", eval_params.get("forcing_scale", 0.05)),
+                "macro_coupling": p.get("macro_coupling", eval_params.get("macro_coupling", 0.2)),
+                "damping": p.get("damping", eval_params.get("damping", 0.02)),
+                "diffusion": p.get("diffusion", eval_params.get("diffusion", 0.2)),
+            }
+            param_variants.append(variant)
+        
+        bp = dict(eval_params)
+        bp["assimilation_strength"] = 0.0
+        bp["assimilation_series"] = None
+        bp["_store_grid"] = False
+        
+        preds = _batch_fn(bp, param_variants, steps, seed=seed_base,
+                          series_key=series_key,
+                          init_range=float(bp.get("init_range", 0.5)))
+        
+        deltas_m = []
+        deltas_v = []
+        for i in range(n_pert):
+            series_i = preds[i, val_start:]
+            dm = abs(float(np.mean(series_i)) - base_mean)
+            dv = abs(float(np.var(series_i)) - base_var)
+            deltas_m.append(dm)
+            deltas_v.append(dv)
     else:
+        # ── CPU PARALELO ──
+        def _eval_one_c2(i):
+            p = perturb_params(base_params, pct, seed=seed_base + i)
+            p["assimilation_series"] = None
+            p["assimilation_strength"] = 0.0
+            if "forcing_series" in eval_params:
+                p["forcing_series"] = eval_params["forcing_series"]
+            sim = simulate_abm_fn(p, steps, seed=2 + i + 10)
+            dm = abs(mean(sim[series_key][val_start:]) - base_mean)
+            dv = abs(variance(sim[series_key][val_start:]) - base_var)
+            return dm, dv
+        
         n_jobs = min(n_pert, os.cpu_count() or 4)
         results = Parallel(n_jobs=n_jobs, backend="loky")(
             delayed(_eval_one_c2)(i) for i in range(n_pert)
         )
-    deltas_m = [r[0] for r in results]
-    deltas_v = [r[1] for r in results]
+        deltas_m = [r[0] for r in results]
+        deltas_v = [r[1] for r in results]
     avg_dm = mean(deltas_m)
     avg_dv = mean(deltas_v)
     # Relative robustness: perturbation < 50% of base scale
@@ -811,24 +846,54 @@ def evaluate_c4(eval_params, base_params, steps, val_start,
 def evaluate_c5(base_params, eval_params, steps, val_start,
                 simulate_abm_fn, series_key, n_runs=5, pct=0.1,
                 obs_std=None, obs_mean_raw=None, obs_std_raw=None):
-    def _eval_one_c5(i):
-        p = perturb_params(base_params, pct, seed=20 + i)
-        p["assimilation_series"] = None
-        p["assimilation_strength"] = 0.0
-        if "forcing_series" in eval_params:
-            p["forcing_series"] = eval_params["forcing_series"]
-        sim = simulate_abm_fn(p, steps, seed=30 + i)
-        return mean(sim[series_key][val_start:])
-
+    
+    # Detectar GPU batch
+    _batch_fn = None
+    _has_gpu = False
     try:
         from gpu_backend import using_gpu as _ug
         _has_gpu = _ug()
+        if _has_gpu:
+            from abm_core_gpu import simulate_abm_batch as _sbatch
+            _batch_fn = _sbatch
     except ImportError:
-        _has_gpu = False
+        pass
     
-    if _has_gpu:
-        means = [_eval_one_c5(i) for i in range(n_runs)]
+    if _batch_fn is not None:
+        # ── GPU BATCH: n_runs simulaciones perturbadas de una pasada ──
+        param_variants = []
+        for i in range(n_runs):
+            p = perturb_params(base_params, pct, seed=20 + i)
+            variant = {
+                "forcing_scale": p.get("forcing_scale", eval_params.get("forcing_scale", 0.05)),
+                "macro_coupling": p.get("macro_coupling", eval_params.get("macro_coupling", 0.2)),
+                "damping": p.get("damping", eval_params.get("damping", 0.02)),
+                "diffusion": p.get("diffusion", eval_params.get("diffusion", 0.2)),
+            }
+            param_variants.append(variant)
+        
+        bp = dict(eval_params)
+        bp["assimilation_strength"] = 0.0
+        bp["assimilation_series"] = None
+        bp["_store_grid"] = False
+        
+        # Una sola llamada GPU → (n_runs, steps) matrix
+        preds = _batch_fn(bp, param_variants, steps, seed=30,
+                          series_key=series_key, 
+                          init_range=float(bp.get("init_range", 0.5)))
+        # Extraer means de la ventana de validación
+        means = [float(np.mean(preds[i, val_start:])) for i in range(n_runs)]
     else:
+        # ── CPU PARALELO ──
+        def _eval_one_c5(i):
+            p = perturb_params(base_params, pct, seed=20 + i)
+            p["assimilation_series"] = None
+            p["assimilation_strength"] = 0.0
+            if "forcing_series" in eval_params:
+                p["forcing_series"] = eval_params["forcing_series"]
+            sim = simulate_abm_fn(p, steps, seed=30 + i)
+            return mean(sim[series_key][val_start:])
+        
         n_jobs = min(n_runs, os.cpu_count() or 4)
         means = Parallel(n_jobs=n_jobs, backend="loky")(
             delayed(_eval_one_c5)(i) for i in range(n_runs)
