@@ -4,7 +4,7 @@ from datetime import datetime
 import urllib.request
 
 import pandas as pd
-from meteostat import Stations, Monthly
+from meteostat import stations as meteostat_stations, monthly as meteostat_monthly, Point
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
@@ -23,30 +23,34 @@ def _conus_bounds():
 
 def _select_stations(start, end, max_stations):
     lat_min, lon_min, lat_max, lon_max = _conus_bounds()
-    top_left = (lat_max, lon_min)
-    bottom_right = (lat_min, lon_max)
-    stations = Stations().bounds(top_left, bottom_right)
-    stations = stations.fetch(500)
+    # Centro aproximado de CONUS
+    center_lat = (lat_min + lat_max) / 2
+    center_lon = (lon_min + lon_max) / 2
+    # Radio ~2500km cubre todo CONUS desde el centro
+    stn_df = meteostat_stations.nearby(Point(center_lat, center_lon), 2_500_000)
+    # Filtrar solo estaciones de US
+    if "country" in stn_df.columns:
+        stn_df = stn_df[stn_df["country"] == "US"]
 
-    # Prefer stations with monthly coverage across the period
-    def coverage_score(row):
-        m_start = row.get("monthly_start")
-        m_end = row.get("monthly_end")
-        if pd.isna(m_start) or pd.isna(m_end):
-            return 0
-        overlap_start = max(m_start, start)
-        overlap_end = min(m_end, end)
-        if overlap_end < overlap_start:
-            return 0
-        months = (overlap_end.year - overlap_start.year) * 12 + (overlap_end.month - overlap_start.month) + 1
-        total = (end.year - start.year) * 12 + (end.month - start.month) + 1
-        return months / total
+    # Probar cobertura real: descargar datos mensuales de cada estación
+    # y quedarnos con las que tengan ≥85% del periodo solicitado
+    total_months = (end.year - start.year) * 12 + (end.month - start.month) + 1
+    good_ids = []
+    for station_id in stn_df.index.tolist():
+        if len(good_ids) >= max_stations * 3:  # probar hasta 3x candidatas
+            break
+        try:
+            ts = meteostat_monthly(station_id, start, end)
+            data = ts.fetch()
+            if data is None or data.empty:
+                continue
+            coverage = len(data.dropna(subset=["tavg"])) / total_months
+            if coverage >= 0.85:
+                good_ids.append(station_id)
+        except Exception:
+            continue
 
-    stations = stations.copy()
-    stations["coverage"] = stations.apply(coverage_score, axis=1)
-    stations = stations.sort_values("coverage", ascending=False)
-    stations = stations[stations["coverage"] > 0.85]
-    return stations.head(max_stations)
+    return stn_df.loc[stn_df.index.isin(good_ids)].head(max_stations)
 
 def fetch_co2_monthly(start_date, end_date, cache_path=None):
     start = datetime.strptime(start_date, "%Y-%m-%d")
@@ -97,7 +101,8 @@ def fetch_regional_monthly(start_date, end_date, max_stations=10, cache_path=Non
 
     series_list = []
     for station_id in stations.index.tolist():
-        data = Monthly(station_id, start, end).fetch()
+        ts = meteostat_monthly(station_id, start, end)
+        data = ts.fetch()
         if data is None or data.empty:
             continue
         if "tavg" not in data.columns:
