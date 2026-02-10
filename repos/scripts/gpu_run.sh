@@ -193,32 +193,32 @@ fi
 
 TOTAL=${#ALL_CASES[@]}
 
-# ── VRAM estimada por simulación (MB) ────────────────────────────────────────
-# Base: grid × grid × 8 bytes × ~20 buffers × batch_size(~500)
-# + overhead CuPy (~500MB)
-estimate_vram_per_sim() {
+# ── VRAM estimada por proceso (MB) ───────────────────────────────────────────
+# Replica la lógica de abm_core_gpu.py:
+#   1) Contexto CUDA: ~500 MB
+#   2) B = min(n_runs, free×0.25 / (grid²×8×20))    ← factor 20 para B (conservador)
+#   3) Pico = contexto + B × grid²×8×10 / 1048576   ← factor 10 (arrays vivas reales)
+# Resultado: ligeramente por encima del pico real observado (seguro).
+# Args: $1=grid  $2=gpu_free_MB(default 16000)  $3=n_runs(default 50)
+estimate_vram_per_process() {
     local g=$1
-    # Cada sim en batch: grid^2 * 8 * 6 buffers (grids, nb_mean, noise, etc.)
-    # Batch de 500 sims: × 500
-    # + overhead de forcing, series, etc.
-    local bytes_per_batch=$(( g * g * 8 * 6 * 500 ))
-    local mb=$(( bytes_per_batch / 1048576 + 500 ))  # +500MB overhead CuPy
-    echo "$mb"
-}
-
-# Cuántos casos simultáneos caben en una GPU
-max_concurrent_for_gpu() {
-    local gpu_vram=$1
-    local grid=$2
-    local vram_per_sim
-    vram_per_sim=$(estimate_vram_per_sim "$grid")
-    # Reservar 20% de VRAM para overhead
-    local usable=$(( gpu_vram * 80 / 100 ))
-    local max=$(( usable / vram_per_sim ))
-    # Mínimo 1, máximo 29
-    [[ $max -lt 1 ]] && max=1
-    [[ $max -gt 29 ]] && max=29
-    echo "$max"
+    local gpu_free=${2:-16000}
+    local nruns=${3:-${RUNS:-50}}
+    local CUDA_CTX_MB=500
+    # vram_per_sim para calcular B (factor 20, misma fórmula que Python)
+    local vps_b=$(( g * g * 8 * 20 / 1048576 ))
+    [[ $vps_b -lt 1 ]] && vps_b=1
+    # Budget = 25% de VRAM libre
+    local budget_mb=$(( gpu_free * 25 / 100 ))
+    # B = min(n_runs, budget / vps)
+    local b=$(( budget_mb / vps_b ))
+    [[ $b -gt $nruns ]] && b=$nruns
+    [[ $b -lt 1 ]] && b=1
+    # Pico real: factor 10 (arrays vivas simultáneas, no el safety 20)
+    local vps_real=$(( g * g * 8 * 10 / 1048576 ))
+    [[ $vps_real -lt 1 ]] && vps_real=1
+    local peak=$(( CUDA_CTX_MB + b * vps_real ))
+    echo "$peak"
 }
 
 # ── Dividir array en N partes ─────────────────────────────────────────────────
@@ -343,8 +343,6 @@ run_batch() {
     # PERO: cada proceso CuPy crea un contexto CUDA (~500MB overhead).
     # Con 14 procesos en una GPU de 3.4GB libre → 7GB solo en contextos → OOM.
     # Por eso limitamos por VRAM: max_vram_workers = free / (500 + grid_vram_per_sim).
-    local vram_est
-    vram_est=$(estimate_vram_per_sim "$GRID")
     local total_workers=0
     local -a workers_per_gpu=()
     local worker_gpu_map=""  # "0 0 0 1 1" — qué GPU para cada worker
@@ -358,14 +356,12 @@ run_batch() {
     [[ $min_per_gpu -lt 4 ]] && min_per_gpu=4
     [[ $min_per_gpu -gt 15 ]] && min_per_gpu=15  # cap razonable
     
-    # Overhead de contexto CUDA por proceso CuPy (en MB)
-    local CUDA_CTX_OVERHEAD_MB=500
-    # VRAM mínima por proceso = contexto + grid² × 8 bytes × 20 buffers (en MB)
-    local grid_vram_mb=$(( GRID * GRID * 8 * 20 / 1048576 ))
-    local vram_per_process=$(( CUDA_CTX_OVERHEAD_MB + grid_vram_mb ))
-    
     for i in "${!available_gpus[@]}"; do
         local free=${gpu_free_mb[$i]}
+        
+        # VRAM por proceso: contexto CUDA + 25% de VRAM libre (sub-batch de CuPy)
+        local vram_per_process
+        vram_per_process=$(estimate_vram_per_process "$GRID" "$free")
         
         # Cuántos procesos CuPy caben en esta GPU (VRAM-aware)
         local vram_max_workers=$(( free * 80 / 100 / (vram_per_process > 0 ? vram_per_process : 1) ))
@@ -447,6 +443,7 @@ run_batch() {
     worker_gpu_map=$(echo "$worker_gpu_map" | xargs)
     
     local inner_script="
+export PYTHONIOENCODING=utf-8
 export HYPER_GRID_SIZE=${GRID}
 export HYPER_N_PERM=${PERM}
 export HYPER_N_BOOT=${BOOT}
@@ -581,7 +578,7 @@ echo "║  GPU 1:    ${GPU1_NAME} — ${GPU1_VRAM} MB"
 echo "║  Distrib:  $( [[ $STEP_BY_STEP -eq 1 ]] && echo "SECUENCIAL — 1 caso a la vez" || echo "cola dinámica — N workers/GPU, overlap CPU+GPU" )"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
 echo "║  Contendr: ${CONTAINER}"
-echo "║  VRAM/sim: ~$(estimate_vram_per_sim $GRID) MB"
+echo "║  VRAM/proc: ~$(estimate_vram_per_process $GRID) MB"
 [[ $DRY_RUN -eq 1 ]] && \
 echo "║  *** DRY RUN — no se ejecuta nada ***"
 echo "╚══════════════════════════════════════════════════════════════╝"
@@ -621,6 +618,7 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
         fi
         local_log="/tmp/gpu_run_g${GRID}_logs/${caso}.log"
         local_inner="
+export PYTHONIOENCODING=utf-8
 export HYPER_GRID_SIZE=${GRID}
 export HYPER_N_PERM=${PERM}
 export HYPER_N_BOOT=${BOOT}

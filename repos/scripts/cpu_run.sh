@@ -240,6 +240,7 @@ run_batch() {
 
             (
                 cd "$SRC"
+                export PYTHONIOENCODING=utf-8
                 export HYPER_GRID_SIZE=$GRID
                 export HYPER_N_PERM=$PERM
                 export HYPER_N_BOOT=$BOOT
@@ -341,6 +342,7 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
         START_CASE=$SECONDS
         (
             cd "$SRC"
+            export PYTHONIOENCODING=utf-8
             export HYPER_GRID_SIZE=$GRID
             export HYPER_N_PERM=$PERM
             export HYPER_N_BOOT=$BOOT

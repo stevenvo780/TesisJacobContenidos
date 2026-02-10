@@ -1867,10 +1867,10 @@ def write_outputs(results, output_dir):
     """Escribe metrics.json y report.md."""
     os.makedirs(output_dir, exist_ok=True)
 
-    with open(os.path.join(output_dir, "metrics.json"), "w") as f:
+    with open(os.path.join(output_dir, "metrics.json"), "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, default=_default)
 
-    with open(os.path.join(output_dir, "report.md"), "w") as f:
+    with open(os.path.join(output_dir, "report.md"), "w", encoding="utf-8") as f:
         f.write(f"# Reporte de Validación — {results.get('case', 'N/A')}\n\n")
         f.write(f"- generated_at: {results['generated_at']}\n\n")
 
