@@ -1,6 +1,6 @@
 # Reporte de Validación — Postverdad (SIS Infodemic)
 
-- generated_at: 2026-02-09T23:01:07.325646Z
+- generated_at: 2026-02-10T01:21:48.694718Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -45,7 +45,7 @@
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 
 ## Fase real
 - **overall_pass**: False
@@ -93,5 +93,5 @@ Categoría de emergencia: **null**. No se detecta estructura macro significativa
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 

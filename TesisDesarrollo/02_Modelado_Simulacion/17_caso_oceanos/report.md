@@ -1,6 +1,6 @@
 # Reporte de Validación — Ocean (Stommel + Thermohaline ABM)
 
-- generated_at: 2026-02-09T23:01:34.589831Z
+- generated_at: 2026-02-10T01:22:15.551490Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -48,7 +48,7 @@
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 
 ## Fase real
 - **overall_pass**: False
@@ -96,5 +96,5 @@ Categoría de emergencia: **trend**. No se detecta estructura macro significativ
 - ode_rolling: None
 
 ### Interpretación
-Los resultados muestran señal de emergencia **suggestive**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
+**Nivel 2 — Cierre operativo suggestive.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
 

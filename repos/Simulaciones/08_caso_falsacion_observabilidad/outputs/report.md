@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: Observabilidad Escasa
 
-- generated_at: 2026-02-09T17:59:18.766183
+- generated_at: 2026-02-09T20:20:01.945001
 
 ## Fase real
 - **overall_pass**: False
@@ -48,5 +48,5 @@
 - ode_rolling: None
 
 ### Interpretación
-Este es un caso de **falsación por diseño**. El rechazo del EDI es el resultado esperado y valida la sensibilidad del protocolo.
+**Control de falsación.** El rechazo del EDI es el resultado esperado y valida la sensibilidad del protocolo.
 

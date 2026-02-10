@@ -1,32 +1,44 @@
-# Caso 24: Salinización de Suelos
+# Caso Salinización de Suelos (Modelo y Simulación)
 
-## Descripción
-Validación del hiperobjeto 'Salinización' como degradación sistémica del suelo. Indicador: tierra cultivable como % del territorio (World Bank AG.LND.ARBL.ZS).
+**Nivel de cierre operativo:** 1 (trend)
+**Estado:** ❌ Sin señal — EDI insuficiente o no significativo
+**Generado:** 2026-02-10T01:22:45.837960Z
 
-## Datos
-- **Fuente:** World Bank Open Data
-- **Indicador:** `AG.LND.ARBL.ZS` (tierra cultivable % del territorio)
-- **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/06_caso_salinizacion/src/validate.py`
+> Tendencia no confirmada (Nivel 1): EDI positivo pero sin significancia estadística
 
-## Estado
-❌ **Rechazado** — EDI < 0.30, sin estructura macro detectable.
+## Ejecución
+
+```bash
+cd repos/Simulaciones/21_caso_salinizacion/src && python3 validate.py
+```
+
+## Estructura
+
+- `metrics.json`: métricas de validación computadas.
+- `report.md`: reporte narrativo de resultados.
 
 ## Resultados
-| Métrica | Fase Sintética | Fase Real |
-|---------|---------------|-----------|
-| **EDI** | 0.824 | **0.164** |
-| **IC 95%** | [0.771, 0.872] | [0.089, 0.247] |
-| **Correlación ABM** | 0.790 | −0.275 |
-| **Correlación ODE** | 0.698 | 0.802 |
-| **CR (Symploké)** | 1.000 | 26.899 |
-| **overall_pass** | ✅ | ❌ |
 
-**Protocolo C1-C5 (fase real):** C1=❌ C2=❌ C3=✅ C4=✅ C5=✅
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | 0.322 | 0.027 |
+| IC 95%  | [0.268, 0.395] | [0.023, 0.031] |
+| Corr ABM | 0.9279 | 0.2015 |
+| Corr ODE | 0.9300 | 0.0128 |
+| CR (Symploké) | 1.0013 | inf |
+| RMSE ABM | 0.489 | 2.156 |
+| overall_pass | ❌ | ❌ |
 
-**Diagnóstico:** Caso de falsación clara. El EDI real (0.16) cae por debajo del umbral de 0.30 y su intervalo de confianza no lo incluye, lo que indica ausencia de estructura macro operativa. La correlación ABM-observación es negativa (−0.28), señalando que el modelo micro diverge de los datos reales. El proxy de tierra cultivable no captura adecuadamente la dinámica de salinización, que opera a escalas espaciales más finas que las disponibles en datos agregados del Banco Mundial. La fase sintética validó (EDI=0.82), confirmando que el motor es correcto pero el proxy es inadecuado.
+**Protocolo C1-C5 (fase real):** C1=✅ C2=✅ C3=✅ C4=❌ C5=✅
+
+**Symploké:** ✅ | **No-localidad:** ✅ | **Persistencia:** ✅ | **Acoplamiento:** ✅
+
+**Significancia:** p=0.724, significativo=❌
+**Corrección de sesgo:** bias_only
+**Sensibilidad al ruido:** estable=✅, CV=0.0011
 
 ## Modelo Híbrido
+
 - **ABM:** Grid 20×20 agentes con difusión espacial + acoplamiento macro
 - **ODE:** `dX/dt = α(F - βX) + noise` con asimilación de datos
 - **Protocolo:** C1-C5, Symploké, No-localidad, Persistencia, Emergencia

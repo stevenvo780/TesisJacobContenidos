@@ -1,6 +1,6 @@
 # Reporte de Validación — Movilidad Urbana (Traffic)
 
-- generated_at: 2026-02-09T23:00:31.965840Z
+- generated_at: 2026-02-10T01:21:13.929824Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -45,7 +45,7 @@
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 
 ## Fase real
 - **overall_pass**: False
@@ -90,5 +90,5 @@ Categoría de emergencia: **trend**. No se detecta estructura macro significativ
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 

@@ -1,6 +1,6 @@
 # Reporte de Validación — Síndrome de Kessler (NASA LEGEND + ORDEM)
 
-- generated_at: 2026-02-09T23:02:00.890051Z
+- generated_at: 2026-02-10T01:22:41.245329Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -48,7 +48,7 @@
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 
 ## Fase real
 - **overall_pass**: False
@@ -96,5 +96,5 @@ Categoría de emergencia: **null**. No se detecta estructura macro significativa
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 

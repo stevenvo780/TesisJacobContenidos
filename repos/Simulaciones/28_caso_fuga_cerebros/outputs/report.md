@@ -1,6 +1,6 @@
 # Reporte de Validación — Fuga de Cerebros Global (Docquier-Rapoport)
 
-- generated_at: 2026-02-09T23:03:16.318880Z
+- generated_at: 2026-02-10T01:23:55.521121Z
 
 ## Fase synthetic
 - **overall_pass**: True
@@ -48,7 +48,7 @@
 - ode_rolling: None
 
 ### Interpretación
-Los resultados **sugieren** emergencia macro significativa. El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística. No obstante, estos resultados deben interpretarse en el contexto de las limitaciones del proxy utilizado y del nivel de evidencia (LoE) del caso.
+**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
 
 ## Fase real
 - **overall_pass**: False
@@ -96,5 +96,5 @@ Los resultados **sugieren** emergencia macro significativa. El EDI se encuentra 
 - ode_rolling: None
 
 ### Interpretación
-Los resultados muestran señal de emergencia **weak**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
+**Nivel 3 — Cierre operativo weak.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
 

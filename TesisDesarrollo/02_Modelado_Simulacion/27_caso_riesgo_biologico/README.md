@@ -1,32 +1,44 @@
-# Caso 30: Riesgo Biológico Global
+# Caso Riesgo Biológico Global (Modelo y Simulación)
 
-## Descripción
-Validación del hiperobjeto 'Riesgo Biológico' como amenaza sistémica. Indicador: tasa de mortalidad infantil bajo 5 años (World Bank SH.DYN.MORT).
+**Nivel de cierre operativo:** 1 (trend)
+**Estado:** ❌ Sin señal — EDI insuficiente o no significativo
+**Generado:** 2026-02-10T01:23:53.333391Z
 
-## Datos
-- **Fuente:** World Bank Open Data
-- **Indicador:** `SH.DYN.MORT` (mortalidad infantil menores de 5 años)
-- **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/06_caso_riesgo_biologico/src/validate.py`
+> Tendencia no confirmada (Nivel 1): EDI positivo pero sin significancia estadística
 
-## Estado
-❌ **Rechazado** — EDI > 0.90, sospecha de tautología.
+## Ejecución
+
+```bash
+cd repos/Simulaciones/27_caso_riesgo_biologico/src && python3 validate.py
+```
+
+## Estructura
+
+- `metrics.json`: métricas de validación computadas.
+- `report.md`: reporte narrativo de resultados.
 
 ## Resultados
-| Métrica | Fase Sintética | Fase Real |
-|---------|---------------|-----------|
-| **EDI** | 0.833 | **0.917** |
-| **IC 95%** | [0.784, 0.871] | [0.896, 0.944] |
-| **Correlación ABM** | 0.810 | 0.988 |
-| **Correlación ODE** | 0.707 | 0.986 |
-| **CR (Symploké)** | 1.000 | 0.989 |
-| **overall_pass** | ✅ | ❌ |
+
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | 0.442 | 0.105 |
+| IC 95%  | [0.373, 0.527] | [0.079, 0.126] |
+| Corr ABM | 0.7938 | 0.1358 |
+| Corr ODE | 0.7939 | 0.1373 |
+| CR (Symploké) | 1.0127 | 1.0019 |
+| RMSE ABM | 0.949 | 0.722 |
+| overall_pass | ✅ | ❌ |
 
 **Protocolo C1-C5 (fase real):** C1=✅ C2=✅ C3=✅ C4=✅ C5=✅
 
-**Diagnóstico:** Todos los criterios C1-C5 pasan individualmente, pero el EDI real (0.92) excede el umbral de tautología (0.90), activando la regla de rechazo por sobredeterminación. Esto significa que la capa macro explica casi toda la varianza micro, indicando posible circularidad en el acoplamiento. La mortalidad infantil sigue una tendencia decreciente global altamente predecible que el modelo ODE captura trivialmente. El hiperobjeto «Riesgo Biológico» no se invalida conceptualmente, pero el proxy elegido es demasiado regular para discriminar emergencia genuina de mero ajuste de tendencia.
+**Symploké:** ✅ | **No-localidad:** ✅ | **Persistencia:** ✅ | **Acoplamiento:** ❌
+
+**Significancia:** p=0.365, significativo=❌
+**Corrección de sesgo:** reverted
+**Sensibilidad al ruido:** estable=✅, CV=0.0000
 
 ## Modelo Híbrido
+
 - **ABM:** Grid 20×20 agentes con difusión espacial + acoplamiento macro
 - **ODE:** `dX/dt = α(F - βX) + noise` con asimilación de datos
 - **Protocolo:** C1-C5, Symploké, No-localidad, Persistencia, Emergencia

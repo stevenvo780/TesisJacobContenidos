@@ -1,32 +1,44 @@
-# Caso 23: Síndrome de Kessler
+# Caso Síndrome de Kessler (Modelo y Simulación)
 
-## Descripción
-Validación del hiperobjeto 'Basura Espacial / Síndrome de Kessler'. Indicador proxy: departures aéreas globales (World Bank IS.AIR.DPRT), como medida de actividad aeroespacial.
+**Nivel de cierre operativo:** 0 (null)
+**Estado:** ❌ Sin señal — EDI insuficiente o no significativo
+**Generado:** 2026-02-10T01:22:41.245329Z
 
-## Datos
-- **Fuente:** World Bank Open Data
-- **Indicador:** `IS.AIR.DPRT` (departures aéreas globales)
-- **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/17_caso_kessler/src/validate.py`
+> Sin cierre operativo (Nivel 0): sin evidencia de constricción macro efectiva
 
-## Estado
-⚠️ **Parcial** — EDI válido pero convergencia insuficiente.
+## Ejecución
+
+```bash
+cd repos/Simulaciones/20_caso_kessler/src && python3 validate.py
+```
+
+## Estructura
+
+- `metrics.json`: métricas de validación computadas.
+- `report.md`: reporte narrativo de resultados.
 
 ## Resultados
-| Métrica | Fase Sintética | Fase Real |
-|---------|---------------|-----------|
-| **EDI** | 0.700 | **0.704** |
-| **IC 95%** | [0.628, 0.786] | [0.565, 0.788] |
-| **Correlación ABM** | 0.398 | 0.499 |
-| **Correlación ODE** | 0.320 | 0.390 |
-| **CR (Symploké)** | 1.000 | 1.002 |
-| **overall_pass** | ❌ | ❌ |
 
-**Protocolo C1-C5 (fase real):** C1=❌ C2=✅ C3=✅ C4=✅ C5=✅
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | -0.408 | -0.420 |
+| IC 95%  | [-0.413, -0.404] | [-0.431, -0.413] |
+| Corr ABM | 0.7250 | 0.9690 |
+| Corr ODE | 0.0000 | 0.0000 |
+| CR (Symploké) | 1.1807 | 1.2035 |
+| RMSE ABM | 847066.336 | 847272.186 |
+| overall_pass | ❌ | ❌ |
 
-**Diagnóstico:** El EDI real (0.70) confirma estructura macro robusta: el modelo ODE reduce significativamente el error del ABM. No obstante, C1 falla porque las correlaciones ABM-observación (~0.50) y ODE-observación (~0.39) no alcanzan el umbral de convergencia. El proxy de departures aéreas captura actividad aeroespacial de forma indirecta, limitando la fidelidad del acoplamiento micro-macro en el dominio orbital.
+**Protocolo C1-C5 (fase real):** C1=❌ C2=✅ C3=❌ C4=✅ C5=✅
+
+**Symploké:** ✅ | **No-localidad:** ✅ | **Persistencia:** ❌ | **Acoplamiento:** ❌
+
+**Significancia:** p=1.000, significativo=❌
+**Corrección de sesgo:** none
+**Sensibilidad al ruido:** estable=✅, CV=0.1321
 
 ## Modelo Híbrido
+
 - **ABM:** Grid 20×20 agentes con difusión espacial + acoplamiento macro
 - **ODE:** `dX/dt = α(F - βX) + noise` con asimilación de datos
 - **Protocolo:** C1-C5, Symploké, No-localidad, Persistencia, Emergencia

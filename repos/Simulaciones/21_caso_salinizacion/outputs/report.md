@@ -1,6 +1,6 @@
 # Reporte de Validación — Salinización de Suelos (Richards-Solute)
 
-- generated_at: 2026-02-09T23:02:05.553017Z
+- generated_at: 2026-02-10T01:22:45.837960Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -48,7 +48,7 @@
 - ode_rolling: None
 
 ### Interpretación
-Los resultados muestran señal de emergencia **weak**. La estructura macro es detectable pero no alcanza robustez suficiente para confirmar emergencia fuerte. Se recomienda cautela en la interpretación ontológica.
+**Nivel 3 — Cierre operativo weak.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
 
 ## Fase real
 - **overall_pass**: False
@@ -93,5 +93,5 @@ Los resultados muestran señal de emergencia **weak**. La estructura macro es de
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 

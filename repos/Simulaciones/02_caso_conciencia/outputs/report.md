@@ -1,6 +1,6 @@
 # Reporte de Validación — Conciencia Colectiva
 
-- generated_at: 2026-02-09T22:57:34.472306Z
+- generated_at: 2026-02-10T01:18:19.042409Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -45,7 +45,7 @@
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **trend**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 
 ## Fase real
 - **overall_pass**: False
@@ -90,5 +90,5 @@ Categoría de emergencia: **trend**. No se detecta estructura macro significativ
 - ode_rolling: None
 
 ### Interpretación
-Categoría de emergencia: **null**. No se detecta estructura macro significativa con los datos y parámetros actuales.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 

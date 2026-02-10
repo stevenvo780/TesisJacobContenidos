@@ -1,32 +1,44 @@
-# Caso 26: Erosión Dialéctica del Discurso
+# Caso Erosión Dialéctica del Discurso (Modelo y Simulación)
 
-## Descripción
-Validación del hiperobjeto 'Erosión Dialéctica' como degradación sistémica del discurso racional. Indicador proxy: tasa de alfabetización adulta (World Bank SE.ADT.LITR.ZS).
+**Nivel de cierre operativo:** 0 (null)
+**Estado:** ❌ Sin señal — EDI insuficiente o no significativo
+**Generado:** 2026-02-10T01:23:00.943138Z
 
-## Datos
-- **Fuente:** World Bank Open Data
-- **Indicador:** `SE.ADT.LITR.ZS` (tasa de alfabetización adulta)
-- **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/17_caso_erosion_dialectica/src/validate.py`
+> Sin cierre operativo (Nivel 0): sin evidencia de constricción macro efectiva
 
-## Estado
-⚠️ **Parcial** — EDI válido y alta correlación, pero convergencia C1 falla.
+## Ejecución
+
+```bash
+cd repos/Simulaciones/23_caso_erosion_dialectica/src && python3 validate.py
+```
+
+## Estructura
+
+- `metrics.json`: métricas de validación computadas.
+- `report.md`: reporte narrativo de resultados.
 
 ## Resultados
-| Métrica | Fase Sintética | Fase Real |
-|---------|---------------|-----------|
-| **EDI** | 0.715 | **0.739** |
-| **IC 95%** | [0.651, 0.779] | [0.705, 0.776] |
-| **Correlación ABM** | 0.674 | 0.992 |
-| **Correlación ODE** | 0.611 | 0.991 |
-| **CR (Symploké)** | 1.000 | 1.000 |
-| **overall_pass** | ❌ | ❌ |
+
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | 0.047 | -1.000 |
+| IC 95%  | [0.046, 0.048] | [-4.353, -3.236] |
+| Corr ABM | 0.9949 | 0.9990 |
+| Corr ODE | 0.9945 | 0.9861 |
+| CR (Symploké) | 1.0008 | 1.0007 |
+| RMSE ABM | 3.952 | 0.983 |
+| overall_pass | ❌ | ❌ |
 
 **Protocolo C1-C5 (fase real):** C1=❌ C2=✅ C3=✅ C4=✅ C5=✅
 
-**Diagnóstico:** Caso paradójico. Las correlaciones en fase real son excepcionalmente altas (>0.99), y el EDI (0.74) confirma estructura macro. Sin embargo, C1 falla en la fase sintética (corr ~0.67), lo que arrastra el veredicto global. La tasa de alfabetización presenta una tendencia monotónica creciente que el modelo replica con facilidad, pero la prueba de convergencia sintética exige un umbral más estricto. El hiperobjeto «Erosión Dialéctica» muestra señales de emergencia parcial; un proxy más volátil podría mejorar la discriminación.
+**Symploké:** ✅ | **No-localidad:** ✅ | **Persistencia:** ✅ | **Acoplamiento:** ✅
+
+**Significancia:** p=1.000, significativo=❌
+**Corrección de sesgo:** bias_only
+**Sensibilidad al ruido:** estable=✅, CV=0.0000
 
 ## Modelo Híbrido
+
 - **ABM:** Grid 20×20 agentes con difusión espacial + acoplamiento macro
 - **ODE:** `dX/dt = α(F - βX) + noise` con asimilación de datos
 - **Protocolo:** C1-C5, Symploké, No-localidad, Persistencia, Emergencia

@@ -1,35 +1,49 @@
-# Caso Paradigmas
+# Caso Paradigmas (Modelo y Simulación)
 
-## Resumen
-- generated_at: 2026-02-06T01:04:39.537835Z - git_commit: 5cb7dd59724a63a177787d743799bb4b12d957a0 - git_dirty: True
+**Nivel de cierre operativo:** 0 (null)
+**Estado:** ❌ Sin señal — EDI insuficiente o no significativo
+**Generado:** 2026-02-10T01:21:18.064066Z
 
-## Resultados (fase real)
-- EDI (estimado): 1.000
-- CR (estimado): 2.283
-- Estado general: True
+> Sin cierre operativo (Nivel 0): sin evidencia de constricción macro efectiva
 
+## Ejecución
 
-<!-- AUTO:RESULTS:START -->
+```bash
+cd repos/Simulaciones/12_caso_paradigmas/src && python3 validate.py
+```
+
+## Estructura
+
+- `docs/arquitectura.md`: capas y supuestos del modelo híbrido.
+- `docs/protocolo_simulacion.md`: protocolo de simulación y criterio de paro.
+- `docs/indicadores_metricas.md`: indicadores, métricas y reglas de rechazo.
+- `docs/validacion_c1_c5.md`: validación operativa C1–C5.
+- `docs/reproducibilidad.md`: versionado, entorno y sensibilidad.
+- `metrics.json`: métricas de validación computadas.
+- `report.md`: reporte narrativo de resultados.
+
+## Resultados
+
 | Métrica | Sintético | Real |
 |---------|-----------|------|
-| EDI     | 0.761 | 0.863 |
-| CR      | 1.000 | 1.000 |
-| RMSE ABM| 1.1375 | 0.5229 |
-| RMSE ODE| 2.2531 | 1.0964 |
-| Corr ABM| 0.9998 | 0.9930 |
-| Corr ODE| 0.9994 | 0.9930 |
-| C1      | ✅ | ✅ |
-| C2      | ✅ | ✅ |
-| C3      | ✅ | ✅ |
-| C4      | ✅ | ✅ |
-| C5      | ✅ | ✅ |
-| Estado  | VALIDADO | VALIDADO |
-<!-- AUTO:RESULTS:END -->
+| EDI     | 0.000 | 0.000 |
+| IC 95%  | [0.000, 0.000] | [0.000, 0.000] |
+| Corr ABM | -0.0735 | -0.1041 |
+| Corr ODE | -0.0312 | -0.9636 |
+| CR (Symploké) | 0.0000 | 0.0000 |
+| RMSE ABM | 1.103 | 9.706 |
+| overall_pass | ❌ | ❌ |
 
-## Archivos clave
-- `report.md` (reporte principal)
-- `metrics.json` (metricas completas)
-- `docs/` (documentacion tecnica)
+**Protocolo C1-C5 (fase real):** C1=❌ C2=❌ C3=✅ C4=✅ C5=❌
 
-## Reproducibilidad
-Este caso sigue el pipeline C1–C5. Ver `docs/reproducibilidad.md` y `docs/validacion_c1_c5.md`.
+**Symploké:** ✅ | **No-localidad:** ✅ | **Persistencia:** ✅ | **Acoplamiento:** ❌
+
+**Significancia:** p=1.000, significativo=❌
+**Corrección de sesgo:** none
+**Sensibilidad al ruido:** estable=❌, CV=1.5007
+
+## Modelo Híbrido
+
+- **ABM:** Grid 20×20 agentes con difusión espacial + acoplamiento macro
+- **ODE:** `dX/dt = α(F - βX) + noise` con asimilación de datos
+- **Protocolo:** C1-C5, Symploké, No-localidad, Persistencia, Emergencia

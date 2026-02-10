@@ -1,32 +1,44 @@
-# Caso 31: Fuga de Cerebros Global
+# Caso Fuga de Cerebros Global (Modelo y Simulación)
 
-## Descripción
-Validación del hiperobjeto 'Fuga de Cerebros' como flujo migratorio sistémico. Indicador: migración neta (World Bank SM.POP.NETM).
+**Nivel de cierre operativo:** 3 (weak)
+**Estado:** ⚠️ Parcial — señal significativa pero protocolo incompleto
+**Generado:** 2026-02-10T01:23:55.521121Z
 
-## Datos
-- **Fuente:** World Bank Open Data
-- **Indicador:** `GB.XPD.RSDV.GD.ZS` (gasto en I+D % del PIB)
-- **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/12_caso_fuga_cerebros/src/validate.py`
+> Cierre operativo débil (Nivel 3): señal macro significativa pero bajo umbral robusto
 
-## Estado
-✅ **Validado** — Emergencia macro confirmada con protocolo C1-C5 completo.
+## Ejecución
+
+```bash
+cd repos/Simulaciones/28_caso_fuga_cerebros/src && python3 validate.py
+```
+
+## Estructura
+
+- `metrics.json`: métricas de validación computadas.
+- `report.md`: reporte narrativo de resultados.
 
 ## Resultados
-| Métrica | Fase Sintética | Fase Real |
-|---------|---------------|-----------|
-| **EDI** | 0.450 | **0.433** |
-| **IC 95%** | [0.368, 0.563] | [0.339, 0.480] |
-| **Correlación ABM** | 0.291 | 0.970 |
-| **Correlación ODE** | 0.372 | 0.978 |
-| **CR (Symploké)** | 4.945 | 0.999 |
-| **overall_pass** | ❌ | ✅ |
+
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | 0.724 | 0.183 |
+| IC 95%  | [0.663, 0.809] | [0.036, 0.288] |
+| Corr ABM | 0.9752 | 0.7974 |
+| Corr ODE | 0.9693 | 0.8186 |
+| CR (Symploké) | 1.0305 | 1.0081 |
+| RMSE ABM | 0.767 | 3.774 |
+| overall_pass | ✅ | ❌ |
 
 **Protocolo C1-C5 (fase real):** C1=✅ C2=✅ C3=✅ C4=✅ C5=✅
 
-**Diagnóstico:** Validación exitosa con EDI moderado (0.43), bien dentro del rango [0.30, 0.90]. Las correlaciones reales son altas (>0.97), confirmando convergencia robusta del modelo híbrido sobre datos de gasto en I+D. El EDI moderado —lejos del límite de tautología— es epistemológicamente favorable: indica que la capa macro aporta información genuina sin dominar trivialmente al sistema micro. El hiperobjeto «Fuga de Cerebros» exhibe emergencia metaestable moderada, coherente con la naturaleza distribuida y multifactorial de los flujos de capital humano.
+**Symploké:** ✅ | **No-localidad:** ✅ | **Persistencia:** ✅ | **Acoplamiento:** ✅
+
+**Significancia:** p=0.001, significativo=✅
+**Corrección de sesgo:** bias_only
+**Sensibilidad al ruido:** estable=✅, CV=0.0000
 
 ## Modelo Híbrido
+
 - **ABM:** Grid 20×20 agentes con difusión espacial + acoplamiento macro
 - **ODE:** `dX/dt = α(F - βX) + noise` con asimilación de datos
 - **Protocolo:** C1-C5, Symploké, No-localidad, Persistencia, Emergencia

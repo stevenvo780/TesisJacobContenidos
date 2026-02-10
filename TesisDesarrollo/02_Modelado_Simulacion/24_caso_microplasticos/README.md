@@ -1,32 +1,44 @@
-# Caso 27: Contaminación por Microplásticos
+# Caso Contaminación por Microplásticos (Modelo y Simulación)
 
-## Descripción
-Validación del hiperobjeto 'Microplásticos' como contaminante distribuido. Indicador proxy: consumo de energía fósil como % total (World Bank EG.USE.COMM.FO.ZS).
+**Nivel de cierre operativo:** 4 (strong)
+**Estado:** ✅ Validado — cierre operativo confirmado
+**Generado:** 2026-02-10T01:23:15.512971Z
 
-## Datos
-- **Fuente:** World Bank Open Data
-- **Indicador:** `EG.USE.COMM.FO.ZS` (consumo de energía fósil % del total)
-- **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/06_caso_microplasticos/src/validate.py`
+> Cierre operativo fuerte (Nivel 4): la macro constriñe significativamente la dinámica micro
 
-## Estado
-⚠️ **Parcial** — EDI válido pero desacoplamiento ODE y C5 falla.
+## Ejecución
+
+```bash
+cd repos/Simulaciones/24_caso_microplasticos/src && python3 validate.py
+```
+
+## Estructura
+
+- `metrics.json`: métricas de validación computadas.
+- `report.md`: reporte narrativo de resultados.
 
 ## Resultados
-| Métrica | Fase Sintética | Fase Real |
-|---------|---------------|-----------|
-| **EDI** | 0.833 | **0.432** |
-| **IC 95%** | [0.784, 0.871] | [0.243, 0.581] |
-| **Correlación ABM** | 0.810 | 0.917 |
-| **Correlación ODE** | 0.707 | 0.018 |
-| **CR (Symploké)** | 1.000 | 4.359 |
-| **overall_pass** | ✅ | ❌ |
 
-**Protocolo C1-C5 (fase real):** C1=✅ C2=✅ C3=✅ C4=✅ C5=❌
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | 0.285 | 0.427 |
+| IC 95%  | [0.278, 0.294] | [0.414, 0.447] |
+| Corr ABM | 0.0166 | 0.9935 |
+| Corr ODE | 0.0030 | 0.9810 |
+| CR (Symploké) | 1.0019 | 1.0016 |
+| RMSE ABM | 1.111 | 10.428 |
+| overall_pass | ❌ | ✅ |
 
-**Diagnóstico:** El EDI real (0.43) supera el umbral mínimo, pero C5 (incertidumbre) falla, indicando alta sensibilidad paramétrica. El hallazgo más relevante es el desacoplamiento macro: la correlación ODE-observación es prácticamente nula (0.02), mientras que el ABM por sí solo alcanza 0.92. Esto sugiere que la capa micro captura la dinámica sin necesidad de la ecuación macro, señalando posible epifenomenalismo parcial. El proxy de energía fósil tiene relación indirecta con la producción de plásticos pero no captura la dinámica de dispersión de micropartículas.
+**Protocolo C1-C5 (fase real):** C1=✅ C2=✅ C3=✅ C4=✅ C5=✅
+
+**Symploké:** ✅ | **No-localidad:** ✅ | **Persistencia:** ✅ | **Acoplamiento:** ✅
+
+**Significancia:** p=0.000, significativo=✅
+**Corrección de sesgo:** none
+**Sensibilidad al ruido:** estable=✅, CV=0.0000
 
 ## Modelo Híbrido
+
 - **ABM:** Grid 20×20 agentes con difusión espacial + acoplamiento macro
 - **ODE:** `dX/dt = α(F - βX) + noise` con asimilación de datos
 - **Protocolo:** C1-C5, Symploké, No-localidad, Persistencia, Emergencia

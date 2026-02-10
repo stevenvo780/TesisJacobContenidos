@@ -1,59 +1,49 @@
-# Caso Finanzas Globales (Modelo y Simulacion)
+# Caso Finanzas Globales (Modelo y Simulación)
 
-Este caso implementa dos modelos no isomorfos para dinamica de precios en un indice bursatil:
-- Modelo micro (ABM/lattice) con agentes de tendencia y fundamentalistas.
-- Modelo macro (ODE agregado) con forzamiento externo.
+**Nivel de cierre operativo:** 2 (suggestive)
+**Estado:** ⚠️ Parcial — señal significativa pero protocolo incompleto
+**Generado:** 2026-02-10T01:20:05.225384Z
 
-El objetivo es cumplir criterios del marco 00/01/02:
-- Capas completas (conceptual, formal, computacional, validacion).
-- Modelos alternativos no isomorfos.
-- Reglas de aceptacion y C1-C5.
+> Cierre sugestivo (Nivel 2): EDI positivo y significativo pero muy bajo
 
-## Estructura
-- `docs/arquitectura.md`: capas y supuestos.
-- `docs/protocolo_simulacion.md`: protocolo y criterio de paro.
-- `docs/indicadores_metricas.md`: indicadores, metricas y reglas.
-- `docs/validacion_c1_c5.md`: validacion operativa.
-- `docs/reproducibilidad.md`: versionado, entorno y sensibilidad.
-- `src/`: implementacion.
-- `outputs/`: reportes de corrida.
-
-## Como correr
+## Ejecución
 
 ```bash
-pip install -r requirements.txt
-python3 src/validate.py
+cd repos/Simulaciones/09_caso_finanzas/src && python3 validate.py
 ```
 
-Genera:
-- `outputs/metrics.json`
-- `outputs/report.md`
+## Estructura
 
-## Datos sinteticos y reales
-- Fase sintetica: calibracion y verificacion interna con serie sintetica.
-- Fase real: evaluacion final con datos de mercado reales (SPY, 1990-2024).
-El script cachea los datos reales en `data/spy_monthly.csv`.
-
-## Validacion
-- Split entrenamiento/validacion sintetica: 2000-2009 / 2010-2019.
-- Split entrenamiento/validacion real: 1990-2010 / 2011-2024.
-- Nudging con observacion rezagada (t-1) para evaluacion de corto plazo.
+- `docs/arquitectura.md`: capas y supuestos del modelo híbrido.
+- `docs/protocolo_simulacion.md`: protocolo de simulación y criterio de paro.
+- `docs/indicadores_metricas.md`: indicadores, métricas y reglas de rechazo.
+- `docs/validacion_c1_c5.md`: validación operativa C1–C5.
+- `docs/reproducibilidad.md`: versionado, entorno y sensibilidad.
+- `metrics.json`: métricas de validación computadas.
+- `report.md`: reporte narrativo de resultados.
 
 ## Resultados
 
-<!-- AUTO:RESULTS:START -->
 | Métrica | Sintético | Real |
 |---------|-----------|------|
-| EDI     | 0.639 | 0.882 |
-| CR      | 1.336 | 1.250 |
-| RMSE ABM| 2.4123 | 0.3749 |
-| RMSE ODE| 1.8845 | 3.9623 |
-| Corr ABM| 0.9994 | 0.9956 |
-| Corr ODE| 0.9997 | 0.9859 |
-| C1      | ✅ | ✅ |
-| C2      | ✅ | ✅ |
-| C3      | ✅ | ✅ |
-| C4      | ✅ | ✅ |
-| C5      | ✅ | ✅ |
-| Estado  | VALIDADO | VALIDADO |
-<!-- AUTO:RESULTS:END -->
+| EDI     | -0.000 | 0.040 |
+| IC 95%  | [-0.000, -0.000] | [0.039, 0.041] |
+| Corr ABM | 0.4284 | 0.9872 |
+| Corr ODE | 0.2504 | 0.8680 |
+| CR (Symploké) | 0.0000 | 0.0000 |
+| RMSE ABM | 20481509.712 | 36.420 |
+| overall_pass | ❌ | ❌ |
+
+**Protocolo C1-C5 (fase real):** C1=✅ C2=✅ C3=✅ C4=✅ C5=✅
+
+**Symploké:** ❌ | **No-localidad:** ❌ | **Persistencia:** ✅ | **Acoplamiento:** ❌
+
+**Significancia:** p=0.000, significativo=✅
+**Corrección de sesgo:** none
+**Sensibilidad al ruido:** estable=✅, CV=0.0066
+
+## Modelo Híbrido
+
+- **ABM:** Grid 20×20 agentes con difusión espacial + acoplamiento macro
+- **ODE:** `dX/dt = α(F - βX) + noise` con asimilación de datos
+- **Protocolo:** C1-C5, Symploké, No-localidad, Persistencia, Emergencia

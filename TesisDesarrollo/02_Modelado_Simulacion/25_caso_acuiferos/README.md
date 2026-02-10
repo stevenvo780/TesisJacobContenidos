@@ -1,32 +1,44 @@
-# Caso 28: Depleción de Acuíferos
+# Caso Depleción de Acuíferos (Modelo y Simulación)
 
-## Descripción
-Validación del hiperobjeto 'Depleción de Acuíferos' como crisis hídrica global. Indicador: extracción anual de agua dulce como % de recursos internos (World Bank ER.H2O.FWTL.ZS).
+**Nivel de cierre operativo:** 0 (null)
+**Estado:** ❌ Sin señal — EDI insuficiente o no significativo
+**Generado:** 2026-02-10T01:23:27.489297Z
 
-## Datos
-- **Fuente:** World Bank Open Data
-- **Indicador:** `SH.H2O.BASW.ZS` (acceso básico a agua potable %)
-- **Resolución:** Anual
-- **Pipeline:** `repos/Simulaciones/12_caso_acuiferos/src/validate.py`
+> Sin cierre operativo (Nivel 0): sin evidencia de constricción macro efectiva
 
-## Estado
-✅ **Validado** — Emergencia macro confirmada con protocolo C1-C5 completo.
+## Ejecución
+
+```bash
+cd repos/Simulaciones/25_caso_acuiferos/src && python3 validate.py
+```
+
+## Estructura
+
+- `metrics.json`: métricas de validación computadas.
+- `report.md`: reporte narrativo de resultados.
 
 ## Resultados
-| Métrica | Fase Sintética | Fase Real |
-|---------|---------------|-----------|
-| **EDI** | 0.481 | **0.866** |
-| **IC 95%** | [0.232, 0.687] | [0.856, 0.888] |
-| **Correlación ABM** | 0.518 | 0.9998 |
-| **Correlación ODE** | 0.565 | 0.9998 |
-| **CR (Symploké)** | 0.720 | 1.000 |
-| **overall_pass** | ❌ | ✅ |
+
+| Métrica | Sintético | Real |
+|---------|-----------|------|
+| EDI     | 0.380 | -0.179 |
+| IC 95%  | [0.366, 0.400] | [-0.194, -0.163] |
+| Corr ABM | 0.0145 | 0.9911 |
+| Corr ODE | 0.0115 | 0.9679 |
+| CR (Symploké) | 1.0045 | 1.0012 |
+| RMSE ABM | 0.814 | 22.059 |
+| overall_pass | ✅ | ❌ |
 
 **Protocolo C1-C5 (fase real):** C1=✅ C2=✅ C3=✅ C4=✅ C5=✅
 
-**Diagnóstico:** Validación exitosa. El EDI real (0.87) indica fuerte reducción de entropía micro por la capa macro. Las correlaciones son prácticamente perfectas (>0.999), confirmando que el modelo híbrido reproduce fielmente la dinámica observada. Nótese que la fase sintética no valida (C1 falla) pero la fase real sí, lo que sugiere que los datos reales de acceso a agua potable presentan una estructura temporal más favorable al acoplamiento ABM-ODE. El hiperobjeto «Depleción de Acuíferos» exhibe emergencia metaestable verificable.
+**Symploké:** ✅ | **No-localidad:** ✅ | **Persistencia:** ✅ | **Acoplamiento:** ✅
+
+**Significancia:** p=1.000, significativo=❌
+**Corrección de sesgo:** none
+**Sensibilidad al ruido:** estable=✅, CV=0.0000
 
 ## Modelo Híbrido
+
 - **ABM:** Grid 20×20 agentes con difusión espacial + acoplamiento macro
 - **ODE:** `dX/dt = α(F - βX) + noise` con asimilación de datos
 - **Protocolo:** C1-C5, Symploké, No-localidad, Persistencia, Emergencia
