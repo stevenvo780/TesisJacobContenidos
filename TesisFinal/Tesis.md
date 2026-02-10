@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 01:07 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 02:45 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -453,111 +453,16 @@ Para recalcular este reporte de forma automatica, usar:
 
 Los 29 casos demuestran que el modelo híbrido funciona como **instrumento de clasificación operativa**: posiciona fenómenos en un gradiente de cierre operativo sin pronunciarse sobre su estatuto ontológico.
 
-### Estado Actual: Paisaje de Emergencia Operativa Mapeado
+## Resultados y Trazabilidad
 
-**overall_pass = 2/29** (Deforestación EDI=0.633, Microplásticos EDI=0.427). La taxonomía diferenciada revela un paisaje completo:
+Los resultados detallados de la ejecución de estos 29 casos, incluyendo las métricas de EDI, CR, p-valores y la clasificación en el paisaje de emergencia, se consolidan exclusivamente en la sección **03 Validación y Praxis**. La arquitectura del motor híbrido permite una trazabilidad total: cada simulación genera un archivo `metrics.json` con el timestamp de ejecución y el hash del commit correspondiente.
 
-- **Nivel 4 — Cierre operativo fuerte** (2 casos): Deforestación, Microplásticos
-- **Nivel 3 — Componente funcional** (1 caso): Fuga de Cerebros (EDI=0.183)
-- **Nivel 2 — Señal sugestiva** (3 casos): Finanzas, Océanos, IoT
-- **Nivel 1 — Tendencia** (7 casos): Clima, Movilidad, Políticas, Postverdad, Urbanización, Salinización, Riesgo Biológico
-- **Nivel 0 — Sin señal** (13 casos): sin constricción macro detectable
-- **Controles negativos** (3 casos): falsificaciones correctamente rechazadas
+Para recalcular el reporte completo de forma automática, se utiliza el script de auditoría:
+`python3 repos/scripts/actualizar_tablas_002.py`
 
-**Significancia estadística (p<0.05 + EDI>0.01):** 6/29 casos (09, 16, 17, 24, 28, 29)
-**Estabilidad numérica:** 25/29 (fallan: 05, 12, 13, 18)
-**Persistencia (std<5×):** 27/29 (fallan: 11, 20)
+### Regla Operacional: Divergencia EDI/CR
 
-El paisaje no "confirma" ni "refuta" hiperobjetos — **los clasifica**. La diversidad del gradiente (de -1.000 a +0.633) es el resultado principal.
-
-### Casos con Cierre Operativo Fuerte (Nivel 4)
-
-**Deforestación Global** (EDI=0.633, p=0.000, overall_pass=True):
-El modelo ODE (von Thünen Frontier) captura la dinámica de la frontera agrícola. Tras Bias Correction full, el ABM acoplado reduce el RMSE en 63% respecto al ABM aislado. Esto indica que el constructo macro es operativamente indispensable para este dominio — no que "exista" un hiperobjeto Deforestación como entidad autónoma.
-
-**Microplásticos Oceánicos** (EDI=0.427, p=0.000, overall_pass=True):
-El modelo Jambeck de acumulación persistente. El ABM sin ODE pierde 43% de precisión. Este caso NO requiere Bias Correction — la señal macro emerge directamente del acoplamiento. Analogía del ribosoma: funciona como si tuviera cierre, sin que necesitemos afirmar que "es" una entidad separada de sus componentes.
-
-### Componente Funcional (Nivel 3)
-
-**Fuga de Cerebros** (EDI=0.183, p=0.001):
-El modelo Docquier-Rapoport captura la migración de capital humano. El EDI es significativo pero sub-umbral (0.183 < 0.30). El constructo macro es útil pero no indispensable — como un ribosoma que facilita una función sin constituir un nivel autónomo.
-
-### Señal Sugestiva (Nivel 2)
-
-Finanzas (EDI=0.040, p=0.000), Océanos (0.053, p=0.000), IoT (0.020, p=0.000): señal estadísticamente significativa pero de magnitud insuficiente para atribuir cierre operativo. Fenómenos que el instrumento detecta como posibles candidatos.
-
-### Falsificaciones Correctas
-
-Los 3 controles negativos (Exogeneidad, No-estacionariedad, Observabilidad) son clasificados como `falsification` con EDI negativo. El protocolo los rechaza correctamente, confirmando su **selectividad**.
-
-### Anti-emergencia: ODE de Alta Correlación con EDI Negativo
-
-Varios casos presentan EDI negativo a pesar de buenos modelos ODE. Esto revela que **alta correlación ODE-obs no implica cierre operativo**. La correlación puede ser espuria o el acoplamiento puede destruir información útil que el ABM aislado captura por sí solo.
-
-### Composición del universo de 29 casos
-
-| Categoría | Nivel | Conteo | Función en el paisaje |
-|-----------|:-----:|--------|----------------------|
-| **strong** | 4 | 2 | Cierre operativo fuerte |
-| **weak** | 3 | 1 | Componente funcional |
-| **suggestive** | 2 | 3 | Señal detectable |
-| **trend** | 1 | 7 | Tendencia no confirmada |
-| **null** | 0 | 13 | Sin señal operativa |
-| **falsification** | — | 3 | Controles correctos |
-| **Total** | | **29** | |
-
-### Diagnóstico: ¿Por Qué la Mayoría se Clasifica en Nivel 0-1?
-
-1. **Modelos ODE inadecuados:** El ODE no captura la dinámica macro, por lo que no puede generar constricción útil. Esto no invalida el instrumento — indica que la sonda necesita calibración dominio-específica.
-
-2. **No-estacionariedad del ODE:** El ODE se ajusta bien en training pero la correlación se invierte o degrada en validation. Esto refleja cambios estructurales en el fenómeno.
-
-3. **Coupling destructivo:** El sesgo del ODE destruye información útil en el ABM. El Bias Correction resolvió esto para Deforestación; otros casos persisten por problemas de escala.
-
-4. **Señal real demasiado ruidosa (3 casos suggestive):** La señal macro existe (EDI significativo) pero el ruido domina, produciendo EDI < 0.10. Límite del SNR de los datos reales, no del instrumento.
-
-### Líneas de mejora pendientes
-
-| Mejora | Estado | Impacto esperado |
-|--------|--------|-----------------|
-| Restricción mc ∈ [0.05, 0.50] | ✅ Resuelto | Reduce epifenomenalismo |
-| ode_coupling_strength separado de mc | ✅ Resuelto | Control fino del coupling |
-| Acoplamiento bidireccional ABM↔ODE | ✅ Resuelto | 2 iteraciones con gamma=0.05 |
-| Bias Correction del ODE target | ✅ Resuelto | Deforestación rescatada (EDI +0.63) |
-| Permutation test EDI (999 perms) | ✅ Resuelto | Significancia estadística robusta |
-| Taxonomía de emergencia diferenciada | ✅ Resuelto | strong/weak/suggestive/null/falsification |
-| Fases sintéticas independientes por caso | ⚠️ Parcial | 6/29 con generadores customizados |
-| Modelos ODE dominio-específicos mejorados | ❌ Pendiente | Podría reclasificar casos con ODE poor |
-| Forcing multivariado (CO2, VIX, etc.) | ❌ Pendiente | Forcing más realista por dominio |
-| Topología de red heterogénea para CR | ❌ Pendiente | CR > 2.0 requiere redes no regulares |
-
-## Regla Operacional: Divergencia EDI/CR
-
-El CR (Cohesion Ratio = internal/external) es un **indicador complementario de frontera**, no una condición de clasificación. La clasificación se define exclusivamente por EDI + C1-C5 (§ Hipótesis Central, `00_Marco_Conceptual`). El CR informa sobre la topología del acoplamiento.
-
-Clasificación descriptiva cuando EDI y CR divergen:
-
-1. **EDI ≥ 0.30, CR < 2.0, C1-C5 = True**: Cierre operativo con frontera difusa → **Nivel 4** (H1 satisfecho). CR ≈ 1.0 es esperado en modelos de difusión espacial homogénea.
-2. **EDI ≥ 0.30, CR > 2.0, C1-C5 = True**: Cierre operativo con frontera nítida → **Nivel 4+** (candidato a Nivel 5 con verificación adicional).
-3. **EDI < 0.30, CR > 2.0**: Cohesión sin cierre operativo → **Nivel 2-3** (parcial).
-4. **EDI < 0.30, CR < 2.0**: Sin cierre ni cohesión → **Nivel 0-1**.
-
-**Nota:** El validador (`hybrid_validator.py`, L656) implementa `overall_pass` con 11 condiciones (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude). El CR se computa como métrica informativa pero no es condición de `overall_pass`, coherente con H1.
-
-### Análisis Teórico: CR ≈ 1.0 en Modelos de Difusión Homogénea
-
-En la arquitectura ABM actual, todos los agentes comparten el mismo forzamiento externo y la misma dinámica de difusión isotrópica (vecinos de Von Neumann en retícula n×n). Formalmente, sea `σ²_int` la varianza intra-grupo y `σ²_ext` la varianza inter-grupo. El CR se define como `σ²_int / σ²_ext`.
-
-Para difusión isotrópica con forzamiento uniforme, el teorema de equipartición estocástica predice `σ²_int ≈ σ²_ext` en el límite estacionario, produciendo CR ≈ 1.0. La desviación de CR respecto a la unidad refleja heterogeneidad espacial del forzamiento o asimetría en el acoplamiento.
-
-**Implicación:** CR > 2.0 requeriría forzamiento no-uniforme o topología de red no-regular (ej. small-world, scale-free). Esto constituye una extensión natural para trabajo futuro, no una deficiencia del instrumento actual. El CR ≈ 1.0 confirma que la difusión es operativa y que los agentes están acoplados al macro — condición necesaria para que el EDI sea interpretable.
-
-**Referencia:** Haken (1983, *Synergetics*, §4.3) demuestra que en campos de orden con simetría translacional, la razón entre fluctuaciones internas y externas converge a la unidad.
-
-### Nota sobre trazabilidad
-
-Cada `metrics.json` contiene `generated_at` (timestamp ISO) y `git.commit` (hash del código ejecutado). Los resultados se generan ejecutando `validate.py` desde `repos/Simulaciones/{NN}_caso_*/src/`.
+El CR (Cohesion Ratio = internal/external) es un indicador complementario de frontera, no una condición de clasificación. La clasificación se define exclusivamente por EDI + C1-C5. El CR informa sobre la topología del acoplamiento. CR ≈ 1.0 es la predicción teórica para agentes acoplados en sistemas con simetría translacional y difusión isotrópica (Haken, 1983, §4.3).
 
 > La bitácora detallada de correcciones (C5), defensas técnicas ante vectores de ataque, y limitaciones del marco de Hoel se documenta en `TesisFinal/documentacion_procedimental.md`.
 
@@ -755,136 +660,53 @@ La tesis demuestra que ciertos fenómenos **funcionan como si tuvieran estructur
 
 # 04 Casos de Estudio (29 Casos)
 
-## Resumen de Clasificación Operativa
-El motor de simulación ha sido ejecutado sobre un universo de **29 casos**, tras la remoción de 3 casos por inviabilidad de datos reales (Estética, Moderación Adversarial, RTB Publicidad). El protocolo C1-C5 + 6 criterios adicionales actúan como instrumento de **clasificación operativa**, no de demarcación ontológica. La evaluación se realiza con `assimilation_strength=0.0` y 999 permutaciones (seed=42).
+## Paisaje de Emergencia Operativa
+El motor de simulación ha sido ejecutado sobre un universo de **29 casos**, tras la remoción de 3 casos por inviabilidad de datos reales. El protocolo C1-C5 + 6 criterios adicionales actúan como instrumento de **clasificación operativa**, permitiendo mapear el fenómeno en un gradiente de cierre.
 
-> **Estado actual:** Bajo el pipeline limpio: **2/29 en Nivel 4** (Deforestación y Microplásticos). El paisaje de emergencia operativa queda completamente mapeado.
-
-| Categoría | Nivel | Conteo | Resultado operativo |
-|-----------|:-----:|--------|---------------------|
-| **strong** (EDI ≥ 0.30, overall_pass=True) | 4 | 2 | Cierre operativo fuerte |
-| **weak** (0.10 ≤ EDI < 0.30, p < 0.05) | 3 | 1 | Componente funcional |
-| **suggestive** (EDI > 0.01, p < 0.05) | 2 | 3 | Señal detectable |
-| **trend** (EDI > 0, p ≥ 0.05) | 1 | 7 | Tendencia sin confirmación |
-| **null** (EDI ≤ 0 o sin señal) | 0 | 13 | Sin señal operativa |
-| **falsification** (Controles negativos) | — | 3 | Rechazados correctamente |
+Los resultados cuantitativos detallados (EDI, p-valores, CR) y la clasificación técnica definitiva se consolidan exclusivamente en la **Sección 03 Validación y Praxis**. Esta sección provee el contexto cualitativo y la justificación de las fuentes de datos para los casos más relevantes del paisaje.
 
 ---
 
-## 1. Nivel 4 — Cierre Operativo Fuerte (overall_pass = True)
+## 1. Casos de Cierre Operativo Fuerte (Nivel 4)
 
-Estos casos alcanzan el nivel máximo verificable por el instrumento: el constructo macro es operativamente indispensable. Su eliminación degrada la predicción micro en >40%.
+Representan los fenómenos donde el constructo macro es operativamente indispensable para la predicción micro.
 
-| ID | Caso | Fuente de Datos | EDI | p-perm | BC | Interpretación operativa |
-|----|------|-----------------|----:|-------:|:---|:---|
-| 16 | **Deforestación** | World Bank (Área forestal) | **0.633** | 0.000 | full | ODE von Thünen captura frontera agrícola. 63% reducción RMSE |
-| 24 | **Microplásticos** | OWID (Plastic Production) | **0.427** | 0.000 | none | Modelo Jambeck de acumulación persistente. Sin BC necesario |
-
-**Deforestación Global** es el caso con mayor cierre operativo del corpus: la ODE modela la expansión de la frontera agrícola (modelo de von Thünen), y el Bias Correction full corrigió el sesgo de escala sin amplificar la señal. C1-C5 todos satisfechos, persistencia temporal estable. Bajo irrealismo operativo: el constructo "deforestación como hiperobjeto" es operativamente indispensable — no afirmamos su realidad ontológica, sino que funciona como si tuviera autonomía causal sobre los agentes.
-
-**Microplásticos Oceánicos** es notable porque no requiere Bias Correction — la señal macro emerge directamente del acoplamiento ABM-ODE. El modelo Jambeck de acumulación persistente genera una constricción que reduce el RMSE en 43%. Analogía del ribosoma: el sistema funciona con cierre operativo sin que necesitemos postular una entidad separada de sus componentes materiales.
+*   **Deforestación Global (ID 16):** Datos del World Bank (Área forestal). La ODE de frontera agrícola (von Thünen) captura la inercia del desplazamiento físico de la frontera forestal. Es el caso más robusto del corpus. Bajo irrealismo operativo: el constructo funciona como si tuviera autonomía causal.
+*   **Microplásticos Oceánicos (ID 24):** Datos de OWID (Plastic Production). El modelo Jambeck de acumulación persistente genera una constricción que emerge directamente del acoplamiento. Representa un sistema donde la inercia material de los residuos plásticos impone un patrón macro de largo plazo.
 
 ---
 
-## 2. Nivel 3 — Componente Funcional
+## 2. Componente Funcional y Señales Sugestivas (Niveles 2-3)
 
-| ID | Caso | Fuente de Datos | EDI | p-perm | BC | Interpretación operativa |
-|----|------|-----------------|----:|-------:|:---|:---|
-| 28 | **Fuga de Cerebros** | World Bank (I+D % PIB) | **0.183** | 0.001 | bias_only | Modelo Docquier-Rapoport. Señal significativa pero sub-umbral |
+Fenómenos donde el instrumento detecta una señal estadísticamente significativa pero de magnitud insuficiente para atribuir cierre operativo pleno.
 
-El constructo macro mejora la predicción (18.3%) pero es prescindible. La migración de capital humano exhibe inercia demográfica detectable. Bajo la analogía del ribosoma: un componente que facilita la función global sin constituir un nivel autónomo. Candidato para reclasificación con forcing multivariado (variables adicionales: patentes/PIB, gasto en educación, migración neta).
-
----
-
-## 3. Nivel 2 — Señal Sugestiva
-
-| ID | Caso | Fuente de Datos | EDI | p-perm | Interpretación operativa |
-|----|------|-----------------|----:|-------:|:---|
-| 09 | **Finanzas (SPY)** | Yahoo Finance | 0.040 | 0.000 | Serie ruidosa, señal mínima pero significativa |
-| 17 | **Océanos** | Proxy WMO | 0.053 | 0.000 | Señal detectable, proxy poco representativo |
-| 29 | **IoT** | World Bank (Suscripciones) | 0.020 | 0.000 | Señal se atenúa en datos reales |
-
-Estos casos presentan significancia estadística (p < 0.05 y EDI > 0.01) pero la magnitud no alcanza para atribuir cierre operativo. El instrumento los detecta como posibles candidatos — futuros trabajos con modelos ODE específicos por dominio y forcing multivariado podrían reclasificarlos.
-
-**Nota sobre Finanzas:** La reflexividad inherente a los mercados (Soros, 1987) dificulta la separación macro/micro. El EDI de 0.040 es consistente con la hipótesis de que los mercados financieros son sistemas con acoplamiento débil y alta reflexividad, donde la "constricción macro" se disuelve rápidamente por la retroalimentación de los agentes.
+*   **Fuga de Cerebros (ID 28):** Datos del World Bank (I+D % PIB). Modelo Docquier-Rapoport. La migración de capital humano exhibe inercia demográfica detectable (Nivel 3).
+*   **Finanzas (ID 09):** Datos de Yahoo Finance (SPY). La reflexividad inherente a los mercados (Soros, 1987) dificulta la separación macro/micro, resultando en un acoplamiento débil (Nivel 2).
+*   **Océanos (ID 17):** Proxy WMO de nivel del mar. Señal detectable pero limitada por la representatividad del proxy.
+*   **IoT (ID 29):** Datos de World Bank (Suscripciones). Señal que se atenúa en el paso de modelos sintéticos a datos reales.
 
 ---
 
-## 4. Nivel 1 — Tendencia no Significativa
+## 3. Otros Fenómenos del Paisaje (Niveles 0-1)
 
-| ID | Caso | Fuente de Datos | EDI | p-perm | Interpretación operativa |
-|----|------|-----------------|----:|-------:|:---|
-| 01 | **Clima Regional** | Meteostat (NOAA) | 0.010 | 0.591 | ODE Budyko-Sellers insuficiente |
-| 11 | **Movilidad** | World Bank | 0.003 | 0.361 | Señal marginal |
-| 13 | **Políticas Estratégicas** | World Bank | 0.011 | 0.719 | Señal débil |
-| 14 | **Postverdad** | Fallback sintético | 0.001 | 0.030 | Marginal, datos limitados |
-| 18 | **Urbanización** | World Bank | 0.000 | 0.220 | Sin señal práctica |
-| 21 | **Salinización** | World Bank | 0.027 | 0.724 | Proxy inadecuado |
-| 27 | **Riesgo Biológico** | World Bank (Mortalidad) | 0.105 | 0.365 | Señal positiva, no significativa |
+Incluye el caso paradigmático de **Clima Regional (ID 01)** (datos Meteostat/NOAA). Bajo el modelo Budyko-Sellers y la resolución actual, el instrumento no detecta un cierre operativo fuerte. Bajo irrealismo operativo, esto no refuta el fenómeno, sino que diagnostica la insuficiencia de la sonda particular para detectarlo en esta escala regional. 
 
-**Nota sobre Clima:** El caso paradigmático de Morton (2013) queda en Nivel 1 bajo este instrumento. Bajo irrealismo operativo, esto es informativo: el modelo Budyko-Sellers con datos de una estación regional no detecta cierre operativo fuerte. Esto no refuta el cambio climático como hiperobjeto — refuta la capacidad de esta sonda particular para detectarlo en esta resolución. La honestidad de reportar EDI=0.010 para el caso más emblemático es la mejor demostración del rigor del instrumento.
+Otros 12 casos (Energía, Justicia, Paradigmas, etc.) se sitúan en Nivel 0, indicando que el modelo híbrido no detecta constricción macro o que el acoplamiento es incluso destructivo (anti-emergencia).
 
 ---
 
-## 5. Nivel 0 — Sin Señal Operativa (13 Casos)
-
-Casos donde la constricción macro no mejora (o empeora) la predicción del ABM:
-
-| ID | Caso | EDI | Interpretación operativa |
-|----|------|----:|:---|
-| 02 | Conciencia | -0.024 | Fallback sintético, sin ground truth físico (LoE=1) |
-| 03 | Contaminación PM2.5 | -0.000 | Sin señal macro detectable |
-| 04 | Energía | -0.003 | Señal nula |
-| 05 | Epidemiología | 0.000 | SEIR no capturada por el framework |
-| 10 | Justicia | 0.000 | Sin señal — dominio normativo, no físico |
-| 12 | Paradigmas | 0.000 | Señal nula — dominio cultural |
-| 15 | Wikipedia | 0.000 | Sin estructura macro detectable |
-| 19 | Acidificación Oceánica | -0.000 | Proxy inadecuado |
-| 20 | Kessler | -0.420 | Anti-emergencia con datos CelesTrak |
-| 22 | Fósforo | -1.000 | Anti-emergencia severa |
-| 23 | Erosión Dialéctica | -1.000 | Anti-emergencia severa |
-| 25 | Acuíferos | -0.179 | Señal no capturada |
-| 26 | Starlink | -1.000 | Colapso del modelo |
-
-Los casos con EDI fuertemente negativo (Fósforo, Erosión, Starlink) indican que el acoplamiento macro *destruye* información útil del ABM — un resultado que confirma la selectividad del instrumento. Bajo irrealismo operativo, Nivel 0 no afirma "no existe" — afirma "no detectado por este instrumento con esta sonda".
+## 4. Controles de Falsación (3/3 Correctos)
+Sistemas diseñados para probar la selectividad del protocolo: **Exogeneidad (06)**, **No-estacionariedad (07)** y **Observabilidad (08)**. Los tres controles son correctamente rechazados (falsification), confirmando que el instrumento no es un "rubber-stamp" y requiere estructura genuina para validar un caso.
 
 ---
 
-## 6. Controles de Falsación (3/3 Correctos)
-Sistemas diseñados para probar la selectividad del protocolo C1-C5:
-
-| ID | Caso | Propósito | EDI | Estado |
-|----|------|-----------|----:|:---|
-| 06 | **Exogeneidad** | Probar respuesta ante ruido puro | 0.055 | ❌ Rechazado ✓ |
-| 07 | **No-estacionariedad** | Probar respuesta ante Random Walk | -1.000 | ❌ Rechazado ✓ |
-| 08 | **Observabilidad** | Probar respuesta ante estados ocultos | -1.000 | ❌ Rechazado ✓ |
-
-Los tres controles son correctamente rechazados con categoría `falsification`, confirmando que el instrumento no es un rubber-stamp.
+## 5. Casos Removidos (Archivo)
+Descartados por falta de fuentes de datos reales verificables: **Estética Global**, **Moderación Adversarial** y **RTB Publicidad**. Archivados en `Artifacts/casos_removidos/`.
 
 ---
 
-## 7. Casos Removidos (Archivo)
-Descartados por falta de fuentes de datos reales verificables:
-- **Estética Global:** Inviabilidad de API pública de subastas de arte.
-- **Moderación Adversarial:** Opacidad de datos de plataformas (Big Tech).
-- **RTB Publicidad:** Datos propietarios protegidos por NDAs de industria.
-
-Archivados en `Artifacts/casos_removidos/`.
-
----
-
-## Conclusión: El Paisaje como Resultado
-
-El resultado principal no es "2/29 pasan" — es un **paisaje completo** de 29 fenómenos clasificados en un gradiente de cierre operativo:
-
-- **Cierre fuerte** donde hay inercia material (deforestación, microplásticos)
-- **Componente funcional** donde hay inercia demográfica (fuga de cerebros)
-- **Señal sugestiva** donde hay datos pero resolución insuficiente (finanzas, océanos, IoT)
-- **Tendencia** donde la sonda no tiene suficiente potencia (clima, movilidad, etc.)
-- **Sin señal** donde la sonda es inadecuada o el fenómeno no exhibe cierre (13 casos)
-- **Falsificación correcta** donde los controles funcionan (3 casos)
-
-La selectividad del instrumento (rechazo del 92.3% de casos genuinos para Nivel 4) es la garantía de que las clasificaciones positivas representan cierre operativo genuino, no artefactos de modelado. Bajo irrealismo operativo, cada caso es un dato en el mapa — ninguno es un "fracaso". El mapa completo, con sus 13 ceros y sus 2 fuertes, es más informativo que un resultado inflado donde "todo pasa".
+## Conclusión: El Paisaje como Resultado Principal
+La selectividad del instrumento (rechazo del 92.3% de casos genuinos para Nivel 4) es la garantía de que las clasificaciones positivas representan cierre operativo genuino. El mapa completo —con sus 13 ceros y sus 2 fuertes— constituye el resultado principal de la tesis: un mapeo honesto y riguroso de la eficacia causal en el paisaje de los fenómenos masivamente distribuidos.
 
 ---
 

@@ -25,7 +25,7 @@ def main():
         case_name="Políticas Estratégicas (Bass Diffusion + Inertia)",
         value_col="value",
         series_key="s",
-        grid_size=7,   # sqrt(50) approx
+        grid_size=50,             # 50×50 = 2500 agentes (antes 7×7=49!)
         persistence_window=24,
         synthetic_start="1990-01-01",
         synthetic_end="2020-01-01", # 30 years monthly
@@ -34,13 +34,15 @@ def main():
         real_end="2022-01-01",
         real_split="2010-01-01",
         corr_threshold=0.5,
+        n_runs=15,                # 15 réplicas (antes 5 default)
         extra_base_params={
-            "n_agents": 50,
+            "n_agents": 2500,     # Consistente con grid 50×50
             "abm_p": 0.01,
             "abm_q": 0.3,
             "ode_alpha": 0.05,
             "ode_beta": 0.3,
-            "ode_gamma": 0.1
+            "ode_gamma": 0.1,
+            "macro_coupling": 0.15,  # Subido de 0.05 (estaba bajo coupling_ok=0.1)
         },
         driver_cols=[],  # CSV solo tiene date, value
     )

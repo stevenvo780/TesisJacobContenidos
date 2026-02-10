@@ -34,7 +34,7 @@ def main():
         case_name="Falsación: Exogeneidad",
         value_col="value",
         series_key="incidence",
-        grid_size=20,
+        grid_size=30,             # 30×30 = 900 agentes (antes 20×20=400). No excesivo para control
         persistence_window=6,
         synthetic_start="2020-01-01",
         synthetic_end="2024-01-01",
@@ -46,7 +46,7 @@ def main():
         extra_base_params={},
         driver_cols=["unrelated_driver"], # Explicitly use the noise driver
         ode_calibration=False, # Calib too slow, testing Null Hypothesis with default params
-        abm_calibration=False, # Skip ABM calibration loop
+        abm_calibration=False, # Skip ABM calibration loop — CONTROL NEGATIVO
     )
 
     from hybrid_validator import evaluate_phase

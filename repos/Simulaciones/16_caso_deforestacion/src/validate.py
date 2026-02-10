@@ -63,7 +63,7 @@ def main():
         value_col="value",
         driver_cols=[],  # Dataset univariado (WorldBank AG.LND.FRST.ZS)
         series_key="d",
-        grid_size=25,
+        grid_size=50,             # 50×50 = 2500 agentes (antes 25×25=625)
         persistence_window=5,
         synthetic_start="1990-01-01",
         synthetic_end="2022-01-01",
@@ -75,7 +75,7 @@ def main():
         ode_noise=0.04,
         base_noise=0.003,
         loe=3,
-        n_runs=7,
+        n_runs=15,                # 15 réplicas (antes 7) — 32 cores disponibles
         ode_calibration=True,
         extra_base_params={
             "ode_inflow": 0.06,    # Tasa conversión forestal (Hansen et al. 2013)

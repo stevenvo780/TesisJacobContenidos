@@ -61,7 +61,7 @@ def main():
         case_name="Microplásticos Oceánicos (Jambeck Persistent Accumulation)",
         value_col="value",
         series_key="mp",
-        grid_size=25,
+        grid_size=50,             # 50×50 = 2500 agentes (antes 25×25=625)
         persistence_window=12,
         synthetic_start="1980-01-01",
         synthetic_end="2020-12-01",
@@ -73,7 +73,7 @@ def main():
         ode_noise=0.025,
         base_noise=0.004,
         loe=4,
-        n_runs=7,
+        n_runs=15,                # 15 réplicas (antes 7) — 32 cores disponibles
         ode_calibration=True,
         extra_base_params={
             # ode_burial=0.002: sedimentación marina (~0.2%/año;

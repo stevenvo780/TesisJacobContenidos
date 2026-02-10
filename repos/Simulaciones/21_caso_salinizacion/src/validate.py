@@ -56,7 +56,7 @@ def main():
         case_name="Salinización de Suelos (Richards-Solute)",
         value_col="value",
         series_key="sl",
-        grid_size=25,
+        grid_size=50,             # 50×50 = 2500 agentes (antes 25×25=625)
         persistence_window=5,
         synthetic_start="1961-01-01",
         synthetic_end="2022-01-01",
@@ -68,7 +68,7 @@ def main():
         corr_threshold=0.65,
         ode_noise=0.015,
         loe=3,
-        n_runs=7,
+        n_runs=15,                # 15 réplicas (antes 7) — 32 cores disponibles
         ode_calibration=True,
         extra_base_params={
             # ode_gamma=0.02: feedback bilineal evaporación × salinidad

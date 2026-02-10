@@ -65,7 +65,7 @@ def main():
         case_name="Riesgo Biológico Global (TB Incidence — Woolhouse)",
         value_col="value",
         series_key="b",
-        grid_size=25,
+        grid_size=50,             # 50×50 = 2500 agentes (antes 25×25=625)
         persistence_window=5,
         synthetic_start="2000-01-01",
         synthetic_end="2024-01-01",
@@ -77,7 +77,7 @@ def main():
         ode_noise=0.02,
         base_noise=0.004,
         loe=4,
-        n_runs=7,
+        n_runs=15,                # 15 réplicas (antes 7) — 32 cores disponibles
         ode_calibration=True,
         extra_base_params={
             # ode_gamma_bio=0.03: bio-amplificación bilineal

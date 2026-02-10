@@ -26,6 +26,7 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
+from joblib import Parallel, delayed
 
 
 # ─── Métricas básicas (NumPy vectorizadas) ───────────────────────────────────
@@ -90,12 +91,12 @@ def compute_edi(rmse_abm, rmse_reduced):
 
 def permutation_test_edi(obs_val, abm_val, reduced_val, n_perm=999, seed=42):
     """
-    Test de permutación para EDI (Fix C12).
+    Test de permutación para EDI (Fix C12) — VECTORIZADO.
     
     Calcula EDI real y lo compara contra una distribución nula
-    generada permutando las observaciones. Si el EDI real no supera
-    el percentil 95 de la distribución nula, la estructura detectada
-    no es significativa.
+    generada permutando las observaciones. Totalmente vectorizado
+    con NumPy: genera todas las permutaciones como matriz (n_perm, n)
+    y calcula RMSE en batch.
     
     n_perm=999 sigue Phipson & Smyth (2010): resolución p mínima = 0.001,
     suficiente para α=0.05 con margen de error estrecho.
@@ -106,16 +107,24 @@ def permutation_test_edi(obs_val, abm_val, reduced_val, n_perm=999, seed=42):
     obs_a = np.asarray(obs_val, dtype=np.float64)
     abm_a = np.asarray(abm_val, dtype=np.float64)
     red_a = np.asarray(reduced_val, dtype=np.float64)
+    n = len(obs_a)
     
     edi_real = compute_edi(rmse(abm_a, obs_a), rmse(red_a, obs_a))
     
+    # Vectorizado: generar todas las permutaciones de una vez
     rng = np.random.RandomState(seed)
-    null_edis = np.empty(n_perm)
-    for i in range(n_perm):
-        obs_perm = rng.permutation(obs_a)
-        r_abm = float(np.sqrt(np.mean((abm_a - obs_perm) ** 2)))
-        r_red = float(np.sqrt(np.mean((red_a - obs_perm) ** 2)))
-        null_edis[i] = compute_edi(r_abm, r_red)
+    # Matriz de índices de permutación: (n_perm, n)
+    idx = np.array([rng.permutation(n) for _ in range(n_perm)])
+    obs_perms = obs_a[idx]  # (n_perm, n)
+    
+    # RMSE vectorizado: (n_perm,)
+    rmse_abm_null = np.sqrt(np.mean((abm_a[np.newaxis, :] - obs_perms) ** 2, axis=1))
+    rmse_red_null = np.sqrt(np.mean((red_a[np.newaxis, :] - obs_perms) ** 2, axis=1))
+    
+    # EDI vectorizado
+    mask = rmse_red_null > 1e-15
+    null_edis = np.where(mask, (rmse_red_null - rmse_abm_null) / rmse_red_null, 0.0)
+    null_edis = np.clip(null_edis, -1.0, 1.0)
     
     # p-value: fracción de permutaciones con EDI >= EDI real
     p_value = float(np.mean(null_edis >= edi_real))
@@ -752,6 +761,12 @@ class CaseConfig:
         self.feedback_strength = feedback_strength
         self.ode_calibration = ode_calibration
         
+        # Defaults para parámetros estadísticos
+        self.n_perm = 999      # Phipson & Smyth (2010): resolución p=0.001
+        self.n_boot = 500      # Bootstrap CI para EDI
+        self.n_refine = 5000   # Iteraciones de refinamiento en calibrate_abm
+        self.param_grid = None # None = usar grid default de calibrate_abm
+
         # Overrides de High Performance (Variables de Entorno)
         # HYPER_GRID_SIZE: solo aplica a modelos espaciales (grid_size > 1).
         # Modelos no-espaciales (grid_size=1, e.g. Brock-Hommes HAM) no deben
@@ -765,6 +780,16 @@ class CaseConfig:
             self.n_runs = int(os.environ["HYPER_N_RUNS"])
         else:
             self.n_runs = n_runs
+        # HYPER_N_PERM: permutaciones para test de significancia EDI
+        # Más permutaciones → p-value más preciso (útil en EDI borderline)
+        if "HYPER_N_PERM" in os.environ:
+            self.n_perm = int(os.environ["HYPER_N_PERM"])
+        # HYPER_N_BOOT: muestras bootstrap para CI del EDI
+        if "HYPER_N_BOOT" in os.environ:
+            self.n_boot = int(os.environ["HYPER_N_BOOT"])
+        # HYPER_N_REFINE: iteraciones de refinamiento en calibración ABM
+        if "HYPER_N_REFINE" in os.environ:
+            self.n_refine = int(os.environ["HYPER_N_REFINE"])
 
 
 def evaluate_phase(config, df, start_date, end_date, split_date,
@@ -973,7 +998,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     if config.abm_calibration:
         best_abm, best_err, top_5 = calibrate_abm(
             obs[:val_start], base_params, val_start, simulate_abm_fn,
-            param_grid=param_grid, seed=2
+            param_grid=param_grid or config.param_grid, seed=2,
+            n_refine=config.n_refine
         )
     else:
         best_abm = {}
@@ -1163,12 +1189,13 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
 
     # EDI con bootstrap (ABM+ODE vs ABM sin ODE)
     edi_val = compute_edi(err_abm, err_abm_no_ode)
-    edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, abm_no_ode_val)
+    edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, abm_no_ode_val,
+                                              n_boot=config.n_boot)
     
     # Fix C12: Permutation test para significancia del EDI
     # n_perm=999: estándar en literatura (Phipson & Smyth 2010), resolución p=0.001
     _, edi_pvalue, edi_null_95 = permutation_test_edi(
-        obs_val, abm_val, abm_no_ode_val, n_perm=999, seed=42
+        obs_val, abm_val, abm_no_ode_val, n_perm=config.n_perm, seed=42
     )
     # Significancia requiere AMBOS: p < 0.05 Y EDI > 0.01 (mínimo efecto).
     # Sin el gate de magnitud, series con autocorrelación fuerte pueden producir
