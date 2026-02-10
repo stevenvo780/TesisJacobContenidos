@@ -2,12 +2,13 @@
 # ══════════════════════════════════════════════════════════════════════════════
 # gpu_run.sh — Ejecutor escalable de simulaciones con distribución multi-GPU
 #
-# Divide los 29 casos en particiones para controlar VRAM y permite escalar
-# el grid_size inversamente al número de casos simultáneos.
+# Cada proceso Python ve AMBAS GPUs y elige automáticamente la que tenga más
+# VRAM libre al arrancar. Así los casos se reparten entre GPUs naturalmente:
+# los primeros saturan GPU 0 (más grande) y los siguientes caen a GPU 1.
 #
 # ── USO ───────────────────────────────────────────────────────────────────────
 #
-#   # Todo de golpe (29 en paralelo, grid=200 — cabe en 16GB)
+#   # Todo de golpe (29 en paralelo, grid=200 — ambas GPUs auto)
 #   ./gpu_run.sh
 #
 #   # AUTO-ESCALADO: grid = 200 × parts (si no se pasa --grid)
@@ -19,13 +20,6 @@
 #   ./gpu_run.sh --grid 500 --parts 2
 #   ./gpu_run.sh --grid 1000 --parts 5 --part 3
 #
-#   # Forzar GPU específica
-#   ./gpu_run.sh --grid 500 --gpu 0              # solo 5070 Ti
-#   ./gpu_run.sh --grid 200 --gpu 1              # solo 2060
-#
-#   # Distribuir entre 2 GPUs por VRAM (automático)
-#   ./gpu_run.sh --parts 2 --distribute
-#
 #   # Dry-run (muestra plan sin ejecutar)
 #   ./gpu_run.sh --parts 5 --dry-run
 #
@@ -35,8 +29,6 @@
 #   --parts N       Dividir en N tandas (1-10, default: 1 = todos de golpe)
 #                   Sin --grid: auto-escala grid = 200 × N
 #   --part K        Ejecutar solo tanda K de N (default: todas)
-#   --gpu ID        Forzar GPU (0=5070Ti, 1=2060)
-#   --distribute    Auto-distribuir entre GPUs por proporción VRAM
 #   --perm N        Permutaciones EDI (default: 9999)
 #   --boot N        Bootstrap samples (default: 5000)
 #   --refine N      Iteraciones refinamiento (default: 50000)
@@ -53,8 +45,6 @@ GRID=200
 GRID_EXPLICIT=0
 PARTS=1
 PART=0          # 0 = todas las partes
-GPU_ID=""       # vacío = no forzar
-DISTRIBUTE=0
 PERM=9999
 BOOT=5000
 REFINE=50000
@@ -75,8 +65,6 @@ while [[ $# -gt 0 ]]; do
         --grid)      GRID="$2"; GRID_EXPLICIT=1; shift 2 ;;
         --parts)     PARTS="$2";     shift 2 ;;
         --part)      PART="$2";      shift 2 ;;
-        --gpu)       GPU_ID="$2";    shift 2 ;;
-        --distribute) DISTRIBUTE=1;  shift ;;
         --perm)      PERM="$2";      shift 2 ;;
         --boot)      BOOT="$2";      shift 2 ;;
         --refine)    REFINE="$2";    shift 2 ;;
@@ -84,7 +72,7 @@ while [[ $# -gt 0 ]]; do
         --container) CONTAINER="$2"; shift 2 ;;
         --dry-run)   DRY_RUN=1;      shift ;;
         --help|-h)
-            head -44 "$0" | tail -40
+            head -40 "$0" | tail -36
             exit 0 ;;
         *) echo "Flag desconocido: $1"; exit 1 ;;
     esac
@@ -191,9 +179,8 @@ get_partition() {
 }
 
 # ── Ejecutar un grupo de casos en el contenedor ──────────────────────────────
+# Cada proceso Python elige su GPU automáticamente (la de más VRAM libre)
 run_batch() {
-    local gpu_device=$1
-    shift
     local cases=("$@")
     local ncases=${#cases[@]}
     
@@ -211,10 +198,9 @@ export HYPER_N_PERM=${PERM}
 export HYPER_N_BOOT=${BOOT}
 export HYPER_N_REFINE=${REFINE}
 export HYPER_N_RUNS=${RUNS}
-export CUDA_VISIBLE_DEVICES=${gpu_device}
 
 mkdir -p ${log_dir}
-echo \"[GPU ${gpu_device}] ${ncases} casos, grid=${GRID}\"
+echo \"[${ncases} casos, grid=${GRID}, ambas GPUs visibles]\"
 
 PIDS=()
 NAMES=()
@@ -242,8 +228,9 @@ echo \"  Failures: \$FAIL/${ncases}\"
 "
 
     if [[ $DRY_RUN -eq 1 ]]; then
-        echo "  [DRY-RUN] GPU=$gpu_device, ${ncases} casos: ${cases[*]}"
+        echo "  [DRY-RUN] ${ncases} casos: ${cases[*]}"
         echo "  VRAM estimada: $(estimate_vram_per_sim $GRID) MB/sim"
+        echo "  (cada proceso elige GPU con más VRAM libre automáticamente)"
         return 0
     fi
     
@@ -263,9 +250,7 @@ echo "║  GPUs:     ${N_GPUS} detectadas"
 echo "║  GPU 0:    ${GPU0_NAME} — ${GPU0_VRAM} MB"
 [[ $N_GPUS -ge 2 ]] && \
 echo "║  GPU 1:    ${GPU1_NAME} — ${GPU1_VRAM} MB"
-echo "║  Distrib:  $([ $DISTRIBUTE -eq 1 ] && echo "auto por VRAM" || echo "no")"
-[[ -n "$GPU_ID" ]] && \
-echo "║  GPU fix:  ${GPU_ID}"
+echo "║  Distrib:  auto (cada proceso elige GPU con más VRAM libre)"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
 echo "║  Contendr: ${CONTAINER}"
 echo "║  VRAM/sim: ~$(estimate_vram_per_sim $GRID) MB"
@@ -286,72 +271,24 @@ fi
 
 START_GLOBAL=$SECONDS
 
-# ── Modo: distribuir entre GPUs ───────────────────────────────────────────────
-if [[ $DISTRIBUTE -eq 1 && $N_GPUS -ge 2 ]]; then
-    # Proporción por VRAM
-    TOTAL_VRAM=$(( GPU0_VRAM + GPU1_VRAM ))
-    GPU0_SHARE=$(( TOTAL * GPU0_VRAM / TOTAL_VRAM ))
-    GPU1_SHARE=$(( TOTAL - GPU0_SHARE ))
+# ── Ejecutar por tandas ───────────────────────────────────────────────────────
+# Cada proceso Python ve AMBAS GPUs y elige la de más VRAM libre al arrancar.
+# Así los primeros procesos saturan GPU 0, y los siguientes caen en GPU 1.
+for p in $(seq 1 "$PARTS"); do
+    if [[ $PART -gt 0 && $p -ne $PART ]]; then continue; fi
     
-    echo "═══ Distribución por VRAM ═══"
-    echo "  GPU 0 (${GPU0_NAME}, ${GPU0_VRAM}MB): ${GPU0_SHARE} casos"
-    echo "  GPU 1 (${GPU1_NAME}, ${GPU1_VRAM}MB): ${GPU1_SHARE} casos"
-    echo ""
+    CASES_STR=$(get_partition ALL_CASES "$PARTS" "$p")
+    read -ra CASES_ARR <<< "$CASES_STR"
     
-    GPU0_CASES=("${ALL_CASES[@]:0:$GPU0_SHARE}")
-    GPU1_CASES=("${ALL_CASES[@]:$GPU0_SHARE}")
+    echo "═══ Tanda ${p}/${PARTS} — ${#CASES_ARR[@]} casos ═══"
+    run_batch "${CASES_ARR[@]}"
     
-    if [[ $PARTS -gt 1 ]]; then
-        # Subdividir cada GPU en tandas
-        echo "Subdividiendo en ${PARTS} tandas por GPU..."
-        for p in $(seq 1 "$PARTS"); do
-            if [[ $PART -gt 0 && $p -ne $PART ]]; then continue; fi
-            echo ""
-            echo "═══ Tanda ${p}/${PARTS} ═══"
-            
-            P0_CASES=($(get_partition GPU0_CASES "$PARTS" "$p"))
-            P1_CASES=($(get_partition GPU1_CASES "$PARTS" "$p"))
-            
-            echo "  GPU 0: ${#P0_CASES[@]} casos"
-            echo "  GPU 1: ${#P1_CASES[@]} casos"
-            
-            # Lanzar ambas GPUs en paralelo
-            run_batch 0 "${P0_CASES[@]}" &
-            PID0=$!
-            run_batch 1 "${P1_CASES[@]}" &
-            PID1=$!
-            wait $PID0 $PID1
-        done
-    else
-        # Todo de golpe, dividido entre GPUs
-        echo "═══ Ejecución: GPU 0 + GPU 1 en paralelo ═══"
-        run_batch 0 "${GPU0_CASES[@]}" &
-        PID0=$!
-        run_batch 1 "${GPU1_CASES[@]}" &
-        PID1=$!
-        wait $PID0 $PID1
+    if [[ $p -lt $PARTS && $PART -eq 0 ]]; then
+        echo ""
+        echo "--- Pausa 5s entre tandas (liberar VRAM) ---"
+        sleep 5
     fi
-
-# ── Modo: GPU fija o auto, con particiones ────────────────────────────────────
-else
-    TARGET_GPU="${GPU_ID:-0}"
-    
-    for p in $(seq 1 "$PARTS"); do
-        if [[ $PART -gt 0 && $p -ne $PART ]]; then continue; fi
-        
-        CASES_STR=$(get_partition ALL_CASES "$PARTS" "$p")
-        read -ra CASES_ARR <<< "$CASES_STR"
-        
-        echo "═══ Tanda ${p}/${PARTS} — ${#CASES_ARR[@]} casos — GPU ${TARGET_GPU} ═══"
-        run_batch "$TARGET_GPU" "${CASES_ARR[@]}"
-        
-        if [[ $p -lt $PARTS && $PART -eq 0 ]]; then
-            echo ""
-            echo "--- Pausa 5s entre tandas (liberar VRAM) ---"
-            sleep 5
-        fi
-    done
-fi
+done
 
 ELAPSED_GLOBAL=$(( SECONDS - START_GLOBAL ))
 echo ""

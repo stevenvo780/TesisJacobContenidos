@@ -1,24 +1,24 @@
 # Reporte de Validación — Ecosistema IoT Global (Bass-Metcalfe)
 
-- generated_at: 2026-02-10T04:21:30.751779Z
+- generated_at: 2026-02-10T05:29:21.502149Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.3913
-- bootstrap_mean: 0.3950
-- CI 95%: [0.3575, 0.4403]
-- weighted_value (LoE factor 0.80): 0.3131
+- valor: 0.4098
+- bootstrap_mean: 0.4121
+- CI 95%: [0.3719, 0.4585]
+- weighted_value (LoE factor 0.80): 0.3278
 - válido (0.30-0.90): True
-- detrended_edi: 0.3913
+- detrended_edi: 0.4098
 - trend_ratio: 1.000
 - trend_r2: 0.898
 
 ### Symploké y CR
 - internal: 0.9999
-- external: 0.9720
-- CR: 1.0286
+- external: 0.9703
+- CR: 1.0305
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -29,22 +29,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.6510
-- rmse_abm_no_ode: 4.3556
-- rmse_ode: 1.3192
+- rmse_abm: 2.5760
+- rmse_abm_no_ode: 4.3646
+- rmse_ode: 1.3226
 - rmse_reduced: 6.3551
 - threshold: 2.4845
 
 ### Calibración
-- forcing_scale: 0.5978
+- forcing_scale: 0.5461
 - macro_coupling: 0.5000
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.6296
+- damping: 0.5767
 - ode_alpha: 0.3876
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.5184
+- calibration_rmse: 0.5234
 - ode_rolling: None
 
 ### Interpretación
@@ -54,19 +54,19 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0186
-- bootstrap_mean: 0.0184
-- CI 95%: [-0.0026, 0.0364]
-- weighted_value (LoE factor 0.80): 0.0149
+- valor: 0.0176
+- bootstrap_mean: 0.0176
+- CI 95%: [-0.0064, 0.0364]
+- weighted_value (LoE factor 0.80): 0.0141
 - válido (0.30-0.90): False
-- detrended_edi: 0.0186
+- detrended_edi: 0.0176
 - trend_ratio: 1.000
 - trend_r2: 0.874
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9414
-- CR: 1.0622
+- external: 0.9380
+- CR: 1.0661
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -77,22 +77,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 34.3750
-- rmse_abm_no_ode: 35.0273
-- rmse_ode: 34.5035
+- rmse_abm: 34.2807
+- rmse_abm_no_ode: 34.8945
+- rmse_ode: 34.5002
 - rmse_reduced: 40.8516
 - threshold: 10.9486
 
 ### Calibración
-- forcing_scale: 0.5787
-- macro_coupling: 0.4688
+- forcing_scale: 0.5613
+- macro_coupling: 0.5000
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.2870
+- damping: 0.2688
 - ode_alpha: 0.0981
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.5971
+- calibration_rmse: 0.6002
 - ode_rolling: None
 
 ### Interpretación

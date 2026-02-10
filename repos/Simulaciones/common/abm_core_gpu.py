@@ -324,47 +324,38 @@ def simulate_abm_batch(
     max_batch: int = 0,
 ) -> np.ndarray:
     """
-    Ejecuta B simulaciones ABM simultáneas en VRAM.
-    
-    Todas las simulaciones comparten el mismo base_params (grid_size, diffusion,
-    noise, forcing, etc.). Solo difieren en los parámetros listados en
-    param_variants (típicamente: forcing_scale, macro_coupling, damping).
+    Ejecuta B simulaciones ABM simultáneas en la GPU asignada a este proceso.
+
+    Cada proceso Python se ancla a UNA GPU al importar gpu_backend (la que
+    tenga más VRAM libre). Cuando corren N casos en paralelo, unos caen en
+    GPU 0 y otros en GPU 1 — ambas trabajan simultáneamente sin intercalar.
+
+    El auto-chunking consulta VRAM libre REAL para dividir en sub-batches
+    si la GPU no tiene suficiente memoria para todo el batch de golpe.
     
     Parameters
     ----------
     base_params : dict
         Parámetros base compartidos por todas las simulaciones.
     param_variants : list[dict]
-        Lista de B dicts. Cada dict contiene SOLO los parámetros que varían
-        (e.g., {"forcing_scale": 0.01, "macro_coupling": 0.2, "damping": 0.1}).
+        Lista de B dicts con parámetros que varían por simulación.
     steps : int
         Número de timesteps a simular.
     seed : int
-        Semilla base. Cada simulación en el batch usa la misma semilla
-        (determinismo reproducible).
+        Semilla base (reproducibilidad determinista).
     series_key : str
         Clave de la serie de salida.
     init_range : float
         Rango de la perturbación inicial del grid.
     max_batch : int
-        Máximo de simulaciones por sub-batch (0 = auto, basado en VRAM).
-        Útil para controlar el uso de VRAM en refinamientos masivos.
+        Máximo de simulaciones por sub-batch (0 = auto, basado en VRAM libre).
     
     Returns
     -------
     main_series : np.ndarray, shape (B, steps)
         Series principales de todas las B simulaciones. Ya en CPU (NumPy).
-    
-    Notas
-    -----
-    - Para B=200, n=200: VRAM = 200×200×200×8 = 64MB → cabe en cualquier GPU.
-    - Para B=2000, n=500: VRAM = 2000×500×500×8 = 4GB → cabe en RTX 5070 Ti.
-    - La GPU se satura con B×n²≥1M floats (operaciones vectoriales masivas).
-    - Forcing, gradients, macro_mode="mean" soportados. macro_mode="dynamic" NO
-      (requiere estado serial → fallback a simulate_abm_core uno por uno).
     """
     if not using_gpu():
-        # Sin GPU: ejecutar uno por uno con CPU (no podemos paralelizar así)
         results = []
         for pv in param_variants:
             p = dict(base_params)
@@ -383,32 +374,34 @@ def simulate_abm_batch(
     if B == 0:
         return np.empty((0, steps), dtype=np.float64)
     
-    # Auto-batch: estimar VRAM necesaria y dividir si es necesario
     n = int(base_params.get("grid_size", 20))
-    vram_per_sim = n * n * 8 * 6  # ~6 arrays temporales por sim (grid, acc, count, noise, etc.)
-    vram_total = B * vram_per_sim
+    vram_per_sim_bytes = n * n * 8 * 6  # ~6 arrays temporales por sim
     
-    # Calcular límite VRAM (60% de la total para seguridad)
-    try:
-        from gpu_backend import _GPU_MEM_GB as _mem_gb
-        vram_limit = int(_mem_gb * 0.6 * 1024**3)
-    except (ImportError, AttributeError):
-        vram_limit = 8 * 1024**3
+    # ─── Auto-chunking: usar VRAM libre REAL de ESTA GPU ─────────────
+    from gpu_backend import get_free_vram
+    import cupy as cp
+    
+    free_vram_gb = get_free_vram()
+    # Usar 50% de lo libre (conservador — otros procesos pueden estar en la misma GPU)
+    vram_limit = int(free_vram_gb * 0.50 * 1024**3)
     
     if max_batch > 0:
         effective_batch = max_batch
     else:
-        effective_batch = max(1, vram_limit // max(vram_per_sim, 1))
+        effective_batch = max(1, vram_limit // max(vram_per_sim_bytes, 1))
     
     if B > effective_batch:
-        # Dividir en sub-batches
+        # Dividir en sub-batches dentro de esta misma GPU
         all_results = []
         for i in range(0, B, effective_batch):
             chunk = param_variants[i:i + effective_batch]
             chunk_result = simulate_abm_batch(
-                base_params, chunk, steps, seed, series_key, init_range, max_batch=effective_batch
+                base_params, chunk, steps, seed, series_key, init_range,
+                max_batch=effective_batch,
             )
             all_results.append(chunk_result)
+            # Liberar caché CuPy entre sub-batches para evitar fragmentación
+            cp.get_default_memory_pool().free_all_blocks()
         return np.concatenate(all_results, axis=0)
     
     # ─── Extraer parámetros compartidos (con override por variante) ────
