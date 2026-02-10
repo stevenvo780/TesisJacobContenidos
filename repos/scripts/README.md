@@ -28,6 +28,9 @@ Ejecuta los 29 casos en paralelo usando procesos locales. **No requiere Docker n
 # Limitar workers
 ./cpu_run.sh --workers 4
 
+# Secuencial: un caso a la vez (grids enormes que usan toda la RAM)
+./cpu_run.sh --step-by-step --grid 2000
+
 # Ver plan sin ejecutar
 ./cpu_run.sh --dry-run
 ```
@@ -39,6 +42,7 @@ Ejecuta los 29 casos en paralelo usando procesos locales. **No requiere Docker n
 | `--part K` | todas | Ejecutar solo tanda K |
 | `--case NOMBRE` | — | Filtrar por nombre (parcial) |
 | `--workers N` | auto | Workers paralelos |
+| `--step-by-step` | — | Secuencial: 1 caso a la vez |
 | `--perm N` | 9999 | Permutaciones EDI |
 | `--boot N` | 5000 | Bootstrap samples |
 | `--refine N` | 50000 | Iteraciones refinamiento |
@@ -67,6 +71,9 @@ Ejecuta los 29 casos dentro del contenedor Docker `tesis-gpu` con distribución 
 ./gpu_run.sh --gpu 0                   # solo RTX 5070 Ti
 ./gpu_run.sh --gpu 1 --case clima      # solo RTX 2060
 
+# Secuencial: un caso a la vez (grids enormes que necesitan toda la VRAM)
+./gpu_run.sh --step-by-step --grid 5000
+
 # Grid explícito (desactiva auto-escalado)
 ./gpu_run.sh --grid 1000 --parts 5
 
@@ -81,6 +88,7 @@ Ejecuta los 29 casos dentro del contenedor Docker `tesis-gpu` con distribución 
 | `--part K` | todas | Ejecutar solo tanda K |
 | `--case NOMBRE` | — | Filtrar por nombre (parcial) |
 | `--gpu N` | auto | Forzar GPU N (0 o 1) |
+| `--step-by-step` | — | Secuencial: 1 caso a la vez |
 | `--perm N` | 9999 | Permutaciones EDI |
 | `--boot N` | 5000 | Bootstrap samples |
 | `--refine N` | 50000 | Iteraciones refinamiento |

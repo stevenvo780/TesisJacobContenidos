@@ -25,6 +25,9 @@
 #   # Limitar workers paralelos
 #   ./cpu_run.sh --workers 4
 #
+#   # Secuencial: un caso a la vez (para grids enormes que usan toda la RAM)
+#   ./cpu_run.sh --step-by-step --grid 2000
+#
 #   # Dry-run
 #   ./cpu_run.sh --dry-run
 #
@@ -35,6 +38,7 @@
 #   --part K        Ejecutar solo tanda K de N (default: todas)
 #   --case NOMBRE   Filtrar casos por nombre (match parcial, case-insensitive)
 #   --workers N     Workers paralelos (default: auto = min(nproc, ncasos))
+#   --step-by-step  Ejecutar caso por caso secuencialmente (1 a la vez)
 #   --perm N        Permutaciones EDI (default: 9999)
 #   --boot N        Bootstrap samples (default: 5000)
 #   --refine N      Iteraciones refinamiento (default: 50000)
@@ -58,6 +62,7 @@ BOOT=5000
 REFINE=50000
 RUNS=50
 WORKERS=0          # 0 = auto
+STEP_BY_STEP=0
 DRY_RUN=0
 CASE_FILTER=""
 
@@ -85,6 +90,7 @@ while [[ $# -gt 0 ]]; do
         --runs)      RUNS="$2";        shift 2 ;;
         --workers)   WORKERS="$2";     shift 2 ;;
         --case)      CASE_FILTER="$2"; shift 2 ;;
+        --step-by-step) STEP_BY_STEP=1;  shift ;;
         --dry-run)   DRY_RUN=1;        shift ;;
         --help|-h)
             head -45 "$0" | tail -41
@@ -167,7 +173,9 @@ get_partition() {
 
 # ── Workers automáticos ──────────────────────────────────────────────────────
 NCORES=$(nproc 2>/dev/null || echo 4)
-if [[ $WORKERS -eq 0 ]]; then
+if [[ $STEP_BY_STEP -eq 1 ]]; then
+    WORKERS=1
+elif [[ $WORKERS -eq 0 ]]; then
     WORKERS=$NCORES
     [[ $WORKERS -gt $TOTAL ]] && WORKERS=$TOTAL
     [[ $WORKERS -gt 16 ]] && WORKERS=16    # cap razonable para CPU
@@ -298,7 +306,7 @@ echo "╠═══════════════════════�
 echo "║  Grid:     ${GRID}×${GRID}"
 echo "║  Parts:    ${PARTS}  $([ $PART -gt 0 ] && echo "(solo parte ${PART})" || echo "(todas)")"
 echo "║  Casos:    ${TOTAL}$( [[ -n "$CASE_FILTER" ]] && echo " (filtro: ${CASE_FILTER})" )"
-echo "║  Workers:  ${WORKERS} (cores: ${NCORES})"
+echo "║  Workers:  ${WORKERS} (cores: ${NCORES})$( [[ $STEP_BY_STEP -eq 1 ]] && echo " ⇢ SECUENCIAL" )"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
 echo "║  SimDir:   ${SIM_DIR}"
 [[ $DRY_RUN -eq 1 ]] && \
@@ -308,22 +316,70 @@ echo ""
 
 START_GLOBAL=$SECONDS
 
-# ── Ejecutar por tandas ───────────────────────────────────────────────────────
-for p in $(seq 1 "$PARTS"); do
-    if [[ $PART -gt 0 && $p -ne $PART ]]; then continue; fi
-
-    CASES_STR=$(get_partition ALL_CASES "$PARTS" "$p")
-    read -ra CASES_ARR <<< "$CASES_STR"
-
-    echo "═══ Tanda ${p}/${PARTS} — ${#CASES_ARR[@]} casos ═══"
-    run_batch "${CASES_ARR[@]}"
-
-    if [[ $p -lt $PARTS && $PART -eq 0 ]]; then
+# ── Ejecutar por tandas ───────────────────────────────────────────────────────────────────
+if [[ $STEP_BY_STEP -eq 1 ]]; then
+    # ── Modo secuencial: un caso a la vez, toda la RAM disponible ──
+    echo "═══ Modo SECUENCIAL — ${TOTAL} casos, 1 a la vez ═══"
+    LOG_DIR="/tmp/cpu_run_g${GRID}_logs"
+    mkdir -p "$LOG_DIR"
+    TOTAL_OK=0; TOTAL_FAIL=0; TOTAL_SKIP=0
+    for ((i=0; i<TOTAL; i++)); do
+        caso=${ALL_CASES[$i]}
         echo ""
-        echo "--- Pausa 2s entre tandas ---"
-        sleep 2
-    fi
-done
+        echo "  [$((i+1))/${TOTAL}] ▶ ${caso}"
+        if [[ $DRY_RUN -eq 1 ]]; then
+            echo "  [DRY-RUN] ${caso}"
+            continue
+        fi
+        SRC="${SIM_DIR}/${caso}/src"
+        LOG="${LOG_DIR}/${caso}.log"
+        if [[ ! -f "${SRC}/validate.py" ]]; then
+            echo "  [$((i+1))/${TOTAL}] SKIP ${caso}"
+            TOTAL_SKIP=$((TOTAL_SKIP+1))
+            continue
+        fi
+        START_CASE=$SECONDS
+        (
+            cd "$SRC"
+            export HYPER_GRID_SIZE=$GRID
+            export HYPER_N_PERM=$PERM
+            export HYPER_N_BOOT=$BOOT
+            export HYPER_N_REFINE=$REFINE
+            export HYPER_N_RUNS=$RUNS
+            python3 validate.py 2>&1 | tee "$LOG"
+        )
+        RC=$?
+        ELAPSED_CASE=$(( SECONDS - START_CASE ))
+        EDI=$(grep -oP 'EDI[=:]\s*-?[\d.]+' "$LOG" 2>/dev/null | tail -1 || echo '?')
+        if [[ $RC -eq 0 ]]; then
+            echo "  [$((i+1))/${TOTAL}] ✓ ${caso} — ${ELAPSED_CASE}s — ${EDI}"
+            TOTAL_OK=$((TOTAL_OK+1))
+        else
+            echo "  [$((i+1))/${TOTAL}] ✗ ${caso} — ${ELAPSED_CASE}s (exit ${RC})"
+            TOTAL_FAIL=$((TOTAL_FAIL+1))
+        fi
+    done
+    echo ""
+    echo "  ═══ Resumen secuencial ═══"
+    echo "  OK: ${TOTAL_OK}  FAIL: ${TOTAL_FAIL}  SKIP: ${TOTAL_SKIP}"
+else
+    # ── Modo paralelo por tandas (comportamiento normal) ──
+    for p in $(seq 1 "$PARTS"); do
+        if [[ $PART -gt 0 && $p -ne $PART ]]; then continue; fi
+
+        CASES_STR=$(get_partition ALL_CASES "$PARTS" "$p")
+        read -ra CASES_ARR <<< "$CASES_STR"
+
+        echo "═══ Tanda ${p}/${PARTS} — ${#CASES_ARR[@]} casos ═══"
+        run_batch "${CASES_ARR[@]}"
+
+        if [[ $p -lt $PARTS && $PART -eq 0 ]]; then
+            echo ""
+            echo "--- Pausa 2s entre tandas ---"
+            sleep 2
+        fi
+    done
+fi
 
 ELAPSED_GLOBAL=$(( SECONDS - START_GLOBAL ))
 echo ""

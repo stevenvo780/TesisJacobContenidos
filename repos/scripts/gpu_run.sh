@@ -31,6 +31,10 @@
 #   ./gpu_run.sh --gpu 0              # solo RTX 5070 Ti
 #   ./gpu_run.sh --gpu 1 --case clima  # solo RTX 2060, caso clima
 #
+#   # Secuencial: un caso a la vez (para grids enormes que necesitan toda la VRAM)
+#   ./gpu_run.sh --step-by-step --grid 5000
+#   ./gpu_run.sh --step-by-step --gpu 0 --grid 3000
+#
 # ── FLAGS ─────────────────────────────────────────────────────────────────────
 #
 #   --grid SIZE     Grid size del ABM (default: auto = 200 × parts)
@@ -40,6 +44,7 @@
 #   --case NOMBRE   Filtrar casos por nombre (match parcial, case-insensitive)
 #                   Ej: --case clima → 01_caso_clima
 #   --gpu N         Forzar uso de GPU N solamente (0 o 1)
+#   --step-by-step  Ejecutar caso por caso secuencialmente (1 worker)
 #   --perm N        Permutaciones EDI (default: 9999)
 #   --boot N        Bootstrap samples (default: 5000)
 #   --refine N      Iteraciones refinamiento (default: 50000)
@@ -62,6 +67,7 @@ REFINE=50000
 RUNS=50
 CONTAINER="tesis-gpu"
 DRY_RUN=0
+STEP_BY_STEP=0
 CASE_FILTER=""
 FORCE_GPU=-1
 
@@ -95,6 +101,7 @@ while [[ $# -gt 0 ]]; do
         --container) CONTAINER="$2"; shift 2 ;;
         --case)      CASE_FILTER="$2"; shift 2 ;;
         --gpu)       FORCE_GPU="$2";   shift 2 ;;
+        --step-by-step) STEP_BY_STEP=1; shift ;;
         --dry-run)   DRY_RUN=1;      shift ;;
         --help|-h)
             head -40 "$0" | tail -36
@@ -571,7 +578,7 @@ echo "║  GPUs:     ${N_GPUS} detectadas$( [[ $FORCE_GPU -ge 0 ]] && echo " →
 echo "║  GPU 0:    ${GPU0_NAME} — ${GPU0_VRAM} MB"
 [[ $N_GPUS -ge 2 ]] && \
 echo "║  GPU 1:    ${GPU1_NAME} — ${GPU1_VRAM} MB"
-echo "║  Distrib:  cola dinámica — N workers/GPU, overlap CPU+GPU"
+echo "║  Distrib:  $( [[ $STEP_BY_STEP -eq 1 ]] && echo "SECUENCIAL — 1 caso a la vez" || echo "cola dinámica — N workers/GPU, overlap CPU+GPU" )"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
 echo "║  Contendr: ${CONTAINER}"
 echo "║  VRAM/sim: ~$(estimate_vram_per_sim $GRID) MB"
@@ -592,24 +599,72 @@ fi
 
 START_GLOBAL=$SECONDS
 
-# ── Ejecutar por tandas ───────────────────────────────────────────────────────
-# Cada proceso Python ve AMBAS GPUs y elige la de más VRAM libre al arrancar.
-# Así los primeros procesos saturan GPU 0, y los siguientes caen en GPU 1.
-for p in $(seq 1 "$PARTS"); do
-    if [[ $PART -gt 0 && $p -ne $PART ]]; then continue; fi
-    
-    CASES_STR=$(get_partition ALL_CASES "$PARTS" "$p")
-    read -ra CASES_ARR <<< "$CASES_STR"
-    
-    echo "═══ Tanda ${p}/${PARTS} — ${#CASES_ARR[@]} casos ═══"
-    run_batch "${CASES_ARR[@]}"
-    
-    if [[ $p -lt $PARTS && $PART -eq 0 ]]; then
-        echo ""
-        echo "--- Pausa 5s entre tandas (liberar VRAM) ---"
-        sleep 5
+# ── Ejecutar por tandas ───────────────────────────────────────────────────────────────────
+if [[ $STEP_BY_STEP -eq 1 ]]; then
+    # ── Modo secuencial: un caso a la vez, toda la VRAM disponible ──
+    echo "═══ Modo SECUENCIAL — ${TOTAL} casos, 1 a la vez ═══"
+    # Elegir GPU (la forzada o la de más VRAM libre)
+    local_gpu=${FORCE_GPU}
+    if [[ $local_gpu -lt 0 ]]; then
+        local_gpu=$(nvidia-smi --query-gpu=index,memory.free --format=csv,noheader,nounits 2>/dev/null | sort -t',' -k2 -rn | head -1 | cut -d',' -f1 | tr -d ' ')
+        [[ -z "$local_gpu" ]] && local_gpu=0
     fi
-done
+    echo "  GPU: ${local_gpu} (toda la VRAM para cada caso)"
+    TOTAL_OK=0; TOTAL_FAIL=0; TOTAL_SKIP=0
+    for ((i=0; i<TOTAL; i++)); do
+        caso=${ALL_CASES[$i]}
+        echo ""
+        echo "  [$((i+1))/${TOTAL}] ▶ ${caso}"
+        if [[ $DRY_RUN -eq 1 ]]; then
+            echo "  [DRY-RUN] ${caso}"
+            continue
+        fi
+        local_log="/tmp/gpu_run_g${GRID}_logs/${caso}.log"
+        local_inner="
+export HYPER_GRID_SIZE=${GRID}
+export HYPER_N_PERM=${PERM}
+export HYPER_N_BOOT=${BOOT}
+export HYPER_N_REFINE=${REFINE}
+export HYPER_N_RUNS=${RUNS}
+mkdir -p /tmp/gpu_run_g${GRID}_logs
+SRC=/workspace/repos/Simulaciones/${caso}/src
+if [ ! -f \"\${SRC}/validate.py\" ]; then echo SKIP; exit 0; fi
+cd \"\${SRC}\" && HYPER_GPU_DEVICE=${local_gpu} python3 validate.py
+"
+        START_CASE=$SECONDS
+        docker exec "$CONTAINER" bash -c "$local_inner" > >(tee /tmp/gpu_step_${caso}.log) 2>&1
+        RC=$?
+        ELAPSED_CASE=$(( SECONDS - START_CASE ))
+        EDI=$(grep -oP 'EDI[=:]\s*-?[\d.]+' /tmp/gpu_step_${caso}.log 2>/dev/null | tail -1 || echo '?')
+        if [[ $RC -eq 0 ]]; then
+            echo "  [$((i+1))/${TOTAL}] ✓ ${caso} — ${ELAPSED_CASE}s — ${EDI}"
+            TOTAL_OK=$((TOTAL_OK+1))
+        else
+            echo "  [$((i+1))/${TOTAL}] ✗ ${caso} — ${ELAPSED_CASE}s (exit ${RC})"
+            TOTAL_FAIL=$((TOTAL_FAIL+1))
+        fi
+    done
+    echo ""
+    echo "  ═══ Resumen secuencial ═══"
+    echo "  OK: ${TOTAL_OK}  FAIL: ${TOTAL_FAIL}"
+else
+    # ── Modo paralelo por tandas (comportamiento normal) ──
+    for p in $(seq 1 "$PARTS"); do
+        if [[ $PART -gt 0 && $p -ne $PART ]]; then continue; fi
+        
+        CASES_STR=$(get_partition ALL_CASES "$PARTS" "$p")
+        read -ra CASES_ARR <<< "$CASES_STR"
+        
+        echo "═══ Tanda ${p}/${PARTS} — ${#CASES_ARR[@]} casos ═══"
+        run_batch "${CASES_ARR[@]}"
+        
+        if [[ $p -lt $PARTS && $PART -eq 0 ]]; then
+            echo ""
+            echo "--- Pausa 5s entre tandas (liberar VRAM) ---"
+            sleep 5
+        fi
+    done
+fi
 
 ELAPSED_GLOBAL=$(( SECONDS - START_GLOBAL ))
 echo ""
