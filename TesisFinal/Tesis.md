@@ -3,24 +3,24 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 00:38 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 00:43 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
 ## Tabla de Contenidos
 
-1. [00 Marco Conceptual — Narrativa Unificada](#00-marco-conceptual-narrativa-unificada)
-2. [01 Metodología de Medición — Narrativa Unificada](#01-metodología-de-medición-narrativa-unificada)
-3. [02 Modelado y Simulación — Narrativa Unificada](#02-modelado-y-simulación-narrativa-unificada)
-4. [03 Validación y Praxis — Narrativa Unificada](#03-validación-y-praxis-narrativa-unificada)
-5. [04 Casos de Estudio — Narrativa Unificada (29 Casos)](#04-casos-de-estudio-narrativa-unificada-29-casos)
+1. [00 Marco Conceptual](#00-marco-conceptual)
+2. [01 Metodología de Medición](#01-metodología-de-medición)
+3. [02 Modelado y Simulación](#02-modelado-y-simulación)
+4. [03 Validación y Praxis](#03-validación-y-praxis)
+5. [04 Casos de Estudio (29 Casos)](#04-casos-de-estudio-29-casos)
 6. [Anexos](#anexos)
 7. [Resumen de Simulaciones](#resumen-de-simulaciones)
 
 
 ---
 
-# 00 Marco Conceptual — Narrativa Unificada
+# 00 Marco Conceptual
 
 ## Propósito
 Esta tesis construye un marco computacional para evaluar fenómenos de gran escala — candidatos a "hiperobjetos" en terminología de Morton (2013) — según su grado de cierre operativo. El marco no afirma ni niega la existencia metafísica de tales entidades: mide, clasifica y ordena su comportamiento en un gradiente de emergencia operativa.
@@ -39,7 +39,7 @@ El irrealismo operativo ocupa una posición intermedia: nuestros constructos son
 ### Fundamentos del irrealismo
 1. **Indeterminación pre-ontológica:** Lo que existe antes de la medición no tiene la estructura que el marco le impone. La estructura emerge del acto de modelar, no del fenómeno en sí. Esto no es antirrealismo (negación de la realidad externa), sino agnosticismo estructural: la realidad impone restricciones (los datos resisten la arbitrariedad), pero no dicta la forma del modelo.
 2. **Suficiencia operativa:** Un marco es operativamente suficiente si: (a) produce predicciones verificables, (b) resiste intentos de falsación, (c) discrimina entre fenómenos, y (d) genera un gradiente medible de propiedades. El framework ABM+ODE satisface las cuatro condiciones.
-3. **Objetos del entendimiento:** Los hiperobjetos de esta tesis son constructos operativos, análogos a lo que Kant llamó "objetos de la experiencia posible" — no cosas-en-sí, sino estructuras que el entendimiento impone y que los datos validan o rechazan.
+3. **Objetos del entendimiento:** Los hiperobjetos de esta tesis son constructos operativos, análogos a lo que Kant (1781) llamó "objetos de la experiencia posible" — no cosas-en-sí, sino estructuras que el entendimiento impone y que los datos validan o rechazan.
 
 ### Consecuencia central
 La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, el fenómeno de deforestación global exhibe un grado de cierre operativo de 0.633 (EDI), estadísticamente significativo (p<0.001), que resiste ablación, falsación y perturbación. Esto lo clasifica como objeto operativo de alto grado de emergencia."
@@ -64,7 +64,7 @@ Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. L
 - **Humphreys (2016):** La "fusión emergente" produce propiedades nuevas no atribuibles a componentes. Nuestro Nivel 4 captura exactamente esto: la constricción macro genera información predictiva que desaparece al eliminarla y no es recuperable desde el nivel micro.
 - **O'Connor & Wong (2005):** Distinguen emergencia ontológica (propiedades genuinamente nuevas) de emergencia epistemológica (limitaciones del conocimiento). Nuestro marco se sitúa explícitamente en la emergencia epistemológica: medimos limitaciones del nivel micro para explicar el fenómeno, no afirmamos propiedades ontológicamente nuevas.
 
-## Hipótesis Central (H1) — Reformulada bajo Irrealismo Operativo
+## Hipótesis Central (H1)
 
 Un fenómeno exhibe **cierre operativo de grado G** si y solo si:
 
@@ -220,7 +220,7 @@ graph TD
 ## Dependencias Teóricas (Resumen)
 Irrealismo operativo, emergentismo gradual, teoría de sistemas, termodinámica no lineal, estadística bayesiana y filosofía analítica como marco de prueba y refutación.
 
-## Bibliografía Nuclear (33 fuentes)
+## Bibliografía Nuclear (37 fuentes)
 1. Morton, T. (2013). *Hyperobjects: Philosophy and Ecology after the End of the World*. University of Minnesota Press.
 2. Harman, G. (2018). *Object-Oriented Ontology: A New Theory of Everything*. Pelican Books.
 3. Latour, B. (2017). *Facing Gaia: Eight Lectures on the New Climatic Regime*. Polity Press.
@@ -254,6 +254,18 @@ Irrealismo operativo, emergentismo gradual, teoría de sistemas, termodinámica 
 31. Jambeck, J. R., et al. (2015). "Plastic waste inputs from land into the ocean". *Science*.
 32. Docquier, F. & Rapoport, H. (2012). "Globalization, Brain Drain, and Development". *Journal of Economic Literature*.
 33. van Fraassen, B. C. (1980). *The Scientific Image*. Oxford University Press.
+34. Psillos, S. (1999). *Scientific Realism: How Science Tracks Truth*. Routledge.
+35. Kant, I. (1781). *Kritik der reinen Vernunft*.
+36. Kermack, W. O. & McKendrick, A. G. (1927). "A Contribution to the Mathematical Theory of Epidemics". *Proceedings of the Royal Society A*.
+37. Soros, G. (1987). *The Alchemy of Finance*. Simon & Schuster.
+
+## Fuentes de Datos (Repositorios Principales)
+- **World Bank Open Data:** Indicadores de desarrollo, deforestación, movilidad y urbanización.
+- **Our World in Data (OWID):** Producción de plásticos, energía y emisiones.
+- **Meteostat / NOAA:** Series temporales climáticas.
+- **Yahoo Finance:** Series temporales de mercados de capitales (SPY).
+- **CelesTrak:** Datos de catálogo de satélites (TLE) para el caso Kessler.
+- **Wikimedia Statistics:** Datos de actividad de Wikipedia y proyectos hermanos.
 
 ## Apéndice de Autoría IA
 Trabajo en co-autoría humano-IA: el humano define objetivos y valida empíricamente; la IA apoya implementación y documentación.
@@ -263,7 +275,7 @@ El marco define un gradiente computacional de cierre operativo para fenómenos d
 
 ---
 
-# 01 Metodología de Medición — Narrativa Unificada
+# 01 Metodología de Medición
 
 ## Protocolo de Rigor (C1-C5)
 1. **C1 Convergencia:** ABM acoplado mejora sobre ABM reducido en datos reales.
@@ -341,7 +353,7 @@ El pipeline clasifica fenómenos en un gradiente de cierre operativo. La metodol
 
 ---
 
-# 02 Modelado y Simulación — Narrativa Unificada
+# 02 Modelado y Simulación
 
 ## Arquitectura Detallada del Motor Híbrido
 El corazón de esta investigación es la clase `HybridModel`. Su función es mediar entre dos niveles descriptivos: el individuo (Agente) y la estructura (Ecuación). No presupone que la estructura "exista" ontológicamente — solo que su inclusión modifica las predicciones de forma medible.
@@ -561,7 +573,7 @@ Este comando verifica presencia de archivos requeridos, sincronización de times
 
 ---
 
-# 03 Validación y Praxis — Narrativa Unificada
+# 03 Validación y Praxis
 
 ## Enfoque de Clasificación Operativa
 La validación bajo irrealismo operativo no busca "confirmar" ni "refutar" la existencia de hiperobjetos. Clasifica fenómenos en un **gradiente de cierre operativo** (Niveles 0-5) según la indispensabilidad del constructo macro para predecir el comportamiento micro. Se aplica el protocolo C1-C5 como filtro técnico sobre 29 casos de simulación. La evaluación se realiza con `assimilation_strength=0.0` (zero-nudging), eliminando toda asistencia observacional durante la fase de validación.
@@ -742,7 +754,7 @@ La tesis demuestra que ciertos fenómenos **funcionan como si tuvieran estructur
 
 ---
 
-# 04 Casos de Estudio — Narrativa Unificada (29 Casos)
+# 04 Casos de Estudio (29 Casos)
 
 ## Resumen de Clasificación Operativa
 El motor de simulación ha sido ejecutado sobre un universo de **29 casos**, tras la remoción de 3 casos por inviabilidad de datos reales (Estética, Moderación Adversarial, RTB Publicidad). El protocolo C1-C5 + 6 criterios adicionales actúan como instrumento de **clasificación operativa**, no de demarcación ontológica. La evaluación se realiza con `assimilation_strength=0.0` y 999 permutaciones (seed=42).

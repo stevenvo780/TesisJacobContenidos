@@ -1,4 +1,4 @@
-# 04 Casos de Estudio — Narrativa Unificada (29 Casos)
+# 04 Casos de Estudio (29 Casos)
 
 ## Resumen de Clasificación Operativa
 El motor de simulación ha sido ejecutado sobre un universo de **29 casos**, tras la remoción de 3 casos por inviabilidad de datos reales (Estética, Moderación Adversarial, RTB Publicidad). El protocolo C1-C5 + 6 criterios adicionales actúan como instrumento de **clasificación operativa**, no de demarcación ontológica. La evaluación se realiza con `assimilation_strength=0.0` y 999 permutaciones (seed=42).

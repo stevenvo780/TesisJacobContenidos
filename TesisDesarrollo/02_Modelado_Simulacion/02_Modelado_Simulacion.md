@@ -1,4 +1,4 @@
-# 02 Modelado y Simulación — Narrativa Unificada
+# 02 Modelado y Simulación
 
 ## Arquitectura Detallada del Motor Híbrido
 El corazón de esta investigación es la clase `HybridModel`. Su función es mediar entre dos niveles descriptivos: el individuo (Agente) y la estructura (Ecuación). No presupone que la estructura "exista" ontológicamente — solo que su inclusión modifica las predicciones de forma medible.

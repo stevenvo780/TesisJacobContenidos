@@ -1,4 +1,4 @@
-# 00 Marco Conceptual — Narrativa Unificada
+# 00 Marco Conceptual
 
 ## Propósito
 Esta tesis construye un marco computacional para evaluar fenómenos de gran escala — candidatos a "hiperobjetos" en terminología de Morton (2013) — según su grado de cierre operativo. El marco no afirma ni niega la existencia metafísica de tales entidades: mide, clasifica y ordena su comportamiento en un gradiente de emergencia operativa.
@@ -17,7 +17,7 @@ El irrealismo operativo ocupa una posición intermedia: nuestros constructos son
 ### Fundamentos del irrealismo
 1. **Indeterminación pre-ontológica:** Lo que existe antes de la medición no tiene la estructura que el marco le impone. La estructura emerge del acto de modelar, no del fenómeno en sí. Esto no es antirrealismo (negación de la realidad externa), sino agnosticismo estructural: la realidad impone restricciones (los datos resisten la arbitrariedad), pero no dicta la forma del modelo.
 2. **Suficiencia operativa:** Un marco es operativamente suficiente si: (a) produce predicciones verificables, (b) resiste intentos de falsación, (c) discrimina entre fenómenos, y (d) genera un gradiente medible de propiedades. El framework ABM+ODE satisface las cuatro condiciones.
-3. **Objetos del entendimiento:** Los hiperobjetos de esta tesis son constructos operativos, análogos a lo que Kant llamó "objetos de la experiencia posible" — no cosas-en-sí, sino estructuras que el entendimiento impone y que los datos validan o rechazan.
+3. **Objetos del entendimiento:** Los hiperobjetos de esta tesis son constructos operativos, análogos a lo que Kant (1781) llamó "objetos de la experiencia posible" — no cosas-en-sí, sino estructuras que el entendimiento impone y que los datos validan o rechazan.
 
 ### Consecuencia central
 La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, el fenómeno de deforestación global exhibe un grado de cierre operativo de 0.633 (EDI), estadísticamente significativo (p<0.001), que resiste ablación, falsación y perturbación. Esto lo clasifica como objeto operativo de alto grado de emergencia."
@@ -42,7 +42,7 @@ Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. L
 - **Humphreys (2016):** La "fusión emergente" produce propiedades nuevas no atribuibles a componentes. Nuestro Nivel 4 captura exactamente esto: la constricción macro genera información predictiva que desaparece al eliminarla y no es recuperable desde el nivel micro.
 - **O'Connor & Wong (2005):** Distinguen emergencia ontológica (propiedades genuinamente nuevas) de emergencia epistemológica (limitaciones del conocimiento). Nuestro marco se sitúa explícitamente en la emergencia epistemológica: medimos limitaciones del nivel micro para explicar el fenómeno, no afirmamos propiedades ontológicamente nuevas.
 
-## Hipótesis Central (H1) — Reformulada bajo Irrealismo Operativo
+## Hipótesis Central (H1)
 
 Un fenómeno exhibe **cierre operativo de grado G** si y solo si:
 
@@ -198,7 +198,7 @@ graph TD
 ## Dependencias Teóricas (Resumen)
 Irrealismo operativo, emergentismo gradual, teoría de sistemas, termodinámica no lineal, estadística bayesiana y filosofía analítica como marco de prueba y refutación.
 
-## Bibliografía Nuclear (33 fuentes)
+## Bibliografía Nuclear (37 fuentes)
 1. Morton, T. (2013). *Hyperobjects: Philosophy and Ecology after the End of the World*. University of Minnesota Press.
 2. Harman, G. (2018). *Object-Oriented Ontology: A New Theory of Everything*. Pelican Books.
 3. Latour, B. (2017). *Facing Gaia: Eight Lectures on the New Climatic Regime*. Polity Press.
@@ -232,6 +232,18 @@ Irrealismo operativo, emergentismo gradual, teoría de sistemas, termodinámica 
 31. Jambeck, J. R., et al. (2015). "Plastic waste inputs from land into the ocean". *Science*.
 32. Docquier, F. & Rapoport, H. (2012). "Globalization, Brain Drain, and Development". *Journal of Economic Literature*.
 33. van Fraassen, B. C. (1980). *The Scientific Image*. Oxford University Press.
+34. Psillos, S. (1999). *Scientific Realism: How Science Tracks Truth*. Routledge.
+35. Kant, I. (1781). *Kritik der reinen Vernunft*.
+36. Kermack, W. O. & McKendrick, A. G. (1927). "A Contribution to the Mathematical Theory of Epidemics". *Proceedings of the Royal Society A*.
+37. Soros, G. (1987). *The Alchemy of Finance*. Simon & Schuster.
+
+## Fuentes de Datos (Repositorios Principales)
+- **World Bank Open Data:** Indicadores de desarrollo, deforestación, movilidad y urbanización.
+- **Our World in Data (OWID):** Producción de plásticos, energía y emisiones.
+- **Meteostat / NOAA:** Series temporales climáticas.
+- **Yahoo Finance:** Series temporales de mercados de capitales (SPY).
+- **CelesTrak:** Datos de catálogo de satélites (TLE) para el caso Kessler.
+- **Wikimedia Statistics:** Datos de actividad de Wikipedia y proyectos hermanos.
 
 ## Apéndice de Autoría IA
 Trabajo en co-autoría humano-IA: el humano define objetivos y valida empíricamente; la IA apoya implementación y documentación.

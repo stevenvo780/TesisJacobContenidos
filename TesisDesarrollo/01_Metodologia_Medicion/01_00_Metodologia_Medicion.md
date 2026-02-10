@@ -1,4 +1,4 @@
-# 01 Metodología de Medición — Narrativa Unificada
+# 01 Metodología de Medición
 
 ## Protocolo de Rigor (C1-C5)
 1. **C1 Convergencia:** ABM acoplado mejora sobre ABM reducido en datos reales.
