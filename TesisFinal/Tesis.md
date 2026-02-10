@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 04:39 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 16:12 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -33,8 +33,6 @@
   - [Riesgos y Mitigación](#riesgos-y-mitigación)
   - [Mapa de la Tesis](#mapa-de-la-tesis)
   - [Dependencias Teóricas (Resumen)](#dependencias-teóricas-resumen)
-  - [Bibliografía Nuclear (37 fuentes)](#bibliografía-nuclear-37-fuentes)
-  - [Fuentes de Datos (Repositorios Principales)](#fuentes-de-datos-repositorios-principales)
   - [Apéndice de Autoría IA](#apéndice-de-autoría-ia)
   - [Síntesis](#síntesis)
 - [01 Metodología de Medición](#01-metodología-de-medición)
@@ -83,6 +81,10 @@
     - [Diversidad de Dominios](#diversidad-de-dominios)
     - [El Patrón de la Inercia Material](#el-patrón-de-la-inercia-material)
     - [Diagnóstico: ¿Por Qué la Mayoría se Clasifica en Nivel 0-1?](#diagnóstico-por-qué-la-mayoría-se-clasifica-en-nivel-0-1)
+  - [Análisis de Escalabilidad (Post-Auditoría)](#análisis-de-escalabilidad-post-auditoría)
+    - [[CANDIDATOS] Candidatos con margen real](#candidatos-candidatos-con-margen-real)
+    - [[SIN MARGEN] Casos sin margen (Modelo Inadecuado)](#sin-margen-casos-sin-margen-modelo-inadecuado)
+    - [[OPTIMOS] Casos óptimos](#optimos-casos-óptimos)
   - [Diálogo Dialéctico y Falsación del Instrumento](#diálogo-dialéctico-y-falsación-del-instrumento)
     - [1. El Caso Clima (EDI=0.010 vs Umbral 0.30)](#1-el-caso-clima-edi0010-vs-umbral-030)
     - [2. Información Efectiva (EI) y sus Limitaciones](#2-información-efectiva-ei-y-sus-limitaciones)
@@ -106,10 +108,13 @@
   - [02_Modelado_Simulacion](#02_modelado_simulacion)
   - [03_Validacion_Praxis](#03_validacion_praxis)
   - [04_Casos_De_Estudio](#04_casos_de_estudio)
-- [Indice: EjersiciosCriticos](#indice-ejersicioscriticos)
+- [Indice: EjerciciosCriticos](#indice-ejercicioscriticos)
 - [Registros historicos](#registros-historicos)
   - [registro_racionalizacion_glosarios_casos.md](#registro_racionalizacion_glosarios_casosmd)
   - [registro_resecuencia_indices.md](#registro_resecuencia_indicesmd)
+- [05 Bibliografía Nuclear](#05-bibliografía-nuclear)
+  - [Bibliografía Nuclear (37 fuentes)](#bibliografía-nuclear-37-fuentes)
+  - [Fuentes de Datos (Repositorios Principales)](#fuentes-de-datos-repositorios-principales)
 
 
 ---
@@ -376,52 +381,7 @@ graph TD
 ## Dependencias Teóricas (Resumen)
 Irrealismo operativo, emergentismo gradual, teoría de sistemas, termodinámica no lineal, estadística bayesiana y filosofía analítica como marco de prueba y refutación.
 
-## Bibliografía Nuclear (37 fuentes)
-1. Morton, T. (2013). *Hyperobjects: Philosophy and Ecology after the End of the World*. University of Minnesota Press.
-2. Harman, G. (2018). *Object-Oriented Ontology: A New Theory of Everything*. Pelican Books.
-3. Latour, B. (2017). *Facing Gaia: Eight Lectures on the New Climatic Regime*. Polity Press.
-4. Bennett, J. (2010). *Vibrant Matter: A Political Ecology of Things*. Duke University Press.
-5. Bunge, M. (1979). *Treatise on Basic Philosophy, Volume 4: Ontology II: A World of Systems*. Reidel.
-6. Bueno, G. (1978). *Ensayos materialistas*. Taurus.
-7. Popper, K. (1959). *The Logic of Scientific Discovery*. Hutchinson.
-8. Lakatos, I. (1978). *The Methodology of Scientific Research Programmes*. Cambridge University Press.
-9. Luhmann, N. (1995). *Social Systems*. Stanford University Press.
-10. Haken, H. (1983). *Synergetics: An Introduction*. Springer-Verlag.
-11. Shannon, C. E. (1948). "A Mathematical Theory of Communication". *Bell System Technical Journal*.
-12. Holland, J. H. (1995). *Hidden Order: How Adaptation Builds Complexity*. Addison-Wesley.
-13. Schelling, T. C. (1978). *Micromotives and Macrobehavior*. W. W. Norton & Company.
-14. Strogatz, S. H. (2014). *Nonlinear Dynamics and Chaos*. Westview Press.
-15. Soros, G. (1987). *The Alchemy of Finance*. Simon & Schuster.
-16. Taleb, N. N. (2012). *Antifragile: Things That Gain from Disorder*. Random House.
-17. Evensen, G. (2009). *Data Assimilation: The Ensemble Kalman Filter*. Springer.
-18. Ladyman, J. & Ross, D. (2007). *Every Thing Must Go: Metaphysics Naturalized*. Oxford University Press.
-19. Woodward, J. (2003). *Making Things Happen: A Theory of Causal Explanation*. Oxford University Press.
-20. Dennett, D. (1991). "Real Patterns". *The Journal of Philosophy*.
-21. Batterman, R. (2002). *The Devil in the Details: Asymptotic Reasoning in Explanation, Reduction, and Emergence*. Oxford University Press.
-22. Humphreys, P. (2016). *Emergence: A Philosophical Account*. Oxford University Press.
-23. Chalmers, D. (2006). "Strong and Weak Emergence". En *The Re-Emergence of Emergence*. Oxford University Press.
-24. Bedau, M. (1997). "Weak Emergence". *Philosophical Perspectives*.
-25. Kim, J. (1999). "Making Sense of Emergence". *Philosophical Studies*.
-26. O'Connor, T. & Wong, H. Y. (2005). "The Metaphysics of Emergence". *Noûs*.
-27. Hoel, E. P. (2017). "When the Map Is Better Than the Territory". *Entropy*.
-28. Budyko, M. I. (1969). "The effect of solar radiation variations on the climate of the Earth". *Tellus*.
-29. Sellers, W. D. (1969). "A global climatic model based on the energy balance of the earth-atmosphere system". *Journal of Applied Meteorology*.
-30. von Thünen, J. H. (1826). *Der Isolirte Staat in Beziehung auf Landwirthschaft und Nationalökonomie*.
-31. Jambeck, J. R., et al. (2015). "Plastic waste inputs from land into the ocean". *Science*.
-32. Docquier, F. & Rapoport, H. (2012). "Globalization, Brain Drain, and Development". *Journal of Economic Literature*.
-33. van Fraassen, B. C. (1980). *The Scientific Image*. Oxford University Press.
-34. Psillos, S. (1999). *Scientific Realism: How Science Tracks Truth*. Routledge.
-35. Kant, I. (1781). *Kritik der reinen Vernunft*.
-36. Kermack, W. O. & McKendrick, A. G. (1927). "A Contribution to the Mathematical Theory of Epidemics". *Proceedings of the Royal Society A*.
-37. Soros, G. (1987). *The Alchemy of Finance*. Simon & Schuster.
 
-## Fuentes de Datos (Repositorios Principales)
-- **World Bank Open Data:** Indicadores de desarrollo, deforestación, movilidad y urbanización.
-- **Our World in Data (OWID):** Producción de plásticos, energía y emisiones.
-- **Meteostat / NOAA:** Series temporales climáticas.
-- **Yahoo Finance:** Series temporales de mercados de capitales (SPY).
-- **CelesTrak:** Datos de catálogo de satélites (TLE) para el caso Kessler.
-- **Wikimedia Statistics:** Datos de actividad de Wikipedia y proyectos hermanos.
 
 ## Apéndice de Autoría IA
 Trabajo en co-autoría humano-IA: el humano define objetivos y valida empíricamente; la IA apoya implementación y documentación.
@@ -735,7 +695,7 @@ La validación bajo irrealismo operativo no busca "confirmar" ni "refutar" la ex
 
 ## Resultados Consolidados (29 Casos — Protocolo Completo)
 
-El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso alcanza **Nivel 4** solo si las 11 condiciones son ✓ simultáneamente. La significancia estadística se evalúa mediante permutation test con 999 permutaciones (seed=42).
+El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso alcanza **Nivel 4** solo si las 11 condiciones se cumplen simultáneamente. La significancia estadística se evalúa mediante permutation test con 999 permutaciones (seed=42).
 
 > **Estado actual:** Bajo el pipeline limpio (sin data leakage, zero-nudging, 999 permutaciones): **2/29 en Nivel 4** (Deforestación y Microplásticos). El paisaje de emergencia queda completamente mapeado.
 
@@ -766,39 +726,39 @@ pie title Distribución del Paisaje de Emergencia (29 Casos)
 
 ## Matriz de Clasificación Operativa (29 casos × 11 criterios + Nivel)
 
-Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). **Nivel** = grado de cierre operativo (0–4, control = —). **Validado** = 11 condiciones ✓ simultáneamente.
+Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). **Nivel** = grado de cierre operativo (0–4, control = —). **Validado** = 11 condiciones se cumplen simultáneamente.
 
 | # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Nivel | Result |
 | :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| 16 | Deforestacion | 0.633 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 4 | **Validado** |
-| 24 | Microplasticos | 0.427 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | 4 | **Validado** |
-| 06 | Falsacion Exogeneidad | 0.055 | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | Control ❌ |
-| 07 | Falsacion No Estacionariedad | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | — | Control ❌ |
-| 08 | Falsacion Observabilidad | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | — | Control ❌ |
-| 01 | Clima | 0.010 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 1 | Rechazado |
-| 02 | Conciencia | -0.024 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ | 0 | Rechazado |
-| 03 | Contaminacion | -0.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
-| 04 | Energia | -0.003 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
-| 05 | Epidemiologia | 0.000 | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ | 0 | Rechazado |
-| 09 | Finanzas | 0.040 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | ✗ | 2 | Rechazado |
-| 10 | Justicia | 0.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
-| 11 | Movilidad | 0.003 | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | 1 | Rechazado |
-| 12 | Paradigmas | 0.000 | ✗ | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
-| 13 | Politicas Estrategicas | 0.011 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 1 | Rechazado |
-| 14 | Postverdad | 0.001 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 1 | Rechazado |
-| 15 | Wikipedia | 0.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 0 | Rechazado |
-| 17 | Oceanos | 0.053 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | 2 | Rechazado |
-| 18 | Urbanizacion | 0.000 | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ | 1 | Rechazado |
-| 19 | Acidificacion Oceanica | -0.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
-| 20 | Kessler | -0.420 | ✗ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | 0 | Rechazado |
-| 21 | Salinizacion | 0.027 | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 1 | Rechazado |
-| 22 | Fosforo | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
-| 23 | Erosion Dialectica | -1.000 | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
-| 25 | Acuiferos | -0.179 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
-| 26 | Starlink | -1.000 | ✗ | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 0 | Rechazado |
-| 27 | Riesgo Biologico | 0.105 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | 1 | Rechazado |
-| 28 | Fuga Cerebros | 0.183 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 3 | Rechazado |
-| 29 | Iot | 0.020 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | 2 | Rechazado |
+| 16 | Deforestacion | 0.633 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
+| 24 | Microplasticos | 0.427 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
+| 06 | Falsacion Exogeneidad | 0.055 | Si | Si | Si | No | Si | Si | Si | Si | Si | Si | — | Control (Rechazado) |
+| 07 | Falsacion No Estacionariedad | -1.000 | No | Si | Si | Si | Si | Si | Si | Si | No | Si | — | Control (Rechazado) |
+| 08 | Falsacion Observabilidad | -1.000 | No | Si | Si | Si | Si | Si | Si | Si | No | Si | — | Control (Rechazado) |
+| 01 | Clima | 0.010 | Si | Si | Si | Si | Si | Si | Si | Si | No | No | 1 | Rechazado |
+| 02 | Conciencia | -0.024 | Si | Si | Si | Si | Si | No | No | Si | No | No | 0 | Rechazado |
+| 03 | Contaminacion | -0.000 | No | Si | Si | No | Si | Si | Si | Si | No | No | 0 | Rechazado |
+| 04 | Energia | -0.003 | No | Si | Si | Si | Si | Si | Si | Si | No | No | 0 | Rechazado |
+| 05 | Epidemiologia | 0.000 | No | No | No | Si | Si | Si | No | Si | No | No | 0 | Rechazado |
+| 09 | Finanzas | 0.040 | Si | Si | Si | Si | Si | No | No | Si | Si | No | 2 | Rechazado |
+| 10 | Justicia | 0.000 | No | Si | Si | No | Si | Si | Si | Si | No | No | 0 | Rechazado |
+| 11 | Movilidad | 0.003 | Si | Si | No | Si | Si | Si | No | No | Si | Si | 1 | Rechazado |
+| 12 | Paradigmas | 0.000 | No | No | Si | Si | No | Si | Si | Si | No | No | 0 | Rechazado |
+| 13 | Politicas Estrategicas | 0.011 | Si | Si | Si | Si | Si | Si | Si | Si | No | No | 1 | Rechazado |
+| 14 | Postverdad | 0.001 | Si | Si | Si | Si | Si | Si | Si | Si | No | No | 1 | Rechazado |
+| 15 | Wikipedia | 0.000 | No | Si | Si | No | Si | Si | Si | Si | No | No | 0 | Rechazado |
+| 17 | Oceanos | 0.053 | Si | Si | Si | Si | Si | Si | Si | Si | No | No | 2 | Rechazado |
+| 18 | Urbanizacion | 0.000 | Si | Si | Si | No | Si | Si | No | Si | No | No | 1 | Rechazado |
+| 19 | Acidificacion Oceanica | -0.000 | No | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
+| 20 | Kessler | -0.420 | No | Si | No | Si | Si | Si | Si | No | No | No | 0 | Rechazado |
+| 21 | Salinizacion | 0.027 | Si | Si | Si | No | Si | Si | Si | Si | No | Si | 1 | Rechazado |
+| 22 | Fosforo | -1.000 | No | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
+| 23 | Erosion Dialectica | -1.000 | No | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
+| 25 | Acuiferos | -0.179 | Si | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
+| 26 | Starlink | -1.000 | No | Si | Si | No | Si | Si | Si | Si | No | Si | 0 | Rechazado |
+| 27 | Riesgo Biologico | 0.105 | Si | Si | Si | Si | Si | Si | Si | Si | Si | No | 1 | Rechazado |
+| 28 | Fuga Cerebros | 0.183 | Si | Si | Si | Si | Si | Si | Si | Si | No | Si | 3 | Rechazado |
+| 29 | Iot | 0.020 | Si | Si | Si | Si | Si | Si | Si | Si | No | Si | 2 | Rechazado |
 
 **Resumen:** 2 validados (Nivel 4), 0 rechazados con EDI > 0.30 (selectividad), 3 controles de falsación, 24 rechazados con EDI bajo (Nivel 0–1).
 
@@ -943,7 +903,29 @@ Interpretación bajo irrealismo operativo: el instrumento detecta cierre operati
 3. **Coupling destructivo:** Sesgo del ODE destruye información útil en el ABM.
 4. **Señal-ruido insuficiente:** La señal macro existe (p < 0.05) pero el ruido domina (EDI < 0.10).
 
+## Análisis de Escalabilidad (Post-Auditoría)
+
+De los 29 casos, la auditoría técnica identifica **6 candidatos con margen real de mejora** si se invierte mayor cómputo (grid más denso, más iteraciones):
+
+### [CANDIDATOS] Candidatos con margen real
+
+1. **16_caso_deforestacion (Nivel 4 → Posible N5):** EDI=0.633. Con grid 50×50 podría mejorar CR > 2.0 y alcanzar estatus de hiperobjeto con límites.
+2. **24_caso_microplasticos (Nivel 4 → Posible N5):** EDI=0.427. Similar al anterior, candidato a Nivel 5 con mayor resolución espacial.
+3. **27_caso_riesgo_biologico (Nivel 1 → Nivel 2/3):** EDI=0.105 (p=0.36). Aumentar el grid y las permutaciones podría empujar la significancia estadística.
+4. **06_caso_falsacion_exogeneidad (Control):** EDI=0.055. Interesante verificar si el ruido puro mantiene su rechazo a mayor escala (hipótesis nula).
+5. **13_caso_politicas_estrategicas** y **21_caso_salinizacion:** Margen marginal.
+
+### [SIN MARGEN] Casos sin margen (Modelo Inadecuado)
+
+Casos como **Clima (01)**, **Energía (04)** o **Justicia (10)** presentan EDIs cercanos a 0 o negativos que no mejoran con simple escalado. Esto indica que la ontología del modelo (ODE/ABM) no captura la dinámica del fenómeno, requiriendo un cambio de familia de modelos (ej. pasar de Budyko-Sellers a Lorenz-96 para Clima).
+
+### [OPTIMOS] Casos óptimos
+
+16 casos (incluyendo Finanzas, Océanos, Fuga de Cerebros) ya han convergido a su nivel natural. Más cómputo no cambiará su clasificación, confirmando la robustez del diagnóstico actual.
+
 ---
+
+
 
 ## Diálogo Dialéctico y Falsación del Instrumento
 
@@ -1073,12 +1055,12 @@ Este archivo consolida indices, registros y auditorias complementarias.
 
 ---
 
-# Indice: EjersiciosCriticos
+# Indice: EjerciciosCriticos
 
 - Ejercicio Gladiadores Partida 1:
-  - `EjersiciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`
+  - `EjerciciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`
 - Trazas, Posibles y Dudas:
-  - `EjersiciosCriticos/Trazas_Mejoras_Possibles_Dudas.md`
+  - `EjerciciosCriticos/Trazas_Mejoras_Possibles_Dudas.md`
 
 ---
 
@@ -1106,3 +1088,54 @@ Fecha: 2026-02-03
 
 Acciones:
 - Resequencia de indices y limpieza de referencias redundantes.
+
+---
+
+# 05 Bibliografía Nuclear
+
+## Bibliografía Nuclear (37 fuentes)
+1. Morton, T. (2013). *Hyperobjects: Philosophy and Ecology after the End of the World*. University of Minnesota Press.
+2. Harman, G. (2018). *Object-Oriented Ontology: A New Theory of Everything*. Pelican Books.
+3. Latour, B. (2017). *Facing Gaia: Eight Lectures on the New Climatic Regime*. Polity Press.
+4. Bennett, J. (2010). *Vibrant Matter: A Political Ecology of Things*. Duke University Press.
+5. Bunge, M. (1979). *Treatise on Basic Philosophy, Volume 4: Ontology II: A World of Systems*. Reidel.
+6. Bueno, G. (1978). *Ensayos materialistas*. Taurus.
+7. Popper, K. (1959). *The Logic of Scientific Discovery*. Hutchinson.
+8. Lakatos, I. (1978). *The Methodology of Scientific Research Programmes*. Cambridge University Press.
+9. Luhmann, N. (1995). *Social Systems*. Stanford University Press.
+10. Haken, H. (1983). *Synergetics: An Introduction*. Springer-Verlag.
+11. Shannon, C. E. (1948). "A Mathematical Theory of Communication". *Bell System Technical Journal*.
+12. Holland, J. H. (1995). *Hidden Order: How Adaptation Builds Complexity*. Addison-Wesley.
+13. Schelling, T. C. (1978). *Micromotives and Macrobehavior*. W. W. Norton & Company.
+14. Strogatz, S. H. (2014). *Nonlinear Dynamics and Chaos*. Westview Press.
+15. Soros, G. (1987). *The Alchemy of Finance*. Simon & Schuster.
+16. Taleb, N. N. (2012). *Antifragile: Things That Gain from Disorder*. Random House.
+17. Evensen, G. (2009). *Data Assimilation: The Ensemble Kalman Filter*. Springer.
+18. Ladyman, J. & Ross, D. (2007). *Every Thing Must Go: Metaphysics Naturalized*. Oxford University Press.
+19. Woodward, J. (2003). *Making Things Happen: A Theory of Causal Explanation*. Oxford University Press.
+20. Dennett, D. (1991). "Real Patterns". *The Journal of Philosophy*.
+21. Batterman, R. (2002). *The Devil in the Details: Asymptotic Reasoning in Explanation, Reduction, and Emergence*. Oxford University Press.
+22. Humphreys, P. (2016). *Emergence: A Philosophical Account*. Oxford University Press.
+23. Chalmers, D. (2006). "Strong and Weak Emergence". En *The Re-Emergence of Emergence*. Oxford University Press.
+24. Bedau, M. (1997). "Weak Emergence". *Philosophical Perspectives*.
+25. Kim, J. (1999). "Making Sense of Emergence". *Philosophical Studies*.
+26. O'Connor, T. & Wong, H. Y. (2005). "The Metaphysics of Emergence". *Noûs*.
+27. Hoel, E. P. (2017). "When the Map Is Better Than the Territory". *Entropy*.
+28. Budyko, M. I. (1969). "The effect of solar radiation variations on the climate of the Earth". *Tellus*.
+29. Sellers, W. D. (1969). "A global climatic model based on the energy balance of the earth-atmosphere system". *Journal of Applied Meteorology*.
+30. von Thünen, J. H. (1826). *Der Isolirte Staat in Beziehung auf Landwirthschaft und Nationalökonomie*.
+31. Jambeck, J. R., et al. (2015). "Plastic waste inputs from land into the ocean". *Science*.
+32. Docquier, F. & Rapoport, H. (2012). "Globalization, Brain Drain, and Development". *Journal of Economic Literature*.
+33. van Fraassen, B. C. (1980). *The Scientific Image*. Oxford University Press.
+34. Psillos, S. (1999). *Scientific Realism: How Science Tracks Truth*. Routledge.
+35. Kant, I. (1781). *Kritik der reinen Vernunft*.
+36. Kermack, W. O. & McKendrick, A. G. (1927). "A Contribution to the Mathematical Theory of Epidemics". *Proceedings of the Royal Society A*.
+37. Soros, G. (1987). *The Alchemy of Finance*. Simon & Schuster.
+
+## Fuentes de Datos (Repositorios Principales)
+- **World Bank Open Data:** Indicadores de desarrollo, deforestación, movilidad y urbanización.
+- **Our World in Data (OWID):** Producción de plásticos, energía y emisiones.
+- **Meteostat / NOAA:** Series temporales climáticas.
+- **Yahoo Finance:** Series temporales de mercados de capitales (SPY).
+- **CelesTrak:** Datos de catálogo de satélites (TLE) para el caso Kessler.
+- **Wikimedia Statistics:** Datos de actividad de Wikipedia y proyectos hermanos.

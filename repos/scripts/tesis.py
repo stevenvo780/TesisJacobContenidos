@@ -131,7 +131,7 @@ def cmd_scaffold(args):
     target = CASES_DIR / dir_name
 
     if target.exists():
-        print(f"❌ Ya existe: {target.relative_to(ROOT)}")
+        print(f"[ERROR] Ya existe: {target.relative_to(ROOT)}")
         return 1
 
     title = args.title or case_name.replace("_", " ").title()
@@ -170,9 +170,9 @@ def cmd_scaffold(args):
         out_path.write_text(content, encoding="utf-8")
         files_created.append(str(rel))
 
-    print(f"✅ Caso creado: {target.relative_to(ROOT)}")
+    print(f"[OK] Caso creado: {target.relative_to(ROOT)}")
     for f in sorted(files_created):
-        print(f"   📄 {f}")
+        print(f"   - {f}")
     print(f"\n   Siguiente paso: editar README.md y docs/ con contenido del dominio «{ctx['domain']}»")
     return 0
 
@@ -209,7 +209,7 @@ def cmd_build(args):
         if not source.exists():
             if sec.get("optional"):
                 continue
-            print(f"⚠️  No encontrada: {source.relative_to(ROOT)}")
+            print(f"[WARN] No encontrada: {source.relative_to(ROOT)}")
             continue
 
         content = source.read_text(encoding="utf-8").strip()
@@ -278,43 +278,13 @@ def cmd_build(args):
     output.write_text(final, encoding="utf-8")
 
     line_count = final.count("\n") + 1
-    print(f"✅ Tesis ensamblada: {output.relative_to(ROOT)}")
+    print(f"[OK] Tesis ensamblada: {output.relative_to(ROOT)}")
     print(f"   Secciones: {loaded} | Líneas: {line_count}")
     print(f"   Índice detallado generado.")
     return 0
 
 
-LOE_MAP = {
-    "01_caso_clima": 5,
-    "02_caso_conciencia": 1,
-    "03_caso_contaminacion": 4,
-    "04_caso_energia": 4,
-    "05_caso_epidemiologia": 4,
-    "06_caso_falsacion_exogeneidad": 1,
-    "07_caso_falsacion_no_estacionariedad": 1,
-    "08_caso_falsacion_observabilidad": 1,
-    "09_caso_finanzas": 5,
-    "10_caso_justicia": 2,
-    "11_caso_movilidad": 2,
-    "12_caso_paradigmas": 2,
-    "13_caso_politicas_estrategicas": 1,
-    "14_caso_postverdad": 2,
-    "15_caso_wikipedia": 3,
-    "16_caso_deforestacion": 5,
-    "17_caso_oceanos": 4,
-    "18_caso_urbanizacion": 4,
-    "19_caso_acidificacion_oceanica": 5,
-    "20_caso_kessler": 5,
-    "21_caso_salinizacion": 4,
-    "22_caso_fosforo": 3,
-    "23_caso_erosion_dialectica": 2,
-    "24_caso_microplasticos": 4,
-    "25_caso_acuiferos": 5,
-    "26_caso_starlink": 5,
-    "27_caso_riesgo_biologico": 2,
-    "28_caso_fuga_cerebros": 2,
-    "29_caso_iot": 3,
-}
+
 
 # Mapeo categoría → nivel de cierre operativo (Irrealismo Operativo)
 NIVEL_MAP = {
@@ -336,7 +306,7 @@ def _build_case_summary_table():
     rows_falsacion = []
 
     def yn(v):
-        return "✓" if v else "✗"
+        return "Si" if v else "No"
 
     def _get_bool(phase, key_dict, key_bool):
         """Extrae booleano de un campo que puede ser dict o bool."""
@@ -382,7 +352,7 @@ def _build_case_summary_table():
         pretty = " ".join(name.split("_")[2:]).title()
 
         if is_falsacion:
-            result = "Control ❌"
+            result = "Control (Rechazado)"
             nivel_s = "—"
         elif overall:
             # Leer nivel de metrics o mapear
@@ -452,7 +422,7 @@ def _build_case_summary_table():
         "",
         "Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). "
         "**Nivel** = grado de cierre operativo (0–4, control = —). "
-        "**Validado** = 11 condiciones ✓ simultáneamente.",
+        "**Validado** = 11 condiciones se cumplen simultáneamente.",
         "",
         "| # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Nivel | Result |",
         "| :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |",
@@ -515,12 +485,12 @@ def cmd_sync(args):
                 md_file.write_text(new_content, encoding="utf-8")
                 updated += 1
                 case_updated = True
-                print(f"  📝 {md_file.relative_to(ROOT)}")
+                print(f"  [MOD] {md_file.relative_to(ROOT)}")
 
         if case_updated:
             synced_cases += 1
 
-    print(f"\n✅ Sync: {updated} archivos en {synced_cases} casos actualizados")
+    print(f"\n[OK] Sync: {updated} archivos en {synced_cases} casos actualizados")
     return 0
 
 
@@ -548,7 +518,7 @@ def _extract_summary(metrics):
                                    "c3_replication", "c4_validity",
                                    "c5_uncertainty"], 1):
             val = phase.get(key)
-            summary[f"{p}_c{ci}"] = "✅" if val else ("❌" if val is False else "—")
+            summary[f"{p}_c{ci}"] = "Si" if val else ("No" if val is False else "—")
 
         all_pass = all(phase.get(k) for k in [
             "c1_convergence", "c2_robustness", "c3_replication",
@@ -670,13 +640,13 @@ def cmd_audit(args):
         # Resultado
         if case_issues:
             stats["warn"] += 1
-            print(f"  ⚠️  {name}")
+            print(f"  [WARN] {name}")
             for iss in case_issues:
                 print(f"     └─ {iss}")
                 issues.append((name, iss))
         else:
             stats["ok"] += 1
-            print(f"  ✅ {name}")
+            print(f"  [OK] {name}")
 
     # Resumen
     print(f"\n{'═' * 60}")
@@ -706,7 +676,7 @@ def _write_audit_report(cases, issues, stats, output_path):
         for name, iss in issues:
             lines.append(f"| {name} | {iss} |")
     else:
-        lines.append("Sin problemas detectados. ✅")
+        lines.append("Sin problemas detectados.")
 
     Path(output_path).write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"\n📄 Reporte: {output_path}")
@@ -721,7 +691,7 @@ def cmd_validate(args):
     if args.case:
         vpy = REPOS_SIM / args.case / "src" / "validate.py"
         if not vpy.exists():
-            print(f"❌ No encontrado: {vpy.relative_to(ROOT)}")
+            print(f"[ERROR] No encontrado: {vpy.relative_to(ROOT)}")
             return 1
         targets.append((args.case, vpy))
     else:
@@ -732,10 +702,10 @@ def cmd_validate(args):
                     targets.append((d.name, vpy))
 
     if not targets:
-        print("⚠️  No se encontraron casos con código ejecutable")
+        print("[WARN] No se encontraron casos con código ejecutable")
         return 1
 
-    print(f"🚀 Ejecutando {len(targets)} validación(es)...\n")
+    print(f">> Ejecutando {len(targets)} validación(es)...\n")
 
     results = {}
     for name, vpy in targets:
@@ -747,20 +717,20 @@ def cmd_validate(args):
             )
             ok = result.returncode == 0
             results[name] = ok
-            print("✅" if ok else "❌")
+            print("[OK]" if ok else "[FAIL]")
             if not ok and result.stderr:
                 for line in result.stderr.strip().split("\n")[:5]:
                     print(f"     {line}")
         except subprocess.TimeoutExpired:
             results[name] = False
-            print("⏱️  Timeout")
+            print("[TIMEOUT] Timeout")
 
     passed = sum(1 for v in results.values() if v)
     print(f"\n{'═' * 60}")
     print(f"Resultados: {passed}/{len(results)} exitosos")
 
     if not args.no_sync and passed > 0:
-        print("\n📊 Sincronizando métricas → docs...")
+        print("\n>> Sincronizando métricas → docs...")
         cmd_sync(argparse.Namespace())
 
     return 0 if all(results.values()) else 1

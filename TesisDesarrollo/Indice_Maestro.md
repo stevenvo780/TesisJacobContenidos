@@ -9,8 +9,8 @@ Lectura recomendada en orden:
 5. 04 Casos de Estudio: `04_Casos_De_Estudio/04_Casos_De_Estudio.md`
 6. Anexos (auditorias, ejercicios criticos, documentacion): `Anexos.md`
 7. Ejercicios Criticos (Gladiadores, Partida 1):
-   - `EjersiciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`
-   - `EjersiciosCriticos/Trazas_Mejoras_Possibles_Dudas.md`
+   - `EjerciciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`
+   - `EjerciciosCriticos/Trazas_Mejoras_Possibles_Dudas.md`
 
 Documentos de referencia:
 - Resumen general del repositorio: `README.md`

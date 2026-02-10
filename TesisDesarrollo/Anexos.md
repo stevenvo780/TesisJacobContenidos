@@ -21,12 +21,12 @@ Este archivo consolida indices, registros y auditorias complementarias.
 
 ---
 
-# Indice: EjersiciosCriticos
+# Indice: EjerciciosCriticos
 
 - Ejercicio Gladiadores Partida 1:
-  - `EjersiciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`
+  - `EjerciciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`
 - Trazas, Posibles y Dudas:
-  - `EjersiciosCriticos/Trazas_Mejoras_Possibles_Dudas.md`
+  - `EjerciciosCriticos/Trazas_Mejoras_Possibles_Dudas.md`
 
 ---
 

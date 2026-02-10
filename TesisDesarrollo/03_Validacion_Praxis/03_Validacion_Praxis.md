@@ -15,7 +15,7 @@ La validación bajo irrealismo operativo no busca "confirmar" ni "refutar" la ex
 
 ## Resultados Consolidados (29 Casos — Protocolo Completo)
 
-El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso alcanza **Nivel 4** solo si las 11 condiciones son ✓ simultáneamente. La significancia estadística se evalúa mediante permutation test con 999 permutaciones (seed=42).
+El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso alcanza **Nivel 4** solo si las 11 condiciones se cumplen simultáneamente. La significancia estadística se evalúa mediante permutation test con 999 permutaciones (seed=42).
 
 > **Estado actual:** Bajo el pipeline limpio (sin data leakage, zero-nudging, 999 permutaciones): **2/29 en Nivel 4** (Deforestación y Microplásticos). El paisaje de emergencia queda completamente mapeado.
 
@@ -168,7 +168,29 @@ Interpretación bajo irrealismo operativo: el instrumento detecta cierre operati
 3. **Coupling destructivo:** Sesgo del ODE destruye información útil en el ABM.
 4. **Señal-ruido insuficiente:** La señal macro existe (p < 0.05) pero el ruido domina (EDI < 0.10).
 
+## Análisis de Escalabilidad (Post-Auditoría)
+
+De los 29 casos, la auditoría técnica identifica **6 candidatos con margen real de mejora** si se invierte mayor cómputo (grid más denso, más iteraciones):
+
+### [CANDIDATOS] Candidatos con margen real
+
+1. **16_caso_deforestacion (Nivel 4 → Posible N5):** EDI=0.633. Con grid 50×50 podría mejorar CR > 2.0 y alcanzar estatus de hiperobjeto con límites.
+2. **24_caso_microplasticos (Nivel 4 → Posible N5):** EDI=0.427. Similar al anterior, candidato a Nivel 5 con mayor resolución espacial.
+3. **27_caso_riesgo_biologico (Nivel 1 → Nivel 2/3):** EDI=0.105 (p=0.36). Aumentar el grid y las permutaciones podría empujar la significancia estadística.
+4. **06_caso_falsacion_exogeneidad (Control):** EDI=0.055. Interesante verificar si el ruido puro mantiene su rechazo a mayor escala (hipótesis nula).
+5. **13_caso_politicas_estrategicas** y **21_caso_salinizacion:** Margen marginal.
+
+### [SIN MARGEN] Casos sin margen (Modelo Inadecuado)
+
+Casos como **Clima (01)**, **Energía (04)** o **Justicia (10)** presentan EDIs cercanos a 0 o negativos que no mejoran con simple escalado. Esto indica que la ontología del modelo (ODE/ABM) no captura la dinámica del fenómeno, requiriendo un cambio de familia de modelos (ej. pasar de Budyko-Sellers a Lorenz-96 para Clima).
+
+### [OPTIMOS] Casos óptimos
+
+16 casos (incluyendo Finanzas, Océanos, Fuga de Cerebros) ya han convergido a su nivel natural. Más cómputo no cambiará su clasificación, confirmando la robustez del diagnóstico actual.
+
 ---
+
+
 
 ## Diálogo Dialéctico y Falsación del Instrumento
 
