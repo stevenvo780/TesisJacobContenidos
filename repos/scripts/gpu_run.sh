@@ -23,12 +23,23 @@
 #   # Dry-run (muestra plan sin ejecutar)
 #   ./gpu_run.sh --parts 5 --dry-run
 #
+#   # Ejecutar solo un caso específico (match parcial, case-insensitive)
+#   ./gpu_run.sh --case clima
+#   ./gpu_run.sh --case deforestacion --grid 500
+#
+#   # Forzar uso de una sola GPU
+#   ./gpu_run.sh --gpu 0              # solo RTX 5070 Ti
+#   ./gpu_run.sh --gpu 1 --case clima  # solo RTX 2060, caso clima
+#
 # ── FLAGS ─────────────────────────────────────────────────────────────────────
 #
 #   --grid SIZE     Grid size del ABM (default: auto = 200 × parts)
 #   --parts N       Dividir en N tandas (1-10, default: 1 = todos de golpe)
 #                   Sin --grid: auto-escala grid = 200 × N
 #   --part K        Ejecutar solo tanda K de N (default: todas)
+#   --case NOMBRE   Filtrar casos por nombre (match parcial, case-insensitive)
+#                   Ej: --case clima → 01_caso_clima
+#   --gpu N         Forzar uso de GPU N solamente (0 o 1)
 #   --perm N        Permutaciones EDI (default: 9999)
 #   --boot N        Bootstrap samples (default: 5000)
 #   --refine N      Iteraciones refinamiento (default: 50000)
@@ -51,6 +62,8 @@ REFINE=50000
 RUNS=50
 CONTAINER="tesis-gpu"
 DRY_RUN=0
+CASE_FILTER=""
+FORCE_GPU=-1
 
 # ── Cleanup trap: al cancelar, matar todos los validate.py dentro del contenedor
 cleanup() {
@@ -80,6 +93,8 @@ while [[ $# -gt 0 ]]; do
         --refine)    REFINE="$2";    shift 2 ;;
         --runs)      RUNS="$2";      shift 2 ;;
         --container) CONTAINER="$2"; shift 2 ;;
+        --case)      CASE_FILTER="$2"; shift 2 ;;
+        --gpu)       FORCE_GPU="$2";   shift 2 ;;
         --dry-run)   DRY_RUN=1;      shift ;;
         --help|-h)
             head -40 "$0" | tail -36
@@ -144,6 +159,31 @@ ALL_CASES=(
     28_caso_fuga_cerebros
     29_caso_iot
 )
+
+# ── Filtrar por caso específico (--case) ──────────────────────────────────────
+if [[ -n "$CASE_FILTER" ]]; then
+    FILTERED=()
+    for c in "${ALL_CASES[@]}"; do
+        if [[ "${c,,}" == *"${CASE_FILTER,,}"* ]]; then
+            FILTERED+=("$c")
+        fi
+    done
+    if [[ ${#FILTERED[@]} -eq 0 ]]; then
+        echo "ERROR: Ningún caso coincide con '$CASE_FILTER'"
+        echo "Casos disponibles:"
+        printf '  %s\n' "${ALL_CASES[@]}"
+        exit 1
+    fi
+    if [[ ${#FILTERED[@]} -gt 1 ]]; then
+        echo "[--case] Múltiples casos coinciden con '$CASE_FILTER':"
+        printf '  → %s\n' "${FILTERED[@]}"
+        echo "[--case] Ejecutando todos los ${#FILTERED[@]} coincidentes."
+    else
+        echo "[--case] Caso: ${FILTERED[0]}"
+    fi
+    ALL_CASES=("${FILTERED[@]}")
+fi
+
 TOTAL=${#ALL_CASES[@]}
 
 # ── VRAM estimada por simulación (MB) ────────────────────────────────────────
@@ -265,13 +305,28 @@ run_batch() {
         while IFS=', ' read -r gid gmb; do
             gid=$(echo "$gid" | tr -d ' ')
             gmb=$(echo "$gmb" | tr -d ' ')
-            if [[ $gmb -gt 1000 ]]; then
+            # Si --gpu N está activo, solo incluir esa GPU
+            if [[ $FORCE_GPU -ge 0 ]]; then
+                if [[ "$gid" == "$FORCE_GPU" ]]; then
+                    available_gpus+=("$gid")
+                    gpu_free_mb+=("$gmb")
+                fi
+            else
+                # Sin threshold fijo: incluir TODA GPU detectada.
+                # El cálculo de vram_max_workers descartará las insuficientes.
                 available_gpus+=("$gid")
                 gpu_free_mb+=("$gmb")
             fi
         done <<< "$gpu_csv"
     fi
-    [[ ${#available_gpus[@]} -eq 0 ]] && available_gpus=(0) && gpu_free_mb=(8000)
+    # Fallback si no hay GPUs detectadas
+    if [[ ${#available_gpus[@]} -eq 0 ]]; then
+        if [[ $FORCE_GPU -ge 0 ]]; then
+            echo "  WARN: GPU ${FORCE_GPU} no encontrada, usando GPU 0"
+        fi
+        available_gpus=(0)
+        gpu_free_mb=(8000)
+    fi
     
     # Calcular workers por GPU: suficientes para mantener CPU y GPU ocupadas
     # Mientras un proceso hace ABM en GPU, otros hacen calibración/datos en CPU.
@@ -307,7 +362,13 @@ run_batch() {
         
         # Cuántos procesos CuPy caben en esta GPU (VRAM-aware)
         local vram_max_workers=$(( free * 80 / 100 / (vram_per_process > 0 ? vram_per_process : 1) ))
-        [[ $vram_max_workers -lt 1 ]] && vram_max_workers=1
+        
+        # Si la GPU no puede ni con 1 proceso, saltarla
+        if [[ $vram_max_workers -lt 1 ]]; then
+            echo "    GPU ${available_gpus[$i]}: ${free}MB libre → insuficiente (~${vram_per_process}MB/proceso), SALTADA"
+            workers_per_gpu+=(0)
+            continue
+        fi
         
         # CPU-based minimum (para overlap CPU/GPU)
         local nw=$min_per_gpu
@@ -315,17 +376,53 @@ run_batch() {
         # Cap por VRAM: nunca más workers de lo que la GPU soporta
         [[ $nw -gt $vram_max_workers ]] && nw=$vram_max_workers
         
-        echo "    GPU ${available_gpus[$i]}: ${free}MB libre, ~${vram_per_process}MB/proceso → max ${vram_max_workers} por VRAM, asignados: ${nw}"
+        echo "    GPU ${available_gpus[$i]}: ${free}MB libre, ~${vram_per_process}MB/proceso → max ${vram_max_workers} por VRAM, candidatos: ${nw}"
         
-        # No más workers que casos restantes
-        local remaining=$((ncases - total_workers))
-        [[ $nw -gt $remaining ]] && nw=$remaining
-        [[ $nw -lt 1 ]] && nw=1
         workers_per_gpu+=("$nw")
+        total_workers=$((total_workers + nw))
+    done
+    
+    # Si total_workers > ncases, reducir proporcionalmente manteniendo ambas GPUs
+    if [[ $total_workers -gt $ncases ]]; then
+        local excess=$((total_workers - ncases))
+        total_workers=0
+        # Reducir proporcionalmente, empezando por las GPUs con más workers
+        for i in "${!workers_per_gpu[@]}"; do
+            local nw=${workers_per_gpu[$i]}
+            [[ $nw -eq 0 ]] && continue
+            # Reducción proporcional: cada GPU cede en proporción a sus workers
+            local total_nonzero=0
+            for w in "${workers_per_gpu[@]}"; do total_nonzero=$((total_nonzero + w)); done
+            if [[ $total_nonzero -gt 0 ]]; then
+                local reduction=$(( excess * nw / total_nonzero ))
+                nw=$((nw - reduction))
+                [[ $nw -lt 1 ]] && nw=1
+            fi
+            workers_per_gpu[$i]=$nw
+        done
+        # Ajuste fino: recalcular total y recortar el exceso restante de la mayor
+        total_workers=0
+        for w in "${workers_per_gpu[@]}"; do total_workers=$((total_workers + w)); done
+        while [[ $total_workers -gt $ncases ]]; do
+            # Recortar 1 de la GPU con más workers
+            local max_idx=0 max_val=0
+            for i in "${!workers_per_gpu[@]}"; do
+                if [[ ${workers_per_gpu[$i]} -gt $max_val ]]; then
+                    max_val=${workers_per_gpu[$i]}
+                    max_idx=$i
+                fi
+            done
+            workers_per_gpu[$max_idx]=$((max_val - 1))
+            total_workers=$((total_workers - 1))
+        done
+    fi
+    
+    # Construir mapa de workers → GPUs
+    for i in "${!available_gpus[@]}"; do
+        local nw=${workers_per_gpu[$i]}
         for ((w=0; w<nw; w++)); do
             worker_gpu_map+="${available_gpus[$i]} "
         done
-        total_workers=$((total_workers + nw))
     done
     
     # No más workers que casos
@@ -469,7 +566,8 @@ echo "║  gpu_run.sh — Ejecución escalable multi-GPU                ║"
 echo "╠══════════════════════════════════════════════════════════════╣"
 echo "║  Grid:     ${GRID}×${GRID}"
 echo "║  Parts:    ${PARTS}  $([ $PART -gt 0 ] && echo "(solo parte ${PART})" || echo "(todas)")"
-echo "║  GPUs:     ${N_GPUS} detectadas"
+echo "║  Casos:    ${TOTAL}$( [[ -n "$CASE_FILTER" ]] && echo " (filtro: ${CASE_FILTER})" )"
+echo "║  GPUs:     ${N_GPUS} detectadas$( [[ $FORCE_GPU -ge 0 ]] && echo " → forzada GPU ${FORCE_GPU}" )"
 echo "║  GPU 0:    ${GPU0_NAME} — ${GPU0_VRAM} MB"
 [[ $N_GPUS -ge 2 ]] && \
 echo "║  GPU 1:    ${GPU1_NAME} — ${GPU1_VRAM} MB"

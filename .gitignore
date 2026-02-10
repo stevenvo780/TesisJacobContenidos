@@ -8,3 +8,25 @@ __pycache__/
 .DS_Store
 Artifacts/gladiadores/armas.md
 *.zip
+
+# Track outputs/metrics.json and outputs/report.md for reproducibility
+# but ignore large data caches
+**/outputs/*.csv
+**/outputs/*.pkl
+**/outputs/*.npy
+
+# Data caches (regenerable)
+data_cache/
+
+# Ephemeral run outputs
+outputs_run/
+outputs_gpu/
+
+# Ignore large data files
+caso_*/data/*.csv
+04_caso_energia/data/opsd_time_series.csv
+
+# Ignore datasets
+*.csv
+!**/outputs/metrics.json
+!**/outputs/report.md
