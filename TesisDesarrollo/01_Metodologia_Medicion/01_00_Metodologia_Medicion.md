@@ -16,23 +16,81 @@
 
 ```mermaid
 
+
+
 flowchart LR
+
+
 
     C1[C1: Convergencia] --> C2[C2: Robustez]
 
+
+
     C2 --> C3[C3: Replicabilidad]
+
+
 
     C3 --> C4[C4: Validez]
 
+
+
     C4 --> C5[C5: Incertidumbre]
+
+
 
     C5 --> Pass{¿Todo OK?}
 
+
+
     Pass -->|Sí| Valid[Nivel 4: Objeto Operativo]
+
+
 
     Pass -->|No| Reject[Clasificación Nivel 0-3]
 
+
+
+    
+
+
+
+    style C1 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style C2 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style C3 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style C4 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style C5 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style Pass fill:#fff9c4,stroke:#fbc02d
+
+
+
+    style Valid fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
+
+
+
+    style Reject fill:#ffebee,stroke:#c62828
+
+
+
 ```
+
+
+
+
 
 
 

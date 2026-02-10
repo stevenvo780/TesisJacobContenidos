@@ -39,8 +39,9 @@ graph TD
     A3 -->|Agregación / Causalidad Ascendente| Macro
     D[Datos Reales] -->|Asimilación| Macro
     
-    style Macro fill:#e1f5fe,stroke:#01579b
-    style Micro fill:#fff3e0,stroke:#e65100
+    style Macro fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Micro fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style D fill:#c8e6c9,stroke:#2e7d32
 ```
 
 ## Rol Instrumental de la ODE: Sonda Operativa
@@ -53,6 +54,27 @@ La ODE es un modelo auxiliar cuya función es:
 3. Servir de benchmark para evaluar la coherencia macro-micro (correlación ODE-ABM).
 
 Esta distinción resuelve la objeción "Phantom ODE": una ODE con correlación baja puede coexistir con un EDI positivo porque lo que el EDI mide es la diferencia entre ABM con y sin constricción macro, no la calidad de la ODE como predictor independiente.
+
+```mermaid
+flowchart LR
+    subgraph Exterior[Entorno]
+        FS[Forzamiento Externo: fs]
+    end
+    
+    subgraph Sistema[Hiperobjeto Operativo]
+        MC[Acoplamiento Macro: mc]
+        ABM[Dinámica Micro]
+    end
+    
+    FS -->|Señal Exógena| ABM
+    MC -->|Constricción Macro| ABM
+    ABM -->|Respuesta| Obs[Observación]
+    
+    style Exterior fill:#f5f5f5,stroke:#333
+    style Sistema fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style MC fill:#c8e6c9,stroke:#2e7d32
+    style FS fill:#e1f5fe,stroke:#01579b
+```
 
 ## Implementación de los 29 Casos
 La arquitectura actual integra **29 motores de simulación completamente funcionales**. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas. Se utilizan datos reales de fuentes como World Bank, Meteostat, Yahoo Finance, OWID, Wikimedia y CelesTrak.

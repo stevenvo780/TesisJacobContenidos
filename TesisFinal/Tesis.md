@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 02:56 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 04:39 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -150,10 +150,12 @@ graph LR
     N3 --> N4[Nivel 4: Strong]
     N4 --> N5[Nivel 5: Hiperobjeto]
     
-    style N0 fill:#f9f,stroke:#333,stroke-width:1px
-    style N3 fill:#bbf,stroke:#333,stroke-width:2px
-    style N4 fill:#6f6,stroke:#333,stroke-width:4px
-    style N5 fill:#gold,stroke:#333,stroke-width:4px
+    style N0 fill:#eeeeee,stroke:#999,stroke-width:1px,color:#666
+    style N1 fill:#fff9c4,stroke:#fbc02d,stroke-width:1px
+    style N2 fill:#ffe0b2,stroke:#f57c00,stroke-width:1px
+    style N3 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style N4 fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
+    style N5 fill:#d1c4e9,stroke:#512da8,stroke-width:4px
 ```
 
 | Nivel | Categoría | Criterio operativo | Interpretación |
@@ -196,8 +198,16 @@ flowchart TD
     A[Modelo Completo ABM + ODE] -->|Error RMSE_full| C{Comparación}
     B[Modelo Reducido ABM solo] -->|Error RMSE_reduced| C
     C -->|Calculo EDI| D[EDI = 1 - RMSE_full/RMSE_reduced]
-    D -->|Si EDI > 0.30| E[Emergencia Fuerte]
-    D -->|Si EDI < 0| F[Anti-emergencia]
+    
+    D -->|EDI > 0.30| E[Nivel 4: Emergencia Fuerte]
+    D -->|0.01 < EDI < 0.30| G[Nivel 2-3: Emergencia Débil]
+    D -->|EDI < 0.01| F[Nivel 0-1: Sin Señal]
+    
+    style A fill:#e1f5fe,stroke:#01579b
+    style B fill:#fff3e0,stroke:#e65100
+    style E fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
+    style G fill:#fff9c4,stroke:#fbc02d
+    style F fill:#ffebee,stroke:#c62828
 ```
 
 ### La analogía del ribosoma
@@ -241,7 +251,36 @@ Pero **no es ontológicamente interpretable** como causalidad fuerte. Bajo irrea
 
 ## Presupuestos Filosóficos
 - **P1 Indeterminación pre-ontológica:** Lo que existe antes de la modelización no tiene la estructura que el marco le impone.
-- **P2 Symploké (Bueno):** No todo está conectado con todo, pero nada está aislado; la realidad se evalúa como una red con límites funcionales. Symploké opera como principio de demarcación: si un fenómeno tiene límites funcionales detectables (CR, acoplamiento), es candidato a objeto operativo.
+- **P2 Symploké (Bueno, 1978):** No todo está conectado con todo (caos), pero nada está aislado (monadismo); la realidad se evalúa como una red con límites funcionales.
+
+```mermaid
+graph TD
+    subgraph Caos[Caos: Hiperconexión]
+        A[Agente] <--> B[Agente]
+        B <--> C[Agente]
+        C <--> A
+    end
+    
+    subgraph Monadismo[Monadismo: Aislamiento]
+        D[Agente]
+        E[Agente]
+        F[Agente]
+    end
+    
+    subgraph Symploke[Symploké: Límites Operativos]
+        G[Agente] --- H[Agente]
+        H --- I[Agente]
+        I --- G
+        style Symploke fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    end
+    
+    Caos ---|RECHAZO| X((Objeto))
+    Monadismo ---|RECHAZO| X
+    Symploke -->|ACEPTACIÓN| X
+    
+    style X fill:#6f6,stroke:#333,stroke-width:4px
+```
+
 - **P3 Emergentismo gradual:** Las propiedades de nivel macro se clasifican en un continuo de cierre operativo. No hay un salto discreto entre "emergente" y "no emergente", sino un gradiente medible.
 - **P4 Suficiencia operativa:** El marco no necesita afirmar existencia metafísica para ser científicamente válido. Basta con producir predicciones verificables, falsables y discriminativas.
 
@@ -410,23 +449,81 @@ El marco define un gradiente computacional de cierre operativo para fenómenos d
 
 ```mermaid
 
+
+
 flowchart LR
+
+
 
     C1[C1: Convergencia] --> C2[C2: Robustez]
 
+
+
     C2 --> C3[C3: Replicabilidad]
+
+
 
     C3 --> C4[C4: Validez]
 
+
+
     C4 --> C5[C5: Incertidumbre]
+
+
 
     C5 --> Pass{¿Todo OK?}
 
+
+
     Pass -->|Sí| Valid[Nivel 4: Objeto Operativo]
+
+
 
     Pass -->|No| Reject[Clasificación Nivel 0-3]
 
+
+
+    
+
+
+
+    style C1 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style C2 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style C3 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style C4 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style C5 fill:#e1f5fe,stroke:#01579b
+
+
+
+    style Pass fill:#fff9c4,stroke:#fbc02d
+
+
+
+    style Valid fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
+
+
+
+    style Reject fill:#ffebee,stroke:#c62828
+
+
+
 ```
+
+
+
+
 
 
 
@@ -552,8 +649,9 @@ graph TD
     A3 -->|Agregación / Causalidad Ascendente| Macro
     D[Datos Reales] -->|Asimilación| Macro
     
-    style Macro fill:#e1f5fe,stroke:#01579b
-    style Micro fill:#fff3e0,stroke:#e65100
+    style Macro fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Micro fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style D fill:#c8e6c9,stroke:#2e7d32
 ```
 
 ## Rol Instrumental de la ODE: Sonda Operativa
@@ -566,6 +664,27 @@ La ODE es un modelo auxiliar cuya función es:
 3. Servir de benchmark para evaluar la coherencia macro-micro (correlación ODE-ABM).
 
 Esta distinción resuelve la objeción "Phantom ODE": una ODE con correlación baja puede coexistir con un EDI positivo porque lo que el EDI mide es la diferencia entre ABM con y sin constricción macro, no la calidad de la ODE como predictor independiente.
+
+```mermaid
+flowchart LR
+    subgraph Exterior[Entorno]
+        FS[Forzamiento Externo: fs]
+    end
+    
+    subgraph Sistema[Hiperobjeto Operativo]
+        MC[Acoplamiento Macro: mc]
+        ABM[Dinámica Micro]
+    end
+    
+    FS -->|Señal Exógena| ABM
+    MC -->|Constricción Macro| ABM
+    ABM -->|Respuesta| Obs[Observación]
+    
+    style Exterior fill:#f5f5f5,stroke:#333
+    style Sistema fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style MC fill:#c8e6c9,stroke:#2e7d32
+    style FS fill:#e1f5fe,stroke:#01579b
+```
 
 ## Implementación de los 29 Casos
 La arquitectura actual integra **29 motores de simulación completamente funcionales**. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas. Se utilizan datos reales de fuentes como World Bank, Meteostat, Yahoo Finance, OWID, Wikimedia y CelesTrak.
