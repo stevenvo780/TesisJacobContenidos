@@ -243,8 +243,10 @@ compute_gpu_assignments() {
     done
 }
 
-# ── Ejecutar un grupo de casos en el contenedor ──────────────────────────────
-# Pre-asigna GPU a cada proceso para usar ambos núcleos al máximo
+# ── Ejecutar un grupo de casos con COLA DINÁMICA por GPU ─────────────────────
+# Un worker por GPU toma casos de una cola compartida. La GPU más rápida
+# procesa más casos naturalmente (work-stealing). 1 caso a la vez por GPU
+# = sin contención de VRAM, uso continuo de ambas GPUs.
 run_batch() {
     local cases=("$@")
     local ncases=${#cases[@]}
@@ -254,28 +256,31 @@ run_batch() {
         return 0
     fi
     
-    # Pre-calcular asignación de GPU por caso
-    local -a gpu_assign
-    mapfile -t gpu_assign < <(compute_gpu_assignments "$ncases")
+    # Detectar GPUs disponibles desde el host
+    local -a available_gpus=()
+    local gpu_csv
+    gpu_csv=$(nvidia-smi --query-gpu=index,memory.free --format=csv,noheader,nounits 2>/dev/null)
+    if [[ -n "$gpu_csv" ]]; then
+        while IFS=', ' read -r gid gmb; do
+            gid=$(echo "$gid" | tr -d ' ')
+            gmb=$(echo "$gmb" | tr -d ' ')
+            # Solo incluir GPUs con VRAM útil (>1GB libre)
+            if [[ $gmb -gt 1000 ]]; then
+                available_gpus+=("$gid")
+            fi
+        done <<< "$gpu_csv"
+    fi
+    # Fallback: solo GPU 0
+    [[ ${#available_gpus[@]} -eq 0 ]] && available_gpus=(0)
     
-    # Mostrar plan de distribución
-    local -A gpu_summary
-    for gid in "${gpu_assign[@]}"; do
-        gpu_summary[$gid]=$(( ${gpu_summary[$gid]:-0} + 1 ))
-    done
-    echo -n "  Distribución: "
-    for gid in $(echo "${!gpu_summary[@]}" | tr ' ' '\n' | sort -n); do
-        echo -n "GPU${gid}=${gpu_summary[$gid]} "
-    done
-    echo ""
+    local n_workers=${#available_gpus[@]}
+    echo "  Workers: ${n_workers} (GPUs: ${available_gpus[*]})"
+    echo "  Modo: cola dinámica — 1 caso/GPU, la más rápida toma más"
     
     local log_dir="/tmp/gpu_run_g${GRID}_logs"
-    
-    # Construir arrays de casos y sus GPUs asignadas
     local cases_str="${cases[*]}"
-    local gpus_str="${gpu_assign[*]}"
+    local gpus_str="${available_gpus[*]}"
     
-    # Construir el comando interno
     local inner_script="
 export HYPER_GRID_SIZE=${GRID}
 export HYPER_N_PERM=${PERM}
@@ -283,52 +288,113 @@ export HYPER_N_BOOT=${BOOT}
 export HYPER_N_REFINE=${REFINE}
 export HYPER_N_RUNS=${RUNS}
 
-# Trap interno: si recibe señal, matar procesos hijos
 trap 'kill \$(jobs -p) 2>/dev/null; wait; exit 130' INT TERM
 
 mkdir -p ${log_dir}
 
-CASES_ARR=(${cases_str})
-GPUS_ARR=(${gpus_str})
-NCASES=\${#CASES_ARR[@]}
+# Cola de casos (un caso por línea)
+QUEUE_FILE=/tmp/_gpu_queue_\$\$
+LOCK_FILE=/tmp/_gpu_queue_\$\$.lock
+RESULT_FILE=/tmp/_gpu_results_\$\$
 
-echo \"[\${NCASES} casos, grid=${GRID}, GPUs pre-asignadas]\"
+CASES_ALL=(${cases_str})
+printf '%s\n' \"\${CASES_ALL[@]}\" > \"\$QUEUE_FILE\"
+touch \"\$RESULT_FILE\"
 
-PIDS=()
-NAMES=()
-for i in \"\${!CASES_ARR[@]}\"; do
-    case=\${CASES_ARR[\$i]}
-    gpu=\${GPUS_ARR[\$i]}
-    SRC=\"/workspace/repos/Simulaciones/\${case}/src\"
-    LOG=\"${log_dir}/\${case}.log\"
-    if [ ! -f \"\${SRC}/validate.py\" ]; then
-        echo \"  [SKIP] \${case}\"
-        continue
-    fi
-    (cd \"\$SRC\" && export HYPER_GPU_DEVICE=\$gpu && START=\$SECONDS && python3 validate.py > \"\$LOG\" 2>&1 && echo \"ELAPSED=\$((\$SECONDS - \$START))s\" >> \"\$LOG\") &
-    PIDS+=(\$!)
-    NAMES+=(\"\$case\")
-    echo \"  → \${case} → GPU \${gpu} (PID \$!)\"
+GPUS_AVAIL=(${gpus_str})
+N_WORKERS=\${#GPUS_AVAIL[@]}
+
+echo \"[\${#CASES_ALL[@]} casos, grid=${GRID}, \${N_WORKERS} GPU workers (cola dinámica)]\"
+
+# ── Worker: toma casos de la cola hasta vaciarla ──
+gpu_worker() {
+    local gpu_id=\$1
+    local worker_id=\$2
+    local count=0
+    
+    while true; do
+        # Pop atómico del primer caso de la cola
+        local caso
+        caso=\$(flock \"\$LOCK_FILE\" bash -c '
+            head -1 \"\$1\" 2>/dev/null
+            sed -i \"1d\" \"\$1\" 2>/dev/null
+        ' -- \"\$QUEUE_FILE\")
+        
+        # Cola vacía → terminar
+        [[ -z \"\$caso\" ]] && break
+        
+        local SRC=\"/workspace/repos/Simulaciones/\${caso}/src\"
+        local LOG=\"${log_dir}/\${caso}.log\"
+        
+        if [ ! -f \"\${SRC}/validate.py\" ]; then
+            echo \"  [W\${worker_id}/GPU\${gpu_id}] SKIP \${caso}\"
+            echo \"SKIP \${caso} GPU\${gpu_id}\" >> \"\$RESULT_FILE\"
+            continue
+        fi
+        
+        echo \"  [W\${worker_id}/GPU\${gpu_id}] ▶ \${caso}\"
+        local START=\$SECONDS
+        
+        (cd \"\$SRC\" && HYPER_GPU_DEVICE=\$gpu_id python3 validate.py > \"\$LOG\" 2>&1)
+        local RC=\$?
+        local ELAPSED=\$((\$SECONDS - \$START))
+        echo \"ELAPSED=\${ELAPSED}s\" >> \"\$LOG\"
+        
+        local EDI=\$(grep -oP 'EDI[=:]\s*-?[\\d.]+' \"\$LOG\" 2>/dev/null | tail -1 || echo '?')
+        
+        if [ \$RC -eq 0 ]; then
+            echo \"  [W\${worker_id}/GPU\${gpu_id}] ✓ \${caso} — \${ELAPSED}s — \${EDI}\"
+            echo \"OK \${caso} GPU\${gpu_id} \${ELAPSED}s \${EDI}\" >> \"\$RESULT_FILE\"
+        else
+            echo \"  [W\${worker_id}/GPU\${gpu_id}] ✗ \${caso} — \${ELAPSED}s (exit \${RC})\"
+            echo \"FAIL \${caso} GPU\${gpu_id} \${ELAPSED}s exit=\${RC}\" >> \"\$RESULT_FILE\"
+        fi
+        count=\$((count + 1))
+    done
+    echo \"  [W\${worker_id}/GPU\${gpu_id}] Terminado (\${count} casos procesados)\"
+}
+
+# ── Lanzar 1 worker por GPU ──
+WPIDS=()
+for i in \"\${!GPUS_AVAIL[@]}\"; do
+    gpu_worker \"\${GPUS_AVAIL[\$i]}\" \"\$i\" &
+    WPIDS+=(\$!)
 done
 
+# ── Esperar a que todos los workers terminen ──
 FAIL=0
-for i in \"\${!NAMES[@]}\"; do
-    if wait \"\${PIDS[\$i]}\" 2>/dev/null; then S=\"OK\"; else S=\"FAIL\"; FAIL=\$((FAIL+1)); fi
-    LOG=\"${log_dir}/\${NAMES[\$i]}.log\"
-    ELAPSED=\$(grep '^ELAPSED' \"\$LOG\" 2>/dev/null | cut -d= -f2 || echo '?')
-    EDI=\$(grep -oP 'EDI[=:]\s*-?[\d.]+' \"\$LOG\" 2>/dev/null | tail -1 || echo '?')
-    GPU_USED=\$(grep -oP 'GPU \d+' \"\$LOG\" 2>/dev/null | head -1 || echo '?')
-    echo \"  [\$S] \${NAMES[\$i]} — \$ELAPSED — \$EDI [\$GPU_USED]\"
+for pid in \"\${WPIDS[@]}\"; do
+    wait \"\$pid\" 2>/dev/null || FAIL=\$((FAIL+1))
 done
-echo \"  Failures: \$FAIL/\${NCASES}\"
+
+# ── Resumen ──
+echo \"\"
+echo \"  ═══ Resumen de tanda ═══\"
+local TOTAL_OK=0 TOTAL_FAIL=0 TOTAL_SKIP=0
+while read -r line; do
+    case \"\$line\" in
+        OK*)   TOTAL_OK=\$((TOTAL_OK+1)) ;;
+        FAIL*) TOTAL_FAIL=\$((TOTAL_FAIL+1)) ;;
+        SKIP*) TOTAL_SKIP=\$((TOTAL_SKIP+1)) ;;
+    esac
+done < \"\$RESULT_FILE\"
+
+# Contar casos por GPU
+for gpu in \${GPUS_AVAIL[*]}; do
+    local cnt=\$(grep -c \"GPU\${gpu}\" \"\$RESULT_FILE\" 2>/dev/null || echo 0)
+    echo \"  GPU \${gpu}: \${cnt} casos\"
+done
+echo \"  OK: \${TOTAL_OK}  FAIL: \${TOTAL_FAIL}  SKIP: \${TOTAL_SKIP}\"
+
+# Limpiar
+rm -f \"\$QUEUE_FILE\" \"\$LOCK_FILE\" \"\$RESULT_FILE\"
 "
 
     if [[ $DRY_RUN -eq 1 ]]; then
-        echo "  [DRY-RUN] ${ncases} casos: ${cases[*]}"
-        echo "  VRAM estimada: $(estimate_vram_per_sim $GRID) MB/sim"
-        for i in "${!cases[@]}"; do
-            echo "    ${cases[$i]} → GPU ${gpu_assign[$i]}"
-        done
+        echo "  [DRY-RUN] ${ncases} casos → ${n_workers} GPU workers"
+        echo "  GPUs: ${available_gpus[*]}"
+        echo "  Casos: ${cases[*]}"
+        echo "  Cada GPU toma el siguiente caso al terminar (work-stealing)"
         return 0
     fi
     
@@ -348,7 +414,7 @@ echo "║  GPUs:     ${N_GPUS} detectadas"
 echo "║  GPU 0:    ${GPU0_NAME} — ${GPU0_VRAM} MB"
 [[ $N_GPUS -ge 2 ]] && \
 echo "║  GPU 1:    ${GPU1_NAME} — ${GPU1_VRAM} MB"
-echo "║  Distrib:  proporcional a VRAM libre (pre-asignado desde bash)"
+echo "║  Distrib:  cola dinámica — 1 worker/GPU, la más rápida toma más"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
 echo "║  Contendr: ${CONTAINER}"
 echo "║  VRAM/sim: ~$(estimate_vram_per_sim $GRID) MB"
