@@ -1,6 +1,6 @@
 {
   "case": "Movilidad Urbana (Traffic)",
-  "generated_at": "2026-02-10T05:34:38.590751Z",
+  "generated_at": "2026-02-10T11:33:53.452524Z",
   "git": {
     "commit": null,
     "dirty": null
@@ -24,11 +24,11 @@
         "macro_coupling": 0.5,
         "ode_coupling_strength": 0.3,
         "abm_feedback_gamma": 0.05,
-        "damping": 0.8222262780569105,
+        "damping": 0.8118680844793991,
         "ode_alpha": 0.2695108305890248,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.9981929860301563,
+        "calibration_rmse": 0.9980620473467847,
         "ode_rolling": null
       },
       "forcing": {
@@ -49,14 +49,14 @@
       },
       "edi": {
         "value": 0.0027275380043387974,
-        "bootstrap_mean": 0.002739941088287636,
-        "ci_lo": -0.008844328500500617,
-        "ci_hi": 0.0138800080141449,
+        "bootstrap_mean": 0.0026315956890688185,
+        "ci_lo": -0.008318003877789392,
+        "ci_hi": 0.013188290841412742,
         "valid": false,
         "weighted_value": 0.0005455076008677595,
         "loe_factor": 0.2,
-        "permutation_pvalue": 0.26926926926926925,
-        "permutation_null_95": 0.002759785034439058,
+        "permutation_pvalue": 0.2625262526252625,
+        "permutation_null_95": 0.0027596314735962154,
         "permutation_significant": false,
         "trend_bias": {
           "detrended_edi": null,
@@ -74,9 +74,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0003799172431247315,
-        "edi_mean": 0.00010441343419625426,
-        "edi_std": 3.9668464065026485e-08,
+        "cv": 7.316270082359724e-05,
+        "edi_mean": 0.00010569941580097413,
+        "edi_std": 7.733254735475676e-09,
         "monotonic_decrease": false
       },
       "effective_information": 0.09558687619343109,
@@ -126,10 +126,10 @@
         "relative_improvement": 0.24387553163806786
       },
       "c2_detail": {
-        "mean_delta": 89.04202921823351,
-        "var_delta": 8.512152770733852,
-        "relative_mean": 1.0000040717068808,
-        "relative_var": 0.9999999991724859
+        "mean_delta": 89.0420337571485,
+        "var_delta": 8.512152770575737,
+        "relative_mean": 1.0000041226820608,
+        "relative_var": 0.9999999991539107
       },
       "c3_detail": {
         "persistence_1": 9.6875,
@@ -139,10 +139,10 @@
         "diff": 7.555555555555557
       },
       "c5_detail": {
-        "sensitivity_min": -0.0004097995397777758,
-        "sensitivity_max": -0.00028754494967118895,
-        "range": 0.00012225459010658683,
-        "relative_range": 2.3841777635444163e-06
+        "sensitivity_min": -0.00042426233590583305,
+        "sensitivity_max": -0.00029082956480402055,
+        "range": 0.0001334327711018125,
+        "relative_range": 2.6021717917641877e-06
       },
       "bias_correction": {
         "applied": false,
@@ -198,14 +198,14 @@
       },
       "calibration": {
         "forcing_scale": 0.99,
-        "macro_coupling": 0.05,
-        "ode_coupling_strength": 0.04000000000000001,
+        "macro_coupling": 0.24060005355708447,
+        "ode_coupling_strength": 0.19248004284566758,
         "abm_feedback_gamma": 0.05,
-        "damping": 0.7038486213071495,
+        "damping": 0.6742890839037531,
         "ode_alpha": 0.09892744378065572,
         "ode_beta": 0.7940763529976941,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.15123463204797732,
+        "calibration_rmse": 0.14653953557561222,
         "ode_rolling": null
       },
       "forcing": {
@@ -261,9 +261,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 5.59483653609437e-08,
-        "edi_mean": 0.6904264281039988,
-        "edi_std": 3.8628230054413854e-08,
+        "cv": 1.1822051082281271e-08,
+        "edi_mean": 0.7100606140011285,
+        "edi_std": 8.394372850237346e-09,
         "monotonic_decrease": false
       },
       "effective_information": 0.0,
@@ -294,7 +294,7 @@
         "pass": false,
         "significance": "computed"
       },
-      "coupling_check": false,
+      "coupling_check": true,
       "rmse_fraud_check": true,
       "c1_convergence": false,
       "c2_robustness": false,
@@ -313,10 +313,10 @@
         "relative_improvement": 0.0
       },
       "c2_detail": {
-        "mean_delta": 196.33832337042034,
-        "var_delta": 0.6878664565083621,
-        "relative_mean": 0.9816916168521017,
-        "relative_var": 0.6878664565083621
+        "mean_delta": 196.1972733734774,
+        "var_delta": 0.7409403103231523,
+        "relative_mean": 0.980986366867387,
+        "relative_var": 0.7409403103231523
       },
       "c3_detail": {
         "persistence_1": 0.0,
@@ -326,10 +326,10 @@
         "diff": 0.0
       },
       "c5_detail": {
-        "sensitivity_min": 2.913553119033351,
-        "sensitivity_max": 4.119648921159669,
-        "range": 1.2060958021263182,
-        "relative_range": 7.06728102055261e-10
+        "sensitivity_min": 3.027096892178521,
+        "sensitivity_max": 4.373144291866055,
+        "range": 1.3460473996875337,
+        "relative_range": 7.887346281949489e-10
       },
       "bias_correction": {
         "applied": true,
@@ -351,7 +351,7 @@
         "non_locality_pass": false,
         "persistence_pass": true,
         "emergence_pass": false,
-        "coupling_ok": false,
+        "coupling_ok": true,
         "rmse_fraud_check": true,
         "edi_valid": false,
         "cr_valid": false

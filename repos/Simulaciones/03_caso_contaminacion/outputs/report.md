@@ -1,6 +1,6 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-10T06:29:09.316001Z
+- generated_at: 2026-02-10T09:09:06.043933Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -13,9 +13,9 @@
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.1650
-- external: 0.1314
-- CR: 1.2559
+- internal: 0.1382
+- external: 0.1060
+- CR: 1.3030
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -28,20 +28,20 @@
 ### Errores
 - rmse_abm: 0.8190
 - rmse_abm_no_ode: 0.8190
-- rmse_ode: 7.9817
+- rmse_ode: 7.9889
 - rmse_reduced: 0.8190
 - threshold: 0.7999
 
 ### Calibración
-- forcing_scale: 0.7162
-- macro_coupling: 0.5000
+- forcing_scale: 0.7168
+- macro_coupling: 0.4823
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.6047
+- damping: 0.6063
 - ode_alpha: 0.8000
 - ode_beta: 0.2000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.5715
+- calibration_rmse: 0.5714
 - ode_rolling: None
 
 ### Interpretación
@@ -58,9 +58,9 @@
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.1650
-- external: 0.1281
-- CR: 1.2876
+- internal: 0.1382
+- external: 0.1005
+- CR: 1.3757
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -86,7 +86,7 @@
 - ode_alpha: 0.8000
 - ode_beta: 0.2000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.6628
+- calibration_rmse: 0.6623
 - ode_rolling: None
 
 ### Interpretación

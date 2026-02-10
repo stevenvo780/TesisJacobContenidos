@@ -422,6 +422,8 @@ def simulate_abm_batch(
         return np.concatenate(all_results, axis=0)
     
     # ─── OOM safety: si el batch actual causa OOM, partir a la mitad ──
+    # Si B=1 y aún OOM → la GPU no tiene VRAM suficiente ni para 1 sim
+    # → fallback transparente a CPU (NumPy).
     try:
         return _simulate_abm_batch_kernel(
             base_params, param_variants, steps, seed, series_key, init_range,
@@ -430,6 +432,20 @@ def simulate_abm_batch(
     except Exception as oom_err:
         if "OutOfMemory" in type(oom_err).__name__ or "out of memory" in str(oom_err).lower():
             cp.get_default_memory_pool().free_all_blocks()
+            if B <= 1:
+                # GPU no puede con ni 1 sim → fallback a CPU
+                print(f"[abm_core] OOM con B=1 (grid={n}) — fallback a CPU")
+                results = []
+                from abm_core import simulate_abm_core as _cpu_fn
+                for pv in param_variants:
+                    p = dict(base_params)
+                    p.update(pv)
+                    p["assimilation_strength"] = 0.0
+                    p["assimilation_series"] = None
+                    p["_store_grid"] = False
+                    sim = _cpu_fn(p, steps, seed=seed, series_key=series_key, init_range=init_range)
+                    results.append(sim[series_key][:steps])
+                return np.array(results, dtype=np.float64)
             half = max(1, B // 2)
             print(f"[abm_core] OOM con B={B}, reintentando con chunks de {half}")
             r1 = simulate_abm_batch(base_params, param_variants[:half], steps, seed, series_key, init_range, max_batch=0)

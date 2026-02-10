@@ -1,14 +1,14 @@
 # Reporte de Validación — Falsación: Observabilidad Escasa
 
-- generated_at: 2026-02-10T05:04:05.039297
+- generated_at: 2026-02-10T07:06:22.420139
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
 - valor: -1.0000
-- bootstrap_mean: -2.1039
-- CI 95%: [-2.4857, -1.7530]
+- bootstrap_mean: -2.1017
+- CI 95%: [-2.4953, -1.7566]
 - weighted_value (LoE factor 0.20): -0.2000
 - válido (0.30-0.90): False
 - detrended_edi: -1.0000
@@ -29,8 +29,8 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.1888
-- rmse_abm_no_ode: 0.7074
+- rmse_abm: 2.1886
+- rmse_abm_no_ode: 0.7075
 - rmse_ode: 3.7925
 - rmse_reduced: 2.5517
 - threshold: 0.9158

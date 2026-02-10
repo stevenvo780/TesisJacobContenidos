@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: Observabilidad Escasa",
-  "generated_at": "2026-02-10T05:04:05.039297",
+  "generated_at": "2026-02-10T07:06:22.420139",
   "git": {
     "commit": "falsification_confounder",
     "dirty": false
@@ -45,26 +45,26 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 2.188766078376935,
-        "rmse_abm_no_ode": 0.707410814679842,
-        "rmse_ode": 3.7925031397121542,
-        "rmse_reduced": 2.5517471845137103,
+        "rmse_abm": 2.188578684007348,
+        "rmse_abm_no_ode": 0.7075028925035356,
+        "rmse_ode": 3.792493384614764,
+        "rmse_reduced": 2.5517431791370764,
         "threshold": 0.9158465070483048
       },
       "correlations": {
-        "abm_obs": 0.7167919643767577,
-        "ode_obs": 0.645526676514868
+        "abm_obs": 0.7167918691695593,
+        "ode_obs": 0.6455861841965401
       },
       "edi": {
         "value": -1.0,
-        "bootstrap_mean": -2.103921452361916,
-        "ci_lo": -2.485716636808524,
-        "ci_hi": -1.7530367739930108,
+        "bootstrap_mean": -2.1017032961848336,
+        "ci_lo": -2.4952573777158147,
+        "ci_hi": -1.7565996869142309,
         "valid": false,
         "weighted_value": -0.2,
         "loe_factor": 0.2,
         "permutation_pvalue": 1.0,
-        "permutation_null_95": -0.5589102315058772,
+        "permutation_null_95": -0.5570390927725817,
         "permutation_significant": false,
         "trend_bias": {
           "detrended_edi": -1.0,
@@ -82,35 +82,35 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 3.7480902404363465e-07,
-        "edi_mean": 0.7231190548983264,
-        "edi_std": 2.710315472337972e-07,
+        "cv": 2.2799022934629685e-07,
+        "edi_mean": 0.7230571874346333,
+        "edi_std": 1.648499739937104e-07,
         "monotonic_decrease": false
       },
-      "effective_information": -0.19693766679056135,
+      "effective_information": -0.19659864719374576,
       "symploke": {
-        "internal": 0.9979793608029655,
-        "external": 0.9921698636712134,
-        "cr": 1.0058553452835746,
+        "internal": 0.9979863379829466,
+        "external": 0.9921502612082066,
+        "cr": 1.0058822509078746,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 2.7849229470505113e-06,
+        "dominance_share": 3.0943429669622795e-07,
         "pass": true
       },
       "persistence": {
-        "model_var": 1.0822588891798502e-05,
+        "model_var": 1.0830103301099965e-05,
         "obs_var": 0.10810369943788213,
-        "model_std": 0.003289770340281902,
+        "model_std": 0.003290912229321828,
         "obs_std": 0.3287912703188485,
-        "std_ratio": 0.01000564989785652,
+        "std_ratio": 0.010009122888604779,
         "threshold_std": 5.0,
         "pass": true
       },
       "emergence": {
-        "err_reduced": 0.707410814679842,
-        "err_abm": 2.188766078376935,
+        "err_reduced": 0.7075028925035356,
+        "err_abm": 2.188578684007348,
         "threshold": 0.18316930140966098,
         "pass": false,
         "significance": "computed"
@@ -123,40 +123,40 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 2.188766078376935,
-        "rmse_ode": 3.7925031397121542,
-        "corr_abm": 0.7167919643767577,
-        "corr_ode": 0.645526676514868,
+        "rmse_abm": 2.188578684007348,
+        "rmse_ode": 3.792493384614764,
+        "corr_abm": 0.7167918691695593,
+        "corr_ode": 0.6455861841965401,
         "threshold": 0.9158465070483048,
         "c1_relative": false,
         "c1_absolute": false,
-        "rmse_reduced": 0.707410814679842,
-        "relative_improvement": -1.4813552636970928
+        "rmse_reduced": 0.7075028925035356,
+        "relative_improvement": -1.4810757915038122
       },
       "c2_detail": {
-        "mean_delta": 2.091554063607179,
-        "var_delta": 0.973243080375951,
-        "relative_mean": 2.091554063607179,
-        "relative_var": 0.973243080375951
+        "mean_delta": 2.092526503312729,
+        "var_delta": 0.9741764952043475,
+        "relative_mean": 2.092526503312729,
+        "relative_var": 0.9741764952043475
       },
       "c3_detail": {
-        "persistence_1": 1.0822588891798502e-05,
-        "persistence_2": 1.0814407768463813e-05
+        "persistence_1": 1.0830103301099965e-05,
+        "persistence_2": 1.0829965439532133e-05
       },
       "c4_detail": {
-        "diff": 0.07001148237626148
+        "diff": 0.07004801892680529
       },
       "c5_detail": {
-        "sensitivity_min": 2.0450876571315235,
-        "sensitivity_max": 2.647942066519023,
-        "range": 0.6028544093874997,
-        "relative_range": 0.11148314567532998
+        "sensitivity_min": 2.0460889130516953,
+        "sensitivity_max": 2.6903278799446495,
+        "range": 0.6442389668929542,
+        "relative_range": 0.11913620515577263
       },
       "bias_correction": {
         "applied": true,
         "mode": "bias_only",
-        "ode_obs_corr_train": 0.4327261440178478,
-        "ode_mean_train": -1.31550352154569,
+        "ode_obs_corr_train": 0.43260779551289114,
+        "ode_mean_train": -1.3155018537180538,
         "obs_mean_train": 1.295260195396016e-16,
         "scale_factor": 1.0
       },
@@ -181,7 +181,7 @@
         "category": "falsification",
         "nivel": null,
         "ode_quality": "moderate",
-        "ode_obs_corr": 0.645526676514868,
+        "ode_obs_corr": 0.6455861841965401,
         "interpretation": "Control de falsaci\u00f3n: rechazo esperado por dise\u00f1o experimental"
       }
     }

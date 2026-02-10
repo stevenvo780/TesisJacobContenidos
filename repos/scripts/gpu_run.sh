@@ -277,6 +277,10 @@ run_batch() {
     # Mientras un proceso hace ABM en GPU, otros hacen calibración/datos en CPU.
     # Con grid grande, el ABM tarda mucho → necesitamos más workers CPU-bound.
     # Mínimo: max(ncores/ngpus, 4) workers por GPU para overlap CPU/GPU
+    #
+    # PERO: cada proceso CuPy crea un contexto CUDA (~500MB overhead).
+    # Con 14 procesos en una GPU de 3.4GB libre → 7GB solo en contextos → OOM.
+    # Por eso limitamos por VRAM: max_vram_workers = free / (500 + grid_vram_per_sim).
     local vram_est
     vram_est=$(estimate_vram_per_sim "$GRID")
     local total_workers=0
@@ -292,14 +296,27 @@ run_batch() {
     [[ $min_per_gpu -lt 4 ]] && min_per_gpu=4
     [[ $min_per_gpu -gt 15 ]] && min_per_gpu=15  # cap razonable
     
+    # Overhead de contexto CUDA por proceso CuPy (en MB)
+    local CUDA_CTX_OVERHEAD_MB=500
+    # VRAM mínima por proceso = contexto + grid² × 8 bytes × 20 buffers (en MB)
+    local grid_vram_mb=$(( GRID * GRID * 8 * 20 / 1048576 ))
+    local vram_per_process=$(( CUDA_CTX_OVERHEAD_MB + grid_vram_mb ))
+    
     for i in "${!available_gpus[@]}"; do
         local free=${gpu_free_mb[$i]}
-        # Cuántos caben en VRAM (con margen 30%)
-        local vram_fit=$(( free * 70 / 100 / (vram_est > 0 ? vram_est : 1) ))
-        [[ $vram_fit -lt 1 ]] && vram_fit=1
-        # Más workers para overlap CPU/GPU
-        local nw=$vram_fit
-        [[ $nw -lt $min_per_gpu ]] && nw=$min_per_gpu
+        
+        # Cuántos procesos CuPy caben en esta GPU (VRAM-aware)
+        local vram_max_workers=$(( free * 80 / 100 / (vram_per_process > 0 ? vram_per_process : 1) ))
+        [[ $vram_max_workers -lt 1 ]] && vram_max_workers=1
+        
+        # CPU-based minimum (para overlap CPU/GPU)
+        local nw=$min_per_gpu
+        
+        # Cap por VRAM: nunca más workers de lo que la GPU soporta
+        [[ $nw -gt $vram_max_workers ]] && nw=$vram_max_workers
+        
+        echo "    GPU ${available_gpus[$i]}: ${free}MB libre, ~${vram_per_process}MB/proceso → max ${vram_max_workers} por VRAM, asignados: ${nw}"
+        
         # No más workers que casos restantes
         local remaining=$((ncases - total_workers))
         [[ $nw -gt $remaining ]] && nw=$remaining
