@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 00:58 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 01:01 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 

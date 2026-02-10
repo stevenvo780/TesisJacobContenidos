@@ -20,7 +20,7 @@ Documentos de referencia:
 
 ## Lista Completa de Casos (29 casos oficiales)
 
-> **Estado actual:** overall_pass = 2/29 (Deforestación, Microplásticos). H1 parcialmente confirmada bajo taxonomía diferenciada.
+> **Estado actual:** overall_pass = 2/29 (Deforestación, Microplásticos). Significancia: 6/29. El paisaje completo de 29 puntos (Niveles 0-4) es el resultado principal bajo irrealismo operativo.
 
 ### Bloque I: Emergencia fuerte (strong) — overall_pass=True
 16. `16_caso_deforestacion/` — Área forestal (World Bank) — EDI=0.633 — **Validado**
