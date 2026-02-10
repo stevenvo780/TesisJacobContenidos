@@ -1,15 +1,15 @@
 # Reporte de Validación — Movilidad Urbana (Traffic)
 
-- generated_at: 2026-02-10T02:10:58.764439Z
+- generated_at: 2026-02-10T04:21:21.825070Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0225
-- bootstrap_mean: 0.0220
-- CI 95%: [0.0002, 0.0427]
-- weighted_value (LoE factor 0.20): 0.0045
+- valor: 0.0027
+- bootstrap_mean: 0.0026
+- CI 95%: [-0.0087, 0.0135]
+- weighted_value (LoE factor 0.20): 0.0005
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -20,28 +20,28 @@
 
 ### Criterios C1-C5
 - c1_convergence: True
-- c2_robustness: True
+- c2_robustness: False
 - c3_replication: False
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 33.8845
-- rmse_abm_no_ode: 34.6640
-- rmse_ode: 31.9215
+- rmse_abm: 89.1685
+- rmse_abm_no_ode: 89.4123
+- rmse_ode: 32.0368
 - rmse_reduced: 89.1702
 - threshold: 0.4998
 
 ### Calibración
-- forcing_scale: 0.8052
-- macro_coupling: 0.0756
-- ode_coupling_strength: 0.0605
+- forcing_scale: 0.0010
+- macro_coupling: 0.5000
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.1005
+- damping: 0.8369
 - ode_alpha: 0.2695
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 93.3991
+- calibration_rmse: 0.9982
 - ode_rolling: None
 
 ### Interpretación
@@ -51,10 +51,10 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0033
-- bootstrap_mean: 0.0032
-- CI 95%: [-0.0045, 0.0118]
-- weighted_value (LoE factor 0.20): 0.0007
+- valor: 0.0000
+- bootstrap_mean: 0.0000
+- CI 95%: [0.0000, 0.0000]
+- weighted_value (LoE factor 0.20): 0.0000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -64,31 +64,31 @@
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: True
-- c2_robustness: True
-- c3_replication: False
-- c4_validity: True
+- c1_convergence: False
+- c2_robustness: False
+- c3_replication: True
+- c4_validity: False
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 183.4348
-- rmse_abm_no_ode: 184.0497
-- rmse_ode: 10.0609
+- rmse_abm: 195.5323
+- rmse_abm_no_ode: 195.5323
+- rmse_ode: 10.2231
 - rmse_reduced: 85.8555
 - threshold: 1.8501
 
 ### Calibración
-- forcing_scale: 0.1725
-- macro_coupling: 0.1178
-- ode_coupling_strength: 0.0943
+- forcing_scale: 0.9900
+- macro_coupling: 0.1323
+- ode_coupling_strength: 0.1058
 - abm_feedback_gamma: 0.0500
-- damping: 0.0039
+- damping: 0.6704
 - ode_alpha: 0.0989
 - ode_beta: 0.7941
 - assimilation_strength: 0.0000
-- calibration_rmse: 90.2730
+- calibration_rmse: 0.1477
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 

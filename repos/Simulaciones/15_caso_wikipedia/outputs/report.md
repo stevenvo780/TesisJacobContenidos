@@ -1,15 +1,15 @@
 # Reporte de Validación — Wikipedia (Axelrod + Lotka-Volterra)
 
-- generated_at: 2026-02-10T02:11:44.509625Z
+- generated_at: 2026-02-10T04:22:03.401759Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.2841
-- bootstrap_mean: 0.2841
-- CI 95%: [0.2763, 0.2931]
-- weighted_value (LoE factor 0.20): 0.0568
+- valor: 0.3228
+- bootstrap_mean: 0.3230
+- CI 95%: [0.3130, 0.3340]
+- weighted_value (LoE factor 0.20): 0.0646
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -20,28 +20,28 @@
 
 ### Criterios C1-C5
 - c1_convergence: True
-- c2_robustness: True
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.9819
+- rmse_abm: 1.8747
 - rmse_abm_no_ode: 2.7683
-- rmse_ode: 1.8794
+- rmse_ode: 1.8747
 - rmse_reduced: 2.7683
 - threshold: 1.0224
 
 ### Calibración
-- forcing_scale: 0.0010
-- macro_coupling: 0.0500
-- ode_coupling_strength: 0.0400
+- forcing_scale: 1.0000
+- macro_coupling: 0.4500
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.0000
+- damping: 0.5000
 - ode_alpha: 0.0010
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 2.2095
+- calibration_rmse: 0.4455
 - ode_rolling: None
 
 ### Interpretación
@@ -65,7 +65,7 @@
 
 ### Criterios C1-C5
 - c1_convergence: False
-- c2_robustness: True
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: False
 - c5_uncertainty: True
@@ -78,15 +78,15 @@
 - threshold: 2.2194
 
 ### Calibración
-- forcing_scale: 0.0010
+- forcing_scale: 0.9900
 - macro_coupling: 0.0500
 - ode_coupling_strength: 0.0400
 - abm_feedback_gamma: 0.0500
-- damping: 0.0000
+- damping: 0.7200
 - ode_alpha: 0.0985
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 1.9966
+- calibration_rmse: 0.8450
 - ode_rolling: None
 
 ### Interpretación

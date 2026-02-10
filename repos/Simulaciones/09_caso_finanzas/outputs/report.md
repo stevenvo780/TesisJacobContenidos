@@ -1,6 +1,6 @@
 # Reporte de Validación — Finanzas (SPY)
 
-- generated_at: 2026-02-10T02:09:49.286732Z
+- generated_at: 2026-02-10T04:21:48.773979Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -20,7 +20,7 @@
 
 ### Criterios C1-C5
 - c1_convergence: True
-- c2_robustness: True
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
@@ -41,7 +41,7 @@
 - ode_alpha: 0.0012
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 4.7318
+- calibration_rmse: 1.0000
 - ode_rolling: None
 
 ### Interpretación
@@ -52,7 +52,7 @@
 
 ### EDI
 - valor: 0.0398
-- bootstrap_mean: 0.0398
+- bootstrap_mean: 0.0399
 - CI 95%: [0.0388, 0.0410]
 - weighted_value (LoE factor 1.00): 0.0398
 - válido (0.30-0.90): False
@@ -68,7 +68,7 @@
 
 ### Criterios C1-C5
 - c1_convergence: True
-- c2_robustness: True
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
@@ -89,7 +89,7 @@
 - ode_alpha: 0.0017
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 10.2667
+- calibration_rmse: 1.0000
 - ode_rolling: None
 
 ### Interpretación

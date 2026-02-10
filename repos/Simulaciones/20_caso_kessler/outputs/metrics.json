@@ -1,9 +1,9 @@
 {
   "case": "S\u00edndrome de Kessler (NASA LEGEND + ORDEM)",
-  "generated_at": "2026-02-10T02:12:26.265159Z",
+  "generated_at": "2026-02-10T04:20:53.863340Z",
   "git": {
-    "commit": "ea43965dbebf693cda82f171def621e448b1e324",
-    "dirty": true
+    "commit": null,
+    "dirty": null
   },
   "phases": {
     "synthetic": {
@@ -20,15 +20,15 @@
         "coverage": 1.0
       },
       "calibration": {
-        "forcing_scale": 0.050744783065829704,
-        "macro_coupling": 0.05,
-        "ode_coupling_strength": 0.04000000000000001,
+        "forcing_scale": 0.626613223272571,
+        "macro_coupling": 0.4776592356664635,
+        "ode_coupling_strength": 0.3,
         "abm_feedback_gamma": 0.05,
-        "damping": 0.0,
+        "damping": 0.6369154179790758,
         "ode_alpha": 0.1644841102941527,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 141876.0853170233,
+        "calibration_rmse": 0.26503102977742726,
         "ode_rolling": null
       },
       "forcing": {
@@ -37,29 +37,29 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 847066.3355219284,
-        "rmse_abm_no_ode": 601775.7444411184,
+        "rmse_abm": 2663144.1290784483,
+        "rmse_abm_no_ode": 679582.6791270915,
         "rmse_ode": 7.321970708234351,
         "rmse_reduced": 627276.0876190498,
         "threshold": 3.936336641657651
       },
       "correlations": {
-        "abm_obs": 0.7250428633734866,
+        "abm_obs": 0.6984251968824826,
         "ode_obs": 4.750227114326331e-16
       },
       "edi": {
-        "value": -0.4076112959797281,
-        "bootstrap_mean": -0.4077408401962257,
-        "ci_lo": -0.41318954103489036,
-        "ci_hi": -0.40361532190001204,
+        "value": -1.0,
+        "bootstrap_mean": -2.91394094738907,
+        "ci_lo": -3.043261676533637,
+        "ci_hi": -2.7548988375612207,
         "valid": false,
-        "weighted_value": -0.08152225919594563,
+        "weighted_value": -0.2,
         "loe_factor": 0.2,
         "permutation_pvalue": 1.0,
-        "permutation_null_95": -0.4076105154417885,
+        "permutation_null_95": -1.0,
         "permutation_significant": false,
         "trend_bias": {
-          "detrended_edi": -0.4076,
+          "detrended_edi": -1.0,
           "trend_ratio": 1.0,
           "trend_r2": 0.554,
           "warning": false
@@ -74,75 +74,75 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.23829059370133737,
-        "edi_mean": -0.31548930533943553,
-        "edi_std": 0.0751781338757566,
+        "cv": 1.490471582236809e-07,
+        "edi_mean": 0.17055795004896937,
+        "edi_std": 2.5421177767255404e-08,
         "monotonic_decrease": false
       },
-      "effective_information": -0.3091107533057098,
+      "effective_information": -1.6514572609978906,
       "symploke": {
-        "internal": 0.7971537560418129,
-        "external": 0.6751306565168415,
-        "cr": 1.1807399772875335,
+        "internal": 0.823159923136769,
+        "external": 0.7164998056096817,
+        "cr": 1.1488627305855699,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.03627472621152883,
+        "dominance_share": 0.034177299843268415,
         "pass": true
       },
       "persistence": {
-        "model_var": 12667209104.04,
+        "model_var": 244740756229.84,
         "obs_var": 1.0286110364836758,
-        "model_std": 112548.69658969846,
+        "model_std": 494712.8017646602,
         "obs_std": 1.0142046324503136,
-        "std_ratio": 110972.37479361669,
+        "std_ratio": 487784.0091988502,
         "threshold_std": 5.0,
         "pass": false
       },
       "emergence": {
-        "err_reduced": 601775.7444411184,
-        "err_abm": 847066.3355219284,
+        "err_reduced": 679582.6791270915,
+        "err_abm": 2663144.1290784483,
         "threshold": 0.7872673283315302,
         "pass": false,
         "significance": "computed"
       },
-      "coupling_check": false,
+      "coupling_check": true,
       "rmse_fraud_check": true,
       "c1_convergence": false,
-      "c2_robustness": true,
+      "c2_robustness": false,
       "c3_replication": false,
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 847066.3355219284,
+        "rmse_abm": 2663144.1290784483,
         "rmse_ode": 7.321970708234351,
-        "corr_abm": 0.7250428633734866,
+        "corr_abm": 0.6984251968824826,
         "corr_ode": 4.750227114326331e-16,
         "threshold": 3.936336641657651,
         "c1_relative": false,
         "c1_absolute": false,
-        "rmse_reduced": 601775.7444411184,
-        "relative_improvement": -245290.59108080994
+        "rmse_reduced": 679582.6791270915,
+        "relative_improvement": -1983561.4499513567
       },
       "c2_detail": {
-        "mean_delta": 33806.75789473683,
-        "var_delta": 1749116759.9490356,
-        "relative_mean": 0.04104489562226306,
-        "relative_var": 0.04468969214278969
+        "mean_delta": 2543429.9495614176,
+        "var_delta": 623358162675.78,
+        "relative_mean": 0.9999990489781977,
+        "relative_var": 0.9999999999997803
       },
       "c3_detail": {
-        "persistence_1": 12667209104.04,
-        "persistence_2": 13998430423.16
+        "persistence_1": 244740756229.84,
+        "persistence_2": 253469623306.65
       },
       "c4_detail": {
-        "diff": 36671.42105263157
+        "diff": 44222.89473684179
       },
       "c5_detail": {
-        "sensitivity_min": 795897.947368421,
-        "sensitivity_max": 939627.052631579,
-        "range": 143729.10526315798,
-        "relative_range": 0.1690672851333518
+        "sensitivity_min": 1.9239070331605514,
+        "sensitivity_max": 2.722837358985981,
+        "range": 0.7989303258254297,
+        "relative_range": 0.00020364230181853192
       },
       "bias_correction": {
         "applied": false,
@@ -156,7 +156,7 @@
         "c1_convergence": false,
         "c1_relative": false,
         "c1_absolute": false,
-        "c2_robustness": true,
+        "c2_robustness": false,
         "c3_replication": false,
         "c4_validity": true,
         "c5_uncertainty": true,
@@ -164,7 +164,7 @@
         "non_locality_pass": true,
         "persistence_pass": false,
         "emergence_pass": false,
-        "coupling_ok": false,
+        "coupling_ok": true,
         "rmse_fraud_check": true,
         "edi_valid": false,
         "cr_valid": false
@@ -200,15 +200,15 @@
         "coverage": 1.0
       },
       "calibration": {
-        "forcing_scale": 0.001,
-        "macro_coupling": 0.05,
-        "ode_coupling_strength": 0.04000000000000001,
+        "forcing_scale": 0.5978189362022063,
+        "macro_coupling": 0.5,
+        "ode_coupling_strength": 0.3,
         "abm_feedback_gamma": 0.05,
-        "damping": 0.0,
+        "damping": 0.6295600488186717,
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 136237.33174348998,
+        "calibration_rmse": 0.2106706404681244,
         "ode_rolling": null
       },
       "forcing": {
@@ -217,29 +217,29 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 847272.1862425047,
-        "rmse_abm_no_ode": 596565.0501668818,
+        "rmse_abm": 2568378.682901623,
+        "rmse_abm_no_ode": 660535.1918085584,
         "rmse_ode": 15.284531713082249,
         "rmse_reduced": 627287.1330420912,
         "threshold": 0.5326299079441852
       },
       "correlations": {
-        "abm_obs": 0.9690159682217763,
+        "abm_obs": 0.9721882357661182,
         "ode_obs": 0.0
       },
       "edi": {
-        "value": -0.42025112937053677,
-        "bootstrap_mean": -0.4205499962201608,
-        "ci_lo": -0.43061058553584647,
-        "ci_hi": -0.4133584932998488,
+        "value": -1.0,
+        "bootstrap_mean": -2.8834705439991772,
+        "ci_lo": -3.0139934761244422,
+        "ci_hi": -2.722400531094582,
         "valid": false,
-        "weighted_value": -0.08405022587410736,
+        "weighted_value": -0.2,
         "loe_factor": 0.2,
         "permutation_pvalue": 1.0,
-        "permutation_null_95": -0.4202509908720056,
+        "permutation_null_95": -1.0,
         "permutation_significant": false,
         "trend_bias": {
-          "detrended_edi": -0.4203,
+          "detrended_edi": -1.0,
           "trend_ratio": 1.0,
           "trend_r2": 0.932,
           "warning": false
@@ -254,75 +254,75 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.13213983791798725,
-        "edi_mean": -0.31448707348866994,
-        "edi_std": 0.04155627091809499,
+        "cv": 8.289415943993336e-07,
+        "edi_mean": 0.8860726830634424,
+        "edi_std": 7.345025026523054e-07,
         "monotonic_decrease": false
       },
-      "effective_information": -0.29330266465518484,
+      "effective_information": -1.6345240671325705,
       "symploke": {
-        "internal": 0.7986968422670293,
-        "external": 0.663626358591086,
-        "cr": 1.2035339343101217,
+        "internal": 0.8223254357314027,
+        "external": 0.691026236240756,
+        "cr": 1.1900060990519348,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.03613817194188076,
+        "dominance_share": 0.03423726302093706,
         "pass": true
       },
       "persistence": {
-        "model_var": 12241083598.210001,
+        "model_var": 233751520322.15997,
         "obs_var": 0.15979386571248133,
-        "model_std": 110639.4305761287,
+        "model_std": 483478.56242253387,
         "obs_std": 0.39974224909619116,
-        "std_ratio": 276776.9251968791,
+        "std_ratio": 1209475.764735073,
         "threshold_std": 5.0,
         "pass": false
       },
       "emergence": {
-        "err_reduced": 596565.0501668818,
-        "err_abm": 847272.1862425047,
+        "err_reduced": 660535.1918085584,
+        "err_abm": 2568378.682901623,
         "threshold": 0.10652598158883704,
         "pass": false,
         "significance": "computed"
       },
-      "coupling_check": false,
+      "coupling_check": true,
       "rmse_fraud_check": true,
       "c1_convergence": false,
-      "c2_robustness": true,
+      "c2_robustness": false,
       "c3_replication": false,
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 847272.1862425047,
+        "rmse_abm": 2568378.682901623,
         "rmse_ode": 15.284531713082249,
-        "corr_abm": 0.9690159682217763,
+        "corr_abm": 0.9721882357661182,
         "corr_ode": 0.0,
         "threshold": 0.5326299079441852,
         "c1_relative": false,
         "c1_absolute": false,
-        "rmse_reduced": 596565.0501668818,
-        "relative_improvement": -250707.13607562298
+        "rmse_reduced": 660535.1918085584,
+        "relative_improvement": -1907843.4910930647
       },
       "c2_detail": {
-        "mean_delta": 43625.821052631596,
-        "var_delta": 1367985706.0033233,
-        "relative_mean": 0.05294130646498031,
-        "relative_var": 0.03523034210930083
+        "mean_delta": 2450481.2060412103,
+        "var_delta": 591711748330.283,
+        "relative_mean": 0.9999991605261234,
+        "relative_var": 0.9999999999997947
       },
       "c3_detail": {
-        "persistence_1": 12241083598.210001,
-        "persistence_2": 12648790800.289999
+        "persistence_1": 233751520322.15997,
+        "persistence_2": 252774485785.69
       },
       "c4_detail": {
-        "diff": 33323.47368421056
+        "diff": 16638.736842105165
       },
       "c5_detail": {
-        "sensitivity_min": 798606.0,
-        "sensitivity_max": 935990.7368421053,
-        "range": 137384.73684210528,
-        "relative_range": 0.1560773897890249
+        "sensitivity_min": 1.6362040301642302,
+        "sensitivity_max": 2.3156481176926555,
+        "range": 0.6794440875284253,
+        "relative_range": 6.631118873402308e-05
       },
       "bias_correction": {
         "applied": false,
@@ -336,7 +336,7 @@
         "c1_convergence": false,
         "c1_relative": false,
         "c1_absolute": false,
-        "c2_robustness": true,
+        "c2_robustness": false,
         "c3_replication": false,
         "c4_validity": true,
         "c5_uncertainty": true,
@@ -344,7 +344,7 @@
         "non_locality_pass": true,
         "persistence_pass": false,
         "emergence_pass": false,
-        "coupling_ok": false,
+        "coupling_ok": true,
         "rmse_fraud_check": true,
         "edi_valid": false,
         "cr_valid": false
