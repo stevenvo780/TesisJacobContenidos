@@ -1,19 +1,45 @@
-# Arquitectura de Simulación: Acidificación Oceánica (Caso 19)
+# Arquitectura de Modelos — Acidificación Oceánica
 
-## 1. Definición del Hiperobjeto
-La Acidificación Oceánica es una entidad masivamente distribuida en el espacio (70% de la superficie) y el tiempo (siglos). Su realidad ontológica se manifiesta como una restricción química macro sobre la vida micro (plancton y corales).
+## Conceptual
+- Hiperobjeto: acidificación oceánica global como proceso macro distribuido.
+- Mecanismo: Las emisiones antropogénicas de CO₂ incrementan la pCO₂ atmosférica, que se disuelve en los océanos alterando el equilibrio carbonato-bicarbonato y reduciendo el pH marino a escala global.
+- Delimitación: frontera funcional basada en cohesión interna vs externa (Symploké).
+- Relación macro-micro: el macro-proceso constriñe la dinámica de las celdas locales
+  a través del acoplamiento (macro_coupling).
 
-## 2. Variables Nucleares (Blindadas)
-- **Variable Macro (X):** Promedio global de $pCO_2$ oceánico superficial. (Dato NOAA).
-- **Variable Micro (x_i):** pH local y saturación de aragonito por celda. (Dato Argo Floats).
-- **Parámetro de Orden:** La capacidad de amortiguación (Buffering) global que impide la disolución inmediata del micro.
+## Formal
 
-## 3. Escudo de Rigor (C1-C5 + Consolidado)
-Para evitar las críticas de la Iteración 2, este caso implementa:
-1.  **Test de Surrogados (Anti-Inercia):** El EDI se compara contra 1,000 series de pH barajadas. Si p > 0.01, se rechaza el caso.
-2.  **Invarianza de Escala (Anti-ToyModel):** Se ejecutan grillas de 20x20, 40x40 y 80x80. El hiperobjeto solo es válido si el EDI es estable ante el aumento de resolución.
-3.  **Ablación Causal (Anti-Ventriloquismo):** Se apaga la interacción de la Ley de Henry (macro) para medir cuánto se desvía el pH local del equilibrio real.
+### Capa macro (ODE)
+- Estado macro: pH medio oceánico global.
+- Dinámica: `dX/dt = α*(F(t) - β*X) + revelle_correction + noise`
+  - Modelo específico: revelle_factor + mean_reversion.
+  - Parámetros: α (tasa de absorción), β (buffer carbonato), factor de Revelle.
+- Modelo basado en el factor de Revelle: captura la respuesta no-lineal del sistema carbonato oceánico a la absorción de CO₂.
+- Asimilación de datos con rezago temporal (t-1) para evitar look-ahead.
 
-## 4. Fuentes de Datos (LoE 5)
-- **Macro:** Mauna Loa CO2 Record / NOAA Global Monitoring.
-- **Micro:** World Ocean Database (WOD) de la NOAA / Red de boyas Argo.
+### Capa micro (ABM)
+- Celdas representan parcelas oceánicas con pH local, acopladas por difusión y forzadas por gradiente de pCO₂.
+- Regla de actualización por celda por paso:
+  1. Difusión espacial (vecinos 4-conectados).
+  2. Forcing externo (gradiente de presión).
+  3. Acoplamiento macro (`macro_coupling` hacia la media global).
+  4. Amortiguamiento (`damping`).
+  5. Ruido estocástico.
+
+### Acoplamiento
+- Variable puente: pH medio oceánico global.
+- Bidireccional: ODE → ABM (macro_coupling) + ABM → ODE (feedback gamma=0.05).
+- Iteraciones de acoplamiento: 2 pasadas por paso temporal.
+
+## Computacional
+- Modelo micro: lattice 2D con vecinos 4-conectados.
+- Modelo macro: ODE discreta (revelle_factor + mean_reversion).
+- Simulación: pasos discretos con semillas controladas.
+- Fuente de datos: World Bank (proxy CO₂ emissions) + calibración SOCAT/GLODAPv2.
+- Indicador: `EN.ATM.CO2E.PC (CO₂ per capita)`.
+
+## Validación
+- Protocolo C1–C5 (ver `validacion_c1_c5.md`).
+- Métricas: EDI, CR, EI, RMSE, correlación (ver `indicadores_metricas.md`).
+- EDI obtenido: -0.000008 → Nivel 0.
+- Overall pass: ❌ No.
