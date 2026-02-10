@@ -265,7 +265,7 @@ def simulate_abm_core(
             main_series.append(float(grid.mean()))
 
         if store_grid:
-            grid_series.append(grid.tolist())
+            grid_series.append(grid.copy())
 
     result = {series_key: main_series, "forcing": forcing}
     if store_grid:

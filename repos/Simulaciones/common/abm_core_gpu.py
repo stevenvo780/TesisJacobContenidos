@@ -265,8 +265,8 @@ def simulate_abm_core(
             main_series.append(macro_mean)
 
         if store_grid:
-            # Transfer grid GPU→CPU una vez por step
-            grid_series.append(to_numpy(grid).tolist())
+            # Transfer grid GPU→CPU una vez por step (numpy, no .tolist() — 5× menos RAM)
+            grid_series.append(to_numpy(grid).copy())
 
     sync()
     

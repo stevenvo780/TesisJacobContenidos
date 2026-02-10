@@ -1,14 +1,14 @@
 # Reporte de Validación — Falsación: No-Estacionariedad
 
-- generated_at: 2026-02-10T04:43:02.628605
+- generated_at: 2026-02-10T05:04:04.741291
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
 - valor: -1.0000
-- bootstrap_mean: -4.7143
-- CI 95%: [-5.4851, -4.0553]
+- bootstrap_mean: -4.7148
+- CI 95%: [-5.4121, -4.0322]
 - weighted_value (LoE factor 0.20): -0.2000
 - válido (0.30-0.90): False
 - detrended_edi: -1.0000

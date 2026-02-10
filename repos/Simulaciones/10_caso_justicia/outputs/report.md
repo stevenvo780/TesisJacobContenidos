@@ -1,14 +1,14 @@
 # Reporte de Validación — Justicia Algorítmica
 
-- generated_at: 2026-02-10T04:21:38.047892Z
+- generated_at: 2026-02-10T05:05:11.074200Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
 - valor: -0.4441
-- bootstrap_mean: -0.4453
-- CI 95%: [-0.4941, -0.4021]
+- bootstrap_mean: -0.4449
+- CI 95%: [-0.4915, -0.4033]
 - weighted_value (LoE factor 0.20): -0.0888
 - válido (0.30-0.90): False
 - detrended_edi: -0.4441
@@ -17,7 +17,7 @@
 
 ### Symploké y CR
 - internal: 0.9984
-- external: 0.9597
+- external: 0.9598
 - CR: 1.0402
 - CR indicador (>2.0 = frontera nítida): False
 
@@ -36,15 +36,15 @@
 - threshold: 0.2854
 
 ### Calibración
-- forcing_scale: 0.6106
+- forcing_scale: 0.5613
 - macro_coupling: 0.5000
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.6174
+- damping: 0.5688
 - ode_alpha: 0.0474
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1190
+- calibration_rmse: 0.1199
 - ode_rolling: None
 
 ### Interpretación
@@ -61,9 +61,9 @@
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9724
-- external: 0.9203
-- CR: 1.0566
+- internal: 0.9525
+- external: 0.8715
+- CR: 1.0929
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -81,15 +81,15 @@
 - threshold: 0.3262
 
 ### Calibración
-- forcing_scale: 0.4686
-- macro_coupling: 0.0624
-- ode_coupling_strength: 0.0499
+- forcing_scale: 0.4881
+- macro_coupling: 0.1836
+- ode_coupling_strength: 0.1469
 - abm_feedback_gamma: 0.0500
-- damping: 0.3928
+- damping: 0.4140
 - ode_alpha: 0.1330
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.4023
+- calibration_rmse: 0.4025
 - ode_rolling: None
 
 ### Interpretación
