@@ -6,8 +6,14 @@ Toda la aritmética del grid se ejecuta en VRAM — solo se copia a
 CPU al final para extraer las series. Para grid_size=500 esto es
 ~100× más rápido que NumPy.
 
+Incluye:
+  - simulate_abm_core():  1 simulación en GPU (API idéntico a CPU)
+  - simulate_abm_batch(): B simulaciones simultáneas como tensor 3D
+                           (B, n, n) en VRAM — satura la GPU.
+
 Uso:
-    from abm_core_gpu import simulate_abm_core  # mismo API que abm_core
+    from abm_core_gpu import simulate_abm_core   # 1 sim
+    from abm_core_gpu import simulate_abm_batch  # B sims en paralelo
 """
 
 from __future__ import annotations
@@ -268,3 +274,271 @@ def simulate_abm_core(
     if store_grid:
         result["grid"] = grid_series
     return result
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  BATCH ABM — B simulaciones simultáneas como tensor 3D (B, n, n) en VRAM
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _neighbor_mean_batch(grids):
+    """
+    Promedio de vecinos 4-conectados — versión batch GPU.
+    
+    grids: (B, n, n) — B grids simultáneos.
+    Retorna: (B, n, n) — promedio vecinal para cada grid.
+    
+    Usa wrap-around (roll) y luego corrige bordes.
+    Para B=200, n=500: la GPU opera sobre 50M floats por roll → saturación.
+    """
+    _xp = xp
+    B, n, _ = grids.shape
+    acc = _xp.zeros_like(grids)
+    count = _xp.full_like(grids, 4.0)
+    
+    # Rolls sobre axes espaciales (1, 2), axis 0 es el batch
+    acc += _xp.roll(grids, 1, axis=1)
+    acc += _xp.roll(grids, -1, axis=1)
+    acc += _xp.roll(grids, 1, axis=2)
+    acc += _xp.roll(grids, -1, axis=2)
+    
+    # Corrección bordes — evitar wrap-around
+    acc[:, 0, :]  -= _xp.roll(grids, 1, axis=1)[:, 0, :]
+    count[:, 0, :] -= 1
+    acc[:, -1, :] -= _xp.roll(grids, -1, axis=1)[:, -1, :]
+    count[:, -1, :] -= 1
+    acc[:, :, 0]  -= _xp.roll(grids, 1, axis=2)[:, :, 0]
+    count[:, :, 0] -= 1
+    acc[:, :, -1] -= _xp.roll(grids, -1, axis=2)[:, :, -1]
+    count[:, :, -1] -= 1
+    
+    return acc / count
+
+
+def simulate_abm_batch(
+    base_params: dict,
+    param_variants: list[dict],
+    steps: int,
+    seed: int = 2,
+    series_key: str = "tbar",
+    init_range: float = 0.5,
+    max_batch: int = 0,
+) -> np.ndarray:
+    """
+    Ejecuta B simulaciones ABM simultáneas en VRAM.
+    
+    Todas las simulaciones comparten el mismo base_params (grid_size, diffusion,
+    noise, forcing, etc.). Solo difieren en los parámetros listados en
+    param_variants (típicamente: forcing_scale, macro_coupling, damping).
+    
+    Parameters
+    ----------
+    base_params : dict
+        Parámetros base compartidos por todas las simulaciones.
+    param_variants : list[dict]
+        Lista de B dicts. Cada dict contiene SOLO los parámetros que varían
+        (e.g., {"forcing_scale": 0.01, "macro_coupling": 0.2, "damping": 0.1}).
+    steps : int
+        Número de timesteps a simular.
+    seed : int
+        Semilla base. Cada simulación en el batch usa la misma semilla
+        (determinismo reproducible).
+    series_key : str
+        Clave de la serie de salida.
+    init_range : float
+        Rango de la perturbación inicial del grid.
+    max_batch : int
+        Máximo de simulaciones por sub-batch (0 = auto, basado en VRAM).
+        Útil para controlar el uso de VRAM en refinamientos masivos.
+    
+    Returns
+    -------
+    main_series : np.ndarray, shape (B, steps)
+        Series principales de todas las B simulaciones. Ya en CPU (NumPy).
+    
+    Notas
+    -----
+    - Para B=200, n=200: VRAM = 200×200×200×8 = 64MB → cabe en cualquier GPU.
+    - Para B=2000, n=500: VRAM = 2000×500×500×8 = 4GB → cabe en RTX 5070 Ti.
+    - La GPU se satura con B×n²≥1M floats (operaciones vectoriales masivas).
+    - Forcing, gradients, macro_mode="mean" soportados. macro_mode="dynamic" NO
+      (requiere estado serial → fallback a simulate_abm_core uno por uno).
+    """
+    if not using_gpu():
+        # Sin GPU: ejecutar uno por uno con CPU (no podemos paralelizar así)
+        results = []
+        for pv in param_variants:
+            p = dict(base_params)
+            p.update(pv)
+            p["assimilation_strength"] = 0.0
+            p["assimilation_series"] = None
+            p["_store_grid"] = False
+            from abm_core import simulate_abm_core as _cpu_fn
+            sim = _cpu_fn(p, steps, seed=seed, series_key=series_key, init_range=init_range)
+            results.append(sim[series_key][:steps])
+        return np.array(results, dtype=np.float64)
+    
+    _xp = xp
+    B = len(param_variants)
+    
+    if B == 0:
+        return np.empty((0, steps), dtype=np.float64)
+    
+    # Auto-batch: estimar VRAM necesaria y dividir si es necesario
+    n = int(base_params.get("grid_size", 20))
+    vram_per_sim = n * n * 8 * 6  # ~6 arrays temporales por sim (grid, acc, count, noise, etc.)
+    vram_total = B * vram_per_sim
+    
+    # Calcular límite VRAM (60% de la total para seguridad)
+    try:
+        from gpu_backend import _GPU_MEM_GB as _mem_gb
+        vram_limit = int(_mem_gb * 0.6 * 1024**3)
+    except (ImportError, AttributeError):
+        vram_limit = 8 * 1024**3
+    
+    if max_batch > 0:
+        effective_batch = max_batch
+    else:
+        effective_batch = max(1, vram_limit // max(vram_per_sim, 1))
+    
+    if B > effective_batch:
+        # Dividir en sub-batches
+        all_results = []
+        for i in range(0, B, effective_batch):
+            chunk = param_variants[i:i + effective_batch]
+            chunk_result = simulate_abm_batch(
+                base_params, chunk, steps, seed, series_key, init_range, max_batch=effective_batch
+            )
+            all_results.append(chunk_result)
+        return np.concatenate(all_results, axis=0)
+    
+    # ─── Extraer parámetros compartidos ────────────────────────────────
+    diff = float(base_params.get("diffusion", 0.2))
+    noise_amp = float(base_params.get("noise", 0.02))
+    
+    # Parámetros que varían: arrays (B,) en GPU
+    fs_arr = _xp.array([float(pv.get("forcing_scale", base_params.get("forcing_scale", 0.01)))
+                         for pv in param_variants], dtype=_xp.float64)
+    mc_arr = _xp.array([float(pv.get("macro_coupling", base_params.get("macro_coupling", 0.3)))
+                         for pv in param_variants], dtype=_xp.float64)
+    dmp_arr = _xp.array([float(pv.get("damping", base_params.get("damping", 0.02)))
+                          for pv in param_variants], dtype=_xp.float64)
+    
+    # Forcing — construir en CPU, enviar a GPU como vector (steps,)
+    forcing = base_params.get("forcing_series")
+    if forcing is None:
+        base_f = float(base_params.get("forcing_base", 0.0))
+        trend = float(base_params.get("forcing_trend", 0.0))
+        amp = float(base_params.get("forcing_seasonal_amp", 0.0))
+        period = float(base_params.get("forcing_seasonal_period", 12.0))
+        t_arr = np.arange(steps)
+        forcing = (base_f + trend * t_arr + amp * np.sin(2 * np.pi * t_arr / period)).tolist()
+    forcing_gpu = to_device(np.array(forcing[:steps], dtype=np.float64))
+    
+    # Forcing gradient (compartido)
+    fg = None
+    forcing_gradient = base_params.get("forcing_gradient")
+    if forcing_gradient is not None:
+        fg_np = np.asarray(forcing_gradient, dtype=np.float64)
+        if fg_np.shape == (n, n):
+            fg = to_device(fg_np)
+    else:
+        gtype = base_params.get("forcing_gradient_type")
+        if gtype:
+            strength = float(base_params.get("forcing_gradient_strength", 0.6))
+            fg = _create_forcing_gradient_gpu(n, gtype, strength)
+    
+    # Detectar macro_mode
+    macro_mode = base_params.get("macro_mode")
+    macro_gain = _infer_macro_gain(base_params)
+    if macro_mode is None:
+        macro_mode = "dynamic" if abs(macro_gain) > 1e-12 else "mean"
+    
+    if macro_mode == "dynamic":
+        # dynamic requiere estado serial → no se puede batchear fácilmente
+        # Fallback: ejecutar uno por uno (aún en GPU, pero secuencial)
+        results = []
+        for pv in param_variants:
+            p = dict(base_params)
+            p.update(pv)
+            p["assimilation_strength"] = 0.0
+            p["assimilation_series"] = None
+            p["_store_grid"] = False
+            sim = simulate_abm_core(p, steps, seed=seed, series_key=series_key, init_range=init_range)
+            results.append(sim[series_key][:steps])
+        return np.array(results, dtype=np.float64)
+    
+    # ─── macro_mode == "mean": full batch en GPU ──────────────────────
+    rng = get_rng(seed)
+    
+    # Grid center / init_range compartidos
+    macro_init = _infer_macro_init(base_params, series_key)
+    grid_center = float(base_params.get("grid_center", macro_init))
+    init_range = float(base_params.get("init_range", init_range))
+    
+    # Grids iniciales: (B, n, n) — todas con el mismo patrón + perturbación
+    # Usamos la misma perturbación para todas (reproducibilidad determinista)
+    init_noise = rng.uniform(-init_range, init_range, (n, n))  # (n, n) en GPU
+    grids = _xp.full((B, n, n), grid_center, dtype=_xp.float64) + init_noise[None, :, :]
+    
+    # Heterogeneidad (compartida)
+    hetero = float(base_params.get("heterogeneity_strength", 0.0))
+    hetero_seed = int(base_params.get("heterogeneity_seed", seed))
+    if hetero > 1e-8:
+        rng_h = np.random.RandomState(hetero_seed)
+        diff_map = to_device(np.clip(diff * (1.0 + hetero * rng_h.normal(0, 1, (n, n))), 0, 1).astype(np.float64))
+        dmp_base_map = to_device(np.clip(float(base_params.get("damping", 0.02)) * (1.0 + hetero * rng_h.normal(0, 1, (n, n))), 0, 1).astype(np.float64))
+        noise_map = to_device(np.clip(noise_amp * (1.0 + hetero * rng_h.normal(0, 1, (n, n))), 0, None).astype(np.float64))
+        use_hetero = True
+    else:
+        use_hetero = False
+    
+    # Resultado: (B, steps) en GPU
+    main_series_gpu = _xp.zeros((B, steps), dtype=_xp.float64)
+    
+    # ─── Loop temporal: todas las B sims avanzan en paralelo ──────────
+    for t in range(steps):
+        f = forcing_gpu[t]  # escalar en GPU
+        f_spatial = f if fg is None else f * fg  # (n, n) o escalar
+        
+        # Neighbor mean batch: (B, n, n)
+        nb_mean = _neighbor_mean_batch(grids)
+        
+        # Macro mean por sim: (B,)
+        macro_mean = grids.mean(axis=(1, 2))  # (B,)
+        
+        # Noise batch: (B, n, n)
+        if use_hetero:
+            noise = rng.uniform(-1.0, 1.0, (B, n, n)) * noise_map[None, :, :]
+        else:
+            noise = rng.uniform(-noise_amp, noise_amp, (B, n, n))
+        
+        # Update vectorizado: broadcasting (B,) → (B, 1, 1) sobre (B, n, n)
+        if use_hetero:
+            grids = (
+                grids
+                + diff_map[None, :, :] * (nb_mean - grids)
+                + fs_arr[:, None, None] * f_spatial
+                + mc_arr[:, None, None] * (macro_mean[:, None, None] - grids)
+                - dmp_base_map[None, :, :] * dmp_arr[:, None, None] / float(base_params.get("damping", 0.02) or 0.02) * grids
+                + noise
+            )
+        else:
+            grids = (
+                grids
+                + diff * (nb_mean - grids)
+                + fs_arr[:, None, None] * f_spatial
+                + mc_arr[:, None, None] * (macro_mean[:, None, None] - grids)
+                - dmp_arr[:, None, None] * grids
+                + noise
+            )
+        
+        # Sanitize
+        grids = _xp.clip(_xp.nan_to_num(grids, nan=0.0, posinf=1e6, neginf=-1e6), -1e6, 1e6)
+        
+        # Store macro mean por sim
+        main_series_gpu[:, t] = grids.mean(axis=(1, 2))
+    
+    sync()
+    
+    # Una sola transferencia GPU → CPU al final: (B, steps)
+    return to_numpy(main_series_gpu)

@@ -274,19 +274,23 @@ def simulate_abm_core(
 
 
 # ─── Auto-dispatch GPU ────────────────────────────────────────────────────────
-# Si CuPy+GPU está disponible, reemplaza simulate_abm_core con la versión GPU.
+# Si CuPy+GPU está disponible, reemplaza simulate_abm_core con la versión GPU
+# y expone simulate_abm_batch para calibración masiva.
 # Transparente para todos los abm.py que hacen:
 #   from abm_core import simulate_abm_core
 
 _cpu_simulate_abm_core = simulate_abm_core  # Guardar referencia CPU
+simulate_abm_batch = None  # Disponible solo con GPU
 
 try:
     from gpu_backend import using_gpu
     if using_gpu():
         from abm_core_gpu import simulate_abm_core as _gpu_simulate_abm_core
+        from abm_core_gpu import simulate_abm_batch as _gpu_simulate_abm_batch
         simulate_abm_core = _gpu_simulate_abm_core
+        simulate_abm_batch = _gpu_simulate_abm_batch
         import sys
-        print("[abm_core] GPU detected — using abm_core_gpu backend", file=sys.stderr)
+        print("[abm_core] GPU detected — using abm_core_gpu backend (batch enabled)", file=sys.stderr)
 except ImportError:
     pass  # Sin GPU, se queda con CPU
 

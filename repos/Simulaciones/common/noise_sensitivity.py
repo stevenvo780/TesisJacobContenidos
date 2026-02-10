@@ -5,10 +5,14 @@ Verifica que el EDI no sea artefacto del nivel de ruido:
 - Re-ejecuta el modelo con 5 niveles de base_noise (0.5×, 0.75×, 1.0×, 1.5×, 2.0× del original)
 - El EDI debe mantenerse estable (σ/μ < 0.5 = sensibilidad baja)
 - Si EDI colapsa con más ruido → posible artefacto
+
+Paralelizado con joblib para usar todos los cores disponibles.
 """
 
+import os
 import numpy as np
 from typing import Callable, Dict, List, Tuple, Optional
+from joblib import Parallel, delayed
 
 # Niveles de ruido relativos al original
 NOISE_MULTIPLIERS = [0.5, 0.75, 1.0, 1.5, 2.0]
@@ -55,50 +59,45 @@ def noise_sensitivity_test(
         multipliers = NOISE_MULTIPLIERS
 
     rng = np.random.RandomState(seed)
-    results = []
+    # Pre-generar seeds para reproducibilidad (antes de paralelizar)
+    level_seeds = [int(rng.randint(0, 100000)) for _ in multipliers]
 
-    for mult in multipliers:
+    def _eval_noise_level(mult, level_seed):
+        """Evalúa un nivel de ruido (para paralelizar)."""
         noise_level = original_noise * mult
-        # Misma seed para coupled y reduced dentro de cada nivel de ruido
-        # para que la única diferencia sea el acoplamiento macro, no el azar
-        level_seed = rng.randint(0, 100000)
 
         # Modelo acoplado (con macro_coupling original)
         params_coupled = dict(eval_params)
-        params_coupled["noise"] = noise_level        # ABM core usa "noise" como key
-        params_coupled["base_noise"] = noise_level   # alias para compatibilidad
+        params_coupled["noise"] = noise_level
+        params_coupled["base_noise"] = noise_level
         params_coupled["seed"] = level_seed
 
         try:
             abm_coupled = simulate_abm_fn(params_coupled, steps, seed=level_seed)
         except Exception as e:
-            results.append({
+            return {
                 "noise_mult": mult, "noise_level": noise_level,
                 "edi": 0.0, "rmse_coupled": np.nan, "rmse_reduced": np.nan,
                 "error": str(e)
-            })
-            continue
+            }
 
         # Modelo reducido (sin macro) — misma seed que coupled
-        # Fix P4: zerificar TODOS los canales de acoplamiento macro
         params_reduced = dict(params_coupled)
         params_reduced["macro_coupling"] = 0.0
         params_reduced["forcing_scale"] = 0.0
-        params_reduced["macro_target_series"] = None       # Fix: evitar leak de nudging ODE→ABM
-        params_reduced["ode_coupling_strength"] = 0.0      # Fix: evitar leak de coupling ODE
-        params_reduced["seed"] = level_seed                 # Fix: misma seed que coupled
+        params_reduced["macro_target_series"] = None
+        params_reduced["ode_coupling_strength"] = 0.0
+        params_reduced["seed"] = level_seed
 
         try:
             abm_reduced = simulate_abm_fn(params_reduced, steps, seed=level_seed)
         except Exception as e:
-            results.append({
+            return {
                 "noise_mult": mult, "noise_level": noise_level,
                 "edi": 0.0, "rmse_coupled": np.nan, "rmse_reduced": np.nan,
                 "error": str(e)
-            })
-            continue
+            }
 
-        # Extraer series de validación
         def _reduce(arr):
             arr = np.asarray(arr, dtype=np.float64)
             if arr.ndim == 3:
@@ -113,13 +112,29 @@ def noise_sensitivity_test(
         err_r = rmse(reduced_val[:n], obs_val[:n])
         edi = compute_edi(err_c, err_r)
 
-        results.append({
+        return {
             "noise_mult": mult,
             "noise_level": noise_level,
             "edi": edi,
             "rmse_coupled": err_c,
             "rmse_reduced": err_r,
-        })
+        }
+
+    # Evaluar todos los niveles: GPU serial o CPU paralelo
+    try:
+        from gpu_backend import using_gpu as _ug
+        _has_gpu = _ug()
+    except ImportError:
+        _has_gpu = False
+    
+    if _has_gpu:
+        results = [_eval_noise_level(mult, lseed) for mult, lseed in zip(multipliers, level_seeds)]
+    else:
+        n_jobs = min(len(multipliers), os.cpu_count() or 4)
+        results = Parallel(n_jobs=n_jobs, backend="loky")(
+            delayed(_eval_noise_level)(mult, lseed)
+            for mult, lseed in zip(multipliers, level_seeds)
+        )
 
     # Estadísticas
     edis = [r["edi"] for r in results if "error" not in r]

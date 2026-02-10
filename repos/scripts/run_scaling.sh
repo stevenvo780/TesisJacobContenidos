@@ -3,17 +3,22 @@
 # Machine: 32 cores, 128GB RAM, RTX 5070 Ti + RTX 2060
 #
 # Variables HYPER controlan parámetros estadísticos:
-#   HYPER_N_PERM=4999   → Permutaciones (4999 da p-value resolución 0.0002)
-#   HYPER_N_BOOT=2000   → Bootstrap samples para CI
-#   HYPER_N_REFINE=15000 → Iteraciones de refinamiento en calibración ABM
+#   HYPER_N_PERM=9999   → Permutaciones (9999 da p-value resolución 0.0001)
+#   HYPER_N_BOOT=5000   → Bootstrap samples para CI (alta precisión)
+#   HYPER_N_REFINE=50000 → Iteraciones de refinamiento en calibración ABM
+#   HYPER_GRID_SIZE=150  → Grid 150×150 = 22500 agentes (vs 400 default)
+#   HYPER_N_RUNS=30      → 30 runs de perturbación C5 (vs 5 default)
 #
 # Los grid_size y n_runs están en cada validate.py individual.
+# HYPER_GRID_SIZE solo aplica si el caso ya tiene grid_size > 1.
 
 set -euo pipefail
 
-export HYPER_N_PERM=4999
-export HYPER_N_BOOT=2000
-export HYPER_N_REFINE=15000
+export HYPER_N_PERM=9999
+export HYPER_N_BOOT=5000
+export HYPER_N_REFINE=50000
+export HYPER_GRID_SIZE=150
+export HYPER_N_RUNS=30
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SIM_DIR="$(cd "$SCRIPT_DIR/../Simulaciones" && pwd)"

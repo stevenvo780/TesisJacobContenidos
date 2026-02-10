@@ -35,15 +35,20 @@ run_case() {
     local src="/workspace/repos/Simulaciones/${case}/src"
     echo ""
     echo "▶ $case"
-    echo "  $(date +%H:%M:%S) — Iniciando (GPU)..."
+    echo "  $(date +%H:%M:%S) — Iniciando (GPU batch, grid=${HYPER_GRID_SIZE:-500})..."
     
     local START_T=$SECONDS
     docker exec -w "$src" \
+        -e "HYPER_GRID_SIZE=${HYPER_GRID_SIZE:-500}" \
+        -e "HYPER_N_PERM=${HYPER_N_PERM:-9999}" \
+        -e "HYPER_N_BOOT=${HYPER_N_BOOT:-5000}" \
+        -e "HYPER_N_REFINE=${HYPER_N_REFINE:-50000}" \
+        -e "HYPER_N_RUNS=${HYPER_N_RUNS:-50}" \
         ${EXTRA_ENV:+-e "$EXTRA_ENV"} \
         "$CONTAINER" \
-        python validate.py 2>&1 | tail -6
+        python3 validate.py 2>&1 | tail -10
     local ELAPSED=$(( SECONDS - START_T ))
-    echo "  ✓ Completado en ${ELAPSED}s (GPU)"
+    echo "  ✓ Completado en ${ELAPSED}s (GPU batch)"
 }
 
 if [ "$CASE" = "all" ]; then

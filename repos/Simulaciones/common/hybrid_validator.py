@@ -427,15 +427,17 @@ def calibrate_ode_rolling(obs_train, forcing_train, window_size=None,
 def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
                    param_grid=None, seed=2, n_refine=5000):
     """
-    Grid search masivo + refinamiento local con early stopping — PARALELO.
+    Grid search masivo + refinamiento local con early stopping — GPU BATCH o CPU PARALELO.
     
-    Fase 1: Grid coarse paralelo con joblib (todos los cores).
-    Fase 2: Refinamiento adaptativo en batches paralelos con early stopping global.
+    GPU: Todas las combinaciones se ejecutan simultáneamente en VRAM via
+         simulate_abm_batch (tensor 3D). 144 sims en una pasada.
+    CPU: Paralelo con joblib/loky (todos los cores).
+    
+    Fase 1: Grid coarse (144 combos default) — 1 batch GPU o N_cores CPU.
+    Fase 2: Refinamiento adaptativo en batches de hasta 500 (GPU) o 32 (CPU).
     Objetivo: minimizar RMSE penalizado por baja correlación.
     """
     if param_grid is None:
-        # Grid Search — macro_coupling acotado a [0.05, 0.45] para evitar
-        # esclavización del ABM al campo medio (C6 Informe Crítico).
         param_grid = {
             "forcing_scale": [0.001, 0.01, 0.05, 0.1, 0.5, 1.0],
             "macro_coupling": [0.05, 0.10, 0.15, 0.25, 0.35, 0.45],
@@ -445,7 +447,7 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
     obs_arr = np.asarray(obs_train, dtype=np.float64)
     n_obs = len(obs_train)
 
-    def _score(pred_arr):
+    def _score_single(pred_arr):
         """Objetivo combinado: RMSE + penalización por baja correlación."""
         if pred_arr.ndim == 3 and obs_arr.ndim == 1:
             pred_arr = pred_arr.mean(axis=(1, 2))
@@ -457,43 +459,119 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
         else:
             corr = 0.0
         penalty = max(0.5, 2.0 - corr)
-        return err * penalty
+        return err * penalty, err
+    
+    def _score_batch(preds_matrix):
+        """Score batch: preds_matrix (B, T), obs_arr (T,). Retorna (B,) scores y (B,) errs."""
+        # RMSE batch
+        diff = preds_matrix[:, :n_obs] - obs_arr[None, :]
+        errs = np.sqrt(np.mean(diff ** 2, axis=1))  # (B,)
+        # Correlación batch
+        X = preds_matrix[:, :n_obs]
+        y = obs_arr
+        X_m = X - X.mean(axis=1, keepdims=True)
+        y_m = y - y.mean()
+        X_std = X.std(axis=1)
+        y_std = y.std()
+        num = (X_m * y_m[None, :]).sum(axis=1)
+        den = X_std * y_std * n_obs
+        corrs = np.zeros(X.shape[0])
+        valid = den > 1e-15
+        corrs[valid] = num[valid] / den[valid]
+        # Penalty
+        penalties = np.clip(2.0 - corrs, 0.5, None)
+        scores = errs * penalties
+        return scores, errs
 
-    def _eval_one_grid(fs, mc, dmp):
-        """Evalúa una combinación del grid (para paralelizar)."""
-        params = dict(base_params)
-        params["forcing_scale"] = fs
-        params["macro_coupling"] = mc
-        params["damping"] = dmp
-        params["assimilation_strength"] = 0.0
-        params["assimilation_series"] = None
-        params["_store_grid"] = False
-        sim = simulate_abm_fn(params, steps, seed=seed)
-        key = _get_series_key(sim)
-        pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
-        if pred.ndim == 3 and obs_arr.ndim == 1:
-            pred = pred.mean(axis=(1, 2))
-        score = _score(pred)
-        err = float(np.sqrt(np.mean((pred - obs_arr) ** 2)))
-        return (score, fs, mc, dmp, err)
+    # ─── Detectar GPU batch ───────────────────────────────────────────
+    _batch_fn = None
+    _has_gpu = False
+    try:
+        from gpu_backend import using_gpu as _ug
+        _has_gpu = _ug()
+        if _has_gpu:
+            try:
+                from abm_core_gpu import simulate_abm_batch as _sbatch
+                _batch_fn = _sbatch
+            except ImportError:
+                pass
+    except ImportError:
+        pass
 
-    # Fase 1: Grid search PARALELO con joblib
+    # Serie key para extraer resultados — usar la que viene en base_params
+    series_key = base_params.get("series_key", base_params.get("_series_key", "tbar"))
+
     grid_combos = [
-        (fs, mc, dmp)
+        {"forcing_scale": fs, "macro_coupling": mc, "damping": dmp}
         for fs in param_grid["forcing_scale"]
         for mc in param_grid["macro_coupling"]
         for dmp in param_grid["damping"]
     ]
     
-    n_jobs = min(len(grid_combos), os.cpu_count() or 4)
-    candidates = Parallel(n_jobs=n_jobs, backend="loky")(
-        delayed(_eval_one_grid)(fs, mc, dmp) for fs, mc, dmp in grid_combos
-    )
+    # ═══════════════════════════════════════════════════════════════════
+    # Fase 1: GRID SEARCH
+    # ═══════════════════════════════════════════════════════════════════
     
-    candidates.sort(key=lambda x: x[0])
+    if _batch_fn is not None:
+        # ── GPU BATCH: todas las combinaciones en una pasada ──────────
+        import sys
+        print(f"[calibrate] GPU batch: {len(grid_combos)} sims simultáneas en VRAM", file=sys.stderr)
+        
+        # Preparar base_params para batch (sin store_grid, sin assimilation)
+        bp = dict(base_params)
+        bp["assimilation_strength"] = 0.0
+        bp["assimilation_series"] = None
+        bp["_store_grid"] = False
+        
+        # Una sola llamada GPU → (B, steps) matrix
+        preds_matrix = _batch_fn(bp, grid_combos, steps, seed=seed,
+                                  series_key=series_key, init_range=float(bp.get("init_range", 0.5)))
+        
+        # Score vectorizado sobre toda la matrix
+        scores, errs = _score_batch(preds_matrix)
+        
+        # Construir lista de candidatos compatible con el formato original
+        candidates = []
+        for idx in range(len(grid_combos)):
+            gc = grid_combos[idx]
+            candidates.append((
+                float(scores[idx]),
+                gc["forcing_scale"],
+                gc["macro_coupling"],
+                gc["damping"],
+                float(errs[idx])
+            ))
+        candidates.sort(key=lambda x: x[0])
+    else:
+        # ── CPU PARALELO: joblib/loky con todos los cores ─────────────
+        def _eval_one_grid(fs, mc, dmp):
+            params = dict(base_params)
+            params["forcing_scale"] = fs
+            params["macro_coupling"] = mc
+            params["damping"] = dmp
+            params["assimilation_strength"] = 0.0
+            params["assimilation_series"] = None
+            params["_store_grid"] = False
+            sim = simulate_abm_fn(params, steps, seed=seed)
+            key = _get_series_key(sim)
+            pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
+            if pred.ndim == 3 and obs_arr.ndim == 1:
+                pred = pred.mean(axis=(1, 2))
+            score, err = _score_single(pred)
+            return (score, fs, mc, dmp, err)
+        
+        n_jobs = min(len(grid_combos), os.cpu_count() or 4)
+        candidates = Parallel(n_jobs=n_jobs, backend="loky")(
+            delayed(_eval_one_grid)(gc["forcing_scale"], gc["macro_coupling"], gc["damping"])
+            for gc in grid_combos
+        )
+        candidates.sort(key=lambda x: x[0])
+
     best = candidates[0]
 
-    # Fase 2: Refinamiento adaptativo multi-punto en BATCHES PARALELOS
+    # ═══════════════════════════════════════════════════════════════════
+    # Fase 2: REFINAMIENTO ADAPTATIVO
+    # ═══════════════════════════════════════════════════════════════════
     top_k = min(10, len(candidates))
     best_params = {"forcing_scale": best[1], "macro_coupling": best[2], "damping": best[3]}
     best_score = best[0]
@@ -502,23 +580,13 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
     
     stalled = 0
     refine_per_point = n_refine // top_k
-    batch_size = max(n_jobs, 32)  # Evaluar en batches paralelos
     
-    def _eval_one_refine(candidate_params):
-        """Evalúa un candidato de refinamiento (para paralelizar)."""
-        params = dict(base_params)
-        params.update(candidate_params)
-        params["assimilation_strength"] = 0.0
-        params["assimilation_series"] = None
-        params["_store_grid"] = False
-        sim = simulate_abm_fn(params, steps, seed=seed)
-        key = _get_series_key(sim)
-        pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
-        if pred.ndim == 3 and obs_arr.ndim == 1:
-            pred = pred.mean(axis=(1, 2))
-        score = _score(pred)
-        err = float(np.sqrt(np.mean((pred - obs_arr) ** 2)))
-        return (score, candidate_params, err)
+    # Batch sizes: GPU puede hacer 500+ simultáneos, CPU usa cores
+    if _batch_fn is not None:
+        batch_size = 500  # 500 sims simultáneas en GPU
+    else:
+        n_jobs = os.cpu_count() or 4
+        batch_size = max(n_jobs, 32)
     
     for rank in range(top_k):
         center = candidates[rank]
@@ -529,7 +597,6 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
         
         i = 0
         while i < refine_per_point:
-            # Generar un batch de candidatos
             this_batch = min(batch_size, refine_per_point - i)
             batch_candidates = []
             for b in range(this_batch):
@@ -542,13 +609,38 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
                 }
                 batch_candidates.append(cand)
             
-            # Evaluar batch en paralelo
-            results = Parallel(n_jobs=n_jobs, backend="loky")(
-                delayed(_eval_one_refine)(c) for c in batch_candidates
-            )
+            if _batch_fn is not None:
+                # ── GPU BATCH refinamiento ────────────────────────────
+                bp = dict(base_params)
+                bp["assimilation_strength"] = 0.0
+                bp["assimilation_series"] = None
+                bp["_store_grid"] = False
+                preds = _batch_fn(bp, batch_candidates, steps, seed=seed,
+                                   series_key=series_key, init_range=float(bp.get("init_range", 0.5)))
+                scores, errs = _score_batch(preds)
+                results = [(float(scores[j]), batch_candidates[j], float(errs[j]))
+                           for j in range(len(batch_candidates))]
+            else:
+                # ── CPU PARALELO refinamiento ─────────────────────────
+                def _eval_one_refine(candidate_params):
+                    params = dict(base_params)
+                    params.update(candidate_params)
+                    params["assimilation_strength"] = 0.0
+                    params["assimilation_series"] = None
+                    params["_store_grid"] = False
+                    sim = simulate_abm_fn(params, steps, seed=seed)
+                    key = _get_series_key(sim)
+                    pred = np.asarray(sim[key][:n_obs], dtype=np.float64)
+                    if pred.ndim == 3 and obs_arr.ndim == 1:
+                        pred = pred.mean(axis=(1, 2))
+                    score, err = _score_single(pred)
+                    return (score, candidate_params, err)
+                
+                results = Parallel(n_jobs=n_jobs, backend="loky")(
+                    delayed(_eval_one_refine)(c) for c in batch_candidates
+                )
             
             # Procesar resultados secuencialmente para mantener early stopping
-            improved = False
             for score, cand_params, err in results:
                 if score < best_score:
                     best_params = cand_params
@@ -556,7 +648,6 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
                     best_err = err
                     center_p = dict(cand_params)
                     stalled = 0
-                    improved = True
                 else:
                     stalled += 1
             
@@ -656,17 +747,33 @@ def evaluate_c2(base_params, eval_params, steps, val_start,
     base_mean = mean(sim_base[series_key][val_start:])
     base_var = variance(sim_base[series_key][val_start:])
     del sim_base
-    deltas_m, deltas_v = [], []
-    for i in range(n_pert):
+
+    def _eval_one_c2(i):
         p = perturb_params(base_params, pct, seed=seed_base + i)
         p["assimilation_series"] = None
         p["assimilation_strength"] = 0.0
         if "forcing_series" in eval_params:
             p["forcing_series"] = eval_params["forcing_series"]
         sim = simulate_abm_fn(p, steps, seed=2 + i + 10)
-        deltas_m.append(abs(mean(sim[series_key][val_start:]) - base_mean))
-        deltas_v.append(abs(variance(sim[series_key][val_start:]) - base_var))
-        del sim
+        dm = abs(mean(sim[series_key][val_start:]) - base_mean)
+        dv = abs(variance(sim[series_key][val_start:]) - base_var)
+        return dm, dv
+
+    try:
+        from gpu_backend import using_gpu as _ug
+        _has_gpu = _ug()
+    except ImportError:
+        _has_gpu = False
+    
+    if _has_gpu:
+        results = [_eval_one_c2(i) for i in range(n_pert)]
+    else:
+        n_jobs = min(n_pert, os.cpu_count() or 4)
+        results = Parallel(n_jobs=n_jobs, backend="loky")(
+            delayed(_eval_one_c2)(i) for i in range(n_pert)
+        )
+    deltas_m = [r[0] for r in results]
+    deltas_v = [r[1] for r in results]
     avg_dm = mean(deltas_m)
     avg_dv = mean(deltas_v)
     # Relative robustness: perturbation < 50% of base scale
@@ -704,16 +811,28 @@ def evaluate_c4(eval_params, base_params, steps, val_start,
 def evaluate_c5(base_params, eval_params, steps, val_start,
                 simulate_abm_fn, series_key, n_runs=5, pct=0.1,
                 obs_std=None, obs_mean_raw=None, obs_std_raw=None):
-    means = []
-    for i in range(n_runs):
+    def _eval_one_c5(i):
         p = perturb_params(base_params, pct, seed=20 + i)
         p["assimilation_series"] = None
         p["assimilation_strength"] = 0.0
         if "forcing_series" in eval_params:
             p["forcing_series"] = eval_params["forcing_series"]
         sim = simulate_abm_fn(p, steps, seed=30 + i)
-        means.append(mean(sim[series_key][val_start:]))
-        del sim
+        return mean(sim[series_key][val_start:])
+
+    try:
+        from gpu_backend import using_gpu as _ug
+        _has_gpu = _ug()
+    except ImportError:
+        _has_gpu = False
+    
+    if _has_gpu:
+        means = [_eval_one_c5(i) for i in range(n_runs)]
+    else:
+        n_jobs = min(n_runs, os.cpu_count() or 4)
+        means = Parallel(n_jobs=n_jobs, backend="loky")(
+            delayed(_eval_one_c5)(i) for i in range(n_runs)
+        )
     rng = max(means) - min(means) if means else 0.0
     # Normalizar por la escala de las observaciones crudas (pre-normalización).
     # Para señales con tendencia, obs_mean_raw y obs_std_raw capturan la magnitud

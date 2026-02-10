@@ -1,7 +1,8 @@
 # Dockerfile — GPU compute backend para simulaciones ABM+ODE
-# Base: CUDA 12.8 + Python 3.12 sobre Ubuntu 24.04
+# Base: CUDA 12.8 runtime + Python 3.12 sobre Ubuntu 24.04
 # Compatible con RTX 5070 Ti (Blackwell, sm_120) y RTX 2060 (Turing, sm_75)
-FROM nvidia/cuda:12.8.0-devel-ubuntu24.04
+# Usa runtime (no devel): CuPy wheels vienen precompilados con kernels sm_120
+FROM nvidia/cuda:12.8.0-runtime-ubuntu24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=1
