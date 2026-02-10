@@ -1,7 +1,7 @@
-# 02 Modelado y Simulacion — Narrativa Unificada
+# 02 Modelado y Simulación — Narrativa Unificada
 
 ## Arquitectura Detallada del Motor Híbrido
-El corazón de esta investigación es la clase `HybridModel`. Su función no es solo predecir, sino mediar entre dos ontologías: el individuo (Agente) y la estructura (Ecuación).
+El corazón de esta investigación es la clase `HybridModel`. Su función es mediar entre dos niveles descriptivos: el individuo (Agente) y la estructura (Ecuación). No presupone que la estructura "exista" ontológicamente — solo que su inclusión modifica las predicciones de forma medible.
 
 ### Pseudocódigo de la Lógica de Acoplamiento:
 ```python
@@ -11,7 +11,7 @@ class HybridModel:
         # dX/dt = alpha(F(t) - beta*X)
         self.macro_state = self.ode.integrate(t)
         
-        # 2. El nivel Micro evoluciona con Nudging (Causalidad Descendente)
+        # 2. El nivel Micro evoluciona con Nudging (acoplamiento descendente)
         # Cada agente i ajusta su estado x_i hacia el macro_state X
         for agent in self.agents:
             drift = self.macro_coupling * (self.macro_state - agent.x)
@@ -24,41 +24,41 @@ class HybridModel:
             self.ode.adjust(self.obs[t], self.assimilation_strength)
 ```
 
-## Rol Ontológico de la ODE: Sonda, No Representación
+## Rol Instrumental de la ODE: Sonda Operativa
 
-La ODE no es la representación del hiperobjeto. Es una **sonda ontológica**: un instrumento que genera una señal macro candidata para probar si la dinámica micro responde a constricciones de ese nivel. La ODE es al hiperobjeto lo que el acelerador de partículas es al bosón de Higgs: no es la entidad, es la herramienta que revela la entidad.
+La ODE no es la representación del hiperobjeto. Es una **sonda operativa**: un instrumento que genera una señal macro candidata para probar si la dinámica micro responde a constricciones de ese nivel. La ODE es al constructo macro lo que el acelerador de partículas es al bosón de Higgs: no es la entidad, es la herramienta que revela el efecto.
 
-Lo que se demuestra como real no es la ODE sino la **constricción macro** que la ODE parametriza. Si la eliminación de esa constricción (ablación: forcing_scale=0, macro_coupling=0) degrada la predicción micro (EDI > 0.30), la constricción es causalmente eficaz. La ODE es un modelo auxiliar cuya función es:
+Bajo irrealismo operativo, lo que se mide no es "existencia" sino **grado de cierre operativo**. Si la eliminación de la constricción macro (ablación: forcing_scale=0, macro_coupling=0) degrada la predicción micro (EDI > 0.30), el constructo macro es operativamente indispensable. La ODE es un modelo auxiliar cuya función es:
 1. Generar la señal macro que alimenta al ABM (como condición de contorno).
 2. Permitir la comparación ABM_completo vs ABM_reducido (el EDI no mide calidad de la ODE).
 3. Servir de benchmark para evaluar la coherencia macro-micro (correlación ODE-ABM).
 
-Esta distinción resuelve la objeción "Phantom ODE" (Gladiadores R15): una ODE con correlación baja puede coexistir con un EDI positivo (cuando ocurre) porque lo que el EDI mide es la diferencia entre ABM con y sin constricción macro, no la calidad de la ODE como predictor independiente.
+Esta distinción resuelve la objeción "Phantom ODE" (Gladiadores R15): una ODE con correlación baja puede coexistir con un EDI positivo porque lo que el EDI mide es la diferencia entre ABM con y sin constricción macro, no la calidad de la ODE como predictor independiente.
 
 ## Arquitectura y Ejecución de los 29 Casos
 La arquitectura actual del proyecto integra **29 motores de simulación completamente funcionales** y ejecutables. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas.
 
-Esta infraestructura permite una reproducibilidad total del EDI y CR reportados, eliminando la dependencia de métricas pre-generadas. El sistema utiliza datos reales de fuentes como World Bank, Wikimedia, Meteostat, CelesTrak y yfinance para los casos de alta fidelidad, y generadores estocásticos controlados para los casos de falsación. Los casos 19-29 amplían la cobertura a dominios como acidificación oceánica, uso de fósforo, acuíferos, conectividad digital (IoT/Starlink), capital intelectual, erosión discursiva, microplásticos, basura espacial y riesgo biológico.
+Esta infraestructura permite una reproducibilidad total del EDI y CR reportados, eliminando la dependencia de métricas pre-generadas. El sistema utiliza datos reales de fuentes como World Bank, Meteostat, Yahoo Finance, OWID, OPSD, Wikimedia, CelesTrak y yfinance para los casos de alta fidelidad, y generadores estocásticos controlados para los casos de falsación. Los casos 19-29 amplían la cobertura a dominios como acidificación oceánica, uso de fósforo, acuíferos, conectividad digital (IoT/Starlink), capital intelectual, erosión discursiva, microplásticos, basura espacial y riesgo biológico.
 
 > **Nota:** Tres casos originales (Estética Global, Moderación Adversarial, RTB Publicidad) fueron removidos por inviabilidad de datos reales. Los 29 casos restantes constituyen el universo oficial de la tesis.
 
-### Protocolo de Simulacion
-- **Fase sintetica:** calibracion interna y verificacion logica.
-- **Fase real:** validacion con datos historicos.
-- **Zero-Nudging:** En la versión final, la evaluación se realiza sin nudging (`assimilation_strength=0.0`) para medir la emergencia pura del acoplamiento macro.
+### Protocolo de Simulación
+- **Fase sintética:** calibración interna y verificación lógica.
+- **Fase real:** clasificación con datos históricos.
+- **Zero-Nudging:** En la versión final, la evaluación se realiza sin nudging (`assimilation_strength=0.0`) para medir el cierre operativo puro del acoplamiento macro.
 
-## Criterios Técnicos de Validación
-- **EDI > 0.30:** condición necesaria de H1 (emergencia fuerte) — indica eficacia causal macro.
+## Criterios Técnicos de Clasificación
+- **EDI ≥ 0.30:** condición necesaria para Nivel 4 (cierre operativo fuerte).
 - **Permutation test (p<0.05):** significancia estadística del EDI contra distribución nula (999 permutaciones, seed=42).
 - **Bias Correction:** transformación afín condicional del target ODE para eliminar sesgo de nivel/escala.
-- **CR > 2.0:** indicador complementario de frontera sistémica (no condición de H1).
+- **CR > 2.0:** indicador complementario de frontera sistémica (no condición de clasificación).
 - **C1-C5:** Protocolo de rigor aplicado a la convergencia, robustez, replicación, validez y gestión de incertidumbre.
 - **overall_pass:** 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento ≥ 0.1, no-fraude RMSE).
 - **C1 v2.0:** Criterio relativo (acoplado mejor que reducido) OR absoluto relajado (RMSE < 2·obs_std, corr > 0.3). Anterior v1.0 era demasiado estricto (RMSE < obs_std, corr > 0.7).
 - **emergence_taxonomy:** Clasificación diferenciada en 6 niveles: strong, weak, suggestive, trend, null, falsification.
 - **noise_sensitivity:** Test de estabilidad del EDI bajo perturbaciones de ruido (CV < 0.5).
 
-## Resultados Consolidados (Matriz de Validación Técnica)
+## Resultados Consolidados (Matriz de Clasificación Operativa)
 
 | Caso | EDI | p-perm | sig | CR | Cat | Pass | Reporte |
 | :--- | ---: | ---: | :---: | ---: | :--- | :---: | :--- |
@@ -92,45 +92,46 @@ Esta infraestructura permite una reproducibilidad total del EDI y CR reportados,
 | 28_caso_fuga_cerebros | 0.183 | 0.001 | ✅ | 1.008 | weak | ❌ | `28_caso_fuga_cerebros/report.md` |
 | 29_caso_iot | 0.020 | 0.000 | ✅ | 1.053 | suggestive | ❌ | `29_caso_iot/report.md` |
 
-Para recalcular este reporte de forma automatica, usar:
+Para recalcular este reporte de forma automática, usar:
 `python3 scripts/actualizar_tablas_002.py`
-## Análisis de Evidencia y Hallazgos
 
-Los 29 casos demuestran que el modelo híbrido funciona como **herramienta de demarcación operativa**: discrimina entre sistemas con estructura macro detectable y sistemas sin ella. El espectro de resultados bajo la taxonomía de emergencia diferenciada es más informativo que el binario "pasa/no pasa".
+## Análisis del Paisaje de Emergencia
 
-### Estado Actual: H1 Parcialmente Confirmada (Emergencia Diferenciada)
+Los 29 casos demuestran que el modelo híbrido funciona como **instrumento de clasificación operativa**: posiciona fenómenos en un gradiente de cierre operativo sin pronunciarse sobre su estatuto ontológico.
 
-**overall_pass = 2/29** (Deforestación EDI=0.633, Microplásticos EDI=0.427). La taxonomía diferenciada revela:
+### Estado Actual: Paisaje de Emergencia Operativa Mapeado
 
-- **2 casos con emergencia fuerte** (strong): Deforestación, Microplásticos
-- **1 caso con emergencia débil** (weak): Fuga de Cerebros (EDI=0.183)
-- **3 con señal sugestiva**: Finanzas, Océanos, IoT
-- **7 con tendencia no significativa**: Clima, Movilidad, Políticas, Postverdad, Urbanización, Salinización, Riesgo Biológico
-- **13 sin evidencia** (null): sin constricción macro detectable
-- **3 falsificaciones correctamente rechazadas**: Exogeneidad, No-estacionariedad, Observabilidad
+**overall_pass = 2/29** (Deforestación EDI=0.633, Microplásticos EDI=0.427). La taxonomía diferenciada revela un paisaje completo:
+
+- **Nivel 4 — Cierre operativo fuerte** (2 casos): Deforestación, Microplásticos
+- **Nivel 3 — Componente funcional** (1 caso): Fuga de Cerebros (EDI=0.183)
+- **Nivel 2 — Señal sugestiva** (3 casos): Finanzas, Océanos, IoT
+- **Nivel 1 — Tendencia** (7 casos): Clima, Movilidad, Políticas, Postverdad, Urbanización, Salinización, Riesgo Biológico
+- **Nivel 0 — Sin señal** (13 casos): sin constricción macro detectable
+- **Controles negativos** (3 casos): falsificaciones correctamente rechazadas
 
 **Significancia estadística (p<0.05 + EDI>0.01):** 6/29 casos (09, 16, 17, 24, 28, 29)
 **Estabilidad numérica:** 25/29 (fallan: 05, 12, 13, 18)
 **Persistencia (std<5×):** 27/29 (fallan: 11, 20)
 
-La tesis se reformula desde "todos los hiperobjetos muestran emergencia" hacia "el protocolo discrimina, y ciertos fenómenos muestran constricción macro genuina que resiste eliminación".
+El paisaje no "confirma" ni "refuta" hiperobjetos — **los clasifica**. La diversidad del gradiente (de -1.000 a +0.633) es el resultado principal.
 
-### Casos con Emergencia Fuerte (strong)
+### Casos con Cierre Operativo Fuerte (Nivel 4)
 
 **Deforestación Global** (EDI=0.633, p=0.000, overall_pass=True):
-El modelo ODE (von Thünen Frontier) captura la dinámica de la frontera agrícola. Tras Bias Correction full, el ABM acoplado reduce el RMSE en 63% respecto al ABM aislado. Este es el caso más robusto del corpus: EDI significativo, C1=True, persistencia estable.
+El modelo ODE (von Thünen Frontier) captura la dinámica de la frontera agrícola. Tras Bias Correction full, el ABM acoplado reduce el RMSE en 63% respecto al ABM aislado. Esto indica que el constructo macro es operativamente indispensable para este dominio — no que "exista" un hiperobjeto Deforestación como entidad autónoma.
 
 **Microplásticos Oceánicos** (EDI=0.427, p=0.000, overall_pass=True):
-El modelo Jambeck de acumulación persistente. El ABM sin ODE pierde 43% de precisión. Este caso NO requiere Bias Correction — la señal macro emerge directamente del acoplamiento.
+El modelo Jambeck de acumulación persistente. El ABM sin ODE pierde 43% de precisión. Este caso NO requiere Bias Correction — la señal macro emerge directamente del acoplamiento. Analogía del ribosoma: funciona como si tuviera cierre, sin que necesitemos afirmar que "es" una entidad separada de sus componentes.
 
-### Caso con Emergencia Débil (weak)
+### Componente Funcional (Nivel 3)
 
 **Fuga de Cerebros** (EDI=0.183, p=0.001):
-El modelo Docquier-Rapoport captura la migración de capital humano. El EDI es significativo pero sub-umbral (0.183 < 0.30). BC bias_only preservó la señal sin amplificación excesiva.
+El modelo Docquier-Rapoport captura la migración de capital humano. El EDI es significativo pero sub-umbral (0.183 < 0.30). El constructo macro es útil pero no indispensable — como un ribosoma que facilita una función sin constituir un nivel autónomo.
 
-### Casos con Señal Sugestiva (suggestive)
+### Señal Sugestiva (Nivel 2)
 
-Finanzas (EDI=0.040, p=0.000), Océanos (0.053, p=0.000), IoT (0.020, p=0.000): señal estadísticamente significativa pero de magnitud insuficiente para afirmaciones ontológicas. Postverdad (EDI=0.001, p=0.030) no alcanza el umbral EDI>0.01 para significancia combinada.
+Finanzas (EDI=0.040, p=0.000), Océanos (0.053, p=0.000), IoT (0.020, p=0.000): señal estadísticamente significativa pero de magnitud insuficiente para atribuir cierre operativo. Fenómenos que el instrumento detecta como posibles candidatos.
 
 ### Falsificaciones Correctas
 
@@ -138,29 +139,29 @@ Los 3 controles negativos (Exogeneidad, No-estacionariedad, Observabilidad) son 
 
 ### Anti-emergencia: ODE de Alta Correlación con EDI Negativo
 
-Varios casos presentan EDI negativo a pesar de buenos modelos ODE. Esto revela que **alta correlación ODE-obs no implica emergencia**. La correlación puede ser espuria o el acoplamiento puede destruir información útil que el ABM aislado captura por sí solo.
+Varios casos presentan EDI negativo a pesar de buenos modelos ODE. Esto revela que **alta correlación ODE-obs no implica cierre operativo**. La correlación puede ser espuria o el acoplamiento puede destruir información útil que el ABM aislado captura por sí solo.
 
 ### Composición del universo de 29 casos
 
-| Categoría | Conteo | Función |
-|-----------|--------|---------|
-| **strong** | 2 | Evidencia positiva de H1 (overall_pass=True) |
-| **weak** | 1 | Señal macro sub-umbral H1 |
-| **suggestive** | 3 | Señal estadística, resolución insuficiente |
-| **trend** | 7 | Tendencia positiva sin confirmación |
-| **null** | 13 | Sin evidencia de constricción macro |
-| **falsification** | 3 | Controles negativos correctos |
-| **Total** | **29** | |
+| Categoría | Nivel | Conteo | Función en el paisaje |
+|-----------|:-----:|--------|----------------------|
+| **strong** | 4 | 2 | Cierre operativo fuerte |
+| **weak** | 3 | 1 | Componente funcional |
+| **suggestive** | 2 | 3 | Señal detectable |
+| **trend** | 1 | 7 | Tendencia no confirmada |
+| **null** | 0 | 13 | Sin señal operativa |
+| **falsification** | — | 3 | Controles correctos |
+| **Total** | | **29** | |
 
-### Diagnóstico: ¿Por Qué la Mayoría No Muestra Emergencia?
+### Diagnóstico: ¿Por Qué la Mayoría se Clasifica en Nivel 0-1?
 
-1. **Modelos ODE inadecuados:** El ODE no captura la dinámica macro, por lo que no puede generar constricción útil. Esto no refuta H1 — indica que el modelo ODE necesita mejoras específicas por dominio.
+1. **Modelos ODE inadecuados:** El ODE no captura la dinámica macro, por lo que no puede generar constricción útil. Esto no invalida el instrumento — indica que la sonda necesita calibración dominio-específica.
 
 2. **No-estacionariedad del ODE:** El ODE se ajusta bien en training pero la correlación se invierte o degrada en validation. Esto refleja cambios estructurales en el fenómeno.
 
 3. **Coupling destructivo:** El sesgo del ODE destruye información útil en el ABM. El Bias Correction resolvió esto para Deforestación; otros casos persisten por problemas de escala.
 
-4. **Señal real demasiado ruidosa (4 casos suggestive):** La señal macro existe (EDI significativo) pero el ruido domina, produciendo EDI < 0.10. Esto es un límite del SNR de los datos reales, no del marco.
+4. **Señal real demasiado ruidosa (3 casos suggestive):** La señal macro existe (EDI significativo) pero el ruido domina, produciendo EDI < 0.10. Límite del SNR de los datos reales, no del instrumento.
 
 ### Líneas de mejora pendientes
 
@@ -173,34 +174,32 @@ Varios casos presentan EDI negativo a pesar de buenos modelos ODE. Esto revela q
 | Permutation test EDI (999 perms) | ✅ Resuelto | Significancia estadística robusta |
 | Taxonomía de emergencia diferenciada | ✅ Resuelto | strong/weak/suggestive/null/falsification |
 | Fases sintéticas independientes por caso | ⚠️ Parcial | 6/29 con generadores customizados |
-| Modelos ODE dominio-específicos mejorados | ❌ Pendiente | Podría rescatar casos con ODE poor |
+| Modelos ODE dominio-específicos mejorados | ❌ Pendiente | Podría reclasificar casos con ODE poor |
 | Forcing multivariado (CO2, VIX, etc.) | ❌ Pendiente | Forcing más realista por dominio |
 | Topología de red heterogénea para CR | ❌ Pendiente | CR > 2.0 requiere redes no regulares |
 
 ## Regla Operacional: Divergencia EDI/CR
 
-El CR (Cohesion Ratio = internal/external) es un **indicador complementario de frontera**, no una condición necesaria de H1. H1 se define exclusivamente por EDI > 0.30 + C1-C5 (§ Hipótesis Central, línea 17 de `00_Marco_Conceptual`). El CR informa sobre la topología del acoplamiento.
+El CR (Cohesion Ratio = internal/external) es un **indicador complementario de frontera**, no una condición de clasificación. La clasificación se define exclusivamente por EDI + C1-C5 (§ Hipótesis Central, `00_Marco_Conceptual`). El CR informa sobre la topología del acoplamiento.
 
 Clasificación descriptiva cuando EDI y CR divergen:
 
-1. **EDI > 0.30, CR < 2.0, C1-C5 = True**: Emergencia funcional con frontera difusa → **Validado** (H1 satisfecho). CR ≈ 1.0 es esperado en modelos de difusión espacial homogénea.
-2. **EDI > 0.30, CR > 2.0, C1-C5 = True**: Emergencia completa con frontera nítida → **Validado**.
-3. **EDI < 0.30, CR > 2.0**: Cohesión sin eficacia causal → **Parcial**.
-4. **EDI < 0.30, CR < 2.0**: Sin emergencia ni cohesión → **Rechazado**.
+1. **EDI ≥ 0.30, CR < 2.0, C1-C5 = True**: Cierre operativo con frontera difusa → **Nivel 4** (H1 satisfecho). CR ≈ 1.0 es esperado en modelos de difusión espacial homogénea.
+2. **EDI ≥ 0.30, CR > 2.0, C1-C5 = True**: Cierre operativo con frontera nítida → **Nivel 4+** (candidato a Nivel 5 con verificación adicional).
+3. **EDI < 0.30, CR > 2.0**: Cohesión sin cierre operativo → **Nivel 2-3** (parcial).
+4. **EDI < 0.30, CR < 2.0**: Sin cierre ni cohesión → **Nivel 0-1**.
 
 **Nota:** El validador (`hybrid_validator.py`, L656) implementa `overall_pass` con 11 condiciones (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude). El CR se computa como métrica informativa pero no es condición de `overall_pass`, coherente con H1.
 
-**Caso Clima real** (EDI_real=-0.015, categoría: null) no satisface H1. **Caso Deforestación** (EDI_real=+0.629, categoría: strong) sí satisface H1: la constricción macro reduce el RMSE en 63% respecto al ABM aislado, con significancia estadística (p=0.000).
-
 ### Análisis Teórico: CR ≈ 1.0 en Modelos de Difusión Homogénea
 
-En la arquitectura ABM actual, todos los agentes comparten el mismo forzamiento externo y la misma dinámica de difusión isotrópica (vecinos de Von Neumann en retícula n×n). Formalmente, sea `σ²_int` la varianza intra-grupo (cohesión interna entre agentes vecinos) y `σ²_ext` la varianza inter-grupo (desviación respecto al macro). El CR se define como `σ²_int / σ²_ext`.
+En la arquitectura ABM actual, todos los agentes comparten el mismo forzamiento externo y la misma dinámica de difusión isotrópica (vecinos de Von Neumann en retícula n×n). Formalmente, sea `σ²_int` la varianza intra-grupo y `σ²_ext` la varianza inter-grupo. El CR se define como `σ²_int / σ²_ext`.
 
-Para difusión isotrópica con forzamiento uniforme, el teorema de equipartición estocástica predice `σ²_int ≈ σ²_ext` en el límite estacionario, produciendo CR ≈ 1.0. La desviación de CR respecto a la unidad refleja heterogeneidad espacial del forzamiento o asimetría en el acoplamiento — propiedades que la arquitectura actual no implementa.
+Para difusión isotrópica con forzamiento uniforme, el teorema de equipartición estocástica predice `σ²_int ≈ σ²_ext` en el límite estacionario, produciendo CR ≈ 1.0. La desviación de CR respecto a la unidad refleja heterogeneidad espacial del forzamiento o asimetría en el acoplamiento.
 
-**Implicación:** CR > 2.0 requeriría forzamiento no-uniforme (ej. fuentes locales vs. gradientes globales) o topología de red no-regular (ej. small-world, scale-free). Esto constituye una **extensión natural** para trabajo futuro, no una deficiencia del marco actual. El CR ≈ 1.0 confirma que la difusión es operativa y que los agentes están acoplados al macro — condición necesaria para que el EDI sea interpretable.
+**Implicación:** CR > 2.0 requeriría forzamiento no-uniforme o topología de red no-regular (ej. small-world, scale-free). Esto constituye una extensión natural para trabajo futuro, no una deficiencia del instrumento actual. El CR ≈ 1.0 confirma que la difusión es operativa y que los agentes están acoplados al macro — condición necesaria para que el EDI sea interpretable.
 
-**Referencia:** Haken (1983, *Synergetics*, §4.3) demuestra que en campos de orden con simetría translacional, la razón entre fluctuaciones internas y externas converge a la unidad. El CR ≈ 1.0 es la predicción teórica para ABM de difusión, no un artefacto.
+**Referencia:** Haken (1983, *Synergetics*, §4.3) demuestra que en campos de orden con simetría translacional, la razón entre fluctuaciones internas y externas converge a la unidad.
 
 ### Nota sobre trazabilidad
 
