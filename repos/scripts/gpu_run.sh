@@ -467,6 +467,7 @@ WORKER_GPUS=(${worker_gpu_map})
 N_WORKERS=\${#WORKER_GPUS[@]}
 
 echo \"[\${#CASES_ALL[@]} casos, grid=${GRID}, \${N_WORKERS} workers en ${#available_gpus[@]} GPUs]\"
+echo \"  Logs: ${log_dir}/  (tail -f ${log_dir}/<caso>.log para detalle)\"
 
 # ── Worker: toma casos de la cola hasta vaciarla ──
 gpu_worker() {
@@ -496,8 +497,11 @@ gpu_worker() {
         echo \"  [W\${worker_id}/GPU\${gpu_id}] ▶ \${caso}\"
         local START=\$SECONDS
         
-        (cd \"\$SRC\" && HYPER_GPU_DEVICE=\$gpu_id python3 validate.py > \"\$LOG\" 2>&1)
-        local RC=\$?
+        (cd \"\$SRC\" && HYPER_GPU_DEVICE=\$gpu_id python3 validate.py 2>&1) | \
+            tee \"\$LOG\" | \
+            grep --line-buffered -E '(▶|[0-9]/6|FIN)' | \
+            sed -u \"s/^/  [W\${worker_id}\\/GPU\${gpu_id}] /\"
+        local RC=\${PIPESTATUS[0]}
         local ELAPSED=\$((\$SECONDS - \$START))
         echo \"ELAPSED=\${ELAPSED}s\" >> \"\$LOG\"
         

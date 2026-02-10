@@ -7,6 +7,7 @@ Lectura recomendada en orden:
 3. 02 Modelado y Simulacion: `02_Modelado_Simulacion/02_Modelado_Simulacion.md`
 4. 03 Validacion y Praxis: `03_Validacion_Praxis/03_Validacion_Praxis.md`
 5. 04 Casos de Estudio: `04_Casos_De_Estudio/04_Casos_De_Estudio.md`
+6. 05 Bibliografía Nuclear: `05_Bibliografia/05_Bibliografia.md`
 6. Anexos (auditorias, ejercicios criticos, documentacion): `Anexos.md`
 7. Ejercicios Criticos (Gladiadores, Partida 1):
    - `EjerciciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`

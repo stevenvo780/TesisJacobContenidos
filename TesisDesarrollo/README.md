@@ -36,7 +36,8 @@ Ejecución: `repos/Simulaciones/{NN}_caso_*/src/validate.py`
 - **02_Modelado_Simulacion:** Arquitectura HybridModel y tabla auto-generada de 29 casos.
 - **03_Validacion_Praxis:** Matriz de evidencia y paisaje de emergencia operativa.
 - **04_Casos_De_Estudio:** Catálogo detallado por nivel de clasificación.
-- **EjersiciosCriticos:** Síntesis del ejercicio Gladiadores.
+- **05_Bibliografia:** Referencias nucleares y fuentes de datos.
+- **EjerciciosCriticos:** Síntesis del ejercicio Gladiadores.
 
 ## Mapa Doc - Código
 

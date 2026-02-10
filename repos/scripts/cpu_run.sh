@@ -196,6 +196,7 @@ run_batch() {
 
     echo "  Workers: ${nw} (CPU: ${NCORES} cores)"
     echo "  Modo: cola dinámica — ${nw} procesos paralelos"
+    echo "  Logs: /tmp/cpu_run_g${GRID}_logs/  (tail -f para detalle)"
 
     if [[ $DRY_RUN -eq 1 ]]; then
         echo "  [DRY-RUN] ${ncases} casos → ${nw} workers"
@@ -246,9 +247,12 @@ run_batch() {
                 export HYPER_N_BOOT=$BOOT
                 export HYPER_N_REFINE=$REFINE
                 export HYPER_N_RUNS=$RUNS
-                python3 validate.py > "$LOG" 2>&1
-            )
-            local RC=$?
+                python3 validate.py 2>&1
+            ) | \
+                tee "$LOG" | \
+                grep --line-buffered -E '(▶|[0-9]/6|FIN)' | \
+                sed -u "s/^/  [W${worker_id}] /"
+            local RC=${PIPESTATUS[0]}
             local ELAPSED=$(( SECONDS - START ))
             echo "ELAPSED=${ELAPSED}s" >> "$LOG"
 

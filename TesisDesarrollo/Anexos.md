@@ -19,6 +19,9 @@ Este archivo consolida indices, registros y auditorias complementarias.
 ## 04_Casos_De_Estudio
 - Ver carpeta `04_Casos_De_Estudio/` para sintesis de casos.
 
+## 05_Bibliografia
+- Ver carpeta `05_Bibliografia/` para referencias nucleares y fuentes de datos.
+
 ---
 
 # Indice: EjerciciosCriticos

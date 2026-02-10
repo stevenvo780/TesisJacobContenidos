@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 16:12 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-10 16:40 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -108,6 +108,7 @@
   - [02_Modelado_Simulacion](#02_modelado_simulacion)
   - [03_Validacion_Praxis](#03_validacion_praxis)
   - [04_Casos_De_Estudio](#04_casos_de_estudio)
+  - [05_Bibliografia](#05_bibliografia)
 - [Indice: EjerciciosCriticos](#indice-ejercicioscriticos)
 - [Registros historicos](#registros-historicos)
   - [registro_racionalizacion_glosarios_casos.md](#registro_racionalizacion_glosarios_casosmd)
@@ -1052,6 +1053,9 @@ Este archivo consolida indices, registros y auditorias complementarias.
 
 ## 04_Casos_De_Estudio
 - Ver carpeta `04_Casos_De_Estudio/` para sintesis de casos.
+
+## 05_Bibliografia
+- Ver carpeta `05_Bibliografia/` para referencias nucleares y fuentes de datos.
 
 ---
 
