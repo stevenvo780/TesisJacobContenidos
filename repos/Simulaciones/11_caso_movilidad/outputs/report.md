@@ -1,14 +1,14 @@
 # Reporte de Validación — Movilidad Urbana (Traffic)
 
-- generated_at: 2026-02-10T04:21:21.825070Z
+- generated_at: 2026-02-10T05:34:38.590751Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
 - valor: 0.0027
-- bootstrap_mean: 0.0026
-- CI 95%: [-0.0087, 0.0135]
+- bootstrap_mean: 0.0027
+- CI 95%: [-0.0088, 0.0139]
 - weighted_value (LoE factor 0.20): 0.0005
 - válido (0.30-0.90): False
 
@@ -37,7 +37,7 @@
 - macro_coupling: 0.5000
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.8369
+- damping: 0.8222
 - ode_alpha: 0.2695
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
@@ -79,14 +79,14 @@
 
 ### Calibración
 - forcing_scale: 0.9900
-- macro_coupling: 0.1323
-- ode_coupling_strength: 0.1058
+- macro_coupling: 0.0500
+- ode_coupling_strength: 0.0400
 - abm_feedback_gamma: 0.0500
-- damping: 0.6704
+- damping: 0.7038
 - ode_alpha: 0.0989
 - ode_beta: 0.7941
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1477
+- calibration_rmse: 0.1512
 - ode_rolling: None
 
 ### Interpretación

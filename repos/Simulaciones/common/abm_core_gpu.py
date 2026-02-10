@@ -375,15 +375,17 @@ def simulate_abm_batch(
         return np.empty((0, steps), dtype=np.float64)
     
     n = int(base_params.get("grid_size", 20))
-    vram_per_sim_bytes = n * n * 8 * 6  # ~6 arrays temporales por sim
+    # Cada sim mantiene grids(n,n) + nb_mean(n,n) + noise(n,n) + ~7 temporales broadcasting
+    # Factor 20 cubre picos de CuPy (arrayx intermedios no contabilizados)
+    vram_per_sim_bytes = n * n * 8 * 20
     
     # ─── Auto-chunking: usar VRAM libre REAL de ESTA GPU ─────────────
     from gpu_backend import get_free_vram
     import cupy as cp
     
     free_vram_gb = get_free_vram()
-    # Usar 50% de lo libre (conservador — otros procesos pueden estar en la misma GPU)
-    vram_limit = int(free_vram_gb * 0.50 * 1024**3)
+    # Usar 25% de lo libre (conservador — múltiples procesos comparten GPU)
+    vram_limit = int(free_vram_gb * 0.25 * 1024**3)
     
     if max_batch > 0:
         effective_batch = max_batch
@@ -395,15 +397,55 @@ def simulate_abm_batch(
         all_results = []
         for i in range(0, B, effective_batch):
             chunk = param_variants[i:i + effective_batch]
+            # Re-check VRAM antes de cada sub-batch (otros procesos cambian)
+            cp.get_default_memory_pool().free_all_blocks()
+            fresh_vram = get_free_vram()
+            fresh_limit = int(fresh_vram * 0.25 * 1024**3)
+            fresh_batch = max(1, fresh_limit // max(vram_per_sim_bytes, 1))
+            actual_chunk = chunk[:fresh_batch]
+            remaining = chunk[fresh_batch:]
+            
             chunk_result = simulate_abm_batch(
-                base_params, chunk, steps, seed, series_key, init_range,
-                max_batch=effective_batch,
+                base_params, actual_chunk, steps, seed, series_key, init_range,
+                max_batch=len(actual_chunk),
             )
             all_results.append(chunk_result)
-            # Liberar caché CuPy entre sub-batches para evitar fragmentación
-            cp.get_default_memory_pool().free_all_blocks()
+            
+            # Si hubo sobrante por VRAM reducida, procesarlo
+            if len(remaining) > 0:
+                cp.get_default_memory_pool().free_all_blocks()
+                rest_result = simulate_abm_batch(
+                    base_params, remaining, steps, seed, series_key, init_range,
+                    max_batch=0,  # re-calcula
+                )
+                all_results.append(rest_result)
         return np.concatenate(all_results, axis=0)
     
+    # ─── OOM safety: si el batch actual causa OOM, partir a la mitad ──
+    try:
+        return _simulate_abm_batch_kernel(
+            base_params, param_variants, steps, seed, series_key, init_range,
+            _xp, B, n,
+        )
+    except Exception as oom_err:
+        if "OutOfMemory" in type(oom_err).__name__ or "out of memory" in str(oom_err).lower():
+            cp.get_default_memory_pool().free_all_blocks()
+            half = max(1, B // 2)
+            print(f"[abm_core] OOM con B={B}, reintentando con chunks de {half}")
+            r1 = simulate_abm_batch(base_params, param_variants[:half], steps, seed, series_key, init_range, max_batch=0)
+            cp.get_default_memory_pool().free_all_blocks()
+            r2 = simulate_abm_batch(base_params, param_variants[half:], steps, seed, series_key, init_range, max_batch=0)
+            return np.concatenate([r1, r2], axis=0)
+        raise
+
+
+def _simulate_abm_batch_kernel(
+    base_params, param_variants, steps, seed, series_key, init_range,
+    _xp, B, n,
+):
+    """Kernel interno del batch ABM — separado para OOM retry."""
+    from gpu_backend import to_device, to_numpy, get_rng, sync
+
     # ─── Extraer parámetros compartidos (con override por variante) ────
     diff_default = float(base_params.get("diffusion", 0.2))
     noise_default = float(base_params.get("noise", 0.02))

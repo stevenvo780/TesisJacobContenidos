@@ -1,21 +1,21 @@
 # Reporte de Validación — Microplásticos Oceánicos (Jambeck Persistent Accumulation)
 
-- generated_at: 2026-02-10T05:29:40.893542Z
+- generated_at: 2026-02-10T05:41:26.818994Z
 
 ## Fase synthetic
 - **overall_pass**: True
 
 ### EDI
-- valor: 0.3295
-- bootstrap_mean: 0.3300
-- CI 95%: [0.3219, 0.3406]
-- weighted_value (LoE factor 0.80): 0.2636
+- valor: 0.3681
+- bootstrap_mean: 0.3686
+- CI 95%: [0.3597, 0.3803]
+- weighted_value (LoE factor 0.80): 0.2945
 - válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 1.0000
-- external: 0.9973
-- CR: 1.0027
+- external: 0.9964
+- CR: 1.0036
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,22 +26,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.0336
-- rmse_abm_no_ode: 1.5415
-- rmse_ode: 1.7358
+- rmse_abm: 0.9802
+- rmse_abm_no_ode: 1.5511
+- rmse_ode: 1.7419
 - rmse_reduced: 0.9685
 - threshold: 0.1000
 
 ### Calibración
-- forcing_scale: 0.5473
-- macro_coupling: 0.2858
-- ode_coupling_strength: 0.2286
+- forcing_scale: 0.5860
+- macro_coupling: 0.3636
+- ode_coupling_strength: 0.2909
 - abm_feedback_gamma: 0.0500
-- damping: 0.5464
+- damping: 0.5840
 - ode_alpha: 0.0010
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2166
+- calibration_rmse: 0.2164
 - ode_rolling: None
 
 ### Interpretación
@@ -51,12 +51,12 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.3394
-- bootstrap_mean: 0.3401
-- CI 95%: [0.3295, 0.3578]
-- weighted_value (LoE factor 0.80): 0.2715
+- valor: 0.3397
+- bootstrap_mean: 0.3404
+- CI 95%: [0.3298, 0.3581]
+- weighted_value (LoE factor 0.80): 0.2717
 - válido (0.30-0.90): True
-- detrended_edi: 0.3394
+- detrended_edi: 0.3397
 - trend_ratio: 1.000
 - trend_r2: 0.970
 
@@ -74,9 +74,9 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 11.5234
-- rmse_abm_no_ode: 17.4433
-- rmse_ode: 2.8350
+- rmse_abm: 11.5490
+- rmse_abm_no_ode: 17.4895
+- rmse_ode: 2.8358
 - rmse_reduced: 4.5301
 - threshold: 1.4633
 
