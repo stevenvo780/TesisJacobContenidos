@@ -1,0 +1,50 @@
+# docker-compose.yml — Contenedor GPU persistente para simulaciones
+#
+# USO:
+#   docker-compose up -d          # Levantar contenedor (una vez)
+#   docker exec -it tesis-gpu python validate.py   # Ejecutar dentro
+#   docker exec tesis-gpu python /workspace/repos/scripts/run_scaling.sh
+#
+# El contenedor se auto-reinicia y tiene el repo montado como volumen.
+# Cualquier cambio en el código se refleja inmediato (bind mount).
+
+services:
+  gpu:
+    container_name: tesis-gpu
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # GPU passthrough — usa la RTX 5070 Ti (device 0) por defecto
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]  # GPU 0 = RTX 5070 Ti (16GB)
+              capabilities: [gpu]
+    # Volúmenes: montar repo completo + cache persistente
+    volumes:
+      - ../../:/workspace:rw
+      - cupy-cache:/root/.cupy
+    # Variables de entorno para simulaciones escaladas
+    environment:
+      - HYPER_GPU_DEVICE=0
+      - HYPER_N_PERM=9999
+      - HYPER_N_BOOT=5000
+      - HYPER_N_REFINE=50000
+      - HYPER_GRID_SIZE=200
+      - HYPER_N_RUNS=20
+      - NVIDIA_VISIBLE_DEVICES=0
+      - CUPY_ACCELERATORS=cub
+    # Mantener corriendo siempre
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    # Networking: no necesita puertos, solo compute
+    network_mode: none
+    # Working directory dentro del contenedor
+    working_dir: /workspace
+
+volumes:
+  cupy-cache:
+    name: tesis-cupy-cache
