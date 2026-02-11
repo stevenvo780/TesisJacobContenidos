@@ -14,27 +14,22 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # GPU passthrough — usa la RTX 5070 Ti (device 0) por defecto
+    # GPU passthrough — ambas GPUs disponibles
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ["0"]  # GPU 0 = RTX 5070 Ti (16GB)
+              count: all
               capabilities: [gpu]
     # Volúmenes: montar repo completo + cache persistente
     volumes:
       - ../../:/workspace:rw
       - cupy-cache:/root/.cupy
-    # Variables de entorno para simulaciones escaladas
+    # Variables de entorno — NO poner HYPER_* aquí para que cada caso
+    # use su propio case_config.json. Los HYPER_* se pasan por docker exec.
     environment:
-      - HYPER_GPU_DEVICE=0
-      - HYPER_N_PERM=9999
-      - HYPER_N_BOOT=5000
-      - HYPER_N_REFINE=50000
-      - HYPER_GRID_SIZE=200
-      - HYPER_N_RUNS=20
-      - NVIDIA_VISIBLE_DEVICES=0
+      - NVIDIA_VISIBLE_DEVICES=all
       - CUPY_ACCELERATORS=cub
     # Mantener corriendo siempre
     restart: unless-stopped

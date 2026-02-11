@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: Exogeneidad
 
-- generated_at: 2026-02-10T23:41:12.167691
+- generated_at: 2026-02-11T00:08:47.828736
 
 ## Fase real
 - **overall_pass**: False
@@ -8,7 +8,7 @@
 ### EDI
 - valor: 0.0052
 - bootstrap_mean: 0.0052
-- CI 95%: [0.0021, 0.0086]
+- CI 95%: [0.0021, 0.0084]
 - weighted_value (LoE factor 0.20): 0.0010
 - válido (0.30-0.90): False
 
@@ -27,8 +27,8 @@
 
 ### Errores
 - rmse_abm: 2.1646
-- rmse_abm_no_ode: 2.2942
-- rmse_ode: 3.8442
+- rmse_abm_no_ode: 2.2945
+- rmse_ode: 3.8441
 - rmse_reduced: 2.1760
 - threshold: 0.1595
 

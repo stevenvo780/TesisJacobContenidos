@@ -1,17 +1,17 @@
 # Reporte de Validación — Justicia Algorítmica
 
-- generated_at: 2026-02-11T04:41:52.356875Z
+- generated_at: 2026-02-11T05:01:57.670340Z
 
 ## Fase synthetic
 - **overall_pass**: True
 
 ### EDI
-- valor: 0.7038
-- bootstrap_mean: 0.7041
-- CI 95%: [0.6895, 0.7194]
-- weighted_value (LoE factor 0.20): 0.1408
+- valor: 0.7050
+- bootstrap_mean: 0.7053
+- CI 95%: [0.6907, 0.7206]
+- weighted_value (LoE factor 0.20): 0.1410
 - válido (0.30-0.90): True
-- detrended_edi: 0.7038
+- detrended_edi: 0.7050
 - trend_ratio: 1.000
 - trend_r2: 0.938
 
@@ -29,16 +29,16 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.5734
-- rmse_abm_no_ode: 0.5793
-- rmse_ode: 1.4159
+- rmse_abm: 0.5711
+- rmse_abm_no_ode: 0.5750
+- rmse_ode: 1.4076
 - rmse_reduced: 1.9358
 - threshold: 0.2854
 
 ### Calibración
-- forcing_scale: 0.9068
-- macro_coupling: 0.4285
-- ode_coupling_strength: 0.3000
+- forcing_scale: 0.9175
+- macro_coupling: 0.3477
+- ode_coupling_strength: 0.2781
 - abm_feedback_gamma: 0.0500
 - damping: 0.9500
 - ode_alpha: 0.0474
@@ -54,16 +54,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.7663
-- bootstrap_mean: 0.7663
-- CI 95%: [0.6399, 0.8938]
-- weighted_value (LoE factor 0.20): 0.1533
+- valor: 0.7112
+- bootstrap_mean: 0.7105
+- CI 95%: [0.6682, 0.7507]
+- weighted_value (LoE factor 0.20): 0.1422
 - válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.9999
-- external: 0.9969
-- CR: 1.0030
+- internal: 1.0000
+- external: 0.9992
+- CR: 1.0008
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -74,22 +74,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.4414
-- rmse_abm_no_ode: 0.5462
-- rmse_ode: 1.3877
+- rmse_abm: 0.5455
+- rmse_abm_no_ode: 0.5496
+- rmse_ode: 1.4466
 - rmse_reduced: 1.8889
 - threshold: 0.3262
 
 ### Calibración
-- forcing_scale: 0.4419
-- macro_coupling: 0.0500
-- ode_coupling_strength: 0.0400
+- forcing_scale: 0.4422
+- macro_coupling: 0.2765
+- ode_coupling_strength: 0.2212
 - abm_feedback_gamma: 0.0500
-- damping: 0.3662
+- damping: 0.3589
 - ode_alpha: 0.1330
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.4021
+- calibration_rmse: 0.4017
 - ode_rolling: None
 
 ### Interpretación

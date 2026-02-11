@@ -21,10 +21,30 @@ from hybrid_validator import CaseConfig, run_full_validation, write_outputs
 def load_real_data(start_date, end_date):
 
     cache_path = os.path.join(os.path.dirname(__file__), "..", "data", "conus_monthly.csv")
-    df = fetch_regional_monthly(start_date, end_date, cache_path=os.path.abspath(cache_path))
-    df = df.rename(columns={"tavg": "value"})
+    cache_abs = os.path.abspath(cache_path)
+
+    if os.path.exists(cache_abs):
+        # Cache existe → usar directamente (GISTEMP anomalías + drivers)
+        df = pd.read_csv(cache_abs, parse_dates=["date"])
+        df = df.rename(columns={"tavg": "value"})
+    else:
+        # Sin cache → descargar vía meteostat (lento, fallback)
+        df = fetch_regional_monthly(start_date, end_date, cache_path=cache_abs)
+        df = df.rename(columns={"tavg": "value"})
+
     df["date"] = pd.to_datetime(df["date"])
-    return df.dropna(subset=["date", "value"])
+    df = df.dropna(subset=["date", "value"])
+
+    # ── Desestacionalización ──────────────────────────────────────────
+    # Si los datos son temperatura absoluta, quita el ciclo anual (~97% varianza).
+    # Si ya son anomalías (GISTEMP), centra restando media mensual residual.
+    # Estándar en climatología (IPCC AR6 WG1 Ch2).
+    df["month"] = df["date"].dt.month
+    clim_mean = df.groupby("month")["value"].mean()
+    df["value"] = df["value"] - df["month"].map(clim_mean)
+    df = df.drop(columns=["month"])
+
+    return df
 
 
 def make_synthetic(start_date, end_date, seed=101):

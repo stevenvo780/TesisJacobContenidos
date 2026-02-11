@@ -1,38 +1,23 @@
 {
+  "_comment": "Caso 01 Clima: Desestacionalizado. grid=60, más difusión, param_grid amplio para anomalías climáticas.",
   "execution": {
-    "grid_size": 50,
-    "n_perm": 999,
-    "n_boot": 500,
-    "n_refine": 10000,
-    "n_runs": 10,
-    "timeout_seconds": 3600
+    "grid_size": 60,
+    "n_perm": 4999,
+    "n_boot": 2000,
+    "n_refine": 200000,
+    "n_runs": 30
   },
   "abm": {
-    "diffusion": 0.2,
-    "noise": 0.001
+    "diffusion": 0.25,
+    "noise": 0.01,
+    "heterogeneity_strength": 0.05,
+    "init_range": 0.1
   },
   "calibration": {
     "param_grid": {
-      "forcing_scale": [
-        0.001,
-        0.005,
-        0.01,
-        0.05,
-        0.1
-      ],
-      "macro_coupling": [
-        0.05,
-        0.1,
-        0.15,
-        0.25,
-        0.35
-      ],
-      "damping": [
-        0.0,
-        0.05,
-        0.2,
-        0.5
-      ]
+      "forcing_scale": [0.001, 0.005, 0.01, 0.02, 0.03, 0.05, 0.08, 0.10, 0.15, 0.20, 0.30, 0.50],
+      "macro_coupling": [0.0, 0.005, 0.01, 0.02, 0.05, 0.08, 0.10, 0.15, 0.20, 0.30],
+      "damping": [0.0, 0.005, 0.01, 0.02, 0.05, 0.08, 0.10, 0.15, 0.20, 0.30, 0.50, 0.70]
     }
   }
 }

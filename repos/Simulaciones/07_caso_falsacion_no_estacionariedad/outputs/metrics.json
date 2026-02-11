@@ -1,6 +1,6 @@
 {
   "case": "Falsaci\u00f3n: No-Estacionariedad",
-  "generated_at": "2026-02-10T23:41:14.282506",
+  "generated_at": "2026-02-11T00:08:54.935831",
   "git": {
     "commit": "falsification_trend",
     "dirty": false
@@ -45,29 +45,29 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 3.1252034134452655,
-        "rmse_abm_no_ode": 0.5345006071975974,
-        "rmse_ode": 5.345256025317974,
-        "rmse_reduced": 3.676349931363696,
+        "rmse_abm": 3.1227828726683136,
+        "rmse_abm_no_ode": 0.5332218382039219,
+        "rmse_ode": 5.34510249118295,
+        "rmse_reduced": 3.676605439099149,
         "threshold": 1.0297291523794263
       },
       "correlations": {
-        "abm_obs": 0.9948936131732242,
-        "ode_obs": 0.9680251597406093
+        "abm_obs": 0.994885020183817,
+        "ode_obs": 0.9683097461984935
       },
       "edi": {
-        "value": 0.14991677294277306,
-        "bootstrap_mean": 0.1498982255734975,
-        "ci_lo": 0.14912833724112248,
-        "ci_hi": 0.1507036760781101,
+        "value": 0.15063421289137144,
+        "bootstrap_mean": 0.15064535429667894,
+        "ci_lo": 0.1498500004891137,
+        "ci_hi": 0.15148888373239452,
         "valid": false,
-        "weighted_value": 0.02998335458855461,
+        "weighted_value": 0.03012684257827429,
         "loe_factor": 0.2,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.13815022639470134,
+        "permutation_null_95": 0.13887719865557965,
         "permutation_significant": true,
         "trend_bias": {
-          "detrended_edi": 0.1499,
+          "detrended_edi": 0.1506,
           "trend_ratio": 1.0,
           "trend_r2": 0.991,
           "warning": false
@@ -77,43 +77,43 @@
         "pass": true,
         "detail": {
           "relaxation_time": 13,
-          "peak_impact": 1.9999999999999998,
+          "peak_impact": 2.0,
           "shock_step": 157,
           "recovered": true
         }
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0002881155736971244,
-        "edi_mean": 0.1499695032867739,
-        "edi_std": 4.320854947654164e-05,
+        "cv": 0.00012124490373314957,
+        "edi_mean": 0.15060301652211353,
+        "edi_std": 1.825984824014559e-05,
         "monotonic_decrease": false
       },
-      "effective_information": -0.5437812859156753,
+      "effective_information": -0.5404505136366823,
       "symploke": {
-        "internal": 0.9989684640318861,
-        "external": 0.994413049153463,
-        "cr": 1.004581008749132,
+        "internal": 0.9989730557105777,
+        "external": 0.994387423062706,
+        "cr": 1.004611515131344,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.00040051009222114676,
+        "dominance_share": 0.00010012803536958305,
         "pass": true
       },
       "persistence": {
-        "model_var": 0.00010219979888886183,
+        "model_var": 0.00010295842303394526,
         "obs_var": 0.024497364429204416,
-        "model_std": 0.010109391618137158,
+        "model_std": 0.010146843008243759,
         "obs_std": 0.15651633917647198,
-        "std_ratio": 0.06459000811882543,
+        "std_ratio": 0.06482928914407592,
         "threshold_std": 5.0,
         "pass": true
       },
       "emergence": {
-        "err_reduced": 3.676349931363696,
-        "err_abm_no_ode": 0.5345006071975974,
-        "err_abm": 3.1252034134452655,
+        "err_reduced": 3.676605439099149,
+        "err_abm_no_ode": 0.5332218382039219,
+        "err_abm": 3.1227828726683136,
         "threshold": 0.20594583047588527,
         "pass": true,
         "significance": "computed"
@@ -126,40 +126,40 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 3.1252034134452655,
-        "rmse_ode": 5.345256025317974,
-        "corr_abm": 0.9948936131732242,
-        "corr_ode": 0.9680251597406093,
+        "rmse_abm": 3.1227828726683136,
+        "rmse_ode": 5.34510249118295,
+        "corr_abm": 0.994885020183817,
+        "corr_ode": 0.9683097461984935,
         "threshold": 1.0297291523794263,
         "c1_relative": false,
         "c1_absolute": false,
-        "rmse_reduced": 0.5345006071975974,
-        "relative_improvement": -2.590702806247668
+        "rmse_reduced": 0.5332218382039219,
+        "relative_improvement": -2.5895610344643916
       },
       "c2_detail": {
-        "mean_delta": 0.013579144584757796,
-        "var_delta": 0.0013379793147130683,
-        "relative_mean": 0.013579144584757796,
-        "relative_var": 0.0013379793147130683
+        "mean_delta": 0.013646001430890897,
+        "var_delta": 0.0013478058270621513,
+        "relative_mean": 0.013646001430890897,
+        "relative_var": 0.0013478058270621513
       },
       "c3_detail": {
-        "persistence_1": 0.00010219979888886183,
-        "persistence_2": 0.00010264034317664871
+        "persistence_1": 0.00010295842303394526,
+        "persistence_2": 0.00010302901414231779
       },
       "c4_detail": {
-        "diff": 0.10136714411969616
+        "diff": 0.10181775294251216
       },
       "c5_detail": {
-        "sensitivity_min": 0.46643193539247585,
-        "sensitivity_max": 0.5354684361494394,
-        "range": 0.06903650075696355,
-        "relative_range": 9.436865519733104e-05
+        "sensitivity_min": 0.46845664988832997,
+        "sensitivity_max": 0.5377870645657005,
+        "range": 0.0693304146773705,
+        "relative_range": 9.477041746958499e-05
       },
       "bias_correction": {
         "applied": true,
         "mode": "bias_only",
-        "ode_obs_corr_train": 0.5181838592544656,
-        "ode_mean_train": -1.7418032218248458,
+        "ode_obs_corr_train": 0.5192616399538492,
+        "ode_mean_train": -1.7417641263696082,
         "obs_mean_train": 7.259150545626024e-17,
         "scale_factor": 1.0
       },
@@ -184,7 +184,7 @@
         "category": "falsification",
         "nivel": null,
         "ode_quality": "good",
-        "ode_obs_corr": 0.9680251597406093,
+        "ode_obs_corr": 0.9683097461984935,
         "interpretation": "Control de falsaci\u00f3n: rechazo esperado por dise\u00f1o experimental"
       }
     }

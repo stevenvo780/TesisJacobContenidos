@@ -1,6 +1,6 @@
 # Reporte de Validación — Energía (OPSD GB Grid)
 
-- generated_at: 2026-02-11T04:40:51.392715Z
+- generated_at: 2026-02-11T05:08:20.955326Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -8,7 +8,7 @@
 ### EDI
 - valor: 0.0337
 - bootstrap_mean: 0.0337
-- CI 95%: [0.0286, 0.0387]
+- CI 95%: [0.0286, 0.0389]
 - weighted_value (LoE factor 0.20): 0.0067
 - válido (0.30-0.90): False
 
@@ -53,7 +53,7 @@
 ### EDI
 - valor: -0.0049
 - bootstrap_mean: -0.0049
-- CI 95%: [-0.0061, -0.0041]
+- CI 95%: [-0.0060, -0.0040]
 - weighted_value (LoE factor 0.20): -0.0010
 - válido (0.30-0.90): False
 

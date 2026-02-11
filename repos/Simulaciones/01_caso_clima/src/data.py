@@ -7,9 +7,9 @@ import pandas as pd
 from meteostat import Stations, Monthly, Point
 
 # Wrappers compatibles con API moderna de meteostat
-def _meteostat_stations_nearby(point, radius):
-    """Stations().nearby() espera (lat, lon, radius) no Point."""
-    return Stations().nearby(point.latitude, point.longitude, radius)
+def _meteostat_stations_nearby(lat, lon, radius):
+    """Stations().nearby() espera (lat, lon, radius)."""
+    return Stations().nearby(lat, lon, radius)
 
 def _meteostat_monthly(station_id, start, end):
     """Monthly(station, start, end).fetch() devuelve DataFrame."""
@@ -36,7 +36,7 @@ def _select_stations(start, end, max_stations):
     center_lat = (lat_min + lat_max) / 2
     center_lon = (lon_min + lon_max) / 2
     # Radio ~2500km cubre todo CONUS desde el centro
-    stn_df = _meteostat_stations_nearby(Point(center_lat, center_lon), 2_500_000).fetch()
+    stn_df = _meteostat_stations_nearby(center_lat, center_lon, 2_500_000).fetch()
     # Filtrar solo estaciones de US
     if "country" in stn_df.columns:
         stn_df = stn_df[stn_df["country"] == "US"]
