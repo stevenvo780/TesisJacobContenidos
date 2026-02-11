@@ -1,24 +1,24 @@
 # Reporte de Validación — Falsación: No-Estacionariedad
 
-- generated_at: 2026-02-11T01:14:36.073935
+- generated_at: 2026-02-11T02:10:08.026967
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -1.0000
-- bootstrap_mean: -4.7233
-- CI 95%: [-5.4708, -4.0516]
-- weighted_value (LoE factor 0.20): -0.2000
+- valor: 0.1463
+- bootstrap_mean: 0.1462
+- CI 95%: [0.1454, 0.1471]
+- weighted_value (LoE factor 0.20): 0.0293
 - válido (0.30-0.90): False
-- detrended_edi: -1.0000
+- detrended_edi: 0.1463
 - trend_ratio: 1.000
 - trend_r2: 0.991
 
 ### Symploké y CR
 - internal: 0.9990
-- external: 0.9939
-- CR: 1.0051
+- external: 0.9942
+- CR: 1.0049
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -29,10 +29,10 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.1266
-- rmse_abm_no_ode: 0.5481
-- rmse_ode: 5.3453
-- rmse_reduced: 3.6765
+- rmse_abm: 3.1388
+- rmse_abm_no_ode: 0.5506
+- rmse_ode: 5.3459
+- rmse_reduced: 3.6767
 - threshold: 1.0297
 
 ### Calibración

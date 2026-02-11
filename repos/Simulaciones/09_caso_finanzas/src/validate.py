@@ -58,7 +58,7 @@ def main():
         case_name="Finanzas (SPY)",
         value_col="value",
         series_key="x",
-        grid_size=1,
+        grid_size=10,  # mínimo viable para abm_core (grid 1x1 causa div/0)
         persistence_window=12,
         synthetic_start="2000-01-01",
         synthetic_end="2019-12-01",

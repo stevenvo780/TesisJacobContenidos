@@ -126,13 +126,14 @@ def simulate_abm_core(
     por step para construir main_series.
     """
     if not using_gpu():
-        # Fallback transparente a CPU
-        from abm_core import simulate_abm_core as _cpu_version
-        return _cpu_version(params, steps, seed, series_key, init_range)
+        # Fallback transparente a CPU (usar referencia directa, no la
+        # re-exportada que puede apuntar de vuelta a GPU → recursión).
+        from abm_core import _cpu_simulate_abm_core
+        return _cpu_simulate_abm_core(params, steps, seed, series_key, init_range)
     if params.get("adjacency_matrix") is not None:
         # Topología no soportada en GPU: fallback a CPU
-        from abm_core import simulate_abm_core as _cpu_version
-        return _cpu_version(params, steps, seed, series_key, init_range)
+        from abm_core import _cpu_simulate_abm_core
+        return _cpu_simulate_abm_core(params, steps, seed, series_key, init_range)
     
     _xp = xp
     rng = get_rng(seed)
@@ -367,8 +368,8 @@ def simulate_abm_batch(
             p["assimilation_strength"] = 0.0
             p["assimilation_series"] = None
             p["_store_grid"] = False
-            from abm_core import simulate_abm_core as _cpu_fn
-            sim = _cpu_fn(p, steps, seed=seed, series_key=series_key, init_range=init_range)
+            from abm_core import _cpu_simulate_abm_core
+            sim = _cpu_simulate_abm_core(p, steps, seed=seed, series_key=series_key, init_range=init_range)
             results.append(sim[series_key][:steps])
         return np.array(results, dtype=np.float64)
     if base_params.get("adjacency_matrix") is not None:
@@ -379,8 +380,8 @@ def simulate_abm_batch(
             p["assimilation_strength"] = 0.0
             p["assimilation_series"] = None
             p["_store_grid"] = False
-            from abm_core import simulate_abm_core as _cpu_fn
-            sim = _cpu_fn(p, steps, seed=seed, series_key=series_key, init_range=init_range)
+            from abm_core import _cpu_simulate_abm_core
+            sim = _cpu_simulate_abm_core(p, steps, seed=seed, series_key=series_key, init_range=init_range)
             results.append(sim[series_key][:steps])
         return np.array(results, dtype=np.float64)
     
@@ -452,14 +453,14 @@ def simulate_abm_batch(
                 # GPU no puede con ni 1 sim → fallback a CPU
                 print(f"[abm_core] OOM con B=1 (grid={n}) — fallback a CPU")
                 results = []
-                from abm_core import simulate_abm_core as _cpu_fn
+                from abm_core import _cpu_simulate_abm_core
                 for pv in param_variants:
                     p = dict(base_params)
                     p.update(pv)
                     p["assimilation_strength"] = 0.0
                     p["assimilation_series"] = None
                     p["_store_grid"] = False
-                    sim = _cpu_fn(p, steps, seed=seed, series_key=series_key, init_range=init_range)
+                    sim = _cpu_simulate_abm_core(p, steps, seed=seed, series_key=series_key, init_range=init_range)
                     results.append(sim[series_key][:steps])
                 return np.array(results, dtype=np.float64)
             half = max(1, B // 2)

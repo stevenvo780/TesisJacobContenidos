@@ -43,11 +43,13 @@ def _neighbor_mean_topology(grid: np.ndarray, adj_matrix) -> np.ndarray:
     return np.asarray(nb).reshape(grid.shape)
 
 def _create_forcing_gradient(n: int, gradient_type: str, strength: float) -> np.ndarray:
+    if n <= 1:
+        return np.ones((max(n, 1), max(n, 1)))
     if gradient_type == "radial":
         center = (n - 1) / 2.0
         y, x = np.meshgrid(np.arange(n), np.arange(n), indexing="ij")
         dist = np.sqrt((x - center) ** 2 + (y - center) ** 2)
-        max_dist = center * np.sqrt(2)
+        max_dist = max(center * np.sqrt(2), 1e-15)
         grad = 1.0 - (dist / max_dist) * strength
         return np.clip(grad, 0.2, 1.0)
     if gradient_type == "linear":

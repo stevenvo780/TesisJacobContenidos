@@ -1,21 +1,21 @@
 # Reporte de Validación — Falsación: Exogeneidad
 
-- generated_at: 2026-02-11T01:14:31.001688
+- generated_at: 2026-02-11T02:10:18.644031
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0573
-- bootstrap_mean: 0.0570
-- CI 95%: [0.0368, 0.0764]
-- weighted_value (LoE factor 0.20): 0.0115
+- valor: 0.0052
+- bootstrap_mean: 0.0053
+- CI 95%: [0.0033, 0.0084]
+- weighted_value (LoE factor 0.20): 0.0010
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9985
-- external: 0.9927
-- CR: 1.0058
+- internal: 0.9984
+- external: 0.9924
+- CR: 1.0061
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -27,7 +27,7 @@
 
 ### Errores
 - rmse_abm: 2.1648
-- rmse_abm_no_ode: 2.2962
+- rmse_abm_no_ode: 2.2915
 - rmse_ode: 3.8442
 - rmse_reduced: 2.1760
 - threshold: 0.1595
