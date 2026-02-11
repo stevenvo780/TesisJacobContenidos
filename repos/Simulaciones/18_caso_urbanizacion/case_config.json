@@ -1,15 +1,15 @@
 {
   "execution": {
-    "grid_size": 150,
-    "n_perm": 4999,
-    "n_boot": 2000,
-    "n_refine": 75000,
-    "n_runs": 30
+    "grid_size": 25,
+    "n_perm": 9999,
+    "n_boot": 5000,
+    "n_refine": 200000,
+    "n_runs": 5
   },
   "abm": {
     "diffusion": 0.2,
     "noise": 0.003,
-    "heterogeneity_strength": 0.2,
+    "heterogeneity_strength": 0.25,
     "init_range": 0.5,
     "forcing_gradient_type": "radial",
     "forcing_gradient_strength": 0.7
@@ -19,36 +19,28 @@
       "forcing_scale": [
         0.01,
         0.05,
-        0.08,
         0.1,
-        0.15,
         0.2,
-        0.3,
         0.5,
         0.8,
         0.99
       ],
       "macro_coupling": [
-        0.05,
-        0.1,
+        0.10,
         0.15,
-        0.2,
         0.25,
-        0.3,
         0.35,
-        0.4,
-        0.5
+        0.45,
+        0.55,
+        0.65
       ],
       "damping": [
         0.0,
-        0.02,
         0.05,
         0.1,
         0.2,
-        0.4,
-        0.6,
-        0.8,
-        0.95
+        0.3,
+        0.5
       ]
     }
   }

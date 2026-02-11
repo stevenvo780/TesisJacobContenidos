@@ -1,24 +1,24 @@
-# Reporte de Validación — Ocean (Stommel + Thermohaline ABM)
+# Reporte de Validación — Océanos (OHC proxy)
 
-- generated_at: 2026-02-11T04:44:22.436502Z
+- generated_at: 2026-02-11T16:15:56.011783Z
 
 ## Fase synthetic
 - **overall_pass**: True
 
 ### EDI
-- valor: 0.7472
-- bootstrap_mean: 0.7478
-- CI 95%: [0.7395, 0.7572]
-- weighted_value (LoE factor 0.20): 0.1494
+- valor: 0.8084
+- bootstrap_mean: 0.8087
+- CI 95%: [0.7899, 0.8279]
+- weighted_value (LoE factor 0.20): 0.1617
 - válido (0.30-0.90): True
-- detrended_edi: 0.7472
+- detrended_edi: 0.8084
 - trend_ratio: 1.000
-- trend_r2: 0.961
+- trend_r2: 0.533
 
 ### Symploké y CR
-- internal: 1.0000
-- external: 0.9995
-- CR: 1.0005
+- internal: 0.9998
+- external: 0.9991
+- CR: 1.0008
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -29,22 +29,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.9280
-- rmse_abm_no_ode: 1.0779
-- rmse_ode: 1.3665
-- rmse_reduced: 3.6713
-- threshold: 0.9858
+- rmse_abm: 0.5033
+- rmse_abm_no_ode: 0.5721
+- rmse_ode: 0.4912
+- rmse_reduced: 2.6265
+- threshold: 0.7016
 
 ### Calibración
-- forcing_scale: 0.9377
-- macro_coupling: 0.1752
-- ode_coupling_strength: 0.1402
+- forcing_scale: 0.9107
+- macro_coupling: 0.5000
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
 - damping: 0.9500
-- ode_alpha: 0.0024
-- ode_beta: 0.8191
+- ode_alpha: 0.0467
+- ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1435
+- calibration_rmse: 0.2715
 - ode_rolling: None
 
 ### Interpretación
@@ -54,45 +54,45 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.3173
-- bootstrap_mean: -0.4083
-- CI 95%: [-1.0119, -0.1465]
-- weighted_value (LoE factor 0.20): -0.0635
+- valor: -0.5362
+- bootstrap_mean: -0.7174
+- CI 95%: [-1.6351, -0.3508]
+- weighted_value (LoE factor 0.20): -0.1072
 - válido (0.30-0.90): False
-- detrended_edi: -0.3173
+- detrended_edi: -0.5362
 - trend_ratio: 1.000
 - trend_r2: 0.615
 
 ### Symploké y CR
 - internal: 0.9998
-- external: 0.9999
-- CR: 1.0000
+- external: 0.9988
+- CR: 1.0010
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.6364
-- rmse_abm_no_ode: 4.1727
-- rmse_ode: 2.8097
+- rmse_abm: 4.2407
+- rmse_abm_no_ode: 4.1828
+- rmse_ode: 4.5660
 - rmse_reduced: 2.7605
 - threshold: 2.7353
 
 ### Calibración
-- forcing_scale: 0.7411
-- macro_coupling: 0.3853
-- ode_coupling_strength: 0.3000
+- forcing_scale: 0.7616
+- macro_coupling: 0.1000
+- ode_coupling_strength: 0.0800
 - abm_feedback_gamma: 0.0500
-- damping: 0.6592
+- damping: 0.6956
 - ode_alpha: 0.2690
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2778
+- calibration_rmse: 0.2769
 - ode_rolling: None
 
 ### Interpretación

@@ -1,71 +1,22 @@
 """
-ode.py — 18_caso_urbanizacion (Top-Tier)
+ode.py — 18_caso_urbanizacion
 
-Model: Logistic Urbanization + Bettencourt Scaling
+Modelo ODE: mean_reversion estándar via ode_models.py.
+   dX/dt = α*(F − β*X) + ruido
 
-Reference:
-- Bettencourt et al. (2007): "Urban Scaling Laws" (PNAS)
-- United Nations: World Urbanization Prospects
-- Henderson (2003): "Urbanization and Development" (JEG)
-
-Equation:
-  dU/dt = r * U * (1 - U/K) + gamma * GDP
-  
-Where:
-- U: Urbanization rate [0, 1]
-- r: Intrinsic urban growth rate
-- K: Carrying capacity (~0.9 for developed)
-- gamma: Economic pull factor
-- GDP: External forcing (economic growth)
+Variable macro: tasa de urbanización mundial (u).
 """
 
-import os
-import sys
-import numpy as np
-
+import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
-def simulate_ode(params, steps, seed=42):
-    """
-    Logistic Urbanization ODE.
-    """
-    rng = np.random.default_rng(seed)
-    
-    # Parámetros
-    # r=0.05: tasa intrínseca de crecimiento urbano (~5%/año en países en desarrollo)
-    #   UN WUP 2018: tasa media global ~1.8%, pico histórico ~5% (Asia 1960-80)
-    r = params.get("ode_r", 0.05)
-    # K=0.9: capacidad de carga urbanística (~90%), consistente con
-    #   países desarrollados (Japón 92%, Alemania 77%, UK 84%); UN WUP 2018
-    K = params.get("ode_K", 0.9)
-    # gamma=2.0: factor de atracción económica (pull factor)
-    #   Henderson (2003): elasticidad ingreso-urbanización entre 1.5-3.0
-    #   Valor 2.0 es punto medio del rango empírico
-    gamma = params.get("ode_gamma", 2.0)
-    noise_std = params.get("ode_noise", 0.005)  # Variabilidad anual
-    
-    # Forcing: GDP Growth
-    forcing = params.get("forcing_series")
-    if forcing is None:
-        forcing = np.ones(steps) * 0.02
-        
-    # Initial State
-    U = params.get("p0", 0.3)  # Start 30% urban
-    
-    series_U = []
-    
-    dt = 1.0  # Yearly
-    
-    for t in range(steps):
-        gdp_t = list(forcing)[t] if t < len(forcing) else 0.02
-        
-        # Logistic + Economic Pull
-        dU = r * U * (1 - U / K) + gamma * gdp_t * (1 - U)
-        dU += rng.normal(0, noise_std)
-        
-        U += dU * dt
-        U = np.clip(U, 0.05, 0.99)
-        
-        series_U.append(U)
-        
-    return {"u": series_U, "forcing": forcing}
+from ode_models import simulate_ode_model
+
+ODE_KEY = "u"
+
+
+def simulate_ode(params, steps, seed=3):
+    p = dict(params)
+    p.setdefault("ode_model", "mean_reversion")
+    p["ode_key"] = ODE_KEY
+    return simulate_ode_model(p, steps, seed=seed)
