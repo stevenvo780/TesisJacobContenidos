@@ -1,6 +1,6 @@
 # Reporte de Validación — Depleción de Acuíferos (Darcy-Theis)
 
-- generated_at: 2026-02-11T22:45:17.084820Z
+- generated_at: 2026-02-11T23:26:33.410018Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -68,7 +68,7 @@
 
 ### Criterios C1-C5
 - c1_convergence: True
-- c2_robustness: False
+- c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True

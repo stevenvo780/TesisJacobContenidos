@@ -711,12 +711,13 @@ def perturb_params(params, pct, seed, keys=None):
     p = dict(params)
     if keys is None:
         keys = ["diffusion", "macro_coupling", "forcing_scale", "damping"]
-    # Restricciones físicas por parámetro: (min, max)
+    # Restricciones físicas — consistentes con calibrate_abm refinement clamps
+    # para que C2/C5 perturbaciones no excedan el espacio de calibración.
     _clamp = {
-        "damping": (0.0, 0.99),          # ≥1.0 → amplificación exponencial
-        "macro_coupling": (0.0, 0.50),    # ya existía
-        "forcing_scale": (0.0, 1.0),      # >1.0 pierde interpretabilidad
-        "diffusion": (0.0, 0.5),          # >0.5 → inestabilidad numérica
+        "damping": (0.0, 0.95),           # =refinement cap; ≥1.0 → divergencia
+        "macro_coupling": (0.0, 0.50),     # =refinement cap
+        "forcing_scale": (0.001, 0.99),    # =refinement cap
+        "diffusion": (0.0, 0.5),           # estabilidad numérica
     }
     for k in keys:
         if k in p and isinstance(p[k], (int, float)):
@@ -779,7 +780,7 @@ def evaluate_c1(abm_val, ode_val, obs_val, obs_std,
 
 
 def evaluate_c2(base_params, eval_params, steps, val_start,
-                simulate_abm_fn, series_key, n_pert=5, pct=0.1, seed_base=10):
+                simulate_abm_fn, series_key, n_pert=15, pct=0.1, seed_base=10):
     sim_base = simulate_abm_fn(eval_params, steps, seed=2)
     base_mean = mean(sim_base[series_key][val_start:])
     base_var = variance(sim_base[series_key][val_start:])
