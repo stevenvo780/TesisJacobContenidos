@@ -2,7 +2,7 @@ import os
 import requests
 import pandas as pd
 import numpy as np
-from meteostat import Point, monthly as meteostat_monthly
+from meteostat import Point, Monthly as meteostat_monthly
 
 OPSD_URL = "https://data.open-power-system-data.org/time_series/2020-10-06/time_series_60min_singleindex.csv"
 

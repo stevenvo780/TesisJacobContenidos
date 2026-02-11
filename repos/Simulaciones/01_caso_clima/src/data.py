@@ -4,7 +4,16 @@ from datetime import datetime
 import urllib.request
 
 import pandas as pd
-from meteostat import stations as meteostat_stations, monthly as meteostat_monthly, Point
+from meteostat import Stations, Monthly, Point
+
+# Wrappers compatibles con API moderna de meteostat
+def _meteostat_stations_nearby(point, radius):
+    """Stations().nearby() espera (lat, lon, radius) no Point."""
+    return Stations().nearby(point.latitude, point.longitude, radius)
+
+def _meteostat_monthly(station_id, start, end):
+    """Monthly(station, start, end).fetch() devuelve DataFrame."""
+    return Monthly(station_id, start, end)
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
@@ -27,7 +36,7 @@ def _select_stations(start, end, max_stations):
     center_lat = (lat_min + lat_max) / 2
     center_lon = (lon_min + lon_max) / 2
     # Radio ~2500km cubre todo CONUS desde el centro
-    stn_df = meteostat_stations.nearby(Point(center_lat, center_lon), 2_500_000)
+    stn_df = _meteostat_stations_nearby(Point(center_lat, center_lon), 2_500_000).fetch()
     # Filtrar solo estaciones de US
     if "country" in stn_df.columns:
         stn_df = stn_df[stn_df["country"] == "US"]
@@ -40,7 +49,7 @@ def _select_stations(start, end, max_stations):
         if len(good_ids) >= max_stations * 3:  # probar hasta 3x candidatas
             break
         try:
-            ts = meteostat_monthly(station_id, start, end)
+            ts = _meteostat_monthly(station_id, start, end)
             data = ts.fetch()
             if data is None or data.empty:
                 continue
@@ -101,7 +110,7 @@ def fetch_regional_monthly(start_date, end_date, max_stations=10, cache_path=Non
 
     series_list = []
     for station_id in stations.index.tolist():
-        ts = meteostat_monthly(station_id, start, end)
+        ts = _meteostat_monthly(station_id, start, end)
         data = ts.fetch()
         if data is None or data.empty:
             continue
