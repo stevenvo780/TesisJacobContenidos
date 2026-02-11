@@ -5,7 +5,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common")
 
 from ode_models import simulate_ode_model
 
-ODE_MODEL = "heston"
+# Mean-reversion: dX = α*(F - β*X) — estable, acoplado a drivers macro
+ODE_MODEL = "mean_reversion"
 ODE_KEY = "x"
 
 

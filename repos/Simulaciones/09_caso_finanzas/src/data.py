@@ -13,7 +13,9 @@ def _fetch_fedfunds_monthly(start_date, end_date):
     resp = requests.get(url, timeout=60)
     resp.raise_for_status()
     df = pd.read_csv(io.StringIO(resp.text))
-    df = df.rename(columns={"DATE": "date", "FEDFUNDS": "fedfunds"})
+    # FRED cambió 'DATE' → 'observation_date' en 2024
+    date_col = "observation_date" if "observation_date" in df.columns else "DATE"
+    df = df.rename(columns={date_col: "date", "FEDFUNDS": "fedfunds"})
     df["date"] = pd.to_datetime(df["date"])
     df["date"] = df["date"].dt.to_period("M").dt.to_timestamp()
     df["fedfunds"] = pd.to_numeric(df["fedfunds"], errors="coerce")
@@ -27,11 +29,15 @@ def _fetch_fred_series(series_id, start_date, end_date, col_name):
     resp = requests.get(url, timeout=60)
     resp.raise_for_status()
     df = pd.read_csv(io.StringIO(resp.text))
-    df = df.rename(columns={"DATE": "date", series_id: col_name})
+    # FRED cambió 'DATE' → 'observation_date' en 2024
+    date_col = "observation_date" if "observation_date" in df.columns else "DATE"
+    df = df.rename(columns={date_col: "date", series_id: col_name})
     df["date"] = pd.to_datetime(df["date"])
-    df["date"] = df["date"].dt.to_period("M").dt.to_timestamp()
     df[col_name] = pd.to_numeric(df[col_name], errors="coerce")
     df = df.dropna()
+    # Agregar a mensual (BAA10Y es diario)
+    df["date"] = df["date"].dt.to_period("M").dt.to_timestamp()
+    df = df.groupby("date", as_index=False)[col_name].mean()
     df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
     return df
 
@@ -54,6 +60,10 @@ def fetch_spy_monthly(start_date, end_date, cache_path=None):
     )
     if data is None or data.empty:
         raise RuntimeError("No SPY data available for selected period")
+
+    # yfinance ≥0.2.36 devuelve MultiIndex en columnas → aplanar
+    if isinstance(data.columns, pd.MultiIndex):
+        data.columns = [c[0] if isinstance(c, tuple) else c for c in data.columns]
 
     data = data.reset_index()
     data = data.rename(columns={"Date": "date"})
@@ -89,6 +99,8 @@ def fetch_spy_monthly(start_date, end_date, cache_path=None):
             auto_adjust=True,
             progress=False,
         )
+        if isinstance(vix.columns, pd.MultiIndex):
+            vix.columns = [c[0] if isinstance(c, tuple) else c for c in vix.columns]
         vix = vix.reset_index().rename(columns={"Date": "date"})
         vix["date"] = pd.to_datetime(vix["date"]).dt.to_period("M").dt.to_timestamp()
         if "Close" in vix.columns:

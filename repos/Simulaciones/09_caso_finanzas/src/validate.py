@@ -30,26 +30,31 @@ def load_real_data(start_date, end_date):
 
 
 def make_synthetic(start_date, end_date, seed=101):
-    """Genera serie sintética con ODE Heston para fase de control."""
+    """Genera serie sintética con ODE mean-reversion para fase de control.
+    
+    Simula log-precio de mercado: nivel base ~4.0 (≈$55 SPY),
+    con ciclos bull/bear de ~4 años y ruido de medición moderado.
+    """
     rng = np.random.default_rng(seed)
     dates = pd.date_range(start=start_date, end=end_date, freq="MS")
     steps = len(dates)
 
-    # Forcing: drift de mercado con ciclos (Fama 1970, Cont 2001)
-    forcing = [0.003 * t + 0.2 * np.sin(2 * np.pi * t / 48) for t in range(steps)]
+    # Forcing: tendencia alcista + ciclos bull/bear (~48 meses)
+    forcing = [4.0 + 0.005 * t + 0.3 * np.sin(2 * np.pi * t / 48) for t in range(steps)]
     true_params = {
-        "p0": 0.0,
-        "ode_alpha": 0.15,   # Mean reversion rápida (vol clustering)
-        "ode_beta": 0.10,    # Decay de momentum (Taylor 2005)
-        "ode_noise": 0.08,   # Alta volatilidad (fat tails)
+        "p0": 3.8,
+        "ode_alpha": 0.15,   # Velocidad de ajuste al forcing
+        "ode_beta": 0.50,    # Decay rápido → tracking limpio
+        "ode_noise": 0.05,   # Volatilidad moderada
+        "forcing_scale": 1.0, # Necesario para SNR alto en sintético
         "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k != "forcing"][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.10, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.08, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.15, "beta": 0.10}, "measurement_noise": 0.10}
+    meta = {"ode_true": {"alpha": 0.15, "beta": 0.50}, "measurement_noise": 0.08}
     return df, meta
 
 
@@ -58,7 +63,7 @@ def main():
         case_name="Finanzas (SPY)",
         value_col="value",
         series_key="x",
-        grid_size=10,  # mínimo viable para abm_core (grid 1x1 causa div/0)
+        grid_size=25,  # balance entre resolución y velocidad
         persistence_window=12,
         synthetic_start="2000-01-01",
         synthetic_end="2019-12-01",
