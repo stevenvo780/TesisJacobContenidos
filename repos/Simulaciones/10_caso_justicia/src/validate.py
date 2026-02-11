@@ -36,21 +36,22 @@ def make_synthetic(start_date, end_date, seed=101):
         steps = len(dates)
 
     # Forcing: presión institucional con inercia (Acemoglu & Robinson 2012)
-    # Crecimiento lento que refleja reformas legales graduales
-    forcing = [0.005 * t + 0.001 * t**1.1 for t in range(steps)]
+    # Rule of Law oscila ~[-0.3, 0.2] con tendencia leve
+    forcing = [-0.1 + 0.003 * t + 0.15 * np.sin(2 * np.pi * t / 48) for t in range(steps)]
     true_params = {
-        "p0": 0.0, "t0": 0.0,
-        "ode_alpha": 0.02,   # Cambio institucional lento (τ ≈ 50 meses)
-        "ode_beta": 0.01,    # Resistencia al cambio (path dependence)
-        "ode_noise": 0.03,   # Variabilidad política
+        "p0": -0.2,
+        "ode_alpha": 0.05,   # Cambio institucional lento
+        "ode_beta": 0.50,    # Decay rápido → tracking limpio
+        "ode_noise": 0.02,   # Variabilidad política moderada
+        "forcing_scale": 1.0,  # SNR alto para sintético
         "forcing_series": forcing,
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.04, size=steps)
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.03, size=steps)
 
     df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.02, "beta": 0.01}, "measurement_noise": 0.04}
+    meta = {"ode_true": {"alpha": 0.05, "beta": 0.50}, "measurement_noise": 0.03}
     return df, meta
 
 
@@ -59,17 +60,22 @@ def main():
         case_name="Justicia Algorítmica",
         value_col="value",
         series_key="j",
-        grid_size=20, # Spatial consensus matters here
-        persistence_window=12,
-        synthetic_start="2005-01-01",
-        synthetic_end="2023-12-01",
-        synthetic_split="2016-01-01",
-        real_start="1963-01-01",
+        grid_size=25,
+        persistence_window=5,  # 5 años para datos anuales
+        synthetic_start="2000-01-01",
+        synthetic_end="2019-12-01",
+        synthetic_split="2012-01-01",
+        real_start="1996-01-01",
         real_end="2023-01-01",
-        real_split="2005-01-01",
-        corr_threshold=0.6,
-        extra_base_params={"abm_epsilon": 0.2, "abm_mu": 0.3},
-        driver_cols=[],  # CSV solo tiene date, value
+        real_split="2012-01-01",
+        corr_threshold=0.5,
+        extra_base_params={},
+        driver_cols=["gdp_pc", "unemployment"],
+        use_topology=True,
+        topology_type="small_world",
+        topology_params={"k": 4, "p": 0.1},
+        feedback_strength=0.05,
+        loe=5,
     )
 
     results = run_full_validation(

@@ -1,15 +1,15 @@
 {
   "execution": {
-    "grid_size": 150,
-    "n_perm": 4999,
-    "n_boot": 2000,
-    "n_refine": 50000,
+    "grid_size": 25,
+    "n_perm": 9999,
+    "n_boot": 5000,
+    "n_refine": 200000,
     "n_runs": 30
   },
   "abm": {
     "diffusion": 0.2,
     "noise": 0.002,
-    "heterogeneity_strength": 0.15,
+    "heterogeneity_strength": 0.20,
     "init_range": 0.5
   },
   "calibration": {
@@ -25,13 +25,12 @@
         0.99
       ],
       "macro_coupling": [
-        0.05,
-        0.1,
+        0.10,
         0.15,
         0.25,
         0.35,
         0.45,
-        0.5
+        0.55
       ],
       "damping": [
         0.0,
