@@ -1,6 +1,6 @@
 # Reporte de Validación — Paradigmas Científicos (R&D)
 
-- generated_at: 2026-02-11T22:21:25.942509Z
+- generated_at: 2026-02-11T22:45:08.013761Z
 
 ## Fase synthetic
 - **overall_pass**: False

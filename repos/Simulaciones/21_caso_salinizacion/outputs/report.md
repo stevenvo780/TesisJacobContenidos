@@ -1,6 +1,6 @@
 # Reporte de Validación — Salinización de Suelos (Richards Bilineal)
 
-- generated_at: 2026-02-11T22:21:35.003047Z
+- generated_at: 2026-02-11T22:45:16.629355Z
 
 ## Fase synthetic
 - **overall_pass**: False

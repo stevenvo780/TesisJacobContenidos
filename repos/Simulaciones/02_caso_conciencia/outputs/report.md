@@ -1,6 +1,6 @@
 # Reporte de Validación — Conciencia Colectiva
 
-- generated_at: 2026-02-11T22:22:08.910279Z
+- generated_at: 2026-02-11T22:45:43.957382Z
 
 ## Fase synthetic
 - **overall_pass**: False

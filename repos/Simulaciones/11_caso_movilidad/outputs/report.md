@@ -1,6 +1,6 @@
 # Reporte de Validación — Movilidad Urbana (Vehículos)
 
-- generated_at: 2026-02-11T22:21:44.708618Z
+- generated_at: 2026-02-11T22:45:19.746268Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -48,7 +48,7 @@
 **Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 
 ## Fase real
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
 - valor: 0.1283

@@ -1,39 +1,39 @@
 # Reporte de Validación — Urbanización Global
 
-- generated_at: 2026-02-11T22:21:52.791281Z
+- generated_at: 2026-02-11T23:11:57.935040Z
 
 ## Fase synthetic
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
-- valor: -0.9055
-- bootstrap_mean: -0.9211
-- CI 95%: [-1.1345, -0.7698]
-- weighted_value (LoE factor 0.60): -0.5433
-- válido (0.30-0.90): False
-- detrended_edi: -0.9055
+- valor: 0.8040
+- bootstrap_mean: 0.8044
+- CI 95%: [0.7458, 0.8578]
+- weighted_value (LoE factor 0.60): 0.4824
+- válido (0.30-0.90): True
+- detrended_edi: 0.8040
 - trend_ratio: 1.000
-- trend_r2: 0.947
+- trend_r2: 0.981
 
 ### Symploké y CR
-- internal: 0.9985
-- external: 0.9979
-- CR: 1.0006
+- internal: 0.9998
+- external: 0.9913
+- CR: 1.0086
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: True
-- c2_robustness: False
+- c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.1302
-- rmse_abm_no_ode: 0.5931
-- rmse_ode: 3.4229
-- rmse_reduced: 2.6901
-- threshold: 0.6719
+- rmse_abm: 0.1406
+- rmse_abm_no_ode: 0.7174
+- rmse_ode: 3.0450
+- rmse_reduced: 2.9579
+- threshold: 0.5469
 
 ### Calibración
 - forcing_scale: 0.6384
@@ -41,17 +41,17 @@
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
 - damping: 0.5906
-- ode_alpha: 0.0010
-- ode_beta: 0.0010
+- ode_alpha: 0.0042
+- ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.3132
+- calibration_rmse: 0.1670
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
+**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
 
 ## Fase real
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
 - valor: 0.1512

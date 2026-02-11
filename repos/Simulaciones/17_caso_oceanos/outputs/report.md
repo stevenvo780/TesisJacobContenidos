@@ -1,6 +1,6 @@
 # Reporte de Validación — Océanos (OHC proxy)
 
-- generated_at: 2026-02-11T22:22:05.517287Z
+- generated_at: 2026-02-11T22:45:41.929103Z
 
 ## Fase synthetic
 - **overall_pass**: True

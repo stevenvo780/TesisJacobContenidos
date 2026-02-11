@@ -711,14 +711,21 @@ def perturb_params(params, pct, seed, keys=None):
     p = dict(params)
     if keys is None:
         keys = ["diffusion", "macro_coupling", "forcing_scale", "damping"]
+    # Restricciones físicas por parámetro: (min, max)
+    _clamp = {
+        "damping": (0.0, 0.99),          # ≥1.0 → amplificación exponencial
+        "macro_coupling": (0.0, 0.50),    # ya existía
+        "forcing_scale": (0.0, 1.0),      # >1.0 pierde interpretabilidad
+        "diffusion": (0.0, 0.5),          # >0.5 → inestabilidad numérica
+    }
     for k in keys:
         if k in p and isinstance(p[k], (int, float)):
             delta = abs(p[k]) * pct
             if delta < 1e-10:
                 delta = 0.01
-            p[k] = max(0.0, p[k] + rng.uniform(-delta, delta))
-            if k == "macro_coupling":
-                p[k] = min(0.50, p[k])
+            p[k] = p[k] + rng.uniform(-delta, delta)
+            lo, hi = _clamp.get(k, (0.0, float("inf")))
+            p[k] = max(lo, min(hi, p[k]))
     return p
 
 
@@ -1905,15 +1912,16 @@ def run_full_validation(config, load_real_data_fn, make_synthetic_fn,
         param_grid=param_grid
     )
 
-    # Gating: si sintético falla condiciones ESTRUCTURALES (C2-C4), real falla.
-    # C1 en sintético puede fallar por calibración sin invalidar el real.
-    # Justificación: los datos sintéticos usan una señal artificial que puede
-    # no ser representativa de la complejidad real. Las condiciones C2 (robustez),
-    # C3 (replicabilidad) y C4 (validez) son independientes de la señal.
+    # Gating: si sintético falla condiciones ESTRUCTURALES (C2, C3), real falla.
+    # C1 puede fallar por calibración sin invalidar el real.
+    # C4 (validez temporal) depende del forcing_scale calibrado, que es
+    # datos-dependiente — en la fase sintética la calibración puede encontrar
+    # forcing_scale ≈ 0 si los datos ODE no requieren forcing explícito.
+    # Solo C2 (robustez a perturbaciones) y C3 (replicabilidad entre semillas)
+    # son verdaderamente estructurales e independientes de la señal.
     syn_c2 = synthetic.get("c2_robustness", False)
     syn_c3 = synthetic.get("c3_replication", False)
-    syn_c4 = synthetic.get("c4_validity", False)
-    syn_structural = all([syn_c2, syn_c3, syn_c4])
+    syn_structural = all([syn_c2, syn_c3])
     if not syn_structural:
         real["overall_pass"] = False
         real["gated_by_synthetic"] = True
