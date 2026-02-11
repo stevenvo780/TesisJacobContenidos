@@ -15,8 +15,11 @@ def make_synthetic(start_date, end_date, seed=101):
     We simulate a "Revolution" where the potential barrier collapses due to accumulation of anomalies.
     """
     rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="h") # Hourly resolution roughly
+    dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
+    if steps < 5:
+        dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+        steps = len(dates)
     
     # Catastrophe Model: Linear Driver -> Sudden Jump (Bifurcation)
     

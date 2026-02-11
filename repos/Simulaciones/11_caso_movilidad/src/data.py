@@ -48,16 +48,15 @@ def make_synthetic(start_date, end_date, seed=101):
     Generates synthetic traffic flow data based on Macroscopic Fundamental Diagram (MFD).
     """
     rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="h") # Hourly data!
+    dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
+    if steps < 5:
+        dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+        steps = len(dates)
     
-    # Daily Cycle Forcing (Rush Hour)
-    # Double hump: Morning (8am) and Evening (6pm)
-    t_hour = dates.hour.values
-    
-    morning_rush = np.exp(-((t_hour - 8)**2) / 8.0)
-    evening_rush = np.exp(-((t_hour - 18)**2) / 8.0)
-    demand_pattern = 0.5 + 1.0 * (morning_rush + evening_rush)
+    # Demand forcing: linear trend + cyclic component
+    t = np.arange(steps, dtype=float)
+    demand_pattern = 0.5 + 0.02 * t + 0.3 * np.sin(2 * np.pi * t / max(4, steps // 5))
     
     # MFD Simulation (Backward Bending)
     # Flow Q = k * v(k)

@@ -1,10 +1,51 @@
 {
+  "case_name": "Deforestación Global (von Thünen Frontier)",
+  "ode_model": "accumulation_decay",
+  "ode_key": "d",
+  "series_key": "d",
+  "log_transform": false,
+  "loe": 3,
+  "data": {
+    "csv": "data/wb_deforestation.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": []
+  },
+  "dates": {
+    "synthetic_start": "1990-01-01",
+    "synthetic_end": "2022-01-01",
+    "synthetic_split": "2010-01-01",
+    "real_start": "1990-01-01",
+    "real_end": "2022-01-01",
+    "real_split": "2010-01-01"
+  },
+  "synthetic": {
+    "freq": "YS",
+    "measurement_noise": 0.12,
+    "forcing": {
+      "type": "exponential",
+      "base": 0.025,
+      "rate": 0.005,
+      "noise_std": 0.04
+    },
+    "true_params": {
+      "ode_alpha": 0.06,
+      "ode_beta": 0.008,
+      "ode_noise": 0.04,
+      "ode_inflow": 0.06,
+      "ode_decay": 0.008
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.65,
+    "persistence_window": 5
+  },
   "execution": {
-    "grid_size": 200,
-    "n_perm": 4999,
-    "n_boot": 3000,
-    "n_refine": 100000,
-    "n_runs": 30
+    "grid_size": 40,
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 15
   },
   "abm": {
     "diffusion": 0.2,
@@ -51,5 +92,11 @@
         0.95
       ]
     }
+  },
+  "extra_ode_params": {
+    "ode_inflow": 0.06,
+    "ode_decay": 0.008,
+    "forcing_scale": 0.1,
+    "macro_coupling": 0.25
   }
 }

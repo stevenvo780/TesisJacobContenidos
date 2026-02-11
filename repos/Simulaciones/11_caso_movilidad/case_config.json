@@ -1,10 +1,64 @@
 {
+  "case_name": "Movilidad Urbana (Vehículos)",
+  "ode_model": "mean_reversion",
+  "ode_key": "v",
+  "series_key": "v",
+  "log_transform": false,
+  "loe": 5,
+  "data": {
+    "csv": "data/dataset.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": [
+      "gdp_per_capita",
+      "air_departures"
+    ]
+  },
+  "dates": {
+    "synthetic_start": "2000-01-01",
+    "synthetic_end": "2019-12-01",
+    "synthetic_split": "2012-01-01",
+    "real_start": "1970-01-01",
+    "real_end": "2023-01-01",
+    "real_split": "2005-01-01"
+  },
+  "synthetic": {
+    "freq": "MS",
+    "measurement_noise": 0.08,
+    "forcing": {
+      "type": "linear_cycle",
+      "base": 0.5,
+      "slope": 0.01,
+      "cycle_amp": 0.3,
+      "cycle_period": 48,
+      "noise_std": 0.05
+    },
+    "true_params": {
+      "forcing_scale": 1.0,
+      "ode_alpha": 0.1,
+      "ode_beta": 0.5,
+      "ode_noise": 0.05
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.5,
+    "persistence_window": 5
+  },
+  "topology": {
+    "enabled": true,
+    "type": "small_world",
+    "params": {
+      "k": 4,
+      "p": 0.1
+    },
+    "feedback_strength": 0.05
+  },
   "execution": {
     "grid_size": 25,
-    "n_perm": 9999,
-    "n_boot": 5000,
-    "n_refine": 200000,
-    "n_runs": 30
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 10
   },
   "abm": {
     "diffusion": 0.2,
@@ -25,7 +79,7 @@
         0.99
       ],
       "macro_coupling": [
-        0.10,
+        0.1,
         0.15,
         0.25,
         0.35,
@@ -41,5 +95,6 @@
         0.8
       ]
     }
-  }
+  },
+  "extra_ode_params": {}
 }

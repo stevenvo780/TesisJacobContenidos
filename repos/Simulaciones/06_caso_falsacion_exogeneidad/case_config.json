@@ -1,10 +1,39 @@
 {
+  "case_name": "Falsación: Exogeneidad",
+  "ode_model": "random_walk",
+  "ode_key": "incidence",
+  "series_key": "incidence",
+  "log_transform": false,
+  "loe": 1,
+  "is_falsification": true,
+  "ode_calibration": false,
+  "abm_calibration": false,
+  "data": {
+    "csv": "data/memetic.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": [
+      "unrelated_driver"
+    ]
+  },
+  "dates": {
+    "synthetic_start": "2005-01-01",
+    "synthetic_end": "2024-01-01",
+    "synthetic_split": "2022-01-01",
+    "real_start": "2020-01-01",
+    "real_end": "2024-01-01",
+    "real_split": "2022-01-01"
+  },
+  "thresholds": {
+    "corr_threshold": 0.7,
+    "persistence_window": 6
+  },
   "execution": {
-    "grid_size": 100,
-    "n_perm": 4999,
-    "n_boot": 2000,
-    "n_refine": 25000,
-    "n_runs": 30
+    "grid_size": 20,
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 5
   },
   "abm": {
     "diffusion": 0.2,
@@ -42,5 +71,9 @@
         0.8
       ]
     }
+  },
+  "extra_ode_params": {},
+  "synthetic": {
+    "freq": "YS"
   }
 }

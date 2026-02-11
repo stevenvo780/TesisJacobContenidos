@@ -1,21 +1,21 @@
-# Reporte de Validación — Wikipedia (Axelrod + Lotka-Volterra)
+# Reporte de Validación — Wikipedia (Conocimiento Colectivo)
 
-- generated_at: 2026-02-10T01:21:59.462161Z
+- generated_at: 2026-02-11T19:22:52.680677Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.2841
-- bootstrap_mean: 0.2841
-- CI 95%: [0.2763, 0.2931]
-- weighted_value (LoE factor 0.20): 0.0568
-- válido (0.30-0.90): False
+- valor: 0.2386
+- bootstrap_mean: 0.2387
+- CI 95%: [0.2340, 0.2439]
+- weighted_value (LoE factor 0.60): 0.1432
+- válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.4621
-- external: 0.2874
-- CR: 1.6079
+- internal: 0.9999
+- external: 0.9978
+- CR: 1.0022
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,69 +26,69 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.9819
-- rmse_abm_no_ode: 2.7683
-- rmse_ode: 1.8794
-- rmse_reduced: 2.7683
-- threshold: 1.0224
+- rmse_abm: 2.2817
+- rmse_abm_no_ode: 2.9967
+- rmse_ode: 1.5580
+- rmse_reduced: 1.6761
+- threshold: 1.1374
 
 ### Calibración
-- forcing_scale: 0.0010
-- macro_coupling: 0.0500
-- ode_coupling_strength: 0.0400
+- forcing_scale: 0.8250
+- macro_coupling: 0.5000
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.0000
+- damping: 0.5746
 - ode_alpha: 0.0010
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 2.2095
+- calibration_rmse: 0.5061
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 3 — Cierre operativo weak.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
+**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
 
 ## Fase real
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): 0.0000
-- válido (0.30-0.90): False
+- valor: 0.1596
+- bootstrap_mean: 0.1946
+- CI 95%: [0.1001, 0.4676]
+- weighted_value (LoE factor 0.60): 0.0958
+- válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.2851
-- external: -0.2463
-- CR: 1.1577
+- internal: 0.9996
+- external: 0.9432
+- CR: 1.0597
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: False
+- c1_convergence: True
 - c2_robustness: True
 - c3_replication: True
-- c4_validity: False
+- c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 5.0287
-- rmse_abm_no_ode: 5.0287
-- rmse_ode: 3.7211
-- rmse_reduced: 5.0287
+- rmse_abm: 2.0158
+- rmse_abm_no_ode: 2.3986
+- rmse_ode: 2.4926
+- rmse_reduced: 3.3523
 - threshold: 2.2194
 
 ### Calibración
-- forcing_scale: 0.0010
-- macro_coupling: 0.0500
-- ode_coupling_strength: 0.0400
+- forcing_scale: 0.9900
+- macro_coupling: 0.4216
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.0000
+- damping: 0.5906
 - ode_alpha: 0.0985
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 1.9966
+- calibration_rmse: 0.8446
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
+**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
 

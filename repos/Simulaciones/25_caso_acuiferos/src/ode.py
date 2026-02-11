@@ -1,83 +1,29 @@
 """
-ode.py — 25_caso_acuiferos (Top-Tier)
+ode.py — 25_caso_acuiferos
 
-Modelo: Balance Hídrico Darcy-Theis
+Modelo: Balance Hídrico Darcy-Theis con extracción.
+Arquetipo: aquifer_darcy
+  dH/dt = α·(F − β·H) − extraction·H/(|H|+1) + ε
 
-  dH/dt = R(P) - E(H) - Q_pump + F_lateral + noise
+  H = nivel piezométrico (Z-scored)
+  F = recarga (precipitación, Horton infiltration)
+  extraction = bombeo antrópico con saturación logística
+  τ_respuesta = 1/(α·β) (inercia enorme de acuíferos)
 
-Donde:
-  H = nivel piezométrico (nivel freático)
-  R(P) = recarga por precipitación (Horton infiltration fraction)
-  E(H) = evapotranspiración dependiente de profundidad
-  Q_pump = extracción antrópica (bombeo) con saturación logística
-  F_lateral = flujo lateral desde cuencas vecinas
-
-La clave: H tiene inercia enorme (respuesta lenta a cambios),
-sobreexplotación genera subsidencia irreversible bajo umbral crítico.
-
-Ref: Theis (1935); De Marsily (2004) "Quantitative Hydrogeology";
-     Konikow & Kendy (2005) "Groundwater depletion"
+Refs: Theis (1935); De Marsily (2004);
+      Konikow & Kendy (2005); Scanlon et al. (2006).
 """
-import os
-import sys
-import math
-
-import numpy as np
-
+import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
+from ode_models import simulate_ode_model
 
+ODE_MODEL = "aquifer_darcy"
 ODE_KEY = "aq"
 
 
-def _apply_assimilation(value, t, params):
-    series = params.get("assimilation_series")
-    strength = params.get("assimilation_strength", 0.0)
-    if series is None or t >= len(series):
-        return value
-    target = series[t]
-    if target is None:
-        return value
-    return value + strength * (target - value)
-
-
-def simulate_ode(params, steps, seed=4):
-    """Balance hídrico Darcy-Theis para acuíferos.
-
-    dH/dt = α(F − βH) − extraction·H/(|H|+1) + ε
-
-    Parámetros:
-        α=0.08  Recarga neta ~8%/año (Horton infiltration fraction;
-                Scanlon et al. 2006: 0.1–30% de precipitación)
-        β=0.03  Descarga natural + evapotranspiración ~3%/año
-                (De Marsily 2004: flujo base)
-        extraction=0.01  Bombeo antrópico con saturación logística
-                (Konikow & Kendy 2005: ~1% del stock por año)
-    """
-    rng = np.random.default_rng(seed)
-    forcing = params.get("forcing_series") or [0.0] * steps
-    noise_std = float(params.get("ode_noise", 0.02))
-
-    # Core tracking (calibrado por hybrid_validator)
-    alpha = float(params.get("ode_alpha", 0.08))
-    beta = float(params.get("ode_beta", 0.03))
-    # Domain: extracción antrópica con saturación
-    extraction = float(params.get("ode_extraction", 0.01))
-
-    H = float(params.get("p0", 0.0))
-    series = []
-
-    for t in range(steps):
-        f = forcing[t] if t < len(forcing) else 0.0
-        # Core: mean-reversion tracking hacia forcing
-        core = alpha * (f - beta * H)
-        # Domain: extracción suave (bombeo)
-        pump = extraction * H / (abs(H) + 1.0)
-        dH = core - pump + rng.normal(0, noise_std)
-        H += dH
-        H = max(-10.0, min(H, 10.0))
-        H = _apply_assimilation(H, t, params)
-        if not math.isfinite(H):
-            H = 0.0
-        series.append(float(H))
-
-    return {ODE_KEY: series, "forcing": forcing}
+def simulate_ode(params, steps, seed=42):
+    p = dict(params)
+    p["ode_model"] = ODE_MODEL
+    if "ode_key" not in p:
+        p["ode_key"] = ODE_KEY
+    return simulate_ode_model(p, steps, seed)

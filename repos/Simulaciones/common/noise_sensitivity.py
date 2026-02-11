@@ -100,15 +100,15 @@ def noise_sensitivity_test(
                                    series_key=series_key,
                                    init_range=float(bp_coupled.get("init_range", 0.5)))
         
-        # Batch 2: reduced (varía noise, SIN coupling)
+        # Batch 2: no_ode (varía noise, SIN ODE coupling pero CON forcing)
+        # Antes quitaba forcing_scale=0, macro_coupling=0 (baseline vacío).
+        # Ahora solo quita el ODE coupling para medir contribución real del macro.
         reduced_variants = []
         for mult in multipliers:
             noise_level = original_noise * mult
             reduced_variants.append({
                 "noise": noise_level,
                 "base_noise": noise_level,
-                "forcing_scale": 0.0,
-                "macro_coupling": 0.0,
                 "damping": eval_params.get("damping", 0.02),
             })
         
@@ -157,8 +157,6 @@ def noise_sensitivity_test(
                     "error": str(e)
                 }
             params_reduced = dict(params_coupled)
-            params_reduced["macro_coupling"] = 0.0
-            params_reduced["forcing_scale"] = 0.0
             params_reduced["macro_target_series"] = None
             params_reduced["ode_coupling_strength"] = 0.0
             params_reduced["seed"] = level_seed

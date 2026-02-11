@@ -1,14 +1,14 @@
 {
   "case": "Finanzas (SPY)",
-  "generated_at": "2026-02-11T15:51:18.686935Z",
+  "generated_at": "2026-02-11T17:30:06.650272Z",
   "git": {
-    "commit": "1d779ef9b158cb0597dba2cad992e85a4cfce2f0",
+    "commit": "3e1436210e0f3aeb01dc8c279243b79aa9fe3f28",
     "dirty": true
   },
   "phases": {
     "synthetic": {
       "phase": "synthetic",
-      "overall_pass": true,
+      "overall_pass": false,
       "data": {
         "start": "2000-01-01",
         "end": "2019-12-01",
@@ -48,18 +48,18 @@
         "ode_obs": 0.8016438384355751
       },
       "edi": {
-        "value": 0.5145814305029757,
-        "bootstrap_mean": 0.5149275360858275,
-        "ci_lo": 0.47318507654971587,
-        "ci_hi": 0.555046699056247,
-        "valid": true,
-        "weighted_value": 0.5145814305029757,
+        "value": -0.27293225426040996,
+        "bootstrap_mean": -0.2737562929779556,
+        "ci_lo": -0.29215883507417384,
+        "ci_hi": -0.25765414581643237,
+        "valid": false,
+        "weighted_value": -0.27293225426040996,
         "loe_factor": 1.0,
-        "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.4071814698263131,
-        "permutation_significant": true,
+        "permutation_pvalue": 1.0,
+        "permutation_null_95": -0.14936759798361499,
+        "permutation_significant": false,
         "trend_bias": {
-          "detrended_edi": 0.5146,
+          "detrended_edi": -0.2729,
           "trend_ratio": 1.0,
           "trend_r2": 0.648,
           "warning": false
@@ -76,9 +76,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 2.383167876651204e-05,
-        "edi_mean": 0.5145694892054739,
-        "edi_std": 1.2263054769793038e-05,
+        "cv": 6.070395965614515e-05,
+        "edi_mean": -0.2729157298436484,
+        "edi_std": 1.6567065453956243e-05,
         "monotonic_decrease": false
       },
       "effective_information": -0.0498779858402523,
@@ -169,15 +169,15 @@
         "emergence_pass": true,
         "coupling_ok": true,
         "rmse_fraud_check": true,
-        "edi_valid": true,
+        "edi_valid": false,
         "cr_valid": false
       },
       "emergence_taxonomy": {
-        "category": "strong",
-        "nivel": 4,
+        "category": "null",
+        "nivel": 0,
         "ode_quality": "good",
         "ode_obs_corr": 0.8016438384355751,
-        "interpretation": "Cierre operativo fuerte (Nivel 4): la macro constri\u00f1e significativamente la din\u00e1mica micro"
+        "interpretation": "Sin cierre operativo (Nivel 0): sin evidencia de constricci\u00f3n macro efectiva"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -245,18 +245,18 @@
         "ode_obs": 0.9867764522588677
       },
       "edi": {
-        "value": 0.08200922409014944,
-        "bootstrap_mean": 0.08204544351168508,
-        "ci_lo": 0.08010266526200394,
-        "ci_hi": 0.0841947873384011,
+        "value": 0.08119179485246084,
+        "bootstrap_mean": 0.08122559718754685,
+        "ci_lo": 0.07933706891276443,
+        "ci_hi": 0.0833249475155045,
         "valid": false,
-        "weighted_value": 0.08200922409014944,
+        "weighted_value": 0.08119179485246084,
         "loe_factor": 1.0,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.07689737206970267,
+        "permutation_null_95": 0.07586410045970168,
         "permutation_significant": true,
         "trend_bias": {
-          "detrended_edi": 0.082,
+          "detrended_edi": 0.0812,
           "trend_ratio": 1.0,
           "trend_r2": 0.979,
           "warning": false
@@ -273,9 +273,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0003427221896107961,
-        "edi_mean": 0.08200873820732447,
-        "edi_std": 2.8106214325632798e-05,
+        "cv": 0.00034144044220275313,
+        "edi_mean": 0.08120182372177562,
+        "edi_std": 2.7725586599233075e-05,
         "monotonic_decrease": false
       },
       "effective_information": 0.04216303456360038,

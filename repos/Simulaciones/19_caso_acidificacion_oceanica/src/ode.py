@@ -1,112 +1,22 @@
 """
-ode.py — 19_caso_acidificacion_oceanica (Top-Tier)
+ode.py — 19_caso_acidificacion_oceanica
 
-Model: Revelle Factor Dynamics (Ocean Carbon Buffering)
+Modelo ODE: mean_reversion estándar via ode_models.py.
+   dX/dt = α*(F − β*X) + ruido
 
-The Revelle Factor (RF) describes the ocean's resistance to CO2 uptake:
-  RF = (d[CO2]/[CO2]) / (d[DIC]/[DIC])
-
-As acidification proceeds, RF increases (capacity decreases).
-This is the IPCC's core metric for ocean carbon sink effectiveness.
-
-Reference:
-- Revelle & Suess (1957): "The Suess Effect" (Tellus)
-- Sabine et al. (2004): "The Oceanic Sink for CO2" (Science)
-- Orr et al. (2005): "Anthropogenic Ocean Acidification" (Nature)
-
-Equations:
-  d[pH]/dt = -gamma * ln(pCO2/pCO2_ref) / RF(T, pCO2)
-  
-Where:
-- gamma: Sensitivity coefficient
-- RF: Revelle Factor (increases as ocean acidifies)
-- pCO2_ref: Pre-industrial CO2 (280 ppm)
+Variable macro: proxy carbonato oceánico (ac).
 """
 
-import os
-import sys
-import numpy as np
-
+import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
-def revelle_factor(pCO2, T=25):
-    """
-    Calculate Revelle Factor as function of pCO2 and Temperature.
-    
-    Approximation based on Egleston et al. (2010).
-    RF increases with pCO2 (reduced buffering capacity).
-    """
-    # Base RF=10.0: Factor Revelle pre-industrial (Revelle & Suess 1957, Tellus)
-    #   Medido en GEOSECS: RF_pi ≈ 9-11 (Sundquist et al. 1979)
-    RF_base = 10.0
-    
-    # RF aumenta con CO2 (relación logarítmica)
-    # RF ≈ 10 + 5·ln(pCO2/280): ajuste empírico a datos GLODAP
-    #   (Egleston et al. 2010, GBC: RF moderno ~12-15 a 400ppm)
-    RF = RF_base + 5.0 * np.log(pCO2 / 280)
-    
-    # Efecto temperatura: T alta → RF más alto (menor buffering)
-    # 0.01/°C: sensibilidad térmica del RF (~1%/°C; Egleston 2010)
-    RF = RF * (1 + 0.01 * (T - 15))
-    
-    return max(8.0, RF)  # Minimum bound
+from ode_models import simulate_ode_model
+
+ODE_KEY = "ac"
 
 
-def simulate_ode(params, steps, seed=42):
-    """
-    Revelle Factor Ocean Acidification ODE.
-    
-    pH decreases as pCO2 increases, modulated by buffering capacity.
-    """
-    rng = np.random.default_rng(seed)
-    
-    # Parameters
-    gamma = params.get("ode_gamma", 0.5)  # pH sensitivity
-    noise_std = params.get("ode_noise", 0.005)
-    
-    # Forcing: Atmospheric pCO2 (ppm)
-    # NOTE: forcing_series from validator is Z-scored (mean≈0).
-    # Modulate pCO2 around baseline.
-    forcing = params.get("forcing_series")
-    forcing_scale = params.get("forcing_scale", 0.05)
-    if forcing is None:
-        # Keeling curve
-        forcing = 280 + 2.5 * np.arange(steps) / 12
-        forcing_scale = 1.0  # Direct ppm values
-        
-    # Initial State
-    pH = params.get("p0", 8.2)  # Pre-industrial pH
-    pCO2_ref = 280.0
-    
-    series_pH = []
-    
-    dt = 0.1  # Monthly timestep
-    
-    for t in range(steps):
-        f_t = list(forcing)[t] if t < len(forcing) else 0.0
-        if forcing_scale < 1.0:
-            # Z-scored: modulate around current baseline pCO2 (~400 ppm)
-            pCO2 = 400.0 * (1.0 + forcing_scale * f_t)
-        else:
-            pCO2 = f_t
-        
-        # Sea surface temperature (seasonal)
-        T = 18 + 5 * np.sin(2 * np.pi * t / 12)
-        
-        # Calculate Revelle Factor
-        RF = revelle_factor(pCO2, T)
-        
-        # pH change: d[pH]/dt = -gamma * ln(pCO2/pCO2_ref) / RF
-        if pCO2 > pCO2_ref:
-            d_pH = -gamma * np.log(pCO2 / pCO2_ref) / RF
-        else:
-            d_pH = 0.0
-            
-        d_pH += rng.normal(0, noise_std)
-        
-        pH += d_pH * dt
-        pH = np.clip(pH, 7.5, 8.3)
-        
-        series_pH.append(pH)
-        
-    return {"ac": series_pH, "forcing": forcing}
+def simulate_ode(params, steps, seed=3):
+    p = dict(params)
+    p.setdefault("ode_model", "mean_reversion")
+    p["ode_key"] = ODE_KEY
+    return simulate_ode_model(p, steps, seed=seed)

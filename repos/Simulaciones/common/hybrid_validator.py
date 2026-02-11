@@ -1020,7 +1020,7 @@ class CaseConfig:
                  ode_noise=0.001, base_noise=0.001,
                  corr_threshold=0.7, threshold_factor=1.0,
                  extra_base_params=None, loe=1, n_runs=5,
-                 driver_cols=None, edi_min=0.325,
+                 driver_cols=None, edi_min=0.10,
                  use_topology=False, topology_type="small_world",
                  topology_params=None, feedback_strength=0.0,
                  ode_calibration=True, abm_calibration=True,
@@ -1510,15 +1510,19 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             bc_mode = "reverted"
             raw_scale = None
 
-    # EDI con bootstrap (ABM+ODE vs ABM reducido sin coupling ni forcing)
-    edi_val = compute_edi(err_abm, err_reduced)
-    edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, reduced_val,
+    # EDI honesto: ABM+ODE vs ABM sin ODE (ambos CON forcing).
+    # Antes se comparaba vs modelo reducido (sin forcing ni coupling), lo que
+    # inflaba artificialmente el EDI porque CUALQUIER modelo con forcing supera
+    # al vacío. El test correcto mide si la ODE macro APORTA sobre el ABM solo.
+    # EDI = (rmse_no_ode - rmse_abm) / rmse_no_ode
+    edi_val = compute_edi(err_abm, err_abm_no_ode)
+    edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, abm_no_ode_val,
                                               n_boot=config.n_boot)
     
     # Fix C12: Permutation test para significancia del EDI
     # n_perm=999: estándar en literatura (Phipson & Smyth 2010), resolución p=0.001
     _, edi_pvalue, edi_null_95 = permutation_test_edi(
-        obs_val, abm_val, reduced_val, n_perm=config.n_perm, seed=42
+        obs_val, abm_val, abm_no_ode_val, n_perm=config.n_perm, seed=42
     )
     # Significancia requiere AMBOS: p < 0.05 Y EDI > 0.01 (mínimo efecto).
     # Sin el gate de magnitud, series con autocorrelación fuerte pueden producir
@@ -1547,12 +1551,10 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
                 # Remover tendencia de las 3 series
                 obs_dt = np.asarray(obs_val) - trend_line
                 abm_dt = np.asarray(abm_val) - trend_line
-                red_dt = np.asarray(reduced_val) - trend_line
-                err_abm_dt = float(np.sqrt(np.mean(obs_dt ** 2 - 2 * obs_dt * abm_dt + abm_dt ** 2)))
-                err_red_dt = float(np.sqrt(np.mean(obs_dt ** 2 - 2 * obs_dt * red_dt + red_dt ** 2)))
-                # Corrección: usar RMSE estándar sobre residuos
+                noode_dt = np.asarray(abm_no_ode_val) - trend_line
+                # RMSE estándar sobre residuos detrended
                 err_abm_dt = float(np.sqrt(np.mean((abm_dt - obs_dt) ** 2)))
-                err_red_dt = float(np.sqrt(np.mean((red_dt - obs_dt) ** 2)))
+                err_red_dt = float(np.sqrt(np.mean((noode_dt - obs_dt) ** 2)))
                 edi_detrended = compute_edi(err_abm_dt, err_red_dt)
                 # Ratio: si EDI_detrended / EDI_original < 0.5, la mayoría del EDI
                 # viene de la tendencia (sesgo de predictibilidad)

@@ -1,33 +1,109 @@
 {
+  "case_name": "Contaminación PM2.5",
+  "ode_model": "mean_reversion",
+  "ode_key": "p",
+  "series_key": "p",
+  "log_transform": false,
+  "loe": 3,
+  "data": {
+    "csv": "data/dataset.csv",
+    "date_col": "date",
+    "value_col": "pm25",
+    "driver_cols": [
+      "gdp_growth",
+      "pop_growth"
+    ]
+  },
+  "dates": {
+    "synthetic_start": "1980-01-01",
+    "synthetic_end": "2019-01-01",
+    "synthetic_split": "2000-01-01",
+    "real_start": "1990-01-01",
+    "real_end": "2022-01-01",
+    "real_split": "2010-01-01"
+  },
+  "synthetic": {
+    "freq": "YS",
+    "measurement_noise": 0.01,
+    "forcing": {
+      "type": "linear_cycle",
+      "base": 0.0,
+      "slope": 0.05,
+      "cycle_amp": 0.3,
+      "cycle_period": 20,
+      "noise_std": 0.05
+    },
+    "true_params": {
+      "ode_alpha": 0.4,
+      "ode_beta": 0.5,
+      "ode_noise": 0.01
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.5,
+    "persistence_window": 5
+  },
   "execution": {
     "grid_size": 25,
-    "n_perm": 9999,
-    "n_boot": 5000,
-    "n_refine": 200000,
-    "n_runs": 50
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 10
   },
   "abm": {
     "diffusion": 0.15,
     "noise": 0.005,
-    "heterogeneity_strength": 0.20,
+    "heterogeneity_strength": 0.2,
     "init_range": 0.05
   },
   "calibration": {
     "param_grid": {
       "forcing_scale": [
-        0.001, 0.005, 0.01, 0.03, 0.05,
-        0.08, 0.10, 0.15, 0.20, 0.30,
-        0.50, 0.70, 0.99
+        0.001,
+        0.005,
+        0.01,
+        0.03,
+        0.05,
+        0.08,
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5,
+        0.7,
+        0.99
       ],
       "macro_coupling": [
-        0.10, 0.12, 0.15, 0.20, 0.25,
-        0.30, 0.35, 0.40, 0.45, 0.50
+        0.1,
+        0.12,
+        0.15,
+        0.2,
+        0.25,
+        0.3,
+        0.35,
+        0.4,
+        0.45,
+        0.5
       ],
       "damping": [
-        0.0, 0.05, 0.10, 0.20, 0.30,
-        0.40, 0.50, 0.60, 0.70, 0.80,
-        0.85, 0.90, 0.95
+        0.0,
+        0.05,
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.85,
+        0.9,
+        0.95
       ]
     }
+  },
+  "extra_ode_params": {
+    "ode_alpha": 0.1,
+    "ode_beta": 0.05
   }
 }

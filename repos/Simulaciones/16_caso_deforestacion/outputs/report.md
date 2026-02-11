@@ -1,17 +1,17 @@
 # Reporte de Validación — Deforestación Global (von Thünen Frontier)
 
-- generated_at: 2026-02-11T05:16:16.140077Z
+- generated_at: 2026-02-11T17:22:27.775842Z
 
 ## Fase synthetic
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
-- valor: 0.9076
-- bootstrap_mean: 0.9077
-- CI 95%: [0.9026, 0.9132]
-- weighted_value (LoE factor 0.60): 0.5446
-- válido (0.30-0.90): False
-- detrended_edi: 0.9076
+- valor: 0.7225
+- bootstrap_mean: 0.7227
+- CI 95%: [0.7140, 0.7322]
+- weighted_value (LoE factor 0.60): 0.4335
+- válido (0.30-0.90): True
+- detrended_edi: 0.7225
 - trend_ratio: 1.000
 - trend_r2: 0.999
 
@@ -48,18 +48,18 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 3 — Cierre operativo weak.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
+**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
 
 ## Fase real
 - **overall_pass**: True
 
 ### EDI
-- valor: 0.8579
-- bootstrap_mean: 0.8577
-- CI 95%: [0.8197, 0.8970]
-- weighted_value (LoE factor 0.60): 0.5147
+- valor: 0.5709
+- bootstrap_mean: 0.5685
+- CI 95%: [0.4248, 0.6986]
+- weighted_value (LoE factor 0.60): 0.3425
 - válido (0.30-0.90): True
-- detrended_edi: 0.8579
+- detrended_edi: 0.5709
 - trend_ratio: 1.000
 - trend_r2: 0.785
 

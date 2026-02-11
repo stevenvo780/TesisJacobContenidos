@@ -1,14 +1,14 @@
 {
   "case": "Contaminaci\u00f3n PM2.5",
-  "generated_at": "2026-02-11T15:05:29.025513Z",
+  "generated_at": "2026-02-11T17:29:30.237593Z",
   "git": {
-    "commit": "db4b248e0c3f8332d3edf786682800c9dae13c4e",
+    "commit": "3e1436210e0f3aeb01dc8c279243b79aa9fe3f28",
     "dirty": true
   },
   "phases": {
     "synthetic": {
       "phase": "synthetic",
-      "overall_pass": false,
+      "overall_pass": true,
       "data": {
         "start": "1980-01-01",
         "end": "2019-01-01",
@@ -58,15 +58,15 @@
         "ode_obs": 0.7108936493195618
       },
       "edi": {
-        "value": 0.17236622583244576,
-        "bootstrap_mean": 0.1621231613632182,
-        "ci_lo": -0.34166165918071667,
-        "ci_hi": 0.5239039961756659,
-        "valid": false,
-        "weighted_value": 0.034473245166489155,
+        "value": 0.23963037307981364,
+        "bootstrap_mean": 0.2529962478187806,
+        "ci_lo": 0.1710493497951854,
+        "ci_hi": 0.3558370260968328,
+        "valid": true,
+        "weighted_value": 0.04792607461596273,
         "loe_factor": 0.2,
-        "permutation_pvalue": 0.00040004000400040005,
-        "permutation_null_95": 0.03557489606467985,
+        "permutation_pvalue": 0.0007000700070007,
+        "permutation_null_95": 0.2050432417988919,
         "permutation_significant": true,
         "trend_bias": {
           "detrended_edi": null,
@@ -86,9 +86,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 0.0002397809905813656,
-        "edi_mean": -0.30604502267269995,
-        "edi_std": 7.338377869895648e-05,
+        "cv": 9.129646927486848e-05,
+        "edi_mean": -0.19989826097079116,
+        "edi_std": 1.8250005440819476e-05,
         "monotonic_decrease": false
       },
       "effective_information": 0.12268679886362044,
@@ -179,15 +179,15 @@
         "emergence_pass": true,
         "coupling_ok": true,
         "rmse_fraud_check": true,
-        "edi_valid": false,
+        "edi_valid": true,
         "cr_valid": false
       },
       "emergence_taxonomy": {
-        "category": "weak",
-        "nivel": 3,
+        "category": "strong",
+        "nivel": 4,
         "ode_quality": "good",
         "ode_obs_corr": 0.7108936493195618,
-        "interpretation": "Cierre operativo d\u00e9bil (Nivel 3): se\u00f1al macro significativa pero bajo umbral robusto"
+        "interpretation": "Cierre operativo fuerte (Nivel 4): la macro constri\u00f1e significativamente la din\u00e1mica micro"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -250,16 +250,16 @@
         "ode_obs": 0.6282758253224374
       },
       "edi": {
-        "value": 0.1042705501470201,
-        "bootstrap_mean": 0.07855116412624441,
-        "ci_lo": -0.08630113595542646,
-        "ci_hi": 0.23487955356232237,
+        "value": -0.0038798273837942114,
+        "bootstrap_mean": -0.0030299926881791213,
+        "ci_lo": -0.02752370743194892,
+        "ci_hi": 0.024443903753506746,
         "valid": false,
-        "weighted_value": 0.02085411002940402,
+        "weighted_value": -0.0007759654767588424,
         "loe_factor": 0.2,
-        "permutation_pvalue": 0.0448044804480448,
-        "permutation_null_95": 0.101060239441848,
-        "permutation_significant": true,
+        "permutation_pvalue": 0.9466946694669467,
+        "permutation_null_95": 0.006883846235848535,
+        "permutation_significant": false,
         "trend_bias": {
           "detrended_edi": null,
           "trend_ratio": null,
@@ -278,9 +278,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 1.3502017445628186e-05,
-        "edi_mean": 0.1028713108687352,
-        "edi_std": 1.3889702340043031e-06,
+        "cv": 0.0003000763961907972,
+        "edi_mean": -0.005443618957181389,
+        "edi_std": 1.6335015589068968e-06,
         "monotonic_decrease": false
       },
       "effective_information": -0.006412082778137762,
@@ -375,11 +375,11 @@
         "cr_valid": false
       },
       "emergence_taxonomy": {
-        "category": "weak",
-        "nivel": 3,
+        "category": "null",
+        "nivel": 0,
         "ode_quality": "moderate",
         "ode_obs_corr": 0.6282758253224374,
-        "interpretation": "Cierre operativo d\u00e9bil (Nivel 3): se\u00f1al macro significativa pero bajo umbral robusto"
+        "interpretation": "Sin cierre operativo (Nivel 0): sin evidencia de constricci\u00f3n macro efectiva"
       }
     }
   }

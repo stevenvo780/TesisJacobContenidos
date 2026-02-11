@@ -1,14 +1,14 @@
 {
   "case": "Epidemiolog\u00eda (COVID-19 Global)",
-  "generated_at": "2026-02-11T15:37:04.997835Z",
+  "generated_at": "2026-02-11T17:29:49.195384Z",
   "git": {
-    "commit": "1d779ef9b158cb0597dba2cad992e85a4cfce2f0",
+    "commit": "3e1436210e0f3aeb01dc8c279243b79aa9fe3f28",
     "dirty": true
   },
   "phases": {
     "synthetic": {
       "phase": "synthetic",
-      "overall_pass": true,
+      "overall_pass": false,
       "data": {
         "start": "2010-01-03",
         "end": "2020-12-27",
@@ -58,16 +58,16 @@
         "ode_obs": 0.9907772611836535
       },
       "edi": {
-        "value": 0.587670260314686,
-        "bootstrap_mean": 0.5876490449844265,
-        "ci_lo": 0.5849975182545748,
-        "ci_hi": 0.5902785636800056,
-        "valid": true,
-        "weighted_value": 0.11753405206293721,
+        "value": -1.0,
+        "bootstrap_mean": -24.903748746933072,
+        "ci_lo": -27.655104061059905,
+        "ci_hi": -22.46262907615433,
+        "valid": false,
+        "weighted_value": -0.2,
         "loe_factor": 0.2,
-        "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.5099398959842023,
-        "permutation_significant": true,
+        "permutation_pvalue": 1.0,
+        "permutation_null_95": -0.3179279423276834,
+        "permutation_significant": false,
         "trend_bias": {
           "detrended_edi": null,
           "trend_ratio": null,
@@ -86,9 +86,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 6.140584367153036e-07,
-        "edi_mean": 0.5876733695192633,
-        "edi_std": 3.6086579058621377e-07,
+        "cv": 0.0,
+        "edi_mean": -1.0,
+        "edi_std": 0.0,
         "monotonic_decrease": false
       },
       "effective_information": -0.042726648605686826,
@@ -179,15 +179,15 @@
         "emergence_pass": true,
         "coupling_ok": true,
         "rmse_fraud_check": true,
-        "edi_valid": true,
+        "edi_valid": false,
         "cr_valid": false
       },
       "emergence_taxonomy": {
-        "category": "strong",
-        "nivel": 4,
+        "category": "null",
+        "nivel": 0,
         "ode_quality": "good",
         "ode_obs_corr": 0.9907772611836535,
-        "interpretation": "Cierre operativo fuerte (Nivel 4): la macro constri\u00f1e significativamente la din\u00e1mica micro"
+        "interpretation": "Sin cierre operativo (Nivel 0): sin evidencia de constricci\u00f3n macro efectiva"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -200,7 +200,7 @@
     },
     "real": {
       "phase": "real",
-      "overall_pass": false,
+      "overall_pass": true,
       "data": {
         "start": "2020-03-01",
         "end": "2023-12-31",
@@ -250,18 +250,18 @@
         "ode_obs": -0.5389935185478044
       },
       "edi": {
-        "value": 0.2699338674882952,
-        "bootstrap_mean": 0.26872183846677206,
-        "ci_lo": 0.15571827794836296,
-        "ci_hi": 0.3738167179397834,
-        "valid": false,
-        "weighted_value": 0.05398677349765904,
+        "value": 0.12812779299001079,
+        "bootstrap_mean": 0.1286639781635647,
+        "ci_lo": 0.10458984428173769,
+        "ci_hi": 0.15526929427498073,
+        "valid": true,
+        "weighted_value": 0.025625558598002158,
         "loe_factor": 0.2,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": -0.2650358977942255,
+        "permutation_null_95": 0.0916263771057148,
         "permutation_significant": true,
         "trend_bias": {
-          "detrended_edi": 0.2699,
+          "detrended_edi": 0.1281,
           "trend_ratio": 1.0,
           "trend_r2": 0.815,
           "warning": false
@@ -278,9 +278,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 1.9321451821063673e-05,
-        "edi_mean": 0.2699368955214999,
-        "edi_std": 5.2155727215461585e-06,
+        "cv": 7.400901574203292e-06,
+        "edi_mean": 0.1281263810231957,
+        "edi_std": 9.482507350115399e-07,
         "monotonic_decrease": false
       },
       "effective_information": -0.08017189747054587,
@@ -371,15 +371,15 @@
         "emergence_pass": true,
         "coupling_ok": true,
         "rmse_fraud_check": true,
-        "edi_valid": false,
+        "edi_valid": true,
         "cr_valid": false
       },
       "emergence_taxonomy": {
-        "category": "weak",
-        "nivel": 3,
+        "category": "strong",
+        "nivel": 4,
         "ode_quality": "moderate",
         "ode_obs_corr": -0.5389935185478044,
-        "interpretation": "Cierre operativo d\u00e9bil (Nivel 3): se\u00f1al macro significativa pero bajo umbral robusto"
+        "interpretation": "Cierre operativo fuerte (Nivel 4): la macro constri\u00f1e significativamente la din\u00e1mica micro"
       }
     }
   }

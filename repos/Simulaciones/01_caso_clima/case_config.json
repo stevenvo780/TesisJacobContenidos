@@ -1,11 +1,64 @@
 {
-  "_comment": "Caso 01 Clima: Desestacionalizado. grid=60, más difusión, param_grid amplio para anomalías climáticas.",
+  "case_name": "Clima Regional (CONUS)",
+  "ode_model": "mean_reversion",
+  "ode_key": "tbar",
+  "series_key": "tbar",
+  "log_transform": false,
+  "loe": 5,
+  "data": {
+    "csv": "data/conus_monthly.csv",
+    "date_col": "date",
+    "value_col": "tavg",
+    "driver_cols": [
+      "co2",
+      "tsi",
+      "ohc"
+    ]
+  },
+  "dates": {
+    "synthetic_start": "2000-01-01",
+    "synthetic_end": "2019-12-01",
+    "synthetic_split": "2010-01-01",
+    "real_start": "1990-01-01",
+    "real_end": "2024-12-31",
+    "real_split": "2011-01-01"
+  },
+  "synthetic": {
+    "freq": "MS",
+    "measurement_noise": 0.05,
+    "forcing": {
+      "type": "linear_cycle",
+      "base": 0.0,
+      "slope": 0.005,
+      "cycle_amp": 0.3,
+      "cycle_period": 12,
+      "noise_std": 0.03
+    },
+    "true_params": {
+      "ode_alpha": 0.04,
+      "ode_beta": 0.015,
+      "ode_noise": 0.03
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.7,
+    "persistence_window": 12
+  },
+  "topology": {
+    "enabled": true,
+    "type": "small_world",
+    "params": {
+      "k": 4,
+      "p": 0.1
+    },
+    "feedback_strength": 0.05
+  },
   "execution": {
-    "grid_size": 60,
-    "n_perm": 4999,
-    "n_boot": 2000,
-    "n_refine": 200000,
-    "n_runs": 30
+    "grid_size": 30,
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 10
   },
   "abm": {
     "diffusion": 0.25,
@@ -15,9 +68,51 @@
   },
   "calibration": {
     "param_grid": {
-      "forcing_scale": [0.001, 0.005, 0.01, 0.02, 0.03, 0.05, 0.08, 0.10, 0.15, 0.20, 0.30, 0.50],
-      "macro_coupling": [0.0, 0.005, 0.01, 0.02, 0.05, 0.08, 0.10, 0.15, 0.20, 0.30],
-      "damping": [0.0, 0.005, 0.01, 0.02, 0.05, 0.08, 0.10, 0.15, 0.20, 0.30, 0.50, 0.70]
+      "forcing_scale": [
+        0.001,
+        0.005,
+        0.01,
+        0.02,
+        0.03,
+        0.05,
+        0.08,
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5
+      ],
+      "macro_coupling": [
+        0.0,
+        0.005,
+        0.01,
+        0.02,
+        0.05,
+        0.08,
+        0.1,
+        0.15,
+        0.2,
+        0.3
+      ],
+      "damping": [
+        0.0,
+        0.005,
+        0.01,
+        0.02,
+        0.05,
+        0.08,
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5,
+        0.7
+      ]
     }
+  },
+  "extra_ode_params": {
+    "seasonal_period": 12,
+    "ode_alpha": 0.006,
+    "ode_beta": 0.1
   }
 }

@@ -1,100 +1,100 @@
-# Reporte de Validación — Ecosistema IoT Global (Bass-Metcalfe)
+# Reporte de Validación — Ecosistema IoT Global (Bass-Metcalfe Bilineal)
 
-- generated_at: 2026-02-11T04:48:33.962890Z
+- generated_at: 2026-02-11T19:28:27.839964Z
 
 ## Fase synthetic
-- **overall_pass**: True
+- **overall_pass**: False
 
 ### EDI
-- valor: 0.5560
-- bootstrap_mean: 0.5593
-- CI 95%: [0.5098, 0.6190]
-- weighted_value (LoE factor 0.80): 0.4448
-- válido (0.30-0.90): True
-- detrended_edi: 0.5560
+- valor: -0.0093
+- bootstrap_mean: -0.0094
+- CI 95%: [-0.0131, -0.0057]
+- weighted_value (LoE factor 0.60): -0.0056
+- válido (0.30-0.90): False
+- detrended_edi: -0.0093
 - trend_ratio: 1.000
-- trend_r2: 0.898
+- trend_r2: 0.627
 
 ### Symploké y CR
-- internal: 0.9994
-- external: 0.9789
-- CR: 1.0209
+- internal: 0.9947
+- external: 0.9957
+- CR: 0.9990
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: True
+- c1_convergence: False
 - c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.8218
-- rmse_abm_no_ode: 4.2222
-- rmse_ode: 1.3142
-- rmse_reduced: 6.3551
-- threshold: 2.4845
+- rmse_abm: 2.2728
+- rmse_abm_no_ode: 2.2519
+- rmse_ode: 3.0971
+- rmse_reduced: 2.6686
+- threshold: 0.9559
 
 ### Calibración
-- forcing_scale: 0.8847
-- macro_coupling: 0.5000
-- ode_coupling_strength: 0.3000
+- forcing_scale: 0.9384
+- macro_coupling: 0.1000
+- ode_coupling_strength: 0.0800
 - abm_feedback_gamma: 0.0500
-- damping: 0.9500
-- ode_alpha: 0.3876
+- damping: 0.8906
+- ode_alpha: 0.0010
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.5085
+- calibration_rmse: 0.8898
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.1721
-- bootstrap_mean: 0.1719
-- CI 95%: [0.1449, 0.1911]
-- weighted_value (LoE factor 0.80): 0.1377
+- valor: -0.9191
+- bootstrap_mean: -0.9343
+- CI 95%: [-1.2391, -0.7447]
+- weighted_value (LoE factor 0.60): -0.5515
 - válido (0.30-0.90): False
-- detrended_edi: 0.1721
+- detrended_edi: -0.9191
 - trend_ratio: 1.000
-- trend_r2: 0.874
+- trend_r2: 0.815
 
 ### Symploké y CR
-- internal: 1.0000
-- external: 0.9406
-- CR: 1.0632
+- internal: 0.9999
+- external: 0.9934
+- CR: 1.0066
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: True
-- c2_robustness: True
+- c1_convergence: False
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 33.8224
-- rmse_abm_no_ode: 34.6605
-- rmse_ode: 34.4770
-- rmse_reduced: 40.8515
-- threshold: 10.9486
+- rmse_abm: 1.0293
+- rmse_abm_no_ode: 0.5363
+- rmse_ode: 5.4628
+- rmse_reduced: 2.5475
+- threshold: 0.1285
 
 ### Calibración
-- forcing_scale: 0.5849
-- macro_coupling: 0.4928
-- ode_coupling_strength: 0.3000
+- forcing_scale: 0.9900
+- macro_coupling: 0.1000
+- ode_coupling_strength: 0.0800
 - abm_feedback_gamma: 0.0500
-- damping: 0.2913
-- ode_alpha: 0.0981
-- ode_beta: 0.0010
+- damping: 0.8099
+- ode_alpha: 0.1365
+- ode_beta: 0.6821
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.5972
+- calibration_rmse: 0.2946
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 3 — Cierre operativo weak.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 

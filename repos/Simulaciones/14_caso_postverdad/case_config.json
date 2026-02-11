@@ -1,10 +1,54 @@
 {
+  "case_name": "Postverdad (SIS Infodemic)",
+  "ode_model": "sis_contagion",
+  "ode_key": "pv",
+  "series_key": "pv",
+  "log_transform": false,
+  "loe": 3,
+  "data": {
+    "csv": "data/dataset.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": [
+      "mobile_subs",
+      "literacy"
+    ]
+  },
+  "dates": {
+    "synthetic_start": "2015-01-01",
+    "synthetic_end": "2023-01-01",
+    "synthetic_split": "2020-01-01",
+    "real_start": "2005-01-01",
+    "real_end": "2023-01-01",
+    "real_split": "2016-01-01"
+  },
+  "synthetic": {
+    "freq": "W",
+    "measurement_noise": 0.02,
+    "forcing": {
+      "type": "linear_cycle",
+      "base": 0.0,
+      "slope": 0.005,
+      "cycle_amp": 0.2,
+      "cycle_period": 52,
+      "noise_std": 0.03
+    },
+    "true_params": {
+      "ode_beta": 0.3,
+      "ode_gamma": 0.15,
+      "ode_noise": 0.02
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.5,
+    "persistence_window": 12
+  },
   "execution": {
-    "grid_size": 150,
-    "n_perm": 4999,
-    "n_boot": 2000,
-    "n_refine": 75000,
-    "n_runs": 30
+    "grid_size": 40,
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 15
   },
   "abm": {
     "diffusion": 0.2,
@@ -51,5 +95,9 @@
         0.95
       ]
     }
+  },
+  "extra_ode_params": {
+    "ode_beta": 0.3,
+    "ode_gamma": 0.15
   }
 }

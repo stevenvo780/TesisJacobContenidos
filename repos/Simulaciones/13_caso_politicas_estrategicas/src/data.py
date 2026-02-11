@@ -30,8 +30,11 @@ def make_synthetic(start_date, end_date, seed=101):
     - North (1990): Institutional Change Path-Dependency
     """
     rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+    dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
+    if steps < 5:
+        dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+        steps = len(dates)
     
     # Base Trend (Slow Institutional Improvement)
     # Follows S-curve (Logistic)

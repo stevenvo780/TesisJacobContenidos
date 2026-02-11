@@ -33,8 +33,11 @@ def make_synthetic(start_date, end_date, seed=201):
     - Stommel (1961): "Thermohaline Circulation"
     """
     rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS") # Monthly
+    dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
+    if steps < 5:
+        dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+        steps = len(dates)
     
     # Time array
     t = np.arange(steps)

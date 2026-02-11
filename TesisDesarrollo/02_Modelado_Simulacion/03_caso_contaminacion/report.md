@@ -1,16 +1,16 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-11T15:05:29.025513Z
+- generated_at: 2026-02-11T17:29:30.237593Z
 
 ## Fase synthetic
-- **overall_pass**: False
+- **overall_pass**: True
 
 ### EDI
-- valor: 0.1724
-- bootstrap_mean: 0.1621
-- CI 95%: [-0.3417, 0.5239]
-- weighted_value (LoE factor 0.20): 0.0345
-- válido (0.30-0.90): False
+- valor: 0.2396
+- bootstrap_mean: 0.2530
+- CI 95%: [0.1710, 0.3558]
+- weighted_value (LoE factor 0.20): 0.0479
+- válido (0.30-0.90): True
 
 ### Symploké y CR
 - internal: 0.9975
@@ -45,16 +45,16 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 3 — Cierre operativo weak.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
+**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.1043
-- bootstrap_mean: 0.0786
-- CI 95%: [-0.0863, 0.2349]
-- weighted_value (LoE factor 0.20): 0.0209
+- valor: -0.0039
+- bootstrap_mean: -0.0030
+- CI 95%: [-0.0275, 0.0244]
+- weighted_value (LoE factor 0.20): -0.0008
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -90,5 +90,5 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 3 — Cierre operativo weak.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 

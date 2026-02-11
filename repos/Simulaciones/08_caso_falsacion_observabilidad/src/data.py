@@ -31,8 +31,12 @@ def fetch_sparse_happiness(cache_path, start_year=2011, end_year=2023, seed=42):
     rng = np.random.default_rng(seed)
 
     dates = pd.date_range(start=f"{start_year}-01-01",
-                          end=f"{end_year}-01-01", freq="MS")
+                          end=f"{end_year}-01-01", freq="YS")
     n = len(dates)
+    if n < 5:
+        dates = pd.date_range(start=f"{start_year}-01-01",
+                              end=f"{end_year}-01-01", freq="MS")
+        n = len(dates)
     t = np.arange(n, dtype=float)
 
     # Causa oculta Z: tendencia + oscilación rápida

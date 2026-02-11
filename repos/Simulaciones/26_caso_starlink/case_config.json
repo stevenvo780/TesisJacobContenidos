@@ -1,10 +1,53 @@
 {
+  "case_name": "Constelaciones Satelitales Starlink (Saturation Growth)",
+  "ode_model": "saturation_growth",
+  "ode_key": "st",
+  "series_key": "st",
+  "log_transform": true,
+  "loe": 3,
+  "data": {
+    "csv": "data/dataset.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": []
+  },
+  "dates": {
+    "synthetic_start": "2000-01-01",
+    "synthetic_end": "2019-12-01",
+    "synthetic_split": "2012-01-01",
+    "real_start": "2019-01-01",
+    "real_end": "2024-06-01",
+    "real_split": "2022-01-01"
+  },
+  "synthetic": {
+    "freq": "MS",
+    "measurement_noise": 0.08,
+    "forcing": {
+      "type": "logistic",
+      "base": 0.1,
+      "amplitude": 2.5,
+      "rate": 0.025,
+      "cycle_amp": 0.2,
+      "cycle_period": 12,
+      "noise_std": 0.12
+    },
+    "true_params": {
+      "ode_alpha": 0.18,
+      "ode_beta": 1.0,
+      "ode_saturation": 0.002,
+      "ode_noise": 0.08
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.5,
+    "persistence_window": 5
+  },
   "execution": {
-    "grid_size": 150,
-    "n_perm": 4999,
-    "n_boot": 2000,
-    "n_refine": 75000,
-    "n_runs": 30
+    "grid_size": 25,
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 5
   },
   "abm": {
     "diffusion": 0.2,
@@ -17,25 +60,19 @@
   "calibration": {
     "param_grid": {
       "forcing_scale": [
-        0.01,
         0.05,
-        0.08,
         0.1,
-        0.15,
         0.2,
-        0.3,
-        0.5,
+        0.4,
+        0.6,
         0.8,
         0.99
       ],
       "macro_coupling": [
-        0.05,
         0.1,
         0.15,
         0.2,
-        0.25,
         0.3,
-        0.35,
         0.4,
         0.5
       ],
@@ -47,9 +84,13 @@
         0.2,
         0.4,
         0.6,
-        0.8,
-        0.95
+        0.8
       ]
     }
+  },
+  "extra_ode_params": {
+    "ode_alpha": 0.18,
+    "ode_beta": 1.0,
+    "ode_saturation": 0.002
   }
 }

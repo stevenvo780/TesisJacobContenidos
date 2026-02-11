@@ -1,10 +1,52 @@
 {
+  "case_name": "Microplásticos Oceánicos (Jambeck Accumulation-Decay)",
+  "ode_model": "accumulation_decay",
+  "ode_key": "mp",
+  "series_key": "mp",
+  "log_transform": true,
+  "loe": 3,
+  "data": {
+    "csv": "data/dataset.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": []
+  },
+  "dates": {
+    "synthetic_start": "2000-01-01",
+    "synthetic_end": "2019-12-01",
+    "synthetic_split": "2012-01-01",
+    "real_start": "1980-01-01",
+    "real_end": "2020-12-01",
+    "real_split": "2005-01-01"
+  },
+  "synthetic": {
+    "freq": "YS",
+    "measurement_noise": 0.08,
+    "forcing": {
+      "type": "logistic",
+      "base": 0.2,
+      "amplitude": 2.5,
+      "rate": 0.01,
+      "cycle_amp": 0.15,
+      "cycle_period": 4,
+      "noise_std": 0.1
+    },
+    "true_params": {
+      "ode_alpha": 0.09,
+      "ode_beta": 0.005,
+      "ode_noise": 0.08
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.5,
+    "persistence_window": 5
+  },
   "execution": {
-    "grid_size": 200,
-    "n_perm": 4999,
-    "n_boot": 3000,
-    "n_refine": 100000,
-    "n_runs": 30
+    "grid_size": 25,
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 5
   },
   "abm": {
     "diffusion": 0.2,
@@ -17,25 +59,19 @@
   "calibration": {
     "param_grid": {
       "forcing_scale": [
-        0.01,
         0.05,
-        0.08,
         0.1,
-        0.15,
         0.2,
-        0.3,
-        0.5,
+        0.4,
+        0.6,
         0.8,
         0.99
       ],
       "macro_coupling": [
-        0.05,
         0.1,
         0.15,
         0.2,
-        0.25,
         0.3,
-        0.35,
         0.4,
         0.5
       ],
@@ -47,9 +83,12 @@
         0.2,
         0.4,
         0.6,
-        0.8,
-        0.95
+        0.8
       ]
     }
+  },
+  "extra_ode_params": {
+    "ode_alpha": 0.09,
+    "ode_beta": 0.005
   }
 }

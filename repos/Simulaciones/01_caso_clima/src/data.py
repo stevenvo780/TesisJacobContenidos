@@ -170,3 +170,62 @@ def fetch_regional_monthly(start_date, end_date, max_stations=10, cache_path=Non
         df.to_csv(cache_path, index=False)
 
     return df
+
+
+# ── Wrappers para case_runner ─────────────────────────────────────────────────
+
+def load_real_data(start_date, end_date):
+    """Carga datos climáticos con desestacionalización (IPCC AR6 WG1 Ch2)."""
+    import numpy as np
+
+    cache_path = os.path.join(os.path.dirname(__file__), "..", "data", "conus_monthly.csv")
+    cache_abs = os.path.abspath(cache_path)
+
+    if os.path.exists(cache_abs):
+        df = pd.read_csv(cache_abs, parse_dates=["date"])
+        df = df.rename(columns={"tavg": "value"})
+    else:
+        df = fetch_regional_monthly(start_date, end_date, cache_path=cache_abs)
+        df = df.rename(columns={"tavg": "value"})
+
+    df["date"] = pd.to_datetime(df["date"])
+    df = df.dropna(subset=["date", "value"])
+
+    # Desestacionalización: quitar ciclo anual (~97% varianza)
+    df["month"] = df["date"].dt.month
+    clim_mean = df.groupby("month")["value"].mean()
+    df["value"] = df["value"] - df["month"].map(clim_mean)
+    df = df.drop(columns=["month"])
+
+    df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
+    return df.reset_index(drop=True)
+
+
+def make_synthetic(start_date, end_date, seed=101):
+    """Sintético: forcing radiativo creciente (CO₂-like)."""
+    import numpy as np
+    from ode import simulate_ode
+
+    rng = np.random.default_rng(seed)
+    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+    steps = len(dates)
+    if steps < 5:
+        dates = pd.date_range(start=start_date, end=end_date, freq="YS")
+        steps = len(dates)
+
+    forcing = [0.005 * t + 0.3 * np.sin(2 * np.pi * t / 12) for t in range(steps)]
+    true_params = {
+        "p0": 0.0, "t0": 0.0,
+        "ode_alpha": 0.04,
+        "ode_beta": 0.015,
+        "ode_noise": 0.03,
+        "forcing_series": forcing,
+        "p0_ode": 0.0,
+    }
+    sim = simulate_ode(true_params, steps, seed=seed + 1)
+    ode_key = [k for k in sim if k not in ("forcing",)][0]
+    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.05, size=steps)
+
+    df = pd.DataFrame({"date": dates, "value": obs})
+    meta = {"ode_true": {"alpha": 0.04, "beta": 0.015}, "measurement_noise": 0.05}
+    return df, meta

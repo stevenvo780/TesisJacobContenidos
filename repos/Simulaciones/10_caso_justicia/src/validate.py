@@ -1,99 +1,15 @@
-"""validate.py — Caso 10: Justicia Algorítmica.
+"""validate.py — Justicia Algorítmica
 
-Modelo híbrido: ODE logística forzada + ABM Deffuant de opinión.
-Datos: Índice de Estado de Derecho (World Justice Project / World Bank).
+Usa case_runner.py centralizado + case_config.json declarativo.
+ODE: mean_reversion.
 """
 
 import os
 import sys
 
-import numpy as np
-import pandas as pd
-
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
 
-from abm import simulate_abm
-from data import fetch_data
-from ode import simulate_ode
-from hybrid_validator import CaseConfig, run_full_validation, write_outputs
-
-
-def load_real_data(start_date, end_date):
-    cache_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "data", "dataset.csv")
-    )
-    df, _ = fetch_data(cache_path, start_date=start_date, end_date=end_date)
-    df["date"] = pd.to_datetime(df["date"])
-    return df.dropna(subset=["date", "value"])
-
-
-def make_synthetic(start_date, end_date, seed=101):
-    rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS")
-    steps = len(dates)
-    if steps < 5:
-        dates = pd.date_range(start=start_date, end=end_date, freq="YS")
-        steps = len(dates)
-
-    # Forcing: presión institucional con inercia (Acemoglu & Robinson 2012)
-    # Rule of Law oscila ~[-0.3, 0.2] con tendencia leve
-    forcing = [-0.1 + 0.003 * t + 0.15 * np.sin(2 * np.pi * t / 48) for t in range(steps)]
-    true_params = {
-        "p0": -0.2,
-        "ode_alpha": 0.05,   # Cambio institucional lento
-        "ode_beta": 0.50,    # Decay rápido → tracking limpio
-        "ode_noise": 0.02,   # Variabilidad política moderada
-        "forcing_scale": 1.0,  # SNR alto para sintético
-        "forcing_series": forcing,
-    }
-    sim = simulate_ode(true_params, steps, seed=seed + 1)
-    ode_key = [k for k in sim if k not in ("forcing",)][0]
-    obs = np.array(sim[ode_key]) + rng.normal(0.0, 0.03, size=steps)
-
-    df = pd.DataFrame({"date": dates, "value": obs})
-    meta = {"ode_true": {"alpha": 0.05, "beta": 0.50}, "measurement_noise": 0.03}
-    return df, meta
-
-
-def main():
-    config = CaseConfig(
-        case_name="Justicia Algorítmica",
-        value_col="value",
-        series_key="j",
-        grid_size=25,
-        persistence_window=5,  # 5 años para datos anuales
-        synthetic_start="2000-01-01",
-        synthetic_end="2019-12-01",
-        synthetic_split="2012-01-01",
-        real_start="1996-01-01",
-        real_end="2023-01-01",
-        real_split="2012-01-01",
-        corr_threshold=0.5,
-        extra_base_params={},
-        driver_cols=["gdp_pc", "unemployment"],
-        use_topology=True,
-        topology_type="small_world",
-        topology_params={"k": 4, "p": 0.1},
-        feedback_strength=0.05,
-        loe=5,
-    )
-
-    results = run_full_validation(
-        config, load_real_data, make_synthetic,
-        simulate_abm, simulate_ode,
-    )
-
-    out_dir = os.path.join(os.path.dirname(__file__), "..", "outputs")
-    write_outputs(results, os.path.abspath(out_dir))
-
-    for phase_name, phase in results.get("phases", {}).items():
-        edi = phase.get("edi", {})
-        if isinstance(edi, dict):
-            print(f"  {phase_name}: EDI={edi.get('value', 'N/A'):.3f}")
-        else:
-            print(f"  {phase_name}: EDI={edi:.3f}")
-        print(f"    overall_pass={phase.get('overall_pass', False)}")
-
+from case_runner import run_case
 
 if __name__ == "__main__":
-    main()
+    run_case(os.path.dirname(os.path.abspath(__file__)))

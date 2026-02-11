@@ -1,46 +1,90 @@
 {
+  "case_name": "Acidificación Oceánica",
+  "ode_model": "mean_reversion",
+  "ode_key": "ac",
+  "series_key": "ac",
+  "log_transform": false,
+  "loe": 3,
+  "data": {
+    "csv": "data/dataset.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": []
+  },
+  "dates": {
+    "synthetic_start": "2000-01-01",
+    "synthetic_end": "2019-12-01",
+    "synthetic_split": "2012-01-01",
+    "real_start": "1990-01-01",
+    "real_end": "2020-01-01",
+    "real_split": "2010-01-01"
+  },
+  "synthetic": {
+    "freq": "YS",
+    "measurement_noise": 0.2,
+    "forcing": {
+      "type": "linear_cycle",
+      "base": 85.0,
+      "slope": -0.03,
+      "cycle_amp": 2.5,
+      "cycle_period": 24,
+      "noise_std": 0.5
+    },
+    "true_params": {
+      "ode_alpha": 0.1,
+      "ode_beta": 0.5,
+      "ode_noise": 0.2
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.5,
+    "persistence_window": 5
+  },
   "execution": {
-    "grid_size": 150,
-    "n_perm": 4999,
-    "n_boot": 2000,
-    "n_refine": 50000,
-    "n_runs": 30
+    "grid_size": 25,
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 5
   },
   "abm": {
     "diffusion": 0.2,
     "noise": 0.002,
-    "heterogeneity_strength": 0.15,
+    "heterogeneity_strength": 0.25,
     "init_range": 0.5
   },
   "calibration": {
     "param_grid": {
       "forcing_scale": [
-        0.001,
-        0.005,
         0.01,
         0.05,
         0.1,
         0.2,
         0.5,
+        0.8,
         0.99
       ],
       "macro_coupling": [
-        0.05,
         0.1,
         0.15,
         0.25,
         0.35,
         0.45,
-        0.5
+        0.55,
+        0.65
       ],
       "damping": [
         0.0,
+        0.05,
         0.1,
         0.2,
-        0.4,
-        0.6,
-        0.8
+        0.3,
+        0.5
       ]
     }
+  },
+  "extra_ode_params": {
+    "ode_alpha": 0.1,
+    "ode_beta": 0.5
   }
 }

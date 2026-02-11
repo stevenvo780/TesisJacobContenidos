@@ -94,8 +94,11 @@ def make_synthetic(start_date, end_date, seed=401):
     - Omega decreases (Aragonite undersaturation)
     """
     rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="MS")  # Monthly
+    dates = pd.date_range(start=start_date, end=end_date, freq="YS")
     steps = len(dates)
+    if steps < 5:
+        dates = pd.date_range(start=start_date, end=end_date, freq="MS")
+        steps = len(dates)
     
     # Atmospheric pCO2 (Keeling Curve approximation)
     # 280 ppm pre-industrial -> ~420 ppm modern

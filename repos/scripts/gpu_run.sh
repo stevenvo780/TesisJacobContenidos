@@ -55,10 +55,10 @@ SIM_DIR="$(cd "$SCRIPT_DIR/../Simulaciones" && pwd)"
 # ── Defaults ──────────────────────────────────────────────────────────────────
 PARTS=1
 PART=0          # 0 = todas las partes
-PERM=9999
-BOOT=5000
-REFINE=50000
-RUNS=50
+PERM=999
+BOOT=500
+REFINE=5000
+RUNS=10
 CONTAINER="tesis-gpu"
 DRY_RUN=0
 STEP_BY_STEP=0
@@ -595,7 +595,7 @@ gpu_worker() {
         
         [[ -z \"\$caso\" ]] && break
         
-        local SRC=\"/workspace/repos/Simulaciones/\${caso}/src\"
+        local SRC=\"/workspace/Simulaciones/\${caso}/src\"
         local LOG=\"${log_dir}/\${caso}.log\"
         
         if [ ! -f \"\${SRC}/validate.py\" ]; then
@@ -803,7 +803,7 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
             [[ -z "$caso" ]] && break
             count=$((count + 1))
             
-            local SRC="/workspace/repos/Simulaciones/${caso}/src"
+            local SRC="/workspace/Simulaciones/${caso}/src"
             local LOG="${LOG_DIR}/${caso}.log"
             local GRID_CASE=${CASE_GRID[$caso]:-1}
             
@@ -822,7 +822,7 @@ export HYPER_N_BOOT=${BOOT}
 export HYPER_N_REFINE=${REFINE}
 export HYPER_N_RUNS=${RUNS}
 mkdir -p ${LOG_DIR}
-SRC=/workspace/repos/Simulaciones/${caso}/src
+SRC=/workspace/Simulaciones/${caso}/src
 if [ ! -f \"\${SRC}/validate.py\" ]; then echo SKIP; exit 0; fi
 cd \"\${SRC}\" && timeout --signal=KILL ${CASE_TIMEOUT} bash -c 'HYPER_GPU_DEVICE=${gpu} python3 validate.py' 2>&1
 "

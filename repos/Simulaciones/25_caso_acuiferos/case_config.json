@@ -1,10 +1,54 @@
 {
+  "case_name": "Depleción de Acuíferos (Darcy-Theis)",
+  "ode_model": "aquifer_darcy",
+  "ode_key": "aq",
+  "series_key": "aq",
+  "log_transform": false,
+  "loe": 3,
+  "data": {
+    "csv": "data/dataset.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": [
+      "precip",
+      "extraction_usgs",
+      "withdrawal"
+    ]
+  },
+  "dates": {
+    "synthetic_start": "1980-01-01",
+    "synthetic_end": "2020-12-01",
+    "synthetic_split": "2002-01-01",
+    "real_start": "1980-01-01",
+    "real_end": "2020-12-01",
+    "real_split": "2002-01-01"
+  },
+  "synthetic": {
+    "freq": "YS",
+    "measurement_noise": 0.04,
+    "forcing": {
+      "type": "exponential",
+      "base": 0.008,
+      "rate": 0.003,
+      "noise_std": 0.02
+    },
+    "true_params": {
+      "ode_alpha": 0.08,
+      "ode_beta": 0.03,
+      "ode_extraction": 0.01,
+      "ode_noise": 0.02
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.6,
+    "persistence_window": 12
+  },
   "execution": {
-    "grid_size": 200,
-    "n_perm": 4999,
-    "n_boot": 3000,
-    "n_refine": 100000,
-    "n_runs": 30
+    "grid_size": 40,
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 15
   },
   "abm": {
     "diffusion": 0.2,
@@ -51,5 +95,10 @@
         0.95
       ]
     }
+  },
+  "extra_ode_params": {
+    "ode_extraction": 0.01,
+    "forcing_scale": 0.12,
+    "macro_coupling": 0.28
   }
 }

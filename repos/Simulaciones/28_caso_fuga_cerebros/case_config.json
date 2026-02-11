@@ -1,10 +1,58 @@
 {
+  "case_name": "Fuga de Cerebros Global (Docquier-Rapoport)",
+  "ode_model": "brain_drain",
+  "ode_key": "fc",
+  "series_key": "fc",
+  "log_transform": false,
+  "loe": 3,
+  "data": {
+    "csv": "data/dataset.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": [
+      "researchers",
+      "enrollment",
+      "remittances",
+      "gdp_pc",
+      "net_migration"
+    ]
+  },
+  "dates": {
+    "synthetic_start": "1980-01-01",
+    "synthetic_end": "2022-01-01",
+    "synthetic_split": "2005-01-01",
+    "real_start": "1980-01-01",
+    "real_end": "2022-01-01",
+    "real_split": "2005-01-01"
+  },
+  "synthetic": {
+    "freq": "YS",
+    "measurement_noise": 0.03,
+    "forcing": {
+      "type": "exponential",
+      "base": 0.01,
+      "rate": 0.02,
+      "noise_std": 0.02
+    },
+    "true_params": {
+      "ode_alpha": 0.06,
+      "ode_beta": 0.02,
+      "ode_gamma_forcing": 0.08,
+      "ode_delta_drain": 0.015,
+      "ode_drain_threshold": 1.5,
+      "ode_noise": 0.008
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.6,
+    "persistence_window": 10
+  },
   "execution": {
-    "grid_size": 200,
-    "n_perm": 4999,
-    "n_boot": 3000,
-    "n_refine": 100000,
-    "n_runs": 30
+    "grid_size": 40,
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 15
   },
   "abm": {
     "diffusion": 0.2,
@@ -51,5 +99,12 @@
         0.95
       ]
     }
+  },
+  "extra_ode_params": {
+    "ode_alpha": 0.06,
+    "ode_beta": 0.02,
+    "ode_gamma_forcing": 0.08,
+    "ode_delta_drain": 0.015,
+    "ode_drain_threshold": 1.5
   }
 }

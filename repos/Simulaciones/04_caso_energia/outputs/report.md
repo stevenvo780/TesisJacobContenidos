@@ -1,16 +1,16 @@
 # Reporte de Validación — Energía (Consumo Per Cápita)
 
-- generated_at: 2026-02-11T15:28:36.378115Z
+- generated_at: 2026-02-11T17:22:52.691854Z
 
 ## Fase synthetic
-- **overall_pass**: True
+- **overall_pass**: False
 
 ### EDI
-- valor: 0.5001
-- bootstrap_mean: 0.4990
-- CI 95%: [0.4599, 0.5367]
-- weighted_value (LoE factor 0.20): 0.1000
-- válido (0.30-0.90): True
+- valor: -1.0000
+- bootstrap_mean: -1.6094
+- CI 95%: [-2.1389, -1.2178]
+- weighted_value (LoE factor 0.20): -0.2000
+- válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 0.9876
@@ -45,16 +45,16 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 
 ## Fase real
 - **overall_pass**: True
 
 ### EDI
-- valor: 0.7890
-- bootstrap_mean: 0.7908
-- CI 95%: [0.7328, 0.8453]
-- weighted_value (LoE factor 0.20): 0.1578
+- valor: 0.5190
+- bootstrap_mean: 0.5065
+- CI 95%: [0.2370, 0.6820]
+- weighted_value (LoE factor 0.20): 0.1038
 - válido (0.30-0.90): True
 
 ### Symploké y CR

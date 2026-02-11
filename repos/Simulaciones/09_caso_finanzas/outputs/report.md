@@ -1,17 +1,17 @@
 # Reporte de Validación — Finanzas (SPY)
 
-- generated_at: 2026-02-11T15:51:18.686935Z
+- generated_at: 2026-02-11T17:30:06.650272Z
 
 ## Fase synthetic
-- **overall_pass**: True
+- **overall_pass**: False
 
 ### EDI
-- valor: 0.5146
-- bootstrap_mean: 0.5149
-- CI 95%: [0.4732, 0.5550]
-- weighted_value (LoE factor 1.00): 0.5146
-- válido (0.30-0.90): True
-- detrended_edi: 0.5146
+- valor: -0.2729
+- bootstrap_mean: -0.2738
+- CI 95%: [-0.2922, -0.2577]
+- weighted_value (LoE factor 1.00): -0.2729
+- válido (0.30-0.90): False
+- detrended_edi: -0.2729
 - trend_ratio: 1.000
 - trend_r2: 0.648
 
@@ -48,18 +48,18 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0820
-- bootstrap_mean: 0.0820
-- CI 95%: [0.0801, 0.0842]
-- weighted_value (LoE factor 1.00): 0.0820
+- valor: 0.0812
+- bootstrap_mean: 0.0812
+- CI 95%: [0.0793, 0.0833]
+- weighted_value (LoE factor 1.00): 0.0812
 - válido (0.30-0.90): False
-- detrended_edi: 0.0820
+- detrended_edi: 0.0812
 - trend_ratio: 1.000
 - trend_r2: 0.979
 

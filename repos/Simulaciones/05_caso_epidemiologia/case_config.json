@@ -1,10 +1,55 @@
 {
+  "case_name": "Epidemiología (COVID-19 Global)",
+  "ode_model": "mean_reversion",
+  "ode_key": "incidence",
+  "series_key": "incidence",
+  "log_transform": false,
+  "loe": 3,
+  "data": {
+    "csv": "data/dataset.csv",
+    "date_col": "date",
+    "value_col": "value",
+    "driver_cols": [
+      "log_deaths",
+      "vaccinated"
+    ]
+  },
+  "dates": {
+    "synthetic_start": "2010-01-03",
+    "synthetic_end": "2020-12-27",
+    "synthetic_split": "2017-01-01",
+    "real_start": "2020-03-01",
+    "real_end": "2023-12-31",
+    "real_split": "2022-01-01"
+  },
+  "synthetic": {
+    "freq": "W",
+    "measurement_noise": 0.01,
+    "forcing": {
+      "type": "linear_cycle",
+      "base": 0.0,
+      "slope": 0.01,
+      "cycle_amp": 0.5,
+      "cycle_period": 52,
+      "noise_std": 0.05
+    },
+    "true_params": {
+      "ode_alpha": 0.35,
+      "ode_beta": 0.5,
+      "ode_noise": 0.01,
+      "forcing_scale": 1.0
+    }
+  },
+  "thresholds": {
+    "corr_threshold": 0.5,
+    "persistence_window": 8
+  },
   "execution": {
     "grid_size": 25,
-    "n_perm": 9999,
-    "n_boot": 5000,
-    "n_refine": 200000,
-    "n_runs": 30
+    "n_perm": 999,
+    "n_boot": 500,
+    "n_refine": 5000,
+    "n_runs": 10
   },
   "abm": {
     "diffusion": 0.2,
@@ -28,15 +73,15 @@
         0.99
       ],
       "macro_coupling": [
-        0.10,
+        0.1,
         0.15,
-        0.20,
+        0.2,
         0.25,
-        0.30,
+        0.3,
         0.35,
-        0.40,
+        0.4,
         0.45,
-        0.50
+        0.5
       ],
       "damping": [
         0.0,
@@ -48,5 +93,9 @@
         0.8
       ]
     }
+  },
+  "extra_ode_params": {
+    "ode_alpha": 0.3,
+    "ode_beta": 0.15
   }
 }

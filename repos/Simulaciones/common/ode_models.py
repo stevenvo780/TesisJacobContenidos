@@ -180,6 +180,173 @@ def simulate_ode_model(params: dict, steps: int, seed: int = 3):
             series.append(x)
         return {ode_key: series, "forcing": forcing}
 
+    if model == "bilinear":
+        # dX = α*(F - β*X) + γ*F*X
+        # Retroalimentación no-lineal: estado amplifica forzamiento.
+        # Dominios: fósforo (eutrofización), salinización (evaporación),
+        #   riesgo biológico (bio-amplificación), IoT (efecto red).
+        x = float(params.get("p0", 0.0))
+        gamma = float(params.get("ode_gamma", 0.02))
+        series = []
+        for t in range(steps):
+            f = forcing[t]
+            dx = alpha * (f - beta * x) + gamma * f * x
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
+            x = max(-10.0, min(x, 10.0))
+            if not math.isfinite(x):
+                x = 0.0
+            x = _apply_assimilation(x, t, params)
+            series.append(x)
+        return {ode_key: series, "forcing": forcing}
+
+    if model == "prestige_competition":
+        # dX = α*(F - β*X) + prestige*max(F,0)*(1 + c*|X|)
+        # Competición asimétrica: prestigio amplifica forzamiento positivo.
+        # Dominio: erosión lingüística (Abrams-Strogatz 2003).
+        x = float(params.get("p0", 0.0))
+        prestige = float(params.get("ode_prestige", 0.008))
+        amplif = float(params.get("ode_amplification", 0.3))
+        series = []
+        for t in range(steps):
+            f = forcing[t]
+            dx = alpha * (f - beta * x) + prestige * max(0.0, f) * (1.0 + amplif * abs(x))
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
+            x = max(-10.0, min(x, 10.0))
+            if not math.isfinite(x):
+                x = 0.0
+            x = _apply_assimilation(x, t, params)
+            series.append(x)
+        return {ode_key: series, "forcing": forcing}
+
+    if model == "saturation_growth":
+        # dX = α*(F - β*X) - saturation*X*|X|
+        # Crecimiento con freno cuadrático (saturación orbital).
+        # Dominio: mega-constelaciones (Kessler), capacidad de carga.
+        x = float(params.get("p0", 0.0))
+        saturation = float(params.get("ode_saturation", 0.002))
+        series = []
+        for t in range(steps):
+            f = forcing[t]
+            dx = alpha * (f - beta * x) - saturation * x * abs(x)
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
+            x = max(-10.0, min(x, 10.0))
+            if not math.isfinite(x):
+                x = 0.0
+            x = _apply_assimilation(x, t, params)
+            series.append(x)
+        return {ode_key: series, "forcing": forcing}
+
+    if model == "institutional_inertia":
+        # dE = α*(E_target - E) + β*F - γ*E²
+        # Dinámica institucional con rendimientos decrecientes.
+        # Dominio: efectividad de políticas públicas (North 1990,
+        # Acemoglu et al. 2001, Rodrik 2007).
+        # E_target = target_base + target_slope * F(t)
+        x = float(params.get("p0", 0.1))
+        gamma = float(params.get("ode_gamma", 0.1))
+        target_base = float(params.get("ode_target_base", 0.3))
+        target_slope = float(params.get("ode_target_slope", 0.5))
+        dt = float(params.get("ode_dt", 1.0))
+        x_min = float(params.get("ode_clip_min", 0.0))
+        x_max = float(params.get("ode_clip_max", 2.0))
+        series = []
+        for t in range(steps):
+            f = forcing[t]
+            e_target = target_base + target_slope * f
+            dx = alpha * (e_target - x) + beta * f - gamma * x ** 2
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx * dt + random.uniform(-noise, noise)
+            x = max(x_min, min(x, x_max))
+            if not math.isfinite(x):
+                x = 0.0
+            x = _apply_assimilation(x, t, params)
+            series.append(x)
+        return {ode_key: series, "forcing": forcing}
+
+    if model == "sis_contagion":
+        # dI = β*I*(1-I) - γ*I + δ*F
+        # Contagio SIS (Susceptible-Infected-Susceptible) con forcing.
+        # Dominio: desinformación (Vosoughi et al. 2018),
+        # memes culturales, difusión de innovación.
+        x = float(params.get("p0", 0.05))
+        gamma = float(params.get("ode_gamma", 0.15))
+        delta = float(params.get("ode_delta", 0.2))
+        dt = float(params.get("ode_dt", 0.5))
+        x_min = float(params.get("ode_clip_min", 0.01))
+        x_max = float(params.get("ode_clip_max", 0.99))
+        series = []
+        for t in range(steps):
+            f = forcing[t]
+            dx = beta * x * (1.0 - x) - gamma * x + delta * f
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx * dt + random.uniform(-noise, noise)
+            x = max(x_min, min(x, x_max))
+            if not math.isfinite(x):
+                x = 0.05
+            x = _apply_assimilation(x, t, params)
+            series.append(x)
+        return {ode_key: series, "forcing": forcing}
+
+    if model == "aquifer_darcy":
+        # dH = α*(F - β*H) - extraction*H/(|H|+1)
+        # Balance hídrico Darcy-Theis con extracción antrópica.
+        # La extracción tiene saturación logística: a mayor H,
+        # más se extrae, pero con límite físico.
+        # Ref: Theis (1935), De Marsily (2004), Konikow & Kendy (2005).
+        x = float(params.get("p0", 0.0))
+        extraction = float(params.get("ode_extraction", 0.01))
+        series = []
+        for t in range(steps):
+            f = forcing[t]
+            core = alpha * (f - beta * x)
+            pump = extraction * x / (abs(x) + 1.0)
+            dx = core - pump
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
+            x = max(-10.0, min(x, 10.0))
+            if not math.isfinite(x):
+                x = 0.0
+            x = _apply_assimilation(x, t, params)
+            series.append(x)
+        return {ode_key: series, "forcing": forcing}
+
+    if model == "brain_drain":
+        # dH = α*(F - β*H) + γ*F - δ*max(0, H-threshold)^1.5
+        # Capital humano con fuga de cerebros.
+        # El drain se activa sobre un umbral (brain drain paradox:
+        # más capital → más emigración). Docquier & Rapoport (2012).
+        x = float(params.get("p0", 1.5))
+        gamma = float(params.get("ode_gamma_forcing", 0.08))
+        delta = float(params.get("ode_delta_drain", 0.015))
+        drain_thr = float(params.get("ode_drain_threshold", 1.5))
+        x_min = float(params.get("ode_clip_min", 0.1))
+        x_max = float(params.get("ode_clip_max", 8.0))
+        series = []
+        for t in range(steps):
+            f = forcing[t]
+            accum = alpha * (f - beta * x)
+            drain = delta * max(0.0, x - drain_thr) ** 1.5
+            ext = gamma * f
+            dx = accum + ext - drain
+            if abm_fb is not None and t < len(abm_fb) and abm_gamma > 1e-8:
+                dx += abm_gamma * (abm_fb[t] - x)
+            x = x + dx + random.uniform(-noise, noise)
+            x = max(x_min, min(x, x_max))
+            if not math.isfinite(x):
+                x = 1.5
+            x = _apply_assimilation(x, t, params)
+            series.append(x)
+        return {ode_key: series, "forcing": forcing}
+
     if model == "random_walk":
         x = float(params.get("p0", 0.0))
         drift = float(params.get("ode_drift", 0.0))

@@ -30,7 +30,9 @@ def fetch_memetic_daily(start_date, end_date, cache_path=None, seed=42):
         return df
 
     rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="D")
+    dates = pd.date_range(start=start_date, end=end_date, freq="YS")
+    if len(dates) < 5:
+        dates = pd.date_range(start=start_date, end=end_date, freq="MS")
     n = len(dates)
 
     # --- GBM (Hull 2018) ---

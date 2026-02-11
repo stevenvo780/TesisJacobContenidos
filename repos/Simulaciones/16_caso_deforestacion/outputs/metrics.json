@@ -1,14 +1,14 @@
 {
   "case": "Deforestaci\u00f3n Global (von Th\u00fcnen Frontier)",
-  "generated_at": "2026-02-11T05:16:16.140077Z",
+  "generated_at": "2026-02-11T17:22:27.775842Z",
   "git": {
-    "commit": "c3bb7e4bec370a4c8b4efd25bd1861c472ea8d50",
+    "commit": "3e1436210e0f3aeb01dc8c279243b79aa9fe3f28",
     "dirty": true
   },
   "phases": {
     "synthetic": {
       "phase": "synthetic",
-      "overall_pass": false,
+      "overall_pass": true,
       "data": {
         "start": "1990-01-01",
         "end": "2022-01-01",
@@ -48,18 +48,18 @@
         "ode_obs": 0.9989735503722621
       },
       "edi": {
-        "value": 0.9076486765888766,
-        "bootstrap_mean": 0.9077487264694153,
-        "ci_lo": 0.9025554127113731,
-        "ci_hi": 0.913196034773258,
-        "valid": false,
-        "weighted_value": 0.5445892059533259,
+        "value": 0.7225033542876679,
+        "bootstrap_mean": 0.7227118012464022,
+        "ci_lo": 0.7140094685590224,
+        "ci_hi": 0.7321641445114658,
+        "valid": true,
+        "weighted_value": 0.43350201257260074,
         "loe_factor": 0.6,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.6924682346733443,
+        "permutation_null_95": 0.2259013488249309,
         "permutation_significant": true,
         "trend_bias": {
-          "detrended_edi": 0.9076,
+          "detrended_edi": 0.7225,
           "trend_ratio": 1.0,
           "trend_r2": 0.999,
           "warning": false
@@ -76,9 +76,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 1.0289778867970497e-07,
-        "edi_mean": 0.9076485303268782,
-        "edi_std": 9.33950266690199e-08,
+        "cv": 2.1875603104793675e-07,
+        "edi_mean": 0.7225032215114409,
+        "edi_std": 1.5805193715719108e-07,
         "monotonic_decrease": false
       },
       "effective_information": 0.8633291763075551,
@@ -169,15 +169,15 @@
         "emergence_pass": true,
         "coupling_ok": true,
         "rmse_fraud_check": true,
-        "edi_valid": false,
+        "edi_valid": true,
         "cr_valid": false
       },
       "emergence_taxonomy": {
-        "category": "weak",
-        "nivel": 3,
+        "category": "strong",
+        "nivel": 4,
         "ode_quality": "good",
         "ode_obs_corr": 0.9989735503722621,
-        "interpretation": "Cierre operativo d\u00e9bil (Nivel 3): se\u00f1al macro significativa pero bajo umbral robusto"
+        "interpretation": "Cierre operativo fuerte (Nivel 4): la macro constri\u00f1e significativamente la din\u00e1mica micro"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -229,18 +229,18 @@
         "ode_obs": 0.8766124004739924
       },
       "edi": {
-        "value": 0.8578946743143055,
-        "bootstrap_mean": 0.8577438968788543,
-        "ci_lo": 0.8197062027019812,
-        "ci_hi": 0.897003040138548,
+        "value": 0.5709121909974364,
+        "bootstrap_mean": 0.5684703232385708,
+        "ci_lo": 0.4247723804868593,
+        "ci_hi": 0.6985611712293016,
         "valid": true,
-        "weighted_value": 0.5147368045885833,
+        "weighted_value": 0.3425473145984618,
         "loe_factor": 0.6,
         "permutation_pvalue": 0.0,
-        "permutation_null_95": 0.7249267622040905,
+        "permutation_null_95": 0.2552363043060877,
         "permutation_significant": true,
         "trend_bias": {
-          "detrended_edi": 0.8579,
+          "detrended_edi": 0.5709,
           "trend_ratio": 1.0,
           "trend_r2": 0.785,
           "warning": false
@@ -257,9 +257,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 5.724559676146854e-07,
-        "edi_mean": 0.8578942884704261,
-        "edi_std": 4.911067050174499e-07,
+        "cv": 2.6363316509307464e-06,
+        "edi_mean": 0.5709126171563657,
+        "edi_std": 1.5051150025250346e-06,
         "monotonic_decrease": false
       },
       "effective_information": -0.1664211230128696,

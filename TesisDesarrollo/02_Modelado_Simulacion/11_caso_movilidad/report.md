@@ -1,47 +1,47 @@
-# Reporte de Validación — Movilidad Urbana (Traffic)
+# Reporte de Validación — Movilidad Urbana (Vehículos)
 
-- generated_at: 2026-02-10T01:21:13.929824Z
+- generated_at: 2026-02-11T19:28:47.770585Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0225
-- bootstrap_mean: 0.0220
-- CI 95%: [0.0002, 0.0427]
-- weighted_value (LoE factor 0.20): 0.0045
-- válido (0.30-0.90): False
+- valor: 0.3975
+- bootstrap_mean: 0.4119
+- CI 95%: [-0.1535, 0.7788]
+- weighted_value (LoE factor 1.00): 0.3975
+- válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.0000
-- external: 0.0000
-- CR: 0.0000
+- internal: 0.9961
+- external: 0.9260
+- CR: 1.0757
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: True
 - c2_robustness: True
-- c3_replication: False
-- c4_validity: True
+- c3_replication: True
+- c4_validity: False
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 33.8845
-- rmse_abm_no_ode: 34.6640
-- rmse_ode: 31.9215
-- rmse_reduced: 89.1702
-- threshold: 0.4998
+- rmse_abm: 0.1979
+- rmse_abm_no_ode: 0.3285
+- rmse_ode: 1.8450
+- rmse_reduced: 0.3296
+- threshold: 0.1880
 
 ### Calibración
-- forcing_scale: 0.8052
-- macro_coupling: 0.0756
-- ode_coupling_strength: 0.0605
+- forcing_scale: 0.0010
+- macro_coupling: 0.1000
+- ode_coupling_strength: 0.0800
 - abm_feedback_gamma: 0.0500
-- damping: 0.1005
-- ode_alpha: 0.2695
+- damping: 0.7111
+- ode_alpha: 0.0010
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 93.3991
+- calibration_rmse: 0.9940
 - ode_rolling: None
 
 ### Interpretación
@@ -51,44 +51,44 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0033
-- bootstrap_mean: 0.0032
-- CI 95%: [-0.0045, 0.0118]
-- weighted_value (LoE factor 0.20): 0.0007
-- válido (0.30-0.90): False
+- valor: 0.1283
+- bootstrap_mean: 0.1177
+- CI 95%: [-0.0729, 0.2521]
+- weighted_value (LoE factor 1.00): 0.1283
+- válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.0000
-- external: 0.0000
-- CR: 0.0000
+- internal: 0.9995
+- external: 0.9951
+- CR: 1.0045
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: True
 - c2_robustness: True
-- c3_replication: False
+- c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 183.4348
-- rmse_abm_no_ode: 184.0497
-- rmse_ode: 10.0609
-- rmse_reduced: 85.8555
+- rmse_abm: 1.1270
+- rmse_abm_no_ode: 1.2929
+- rmse_ode: 1.9325
+- rmse_reduced: 4.8437
 - threshold: 1.8501
 
 ### Calibración
-- forcing_scale: 0.1725
-- macro_coupling: 0.1178
-- ode_coupling_strength: 0.0943
+- forcing_scale: 0.9900
+- macro_coupling: 0.5000
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.0039
+- damping: 0.6590
 - ode_alpha: 0.0989
 - ode_beta: 0.7941
 - assimilation_strength: 0.0000
-- calibration_rmse: 90.2730
+- calibration_rmse: 0.1508
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
+**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
 

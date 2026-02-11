@@ -1,79 +1,29 @@
 """
-ode.py — 28_caso_fuga_cerebros (Top-Tier)
+ode.py — 28_caso_fuga_cerebros
 
-Modelo ODE: Dinámica de Capital Humano con Brain Drain
+Modelo: Capital Humano con Brain Drain.
+Arquetipo: brain_drain
+  dH/dt = α·(F − β·H) + γ·F − δ·max(0, H−thr)^1.5 + ε
 
-Ecuaciones (Docquier & Rapoport 2012, simplificado):
-  dH/dt = α*(E - βH) + γ*F - δ*D(H) + noise
+  H = stock de capital humano (R&D % PIB)
+  F = forcing (PIB, remesas, inversión extranjera)
+  γ = sensibilidad a forcing exógeno
+  δ = intensidad del brain drain
+  thr = umbral para migración masiva (brain drain paradox)
 
-Donde:
-  H(t)  = stock de capital humano (proxy: R&D % PIB)
-  E     = formación (matrícula terciaria, inversión educativa)
-  F     = forcing exógeno (PIB, remesas, inversión extranjera)
-  D(H)  = función de drenaje: emigración aumenta con H (brain drain paradox)
-  α     = tasa de acumulación
-  β     = depreciación natural del capital humano
-  γ     = sensibilidad a forcing exógeno
-  δ     = intensidad del brain drain
-
-El "brain drain paradox": países con más capital humano
-pierden más por migración (incentivo prospect).
+Refs: Docquier & Rapoport (2012); Barro & Lee (2013).
 """
-
-import os
-import sys
-import numpy as np
-
+import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "common"))
+from ode_models import simulate_ode_model
+
+ODE_MODEL = "brain_drain"
+ODE_KEY = "fc"
 
 
 def simulate_ode(params, steps, seed=42):
-    """Dinámica de capital humano con brain drain (Docquier & Rapoport 2012).
-
-    dH/dt = α(E − βH) + γF − δ·max(0, H−threshold)^1.5 + ε
-
-    Parámetros:
-        α=0.06  Acumulación capital humano ~6%/año (Barro & Lee 2013)
-        β=0.02  Depreciación natural ~2%/año (obsolescencia de skills)
-        γ=0.08  Sensibilidad a forcing exógeno (PIB, remesas, inversión)
-        δ=0.015 Intensidad brain drain ~1.5% (Docquier & Rapoport 2012)
-        threshold=1.5  Umbral H para migración masiva (brain drain paradox)
-        Exponente 1.5: sub-cuadrático — aceleración moderada sobre umbral
-    """
-    rng = np.random.default_rng(seed)
-
-    alpha = float(params.get("ode_alpha", 0.06))
-    beta = float(params.get("ode_beta", 0.02))
-    gamma = float(params.get("ode_gamma_forcing", 0.08))
-    delta = float(params.get("ode_delta_drain", 0.015))
-    drain_threshold = float(params.get("ode_drain_threshold", 1.5))
-    noise_std = float(params.get("ode_noise", 0.01))
-
-    forcing = params.get("forcing_series") or [0.0] * steps
-    assim_series = params.get("assimilation_series")
-    assim_strength = float(params.get("assimilation_strength", 0.0))
-
-    H = float(params.get("p0", 1.5))
-    series = []
-
-    for t in range(steps):
-        f = forcing[t] if t < len(forcing) else 0.0
-        # Acumulación natural
-        accum = alpha * (f - beta * H)
-        # Brain drain: aumenta cuadráticamente cuando H > threshold
-        drain = delta * max(0, H - drain_threshold) ** 1.5
-        # Forcing exógeno
-        ext = gamma * f
-        dH = accum + ext - drain + rng.normal(0, noise_std)
-        H += dH
-        H = np.clip(H, 0.1, 8.0)
-
-        if assim_series is not None and t < len(assim_series):
-            target = assim_series[t]
-            if target is not None:
-                H = H + assim_strength * (float(target) - H)
-        if not np.isfinite(H):
-            H = 1.5
-        series.append(float(H))
-
-    return {"fc": series, "forcing": forcing}
+    p = dict(params)
+    p["ode_model"] = ODE_MODEL
+    if "ode_key" not in p:
+        p["ode_key"] = ODE_KEY
+    return simulate_ode_model(p, steps, seed)
