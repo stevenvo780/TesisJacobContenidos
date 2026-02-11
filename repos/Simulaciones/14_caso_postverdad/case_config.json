@@ -15,22 +15,22 @@
     ]
   },
   "dates": {
-    "synthetic_start": "2015-01-01",
+    "synthetic_start": "2000-01-01",
     "synthetic_end": "2023-01-01",
-    "synthetic_split": "2020-01-01",
+    "synthetic_split": "2016-01-01",
     "real_start": "2005-01-01",
     "real_end": "2023-01-01",
     "real_split": "2016-01-01"
   },
   "synthetic": {
-    "freq": "W",
+    "freq": "YS",
     "measurement_noise": 0.02,
     "forcing": {
       "type": "linear_cycle",
       "base": 0.0,
       "slope": 0.005,
       "cycle_amp": 0.2,
-      "cycle_period": 52,
+      "cycle_period": 20,
       "noise_std": 0.03
     },
     "true_params": {

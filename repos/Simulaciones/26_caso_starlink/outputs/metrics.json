@@ -1,6 +1,6 @@
 {
   "case": "Constelaciones Satelitales Starlink (Saturation Growth)",
-  "generated_at": "2026-02-11T19:28:45.631338Z",
+  "generated_at": "2026-02-11T22:21:53.191566Z",
   "git": {
     "commit": null,
     "dirty": null
@@ -686,27 +686,37 @@
         "coverage": 6.166666666666667
       },
       "calibration": {
-        "forcing_scale": 0.7228568823901961,
+        "forcing_scale": 0.6,
         "macro_coupling": 0.5,
         "ode_coupling_strength": 0.3,
         "abm_feedback_gamma": 0.05,
-        "damping": 0.6789572429730611,
-        "ode_alpha": 0.08196741686094233,
+        "damping": 0.2,
+        "ode_alpha": 0.006857035449247178,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.36686653146421866,
+        "calibration_rmse": 0.5056304879688872,
         "ode_rolling": null
       },
       "forcing": {
-        "driver_meta": null,
+        "driver_meta": {
+          "cols": [
+            "launches",
+            "debris_new"
+          ],
+          "weights": [
+            0.4328476684433887,
+            0.0
+          ],
+          "reg": 0.001
+        },
         "feedback_strength": 0.0,
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 0.2170111062614134,
-        "rmse_abm_no_ode": 0.2941656121546824,
-        "rmse_ode": 0.13964199928827858,
-        "rmse_reduced": 0.9164083098732034,
+        "rmse_abm": 0.13346897162686278,
+        "rmse_abm_no_ode": 0.8194172650826922,
+        "rmse_ode": 2.122989798868932,
+        "rmse_reduced": 0.9174099490513322,
         "threshold": 0.1
       },
       "correlations": {
@@ -714,15 +724,15 @@
         "ode_obs": 0.0
       },
       "edi": {
-        "value": 0.2622825466516409,
-        "bootstrap_mean": 0.2622825466516409,
-        "ci_lo": 0.2622825466516409,
-        "ci_hi": 0.2622825466516409,
+        "value": 0.837117208393951,
+        "bootstrap_mean": 0.837117208393951,
+        "ci_lo": 0.837117208393951,
+        "ci_hi": 0.837117208393951,
         "valid": true,
-        "weighted_value": 0.15736952799098455,
+        "weighted_value": 0.5022703250363706,
         "loe_factor": 0.6,
         "permutation_pvalue": 1.0,
-        "permutation_null_95": 0.2622825466516409,
+        "permutation_null_95": 0.837117208393951,
         "permutation_significant": false,
         "trend_bias": {
           "detrended_edi": null,
@@ -747,14 +757,14 @@
       },
       "effective_information": 0.0,
       "symploke": {
-        "internal": 0.998352878355943,
-        "external": 0.9942368831551077,
-        "cr": 1.0041398536612056,
+        "internal": 0.9999299949723912,
+        "external": 0.5540670146131379,
+        "cr": 1.8047094820661087,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.0016019050750793896,
+        "dominance_share": 0.0016013983816946108,
         "pass": true
       },
       "persistence": {
@@ -767,9 +777,9 @@
         "pass": true
       },
       "emergence": {
-        "err_reduced": 0.9164083098732034,
-        "err_abm_no_ode": 0.2941656121546824,
-        "err_abm": 0.2170111062614134,
+        "err_reduced": 0.9174099490513322,
+        "err_abm_no_ode": 0.8194172650826922,
+        "err_abm": 0.13346897162686278,
         "threshold": 0.002,
         "pass": true,
         "significance": "computed"
@@ -777,25 +787,25 @@
       "coupling_check": true,
       "rmse_fraud_check": true,
       "c1_convergence": true,
-      "c2_robustness": true,
+      "c2_robustness": false,
       "c3_replication": true,
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 0.2170111062614134,
-        "rmse_ode": 0.13964199928827858,
+        "rmse_abm": 0.13346897162686278,
+        "rmse_ode": 2.122989798868932,
         "corr_abm": 0.0,
         "corr_ode": 0.0,
         "threshold": 0.1,
         "c1_relative": true,
         "c1_absolute": false,
-        "rmse_reduced": 0.2941656121546824,
-        "relative_improvement": 0.077154505893269
+        "rmse_reduced": 0.8194172650826922,
+        "relative_improvement": 0.6859482934558294
       },
       "c2_detail": {
-        "mean_delta": 0.09694771188808367,
+        "mean_delta": 0.8595502237233115,
         "var_delta": 0.0,
-        "relative_mean": 0.06836914532213872,
+        "relative_mean": 0.8186701221589958,
         "relative_var": 0.0
       },
       "c3_detail": {
@@ -803,27 +813,27 @@
         "persistence_2": 0.0
       },
       "c4_detail": {
-        "diff": 0.1433080051097737
+        "diff": 0.01927200120577477
       },
       "c5_detail": {
-        "sensitivity_min": 1.0528640029777585,
-        "sensitivity_max": 1.4844378304206711,
-        "range": 0.4315738274429126,
-        "relative_range": 0.0005817630288322561
+        "sensitivity_min": 0.15055036973330965,
+        "sensitivity_max": 0.2161969821279169,
+        "range": 0.06564661239460726,
+        "relative_range": 8.849186310844027e-05
       },
       "bias_correction": {
-        "applied": false,
-        "mode": "reverted",
-        "ode_obs_corr_train": 0.8657164514957589,
-        "ode_mean_train": null,
-        "obs_mean_train": null,
-        "scale_factor": null
+        "applied": true,
+        "mode": "full",
+        "ode_obs_corr_train": 0.9112359770834633,
+        "ode_mean_train": -1.7228507945296796,
+        "obs_mean_train": -9.868649107779169e-17,
+        "scale_factor": 2.782524093562275
       },
       "criteria": {
         "c1_convergence": true,
         "c1_relative": true,
         "c1_absolute": false,
-        "c2_robustness": true,
+        "c2_robustness": false,
         "c3_replication": true,
         "c4_validity": true,
         "c5_uncertainty": true,

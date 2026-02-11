@@ -1,6 +1,6 @@
 {
   "case_name": "Acidificación Oceánica",
-  "ode_model": "mean_reversion",
+  "ode_model": "acidification",
   "ode_key": "ac",
   "series_key": "ac",
   "log_transform": false,
@@ -85,6 +85,7 @@
   },
   "extra_ode_params": {
     "ode_alpha": 0.1,
-    "ode_beta": 0.5
+    "ode_beta": 0.5,
+    "ode_gamma": 0.1
   }
 }

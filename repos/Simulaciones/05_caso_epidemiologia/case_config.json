@@ -1,6 +1,6 @@
 {
   "case_name": "Epidemiología (COVID-19 Global)",
-  "ode_model": "mean_reversion",
+  "ode_model": "seir",
   "ode_key": "incidence",
   "series_key": "incidence",
   "log_transform": false,
@@ -34,8 +34,9 @@
       "noise_std": 0.05
     },
     "true_params": {
-      "ode_alpha": 0.35,
-      "ode_beta": 0.5,
+      "beta": 0.3,
+      "sigma": 0.2,
+      "gamma": 0.1,
       "ode_noise": 0.01,
       "forcing_scale": 1.0
     }
@@ -95,7 +96,12 @@
     }
   },
   "extra_ode_params": {
-    "ode_alpha": 0.3,
-    "ode_beta": 0.15
+    "beta": 0.3,
+    "sigma": 0.2,
+    "gamma": 0.1,
+    "s0": 0.999,
+    "e0": 0.001,
+    "i0": 0.0,
+    "r0": 0.0
   }
 }

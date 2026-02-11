@@ -1,6 +1,6 @@
 {
   "case_name": "Océanos (OHC proxy)",
-  "ode_model": "mean_reversion",
+  "ode_model": "ocean_thermal",
   "ode_key": "e",
   "series_key": "e",
   "log_transform": false,
@@ -85,6 +85,7 @@
   },
   "extra_ode_params": {
     "ode_alpha": 0.05,
-    "ode_beta": 0.5
+    "ode_beta": 0.5,
+    "ode_c": 5.0
   }
 }

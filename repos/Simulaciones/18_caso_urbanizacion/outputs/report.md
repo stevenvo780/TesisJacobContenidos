@@ -1,6 +1,6 @@
 # Reporte de Validación — Urbanización Global
 
-- generated_at: 2026-02-11T19:28:45.474753Z
+- generated_at: 2026-02-11T22:21:52.791281Z
 
 ## Fase synthetic
 - **overall_pass**: False

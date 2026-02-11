@@ -32,7 +32,7 @@ def make_synthetic(start_date, end_date, seed=101):
     - Del Vicario et al. (2016): "Echo Chambers" (PNAS)
     """
     rng = np.random.default_rng(seed)
-    dates = pd.date_range(start=start_date, end=end_date, freq="W") # Weekly
+    dates = pd.date_range(start=start_date, end=end_date, freq="YS")  # Annual (data is yearly)
     steps = len(dates)
     
     # SIS Parameters
@@ -46,7 +46,10 @@ def make_synthetic(start_date, end_date, seed=101):
     
     # External Shocks (Major Events that trigger misinfo spikes)
     n_shocks = rng.integers(3, 6)
-    shock_times = rng.integers(10, steps - 10, size=n_shocks)
+    lo, hi = min(2, steps - 1), max(3, steps - 2)
+    if lo >= hi:
+        lo, hi = 0, max(steps, 1)
+    shock_times = rng.integers(lo, hi, size=n_shocks)
     shock_sizes = rng.uniform(0.1, 0.3, size=n_shocks)
     
     for t in range(steps):

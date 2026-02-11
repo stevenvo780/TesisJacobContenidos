@@ -207,10 +207,16 @@ def _import_module_from_dir(module_name: str, case_src_dir: str):
     module_path = os.path.join(case_src_dir, f"{module_name}.py")
     if not os.path.exists(module_path):
         return None
-    spec = importlib.util.spec_from_file_location(module_name, module_path)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+    try:
+        spec = importlib.util.spec_from_file_location(module_name, module_path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+    except (ImportError, ModuleNotFoundError) as exc:
+        import warnings
+        warnings.warn(f"[case_runner] No se pudo importar {module_name}.py: {exc}. "
+                      f"Usando fallback genérico.")
+        return None
 
 
 # ─── Runner principal ────────────────────────────────────────────────────────

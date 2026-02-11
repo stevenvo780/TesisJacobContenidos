@@ -1,21 +1,24 @@
 # Reporte de Validación — Postverdad (SIS Infodemic)
 
-- generated_at: 2026-02-11T19:22:40.241514Z
+- generated_at: 2026-02-11T22:22:04.181010Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.1207
-- bootstrap_mean: -0.1213
-- CI 95%: [-0.1365, -0.1096]
-- weighted_value (LoE factor 0.60): -0.0724
+- valor: 0.0057
+- bootstrap_mean: 0.0081
+- CI 95%: [-0.0096, 0.0394]
+- weighted_value (LoE factor 0.60): 0.0034
 - válido (0.30-0.90): False
+- detrended_edi: 0.0057
+- trend_ratio: 1.000
+- trend_r2: 0.760
 
 ### Symploké y CR
-- internal: 1.0000
-- external: 0.9994
-- CR: 1.0006
+- internal: 0.9998
+- external: 0.9988
+- CR: 1.0009
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,26 +29,26 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.7209
-- rmse_abm_no_ode: 0.6432
-- rmse_ode: 1.8719
-- rmse_reduced: 2.8853
-- threshold: 0.6609
+- rmse_abm: 1.7088
+- rmse_abm_no_ode: 1.7186
+- rmse_ode: 3.1024
+- rmse_reduced: 4.1071
+- threshold: 1.1574
 
 ### Calibración
-- forcing_scale: 0.9900
+- forcing_scale: 0.9605
 - macro_coupling: 0.1000
 - ode_coupling_strength: 0.0800
 - abm_feedback_gamma: 0.0500
-- damping: 0.9039
-- ode_alpha: 0.0214
+- damping: 0.7926
+- ode_alpha: 0.5000
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2383
+- calibration_rmse: 0.5016
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
+**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 
 ## Fase real
 - **overall_pass**: True

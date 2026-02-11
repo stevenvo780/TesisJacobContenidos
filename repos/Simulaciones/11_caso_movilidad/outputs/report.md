@@ -1,6 +1,6 @@
 # Reporte de Validación — Movilidad Urbana (Vehículos)
 
-- generated_at: 2026-02-11T19:28:47.770585Z
+- generated_at: 2026-02-11T22:21:44.708618Z
 
 ## Fase synthetic
 - **overall_pass**: False

@@ -1,6 +1,6 @@
 {
   "case_name": "Kessler (Debris Orbital)",
-  "ode_model": "mean_reversion",
+  "ode_model": "saturation_growth",
   "ode_key": "k",
   "series_key": "k",
   "log_transform": true,
@@ -85,6 +85,7 @@
   },
   "extra_ode_params": {
     "ode_alpha": 0.15,
-    "ode_beta": 0.5
+    "ode_beta": 0.5,
+    "ode_saturation": 0.002
   }
 }
