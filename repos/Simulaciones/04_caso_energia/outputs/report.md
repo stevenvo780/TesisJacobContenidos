@@ -1,21 +1,66 @@
-# Reporte de Validación — Energía (OPSD GB Grid)
+# Reporte de Validación — Energía (Consumo Per Cápita)
 
-- generated_at: 2026-02-11T05:08:20.955326Z
+- generated_at: 2026-02-11T15:20:06.835822Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0337
-- bootstrap_mean: 0.0337
-- CI 95%: [0.0286, 0.0389]
-- weighted_value (LoE factor 0.20): 0.0067
+- valor: 0.0602
+- bootstrap_mean: 0.0329
+- CI 95%: [-0.2360, 0.2008]
+- weighted_value (LoE factor 0.20): 0.0120
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9275
-- external: 0.9204
-- CR: 1.0077
+- internal: 0.9666
+- external: 0.9272
+- CR: 1.0424
+- CR indicador (>2.0 = frontera nítida): False
+
+### Criterios C1-C5
+- c1_convergence: True
+- c2_robustness: True
+- c3_replication: True
+- c4_validity: False
+- c5_uncertainty: True
+
+### Errores
+- rmse_abm: 1.8137
+- rmse_abm_no_ode: 1.8313
+- rmse_ode: 1.8588
+- rmse_reduced: 1.9298
+- threshold: 1.0955
+
+### Calibración
+- forcing_scale: 0.9900
+- macro_coupling: 0.5000
+- ode_coupling_strength: 0.3000
+- abm_feedback_gamma: 0.0500
+- damping: 0.8216
+- ode_alpha: 0.4580
+- ode_beta: 1.0000
+- assimilation_strength: 0.0000
+- calibration_rmse: 0.8099
+- ode_rolling: None
+
+### Interpretación
+**Nivel 2 — Cierre operativo suggestive.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
+
+## Fase real
+- **overall_pass**: False
+
+### EDI
+- valor: 0.7890
+- bootstrap_mean: 0.7908
+- CI 95%: [0.7328, 0.8453]
+- weighted_value (LoE factor 0.20): 0.1578
+- válido (0.30-0.90): True
+
+### Symploké y CR
+- internal: 0.9996
+- external: 0.9993
+- CR: 1.0002
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,69 +71,24 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.4009
-- rmse_abm_no_ode: 0.4085
-- rmse_ode: 0.4414
-- rmse_reduced: 0.4149
-- threshold: 0.3269
+- rmse_abm: 0.5504
+- rmse_abm_no_ode: 1.1442
+- rmse_ode: 2.7727
+- rmse_reduced: 2.6081
+- threshold: 0.3586
 
 ### Calibración
-- forcing_scale: 0.0018
-- macro_coupling: 0.0500
-- ode_coupling_strength: 0.0400
+- forcing_scale: 0.9900
+- macro_coupling: 0.5000
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.0000
-- ode_alpha: 0.0500
-- ode_beta: 0.0200
+- damping: 0.6746
+- ode_alpha: 0.0010
+- ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 1.0149
+- calibration_rmse: 0.2688
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
-
-## Fase real
-- **overall_pass**: False
-
-### EDI
-- valor: -0.0049
-- bootstrap_mean: -0.0049
-- CI 95%: [-0.0060, -0.0040]
-- weighted_value (LoE factor 0.20): -0.0010
-- válido (0.30-0.90): False
-
-### Symploké y CR
-- internal: 0.6974
-- external: -0.6344
-- CR: 1.0993
-- CR indicador (>2.0 = frontera nítida): False
-
-### Criterios C1-C5
-- c1_convergence: False
-- c2_robustness: True
-- c3_replication: True
-- c4_validity: True
-- c5_uncertainty: True
-
-### Errores
-- rmse_abm: 1.6024
-- rmse_abm_no_ode: 1.5992
-- rmse_ode: 2.0440
-- rmse_reduced: 1.5946
-- threshold: 1.2251
-
-### Calibración
-- forcing_scale: 0.0010
-- macro_coupling: 0.0500
-- ode_coupling_strength: 0.0400
-- abm_feedback_gamma: 0.0500
-- damping: 0.0000
-- ode_alpha: 0.0500
-- ode_beta: 0.0200
-- assimilation_strength: 0.0000
-- calibration_rmse: 1.0301
-- ode_rolling: None
-
-### Interpretación
-**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
+**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
 

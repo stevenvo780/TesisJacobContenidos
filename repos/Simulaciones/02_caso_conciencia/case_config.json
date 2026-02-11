@@ -1,17 +1,23 @@
 {
+  "_comment": "Caso 02 Conciencia: datos anuales (20 pts). grid=10, ODE calibrada, bajo ruido para pocos datos.",
   "execution": {
-    "grid_size": 4,
-    "n_perm": 4999,
-    "n_boot": 2000,
-    "n_refine": 100000,
-    "n_runs": 30
+    "grid_size": 10,
+    "n_perm": 9999,
+    "n_boot": 5000,
+    "n_refine": 200000,
+    "n_runs": 50
   },
-  "abm": {},
+  "abm": {
+    "diffusion": 0.10,
+    "noise": 0.005,
+    "heterogeneity_strength": 0.05,
+    "init_range": 0.05
+  },
   "calibration": {
     "param_grid": {
-      "forcing_scale": [0.01, 0.05, 0.10, 0.20, 0.40, 0.60, 0.80, 0.95, 0.99],
-      "macro_coupling": [0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80],
-      "damping": [0.0, 0.10, 0.20, 0.40, 0.60, 0.80, 0.95]
+      "forcing_scale": [0.001, 0.01, 0.03, 0.05, 0.08, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.70, 0.90],
+      "macro_coupling": [0.01, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50],
+      "damping": [0.0, 0.01, 0.02, 0.05, 0.08, 0.10, 0.15, 0.20, 0.30, 0.50, 0.70, 0.90]
     }
   }
 }

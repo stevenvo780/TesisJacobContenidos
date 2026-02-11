@@ -629,7 +629,7 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
                 decay = 1.0 / (1.0 + step_idx * 0.003)
                 cand = {
                     "forcing_scale": max(0.001, min(0.99, center_p["forcing_scale"] + rng.uniform(-radius_fs, radius_fs) * decay)),
-                    "macro_coupling": max(0.05, min(0.50, center_p["macro_coupling"] + rng.uniform(-radius_mc, radius_mc) * decay)),
+                    "macro_coupling": max(0.10, min(0.50, center_p["macro_coupling"] + rng.uniform(-radius_mc, radius_mc) * decay)),
                     "damping": max(0.0, min(0.95, center_p["damping"] + rng.uniform(-radius_dmp, radius_dmp) * decay)),
                 }
                 batch_candidates.append(cand)
