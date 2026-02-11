@@ -1,21 +1,21 @@
 # Reporte de Validación — Epidemiología (COVID-19 SEIR)
 
-- generated_at: 2026-02-10T05:37:03.121786Z
+- generated_at: 2026-02-11T00:40:40.874089Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.3156
-- bootstrap_mean: 0.3085
-- CI 95%: [0.1859, 0.3967]
-- weighted_value (LoE factor 0.20): 0.0631
-- válido (0.30-0.90): False
+- valor: 0.7625
+- bootstrap_mean: 0.7622
+- CI 95%: [0.6935, 0.8215]
+- weighted_value (LoE factor 0.20): 0.1525
+- válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.0014
-- external: 0.0012
-- CR: 1.1579
+- internal: 0.0025
+- external: 0.0021
+- CR: 1.1776
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,18 +26,18 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.6525
-- rmse_abm_no_ode: 0.9535
-- rmse_ode: 0.4871
+- rmse_abm: 0.8753
+- rmse_abm_no_ode: 3.6852
+- rmse_ode: 0.6381
 - rmse_reduced: 15.2230
 - threshold: 0.1000
 
 ### Calibración
-- forcing_scale: 0.9464
-- macro_coupling: 0.3235
-- ode_coupling_strength: 0.2588
+- forcing_scale: 0.9223
+- macro_coupling: 0.4663
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.5701
+- damping: 0.5561
 - ode_alpha: 0.0068
 - ode_beta: 0.8095
 - assimilation_strength: 0.0000
@@ -67,26 +67,26 @@
 - c1_convergence: False
 - c2_robustness: False
 - c3_replication: True
-- c4_validity: False
+- c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
 - rmse_abm: 4.5221
 - rmse_abm_no_ode: 4.5221
-- rmse_ode: 15.0854
+- rmse_ode: 15.0864
 - rmse_reduced: 13.8782
 - threshold: 4.3680
 
 ### Calibración
-- forcing_scale: 0.9852
-- macro_coupling: 0.3711
-- ode_coupling_strength: 0.2969
+- forcing_scale: 0.9900
+- macro_coupling: 0.2703
+- ode_coupling_strength: 0.2162
 - abm_feedback_gamma: 0.0500
-- damping: 0.8870
+- damping: 0.9246
 - ode_alpha: 0.0010
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.4393
+- calibration_rmse: 0.4381
 - ode_rolling: None
 
 ### Interpretación

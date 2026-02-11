@@ -70,14 +70,16 @@ def main():
         real_end="2022-01-01",
         real_split="2010-01-01",
         extra_base_params={
-            # α = 0.8 año⁻¹ → τ_acum = 1.25 años.
-            # Sensibilidad a emisiones (Seinfeld & Pandis 2016).
+            # α y β se calibran desde datos Z-scored.
+            # Valores iniciales inspirados en literatura:
+            # Seinfeld & Pandis 2016: τ_acum ≈ 1.25 años (α~0.8)
+            # IPCC AR6 cap. 6: τ_removal ≈ 5 años (β~0.2)
+            # Pero como hybrid_validator normaliza a Z-score,
+            # los parámetros deben ajustarse al rango normalizado.
             "ode_alpha": 0.8,
-            # β = 0.2 año⁻¹ → τ_removal = 5 años.
-            # Inercia del sistema emisor (IPCC AR6, cap. 6).
             "ode_beta": 0.2,
         },
-        ode_calibration=False,  # Parámetros fijados desde literatura
+        ode_calibration=True,  # Calibrar α,β desde datos Z-scored
         driver_cols=[],  # Sin drivers externos; forzamiento desde tendencia temporal
     )
 

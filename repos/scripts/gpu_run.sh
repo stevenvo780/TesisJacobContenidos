@@ -70,6 +70,7 @@ DRY_RUN=0
 STEP_BY_STEP=0
 CASE_FILTER=""
 FORCE_GPU=-1
+CASE_TIMEOUT=0       # 0 = auto (grid²/300, min 600s, max 14400s)
 
 # ── Cleanup trap: al cancelar, matar todos los validate.py dentro del contenedor
 cleanup() {
@@ -101,6 +102,7 @@ while [[ $# -gt 0 ]]; do
         --container) CONTAINER="$2"; shift 2 ;;
         --case)      CASE_FILTER="$2"; shift 2 ;;
         --gpu)       FORCE_GPU="$2";   shift 2 ;;
+        --timeout)   CASE_TIMEOUT="$2"; shift 2 ;;
         --step-by-step) STEP_BY_STEP=1; shift ;;
         --dry-run)   DRY_RUN=1;      shift ;;
         --help|-h)
@@ -109,6 +111,14 @@ while [[ $# -gt 0 ]]; do
         *) echo "Flag desconocido: $1"; exit 1 ;;
     esac
 done
+
+# ── Auto timeout por grid ─────────────────────────────────────────────────────
+# Si no se especificó --timeout, calcular auto: grid²/300, clamped [600, 14400]
+if [[ $CASE_TIMEOUT -eq 0 ]]; then
+    CASE_TIMEOUT=$(( GRID * GRID / 300 ))
+    [[ $CASE_TIMEOUT -lt 600 ]] && CASE_TIMEOUT=600
+    [[ $CASE_TIMEOUT -gt 14400 ]] && CASE_TIMEOUT=14400
+fi
 
 # ── Auto-escalado de grid ─────────────────────────────────────────────────────
 BASE_GRID=200
@@ -194,22 +204,23 @@ fi
 TOTAL=${#ALL_CASES[@]}
 
 # ── VRAM estimada por proceso (MB) ───────────────────────────────────────────
-# Replica la lógica de abm_core_gpu.py:
-#   1) Contexto CUDA: ~500 MB
-#   2) B = min(n_runs, free×0.25 / (grid²×8×20))    ← factor 20 para B (conservador)
-#   3) Pico = contexto + B × grid²×8×10 / 1048576   ← factor 10 (arrays vivas reales)
-# Resultado: ligeramente por encima del pico real observado (seguro).
+# Replica la lógica de abm_core_gpu.py con márgenes más conservadores:
+#   1) Contexto CuPy+CUDA: ~900 MB (medido empíricamente, incluye runtime,
+#      memory pool, driver overhead — NO los 500 originales que subestimaban)
+#   2) B = min(n_runs, free×0.20 / (grid²×8×20))    ← 20% VRAM budget (no 25%)
+#   3) Pico = contexto + B × grid²×8×10 / 1048576
+# Resultado: conservador — evita OOM cuando múltiples procesos comparten GPU.
 # Args: $1=grid  $2=gpu_free_MB(default 16000)  $3=n_runs(default 50)
 estimate_vram_per_process() {
     local g=$1
     local gpu_free=${2:-16000}
     local nruns=${3:-${RUNS:-50}}
-    local CUDA_CTX_MB=500
+    local CUDA_CTX_MB=900   # CuPy context + CUDA runtime + memory pool
     # vram_per_sim para calcular B (factor 20, misma fórmula que Python)
     local vps_b=$(( g * g * 8 * 20 / 1048576 ))
     [[ $vps_b -lt 1 ]] && vps_b=1
-    # Budget = 25% de VRAM libre
-    local budget_mb=$(( gpu_free * 25 / 100 ))
+    # Budget = 20% de VRAM libre (conservador — múltiples procesos compiten)
+    local budget_mb=$(( gpu_free * 20 / 100 ))
     # B = min(n_runs, budget / vps)
     local b=$(( budget_mb / vps_b ))
     [[ $b -gt $nruns ]] && b=$nruns
@@ -342,7 +353,8 @@ run_batch() {
     #
     # PERO: cada proceso CuPy crea un contexto CUDA (~500MB overhead).
     # Con 14 procesos en una GPU de 3.4GB libre → 7GB solo en contextos → OOM.
-    # Por eso limitamos por VRAM: max_vram_workers = free / (500 + grid_vram_per_sim).
+    # Por eso limitamos por VRAM: max_vram_workers = free / (900 + grid_vram_per_sim).
+    # Cap conservador (65%) para dejar margen a fragmentación y memory pool.
     local total_workers=0
     local -a workers_per_gpu=()
     local worker_gpu_map=""  # "0 0 0 1 1" — qué GPU para cada worker
@@ -359,14 +371,23 @@ run_batch() {
     for i in "${!available_gpus[@]}"; do
         local free=${gpu_free_mb[$i]}
         
-        # VRAM por proceso: contexto CUDA + 25% de VRAM libre (sub-batch de CuPy)
+        # VRAM por proceso: contexto CuPy+CUDA (~900MB) + arrays de trabajo
         local vram_per_process
         vram_per_process=$(estimate_vram_per_process "$GRID" "$free")
         
-        # Cuántos procesos CuPy caben en esta GPU (VRAM-aware)
-        local vram_max_workers=$(( free * 80 / 100 / (vram_per_process > 0 ? vram_per_process : 1) ))
+        # Cuántos procesos CuPy caben en esta GPU (65% VRAM — conservador)
+        # 65% (no 80%) → margen para fragmentación, memory pool, driver overhead
+        local vram_max_workers=$(( free * 65 / 100 / (vram_per_process > 0 ? vram_per_process : 1) ))
         
-        # Si la GPU no puede ni con 1 proceso, saltarla
+        # Guard: si la GPU no tiene al menos 1.5× lo que necesita 1 proceso, saltarla
+        local min_vram_for_one=$(( vram_per_process * 3 / 2 ))
+        if [[ $free -lt $min_vram_for_one ]]; then
+            echo "    GPU ${available_gpus[$i]}: ${free}MB libre < ${min_vram_for_one}MB mínimo (1.5×${vram_per_process}MB), SALTADA"
+            workers_per_gpu+=(0)
+            continue
+        fi
+        
+        # Si la GPU no puede ni con 1 proceso por VRAM, saltarla
         if [[ $vram_max_workers -lt 1 ]]; then
             echo "    GPU ${available_gpus[$i]}: ${free}MB libre → insuficiente (~${vram_per_process}MB/proceso), SALTADA"
             workers_per_gpu+=(0)
@@ -497,7 +518,9 @@ gpu_worker() {
         echo \"  [W\${worker_id}/GPU\${gpu_id}] ▶ \${caso}\"
         local START=\$SECONDS
         
-        (cd \"\$SRC\" && HYPER_GPU_DEVICE=\$gpu_id python3 validate.py 2>&1) | \
+        # Timeout: matar procesos colgados (OOM, hang en CuPy, etc.)
+        local TIMEOUT=${CASE_TIMEOUT}
+        timeout --signal=KILL \$TIMEOUT bash -c 'cd \"\$1\" && HYPER_GPU_DEVICE=\$2 python3 validate.py 2>&1' _ \"\$SRC\" \"\$gpu_id\" | \
             tee \"\$LOG\" | \
             grep --line-buffered -E '(▶|[0-9]/6|FIN)' | \
             sed -u \"s/^/  [W\${worker_id}\\/GPU\${gpu_id}] /\"
@@ -507,7 +530,10 @@ gpu_worker() {
         
         local EDI=\$(grep -oP 'EDI[=:]\s*-?[\\d.]+' \"\$LOG\" 2>/dev/null | tail -1 || echo '?')
         
-        if [ \$RC -eq 0 ]; then
+        if [ \$RC -eq 137 ]; then
+            echo \"  [W\${worker_id}/GPU\${gpu_id}] ⏰ \${caso} — TIMEOUT \${TIMEOUT}s (killed)\"
+            echo \"TIMEOUT \${caso} GPU\${gpu_id} \${TIMEOUT}s\" >> \"\$RESULT_FILE\"
+        elif [ \$RC -eq 0 ]; then
             echo \"  [W\${worker_id}/GPU\${gpu_id}] ✓ \${caso} — \${ELAPSED}s — \${EDI}\"
             echo \"OK \${caso} GPU\${gpu_id} \${ELAPSED}s \${EDI}\" >> \"\$RESULT_FILE\"
         else
@@ -535,12 +561,13 @@ done
 # ── Resumen ──
 echo \"\"
 echo \"  ═══ Resumen de tanda ═══\"
-TOTAL_OK=0; TOTAL_FAIL=0; TOTAL_SKIP=0
+TOTAL_OK=0; TOTAL_FAIL=0; TOTAL_SKIP=0; TOTAL_TIMEOUT=0
 while read -r line; do
     case \"\$line\" in
-        OK*)   TOTAL_OK=\$((TOTAL_OK+1)) ;;
-        FAIL*) TOTAL_FAIL=\$((TOTAL_FAIL+1)) ;;
-        SKIP*) TOTAL_SKIP=\$((TOTAL_SKIP+1)) ;;
+        OK*)      TOTAL_OK=\$((TOTAL_OK+1)) ;;
+        FAIL*)    TOTAL_FAIL=\$((TOTAL_FAIL+1)) ;;
+        SKIP*)    TOTAL_SKIP=\$((TOTAL_SKIP+1)) ;;
+        TIMEOUT*) TOTAL_TIMEOUT=\$((TOTAL_TIMEOUT+1)) ;;
     esac
 done < \"\$RESULT_FILE\"
 
@@ -548,7 +575,7 @@ for gpu in ${available_gpus[*]}; do
     cnt=\$(grep -c \"GPU\${gpu}\" \"\$RESULT_FILE\" 2>/dev/null || echo 0)
     echo \"  GPU \${gpu}: \${cnt} casos\"
 done
-echo \"  OK: \${TOTAL_OK}  FAIL: \${TOTAL_FAIL}  SKIP: \${TOTAL_SKIP}\"
+echo \"  OK: \${TOTAL_OK}  FAIL: \${TOTAL_FAIL}  TIMEOUT: \${TOTAL_TIMEOUT}  SKIP: \${TOTAL_SKIP}\"
 
 rm -f \"\$QUEUE_FILE\" \"\$LOCK_FILE\" \"\$RESULT_FILE\"
 "
@@ -579,8 +606,9 @@ echo "║  GPUs:     ${N_GPUS} detectadas$( [[ $FORCE_GPU -ge 0 ]] && echo " →
 echo "║  GPU 0:    ${GPU0_NAME} — ${GPU0_VRAM} MB"
 [[ $N_GPUS -ge 2 ]] && \
 echo "║  GPU 1:    ${GPU1_NAME} — ${GPU1_VRAM} MB"
-echo "║  Distrib:  $( [[ $STEP_BY_STEP -eq 1 ]] && { [[ $FORCE_GPU -ge 0 || $N_GPUS -lt 2 ]] && echo "SECUENCIAL — 1 caso a la vez, 1 GPU" || echo "SECUENCIAL — 1 caso/GPU, ${N_GPUS} GPUs en paralelo"; } || echo "cola dinámica — N workers/GPU, overlap CPU+GPU" )"
+echo "║  Distrib:  $( [[ $STEP_BY_STEP -eq 1 ]] && { [[ $FORCE_GPU -ge 0 || $N_GPUS -lt 2 ]] && echo "SECUENCIAL — 1 caso a la vez, 1 GPU" || echo "SECUENCIAL — cola compartida, ${N_GPUS} GPUs independientes"; } || echo "cola dinámica — N workers/GPU, overlap CPU+GPU" )"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
+echo "║  Timeout:  ${CASE_TIMEOUT}s por caso"
 echo "║  Contendr: ${CONTAINER}"
 echo "║  VRAM/proc: ~$(estimate_vram_per_process $GRID) MB"
 [[ $DRY_RUN -eq 1 ]] && \
@@ -602,9 +630,10 @@ START_GLOBAL=$SECONDS
 
 # ── Ejecutar por tandas ───────────────────────────────────────────────────────────────────
 if [[ $STEP_BY_STEP -eq 1 ]]; then
-    # ── Modo secuencial: 1 caso por GPU, todas las GPUs en paralelo ──
-    # Con --gpu N: solo 1 GPU → puramente secuencial
-    # Sin --gpu: N GPUs → N casos simultáneos (1 por GPU)
+    # ── Modo secuencial: 1 caso por GPU, GPUs INDEPENDIENTES ──
+    # Cada GPU tiene su propia cola y procesa sin esperar a la otra.
+    # Con --gpu N: solo 1 GPU → puramente secuencial.
+    # Sin --gpu: N GPUs → N colas independientes, la GPU rápida toma más casos.
     
     # Determinar GPUs disponibles para step-by-step
     sbs_gpus=()
@@ -621,7 +650,8 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
         echo "═══ Modo SECUENCIAL — ${TOTAL} casos, 1 a la vez ═══"
         echo "  GPU: ${sbs_gpus[0]} (toda la VRAM para cada caso)"
     else
-        echo "═══ Modo SECUENCIAL — ${TOTAL} casos, ${n_sbs_gpus} GPUs (1 caso/GPU) ═══"
+        echo "═══ Modo SECUENCIAL — ${TOTAL} casos, ${n_sbs_gpus} GPUs INDEPENDIENTES ═══"
+        echo "  Cada GPU toma casos de una cola compartida (la más rápida hace más)"
         for g in "${sbs_gpus[@]}"; do
             echo "  GPU ${g}: 1 caso a la vez"
         done
@@ -629,81 +659,103 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
     
     TOTAL_OK=0; TOTAL_FAIL=0; TOTAL_SKIP=0
     
-    # Función para ejecutar un caso en una GPU específica
-    _run_step_case() {
-        local caso=$1
-        local gpu=$2
-        local idx=$3
-        local total=$4
+    LOG_DIR="/tmp/gpu_run_g${GRID}_logs"
+    mkdir -p "$LOG_DIR"   # crear dir localmente para tee
+    QUEUE_FILE=$(mktemp /tmp/_sbs_queue_XXXXXX)
+    LOCK_FILE="${QUEUE_FILE}.lock"
+    RESULT_FILE=$(mktemp /tmp/_sbs_results_XXXXXX)
+    
+    printf '%s\n' "${ALL_CASES[@]}" > "$QUEUE_FILE"
+    touch "$RESULT_FILE"
+    
+    # Función: loop de GPU independiente — toma casos de cola compartida
+    _gpu_loop() {
+        local gpu=$1
         local tag="GPU${gpu}"
+        local count=0
         
-        echo "  [${idx}/${total}] ▶ ${caso} (${tag})"
-        if [[ $DRY_RUN -eq 1 ]]; then
-            echo "  [DRY-RUN] ${caso}"
-            return 0
-        fi
-        
-        local inner="
+        while true; do
+            # Pop atómico de la cola compartida
+            local caso
+            caso=$(flock "$LOCK_FILE" bash -c '
+                head -1 "$1" 2>/dev/null
+                sed -i "1d" "$1" 2>/dev/null
+            ' -- "$QUEUE_FILE")
+            
+            [[ -z "$caso" ]] && break
+            count=$((count + 1))
+            
+            local SRC="/workspace/repos/Simulaciones/${caso}/src"
+            local LOG="${LOG_DIR}/${caso}.log"
+            
+            echo "  [${tag}] ▶ ${caso}"
+            if [[ $DRY_RUN -eq 1 ]]; then
+                echo "  [DRY-RUN] ${caso}"
+                echo "OK ${caso} ${tag} 0s" >> "$RESULT_FILE"
+                continue
+            fi
+            
+            local inner="
 export PYTHONIOENCODING=utf-8
 export HYPER_GRID_SIZE=${GRID}
 export HYPER_N_PERM=${PERM}
 export HYPER_N_BOOT=${BOOT}
 export HYPER_N_REFINE=${REFINE}
 export HYPER_N_RUNS=${RUNS}
-mkdir -p /tmp/gpu_run_g${GRID}_logs
+mkdir -p ${LOG_DIR}
 SRC=/workspace/repos/Simulaciones/${caso}/src
 if [ ! -f \"\${SRC}/validate.py\" ]; then echo SKIP; exit 0; fi
-cd \"\${SRC}\" && HYPER_GPU_DEVICE=${gpu} python3 validate.py
+cd \"\${SRC}\" && timeout --signal=KILL ${CASE_TIMEOUT} bash -c 'HYPER_GPU_DEVICE=${gpu} python3 validate.py' 2>&1
 "
-        local t0=$SECONDS
-        docker exec "$CONTAINER" bash -c "$inner" > >(tee /tmp/gpu_step_${caso}.log) 2>&1
-        local rc=$?
-        local elapsed=$(( SECONDS - t0 ))
-        local edi=$(grep -oP 'EDI[=:]\s*-?[\d.]+' /tmp/gpu_step_${caso}.log 2>/dev/null | tail -1 || echo '?')
-        
-        if [[ $rc -eq 0 ]]; then
-            echo "  [${idx}/${total}] ✓ ${caso} (${tag}) — ${elapsed}s — ${edi}"
-            return 0
-        else
-            echo "  [${idx}/${total}] ✗ ${caso} (${tag}) — ${elapsed}s (exit ${rc})"
-            return 1
-        fi
-    }
-    
-    i=0
-    while [[ $i -lt $TOTAL ]]; do
-        echo ""
-        # Lanzar hasta n_sbs_gpus casos en paralelo (1 por GPU)
-        pids=()
-        pid_casos=()
-        pid_gpus=()
-        
-        for ((g_idx=0; g_idx<n_sbs_gpus && i<TOTAL; g_idx++)); do
-            caso=${ALL_CASES[$i]}
-            gpu=${sbs_gpus[$g_idx]}
-            i=$((i+1))
+            local t0=$SECONDS
+            docker exec "$CONTAINER" bash -c "$inner" 2>&1 | tee "$LOG"
+            local rc=${PIPESTATUS[0]}
+            local elapsed=$(( SECONDS - t0 ))
+            local edi=$(grep -oP 'EDI[=:]\s*-?[\d.]+' "$LOG" 2>/dev/null | tail -1 || echo '?')
             
-            _run_step_case "$caso" "$gpu" "$i" "$TOTAL" &
-            pids+=($!)
-            pid_casos+=("$caso")
-            pid_gpus+=("$gpu")
-        done
-        
-        # Esperar a que terminen todos los de esta ronda
-        for ((p_idx=0; p_idx<${#pids[@]}; p_idx++)); do
-            wait ${pids[$p_idx]}
-            rc=$?
-            if [[ $rc -eq 0 ]]; then
-                TOTAL_OK=$((TOTAL_OK+1))
+            if [[ $rc -eq 137 ]]; then
+                echo "  [${tag}] ⏰ ${caso} — TIMEOUT ${CASE_TIMEOUT}s"
+                echo "TIMEOUT ${caso} ${tag} ${CASE_TIMEOUT}s" >> "$RESULT_FILE"
+            elif [[ $rc -eq 0 ]]; then
+                echo "  [${tag}] ✓ ${caso} — ${elapsed}s — ${edi}"
+                echo "OK ${caso} ${tag} ${elapsed}s ${edi}" >> "$RESULT_FILE"
             else
-                TOTAL_FAIL=$((TOTAL_FAIL+1))
+                echo "  [${tag}] ✗ ${caso} — ${elapsed}s (exit ${rc})"
+                echo "FAIL ${caso} ${tag} ${elapsed}s exit=${rc}" >> "$RESULT_FILE"
             fi
         done
+        echo "  [${tag}] Terminado (${count} casos)"
+    }
+    
+    # Lanzar un loop por GPU, todos comparten la misma cola
+    GPU_PIDS=()
+    for g in "${sbs_gpus[@]}"; do
+        _gpu_loop "$g" &
+        GPU_PIDS+=($!)
     done
     
+    # Esperar a que todas las GPUs terminen su cola
+    for pid in "${GPU_PIDS[@]}"; do
+        wait "$pid" 2>/dev/null || true
+    done
+    
+    # Resumen
     echo ""
     echo "  ═══ Resumen secuencial ═══"
-    echo "  OK: ${TOTAL_OK}  FAIL: ${TOTAL_FAIL}"
+    while read -r line; do
+        case "$line" in
+            OK*)      TOTAL_OK=$((TOTAL_OK+1)) ;;
+            FAIL*)    TOTAL_FAIL=$((TOTAL_FAIL+1)) ;;
+            SKIP*)    TOTAL_SKIP=$((TOTAL_SKIP+1)) ;;
+            TIMEOUT*) TOTAL_FAIL=$((TOTAL_FAIL+1)) ;;
+        esac
+    done < "$RESULT_FILE"
+    for g in "${sbs_gpus[@]}"; do
+        cnt=$(grep -c "GPU${g}" "$RESULT_FILE" 2>/dev/null || echo 0)
+        echo "  GPU ${g}: ${cnt} casos"
+    done
+    echo "  OK: ${TOTAL_OK}  FAIL: ${TOTAL_FAIL}  SKIP: ${TOTAL_SKIP}"
+    rm -f "$QUEUE_FILE" "$LOCK_FILE" "$RESULT_FILE"
 else
     # ── Modo paralelo por tandas (comportamiento normal) ──
     for p in $(seq 1 "$PARTS"); do

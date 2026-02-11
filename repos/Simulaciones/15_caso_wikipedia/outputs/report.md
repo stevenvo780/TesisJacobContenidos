@@ -1,6 +1,6 @@
 # Reporte de Validación — Wikipedia (Axelrod + Lotka-Volterra)
 
-- generated_at: 2026-02-10T04:22:03.401759Z
+- generated_at: 2026-02-11T00:57:51.365710Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -8,7 +8,7 @@
 ### EDI
 - valor: 0.3228
 - bootstrap_mean: 0.3230
-- CI 95%: [0.3130, 0.3340]
+- CI 95%: [0.3124, 0.3344]
 - weighted_value (LoE factor 0.20): 0.0646
 - válido (0.30-0.90): False
 
@@ -41,7 +41,7 @@
 - ode_alpha: 0.0010
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.4455
+- calibration_rmse: 0.4454
 - ode_rolling: None
 
 ### Interpretación
@@ -82,11 +82,11 @@
 - macro_coupling: 0.0500
 - ode_coupling_strength: 0.0400
 - abm_feedback_gamma: 0.0500
-- damping: 0.7200
+- damping: 0.7227
 - ode_alpha: 0.0985
 - ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.8450
+- calibration_rmse: 0.8449
 - ode_rolling: None
 
 ### Interpretación

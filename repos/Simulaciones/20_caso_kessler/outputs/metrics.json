@@ -1,6 +1,6 @@
 {
   "case": "S\u00edndrome de Kessler (NASA LEGEND + ORDEM)",
-  "generated_at": "2026-02-10T12:58:03.021481Z",
+  "generated_at": "2026-02-11T01:05:27.343834Z",
   "git": {
     "commit": null,
     "dirty": null
@@ -20,15 +20,15 @@
         "coverage": 1.0
       },
       "calibration": {
-        "forcing_scale": 0.6915659167077501,
-        "macro_coupling": 0.4657827415303236,
+        "forcing_scale": 0.7818401989553269,
+        "macro_coupling": 0.5,
         "ode_coupling_strength": 0.3,
         "abm_feedback_gamma": 0.05,
-        "damping": 0.7095280685671363,
+        "damping": 0.7989449626596112,
         "ode_alpha": 0.1644841102941527,
         "ode_beta": 1.0,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.2571966969770866,
+        "calibration_rmse": 0.24950287892219494,
         "ode_rolling": null
       },
       "forcing": {
@@ -37,21 +37,21 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 2603547.5905113122,
-        "rmse_abm_no_ode": 657132.370993244,
+        "rmse_abm": 2634281.5404356173,
+        "rmse_abm_no_ode": 679356.0170707848,
         "rmse_ode": 7.321970708234351,
         "rmse_reduced": 627276.0876190498,
         "threshold": 3.936336641657651
       },
       "correlations": {
-        "abm_obs": 0.6986569935733062,
+        "abm_obs": 0.6982376255357771,
         "ode_obs": 4.750227114326331e-16
       },
       "edi": {
         "value": -1.0,
-        "bootstrap_mean": -2.954758016607661,
-        "ci_lo": -3.087174798893787,
-        "ci_hi": -2.800923571967563,
+        "bootstrap_mean": -2.8702667198956955,
+        "ci_lo": -3.002197229944582,
+        "ci_hi": -2.716443482137557,
         "valid": false,
         "weighted_value": -0.2,
         "loe_factor": 0.2,
@@ -74,35 +74,35 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 6.8569566348689335e-09,
-        "edi_mean": 0.17098335151370164,
-        "edi_std": 1.1724254266140035e-09,
+        "cv": 4.879288243791388e-08,
+        "edi_mean": 0.17252821470496266,
+        "edi_std": 8.418148897322407e-09,
         "monotonic_decrease": false
       },
-      "effective_information": -1.6421402375183636,
+      "effective_information": -1.6325075862990808,
       "symploke": {
-        "internal": 0.8216155011526288,
-        "external": 0.7110770774709204,
-        "cr": 1.1554520982097456,
+        "internal": 0.8215387500685993,
+        "external": 0.7103779487738318,
+        "cr": 1.1564812104410616,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.03429081808397479,
+        "dominance_share": 0.034287204501423585,
         "pass": true
       },
       "persistence": {
-        "model_var": 234670670622.41,
+        "model_var": 244130537776.85,
         "obs_var": 1.0286110364836758,
-        "model_std": 484428.18933502416,
+        "model_std": 494095.67674373556,
         "obs_std": 1.0142046324503136,
-        "std_ratio": 477643.4398299364,
+        "std_ratio": 487175.5274376954,
         "threshold_std": 5.0,
         "pass": false
       },
       "emergence": {
-        "err_reduced": 657132.370993244,
-        "err_abm": 2603547.5905113122,
+        "err_reduced": 679356.0170707848,
+        "err_abm": 2634281.5404356173,
         "threshold": 0.7872673283315302,
         "pass": false,
         "significance": "computed"
@@ -115,34 +115,34 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 2603547.5905113122,
+        "rmse_abm": 2634281.5404356173,
         "rmse_ode": 7.321970708234351,
-        "corr_abm": 0.6986569935733062,
+        "corr_abm": 0.6982376255357771,
         "corr_ode": 4.750227114326331e-16,
         "threshold": 3.936336641657651,
         "c1_relative": false,
         "c1_absolute": false,
-        "rmse_reduced": 657132.370993244,
-        "relative_improvement": -1946415.2195180682
+        "rmse_reduced": 679356.0170707848,
+        "relative_improvement": -1954925.5233648326
       },
       "c2_detail": {
-        "mean_delta": 2486258.15254659,
-        "var_delta": 597036551886.0035,
-        "relative_mean": 0.9999990240762376,
-        "relative_var": 0.9999999999997741
+        "mean_delta": 2514367.0762024093,
+        "var_delta": 617454073712.1145,
+        "relative_mean": 0.9999990255555699,
+        "relative_var": 0.9999999999997817
       },
       "c3_detail": {
-        "persistence_1": 234670670622.41,
-        "persistence_2": 250897784233.65
+        "persistence_1": 244130537776.85,
+        "persistence_2": 252522732611.61002
       },
       "c4_detail": {
-        "diff": 68898.78947368404
+        "diff": 81876.5263157892
       },
       "c5_detail": {
-        "sensitivity_min": 1.92889633797581,
-        "sensitivity_max": 2.79446284651039,
-        "range": 0.8655665085345801,
-        "relative_range": 0.00022062744456833504
+        "sensitivity_min": 1.944800489314578,
+        "sensitivity_max": 2.8239501386706887,
+        "range": 0.8791496493561106,
+        "relative_range": 0.00022408970150540136
       },
       "bias_correction": {
         "applied": false,
@@ -200,15 +200,15 @@
         "coverage": 1.0
       },
       "calibration": {
-        "forcing_scale": 0.6617321002050767,
+        "forcing_scale": 0.7559793529424796,
         "macro_coupling": 0.5,
         "ode_coupling_strength": 0.3,
         "abm_feedback_gamma": 0.05,
-        "damping": 0.7007372211682178,
+        "damping": 0.7891183799550875,
         "ode_alpha": 0.001,
         "ode_beta": 0.001,
         "assimilation_strength": 0.0,
-        "calibration_rmse": 0.20580974383699893,
+        "calibration_rmse": 0.20239216444975228,
         "ode_rolling": null
       },
       "forcing": {
@@ -217,21 +217,21 @@
         "feedback_used": false
       },
       "errors": {
-        "rmse_abm": 2660593.4211673224,
-        "rmse_abm_no_ode": 637285.7116779808,
+        "rmse_abm": 2597052.0514393398,
+        "rmse_abm_no_ode": 642459.194095671,
         "rmse_ode": 15.284531713082249,
         "rmse_reduced": 627287.1330420912,
         "threshold": 0.5326299079441852
       },
       "correlations": {
-        "abm_obs": 0.9715135422031396,
+        "abm_obs": 0.9720963946947264,
         "ode_obs": 0.0
       },
       "edi": {
         "value": -1.0,
-        "bootstrap_mean": -3.167456088738588,
-        "ci_lo": -3.3020711534938605,
-        "ci_hi": -3.011858476212863,
+        "bootstrap_mean": -3.0345668443329585,
+        "ci_lo": -3.1763859549888487,
+        "ci_hi": -2.8700111434082407,
         "valid": false,
         "weighted_value": -0.2,
         "loe_factor": 0.2,
@@ -254,35 +254,35 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 5.134656686387381e-08,
-        "edi_mean": 0.8882977456384907,
-        "edi_std": 4.5611039591455135e-08,
+        "cv": 2.513413217597307e-07,
+        "edi_mean": 0.8942831094425566,
+        "edi_std": 2.2477029875469406e-07,
         "monotonic_decrease": false
       },
-      "effective_information": -1.6797886495321457,
+      "effective_information": -1.685694880058147,
       "symploke": {
-        "internal": 0.8233097983057662,
-        "external": 0.6966270485722684,
-        "cr": 1.1818516091115512,
+        "internal": 0.8213302178732861,
+        "external": 0.6899415473121355,
+        "cr": 1.1904344956076536,
         "pass": true,
         "cr_valid": false
       },
       "non_locality": {
-        "dominance_share": 0.03416483927817682,
+        "dominance_share": 0.034315134836508866,
         "pass": true
       },
       "persistence": {
-        "model_var": 246454369509.63998,
+        "model_var": 235294526941.43994,
         "obs_var": 0.15979386571248133,
-        "model_std": 496441.70806816785,
+        "model_std": 485071.6719634738,
         "obs_std": 0.39974224909619116,
-        "std_ratio": 1241904.5252049593,
+        "std_ratio": 1213461.106651125,
         "threshold_std": 5.0,
         "pass": false
       },
       "emergence": {
-        "err_reduced": 637285.7116779808,
-        "err_abm": 2660593.4211673224,
+        "err_reduced": 642459.194095671,
+        "err_abm": 2597052.0514393398,
         "threshold": 0.10652598158883704,
         "pass": false,
         "significance": "computed"
@@ -295,34 +295,34 @@
       "c4_validity": true,
       "c5_uncertainty": true,
       "c1_detail": {
-        "rmse_abm": 2660593.4211673224,
+        "rmse_abm": 2597052.0514393398,
         "rmse_ode": 15.284531713082249,
-        "corr_abm": 0.9715135422031396,
+        "corr_abm": 0.9720963946947264,
         "corr_ode": 0.0,
         "threshold": 0.5326299079441852,
         "c1_relative": false,
         "c1_absolute": false,
-        "rmse_reduced": 637285.7116779808,
-        "relative_improvement": -2023307.7094893416
+        "rmse_reduced": 642459.194095671,
+        "relative_improvement": -1954592.8573436688
       },
       "c2_detail": {
-        "mean_delta": 2539715.507687628,
-        "var_delta": 628603276768.543,
-        "relative_mean": 0.999999184452729,
-        "relative_var": 0.9999999999998062
+        "mean_delta": 2479557.5711263483,
+        "var_delta": 596474166042.1959,
+        "relative_mean": 0.9999991477986228,
+        "relative_var": 0.9999999999997898
       },
       "c3_detail": {
-        "persistence_1": 246454369509.63998,
-        "persistence_2": 258433212511.69
+        "persistence_1": 235294526941.43994,
+        "persistence_2": 249040947528.28998
       },
       "c4_detail": {
-        "diff": 45096.63157894742
+        "diff": 33903.31578947371
       },
       "c5_detail": {
-        "sensitivity_min": 1.646643647690724,
-        "sensitivity_max": 2.3856116082420953,
-        "range": 0.7389679605513713,
-        "relative_range": 7.212049497519257e-05
+        "sensitivity_min": 1.6775460827057829,
+        "sensitivity_max": 2.4351331214826892,
+        "range": 0.7575870387769064,
+        "relative_range": 7.393764701600026e-05
       },
       "bias_correction": {
         "applied": false,

@@ -1,14 +1,14 @@
 # Reporte de Validación — Acidificación Oceánica (CO2SYS + Revelle Factor)
 
-- generated_at: 2026-02-10T07:15:12.695738Z
+- generated_at: 2026-02-11T01:03:28.516057Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
 - valor: -0.2699
-- bootstrap_mean: -0.2703
-- CI 95%: [-0.2949, -0.2485]
+- bootstrap_mean: -0.2705
+- CI 95%: [-0.2952, -0.2484]
 - weighted_value (LoE factor 0.20): -0.0540
 - válido (0.30-0.90): False
 

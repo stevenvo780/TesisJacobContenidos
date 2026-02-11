@@ -90,7 +90,7 @@ def main():
         # la retroalimentación albedo-temperatura del ABM hacia el ODE.
         feedback_strength=0.05,
         loe=5,  # Nivel de evidencia máximo: IPCC AR6, CMIP6 ensemble
-        ode_calibration=False, # Use physical parameters
+        ode_calibration=True,  # Calibrar α,β desde datos Z-scored
     )
 
     # Crear adaptador NumPy

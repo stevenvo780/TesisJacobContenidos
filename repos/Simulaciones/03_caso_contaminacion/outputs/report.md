@@ -1,47 +1,47 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-10T09:09:06.043933Z
+- generated_at: 2026-02-11T00:56:29.646012Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [-0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): 0.0000
+- valor: 0.1806
+- bootstrap_mean: 0.1827
+- CI 95%: [0.1667, 0.2049]
+- weighted_value (LoE factor 0.20): 0.0361
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.1382
-- external: 0.1060
-- CR: 1.3030
+- internal: 0.9998
+- external: 0.9999
+- CR: 0.9999
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: True
-- c2_robustness: False
+- c2_robustness: True
 - c3_replication: True
-- c4_validity: False
+- c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.8190
-- rmse_abm_no_ode: 0.8190
-- rmse_ode: 7.9889
+- rmse_abm: 2.4790
+- rmse_abm_no_ode: 3.0255
+- rmse_ode: 1.6860
 - rmse_reduced: 0.8190
 - threshold: 0.7999
 
 ### Calibración
-- forcing_scale: 0.7168
-- macro_coupling: 0.4823
+- forcing_scale: 0.7054
+- macro_coupling: 0.4327
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.6063
-- ode_alpha: 0.8000
-- ode_beta: 0.2000
+- damping: 0.5809
+- ode_alpha: 0.5000
+- ode_beta: 1.0000
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.5714
+- calibration_rmse: 0.5707
 - ode_rolling: None
 
 ### Interpretación
@@ -51,29 +51,29 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [-0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): -0.0000
+- valor: 0.0550
+- bootstrap_mean: 0.0543
+- CI 95%: [0.0287, 0.0738]
+- weighted_value (LoE factor 0.20): 0.0110
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.1382
-- external: 0.1005
-- CR: 1.3757
+- internal: 0.9991
+- external: 0.9888
+- CR: 1.0104
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
 - c1_convergence: True
-- c2_robustness: False
+- c2_robustness: True
 - c3_replication: True
-- c4_validity: False
+- c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 3.2945
-- rmse_abm_no_ode: 3.2945
-- rmse_ode: 8.0601
+- rmse_abm: 3.5885
+- rmse_abm_no_ode: 3.7973
+- rmse_ode: 3.0223
 - rmse_reduced: 3.2945
 - threshold: 3.2834
 
@@ -83,12 +83,12 @@
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
 - damping: 0.8000
-- ode_alpha: 0.8000
-- ode_beta: 0.2000
+- ode_alpha: 0.0788
+- ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.6623
+- calibration_rmse: 0.6668
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
+**Nivel 2 — Cierre operativo suggestive.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
 
