@@ -1063,7 +1063,17 @@ class CaseConfig:
         self.n_refine = 5000   # Iteraciones de refinamiento en calibrate_abm
         self.param_grid = None # None = usar grid default de calibrate_abm
 
-        # Overrides de High Performance (Variables de Entorno)
+        # ── Overrides desde case_config.json ──────────────────────────────
+        # Prioridad: defaults → case_config.json → HYPER_* env vars
+        try:
+            from config_loader import load_case_config, apply_config_to_case
+            _case_cfg = load_case_config()
+            if _case_cfg:
+                apply_config_to_case(_case_cfg, self)
+        except ImportError:
+            pass  # config_loader no disponible (e.g. ejecución aislada)
+
+        # ── Overrides de High Performance (Variables de Entorno) ──────────
         # HYPER_GRID_SIZE: solo aplica a modelos espaciales (grid_size > 1).
         # Modelos no-espaciales (grid_size=1, e.g. Brock-Hommes HAM) no deben
         # ser sobrescritos porque la grilla no tiene significado físico.

@@ -1,0 +1,46 @@
+{
+  "execution": {
+    "grid_size": 50,
+    "n_perm": 9999,
+    "n_boot": 5000,
+    "n_refine": 100000,
+    "n_runs": 50,
+    "timeout_seconds": 7200
+  },
+  "abm": {
+    "diffusion": 0.25,
+    "noise": 0.02,
+    "heterogeneity_strength": 0.2,
+    "init_range": 0.5,
+    "forcing_gradient_type": "radial",
+    "forcing_gradient_strength": 0.7
+  },
+  "calibration": {
+    "param_grid": {
+      "forcing_scale": [
+        0.001,
+        0.005,
+        0.01,
+        0.05,
+        0.1,
+        0.2,
+        0.5
+      ],
+      "macro_coupling": [
+        0.05,
+        0.1,
+        0.15,
+        0.25,
+        0.35,
+        0.45
+      ],
+      "damping": [
+        0.0,
+        0.05,
+        0.1,
+        0.2,
+        0.4
+      ]
+    }
+  }
+}

@@ -39,6 +39,9 @@ No requiere Docker ni GPU. Workers paralelos auto-ajustados a los cores disponib
 # ─── Control de paralelismo ──────────────────────────────────
 ./cpu_run.sh --workers 4               # máximo 4 procesos simultáneos
 
+# ─── Escalado de grid (ponderado por tamaño base) ────────────
+./cpu_run.sh --grid-mult 2
+
 # ─── Secuencial (1 caso a la vez) ───────────────────────────
 ./cpu_run.sh --step-by-step
 
@@ -55,6 +58,7 @@ No requiere Docker ni GPU. Workers paralelos auto-ajustados a los cores disponib
 | `--part K` | todas | Ejecutar solo la tanda K de N |
 | `--case NOMBRE` | — | Filtrar por nombre (match parcial, case-insensitive) |
 | `--workers N` | auto | Workers paralelos (auto = `min(nproc, 16)`) |
+| `--grid-mult X` | 1.0 | Multiplicador de grid (ponderado; no reduce) |
 | `--step-by-step` | off | Secuencial: 1 caso a la vez, output live en terminal |
 | `--perm N` | 9999 | Permutaciones para test EDI |
 | `--boot N` | 5000 | Bootstrap samples para intervalos de confianza |
@@ -63,6 +67,8 @@ No requiere Docker ni GPU. Workers paralelos auto-ajustados a los cores disponib
 | `--dry-run` | off | Solo muestra el plan, no ejecuta nada |
 
 **Logs:** `/tmp/cpu_run_logs/{caso}.log`
+
+**Nota grid-mult (ponderado):** grids <=10 no escalan; de 10→25 escalan linealmente hasta el factor completo. Si `use_topology=True`, el grid se limita a 50 para mantener topología.
 
 ---
 
@@ -77,6 +83,9 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 # ─── Caso específico ─────────────────────────────────────────
 ./gpu_run.sh --case deforest           # 16_caso_deforestacion
 ./gpu_run.sh --case deforest
+
+# ─── Escalado de grid (ponderado por tamaño base) ────────────
+./gpu_run.sh --grid-mult 2
 
 # ─── Forzar una GPU específica ───────────────────────────────
 ./gpu_run.sh --gpu 0                   # solo RTX 5070 Ti (16 GB)
@@ -100,6 +109,7 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 | `--case NOMBRE` | — | Filtrar por nombre (match parcial, case-insensitive) |
 | `--gpu N` | auto | Forzar GPU N (0 o 1). Auto = ambas GPUs |
 | `--step-by-step` | off | Secuencial: 1 caso/GPU. Con 2 GPUs → 2 simultáneos |
+| `--grid-mult X` | 1.0 | Multiplicador de grid (ponderado; no reduce) |
 | `--perm N` | 9999 | Permutaciones para test EDI |
 | `--boot N` | 5000 | Bootstrap samples para intervalos de confianza |
 | `--refine N` | 50000 | Iteraciones de refinamiento en calibración |
@@ -108,6 +118,8 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 | `--dry-run` | off | Solo muestra el plan, no ejecuta nada |
 
 **Logs:** `docker exec tesis-gpu ls /tmp/gpu_run_logs/`
+
+**Nota grid-mult (ponderado):** grids <=10 no escalan; de 10→25 escalan linealmente hasta el factor completo. Si `use_topology=True`, el grid se limita a 50 para mantener topología.
 
 ---
 
@@ -118,6 +130,7 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 | Desarrollo rápido / debug de un caso | `cpu_run.sh --case NOMBRE` |
 | Validación completa de los 29 casos | `gpu_run.sh` |
 | Sensibilidad de grid en un caso | Editar `grid_size` en `validate.py` del caso |
+| Escalar grids globalmente (ponderado) | `cpu_run.sh --grid-mult 2` o `gpu_run.sh --grid-mult 2` |
 | Secuencial (1 caso por GPU) | `gpu_run.sh --step-by-step --case NOMBRE` |
 | Sin GPU disponible | `cpu_run.sh` |
 | Prueba rápida (params mínimos) | `--runs 5 --perm 99 --boot 100 --refine 100` |

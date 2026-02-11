@@ -21,6 +21,9 @@
 #   # Limitar workers paralelos
 #   ./cpu_run.sh --workers 4
 #
+#   # Multiplicador de grid (ponderado por grid base)
+#   ./cpu_run.sh --grid-mult 2
+#
 #   # Secuencial: un caso a la vez (para grids enormes que usan toda la RAM)
 #   ./cpu_run.sh --step-by-step
 #
@@ -33,6 +36,7 @@
 #   --part K        Ejecutar solo tanda K de N (default: todas)
 #   --case NOMBRE   Filtrar casos por nombre (match parcial, case-insensitive)
 #   --workers N     Workers paralelos (default: auto = min(nproc, ncasos))
+#   --grid-mult X   Multiplicador de grid (ponderado por tamaño base)
 #   --step-by-step  Ejecutar caso por caso secuencialmente (1 a la vez)
 #   --perm N        Permutaciones EDI (default: 9999)
 #   --boot N        Bootstrap samples (default: 5000)
@@ -59,6 +63,7 @@ WORKERS=0          # 0 = auto
 STEP_BY_STEP=0
 DRY_RUN=0
 CASE_FILTER=""
+GRID_MULT="1.0"
 
 # ── Cleanup trap ──────────────────────────────────────────────────────────────
 cleanup() {
@@ -83,6 +88,7 @@ while [[ $# -gt 0 ]]; do
         --runs)      RUNS="$2";        shift 2 ;;
         --workers)   WORKERS="$2";     shift 2 ;;
         --case)      CASE_FILTER="$2"; shift 2 ;;
+        --grid-mult) GRID_MULT="$2";   shift 2 ;;
         --step-by-step) STEP_BY_STEP=1;  shift ;;
         --dry-run)   DRY_RUN=1;        shift ;;
         --help|-h)
@@ -150,6 +156,78 @@ if [[ -n "$CASE_FILTER" ]]; then
 fi
 
 TOTAL=${#ALL_CASES[@]}
+
+# ── Grid por caso (desde validate.py) ─────────────────────────────────────────
+declare -A CASE_GRID
+declare -A CASE_GRID_BASE
+declare -A CASE_TOPOLOGY
+build_case_grid_map() {
+    local cases=("$@")
+    local out
+    out=$(SIM_DIR="$SIM_DIR" GRID_MULT="$GRID_MULT" python3 - <<'PY' "${cases[@]}"
+import os, re, sys, pathlib, json
+sim_dir = pathlib.Path(os.environ["SIM_DIR"])
+grid_mult = float(os.environ.get("GRID_MULT", "1.0"))
+cases = sys.argv[1:]
+
+def weight_for_grid(base):
+    if base <= 10:
+        return 0.0
+    return min(1.0, max(0.0, (base - 10) / 15.0))
+
+for c in cases:
+    base = 1
+    use_topo = False
+
+    # Primero: intentar leer case_config.json (fuente canónica)
+    cfg_path = sim_dir / c / "case_config.json"
+    if cfg_path.exists():
+        try:
+            cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+            base = int(cfg.get("execution", {}).get("grid_size", base))
+        except (json.JSONDecodeError, KeyError, ValueError):
+            pass  # fallback al scraping
+
+    # Fallback: leer validate.py si case_config.json no tenía grid_size
+    path = sim_dir / c / "src" / "validate.py"
+    if base <= 1 and path.exists():
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        m = re.search(r"grid_size\s*=\s*(\d+)", text)
+        if m:
+            base = int(m.group(1))
+
+    # Detectar topology desde validate.py
+    if path.exists():
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if re.search(r"use_topology\s*=\s*True", text):
+            use_topo = True
+
+    scaled = base
+    if grid_mult != 1.0:
+        w = weight_for_grid(base)
+        factor = 1.0 + (grid_mult - 1.0) * w
+        scaled = int(round(base * factor))
+        if scaled < base:
+            scaled = base
+    if use_topo and scaled > 50:
+        scaled = 50
+    print(f"{c} {base} {scaled} {1 if use_topo else 0}")
+PY
+)
+    local max_g=1
+    while read -r c base scaled topo; do
+        [[ -z "$c" ]] && continue
+        CASE_GRID["$c"]="$scaled"
+        CASE_GRID_BASE["$c"]="$base"
+        CASE_TOPOLOGY["$c"]="$topo"
+        if [[ "$scaled" -gt "$max_g" ]]; then
+            max_g="$scaled"
+        fi
+    done <<< "$out"
+    echo "$max_g"
+}
+
+MAX_GRID=$(build_case_grid_map "${ALL_CASES[@]}")
 
 # ── Dividir array en N partes ─────────────────────────────────────────────────
 get_partition() {
@@ -232,9 +310,11 @@ run_batch() {
             echo "  [W${worker_id}] ▶ ${caso}"
             local START=$SECONDS
 
+            local GRID_CASE=${CASE_GRID[$caso]:-}
             (
                 cd "$SRC"
                 export PYTHONIOENCODING=utf-8
+                export HYPER_GRID_SIZE=$GRID_CASE
                 export HYPER_N_PERM=$PERM
                 export HYPER_N_BOOT=$BOOT
                 export HYPER_N_REFINE=$REFINE
@@ -300,11 +380,12 @@ run_batch() {
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  cpu_run.sh — Ejecución paralela CPU (sin GPU/Docker)      ║"
 echo "╠══════════════════════════════════════════════════════════════╣"
-echo "║  Grid:     por caso (validate.py)"
+echo "║  Grid:     por caso (max=${MAX_GRID})"
 echo "║  Parts:    ${PARTS}  $([ $PART -gt 0 ] && echo "(solo parte ${PART})" || echo "(todas)")"
 echo "║  Casos:    ${TOTAL}$( [[ -n "$CASE_FILTER" ]] && echo " (filtro: ${CASE_FILTER})" )"
 echo "║  Workers:  ${WORKERS} (cores: ${NCORES})$( [[ $STEP_BY_STEP -eq 1 ]] && echo " ⇢ SECUENCIAL" )"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
+echo "║  GridMult: ${GRID_MULT} (ponderado)"
 echo "║  SimDir:   ${SIM_DIR}"
 [[ $DRY_RUN -eq 1 ]] && \
 echo "║  *** DRY RUN — no se ejecuta nada ***"
@@ -336,9 +417,11 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
             continue
         fi
         START_CASE=$SECONDS
+        GRID_CASE=${CASE_GRID[$caso]:-}
         (
             cd "$SRC"
             export PYTHONIOENCODING=utf-8
+            export HYPER_GRID_SIZE=$GRID_CASE
             export HYPER_N_PERM=$PERM
             export HYPER_N_BOOT=$BOOT
             export HYPER_N_REFINE=$REFINE

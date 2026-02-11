@@ -21,6 +21,9 @@
 #   ./gpu_run.sh --gpu 0              # solo RTX 5070 Ti
 #   ./gpu_run.sh --gpu 1 --case clima  # solo RTX 2060, caso clima
 #
+#   # Escalado de grid (ponderado por tamaño base)
+#   ./gpu_run.sh --grid-mult 2
+#
 #   # Secuencial: un caso a la vez (para grids enormes que necesitan toda la VRAM)
 #   ./gpu_run.sh --step-by-step
 #   ./gpu_run.sh --step-by-step --gpu 0
@@ -37,6 +40,7 @@
 #   --boot N        Bootstrap samples (default: 5000)
 #   --refine N      Iteraciones refinamiento (default: 50000)
 #   --runs N        N_RUNS para C5 (default: 50)
+#   --grid-mult X   Multiplicador de grid (ponderado por tamaño base)
 #   --container C   Nombre del contenedor Docker (default: tesis-gpu)
 #   --dry-run       Solo muestra el plan, no ejecuta
 #   --help          Muestra este mensaje
@@ -61,6 +65,7 @@ STEP_BY_STEP=0
 CASE_FILTER=""
 FORCE_GPU=-1
 CASE_TIMEOUT=0       # 0 = auto (según grid máximo del lote)
+GRID_MULT="1.0"
 
 # ── Cleanup trap: al cancelar, matar todos los validate.py dentro del contenedor
 cleanup() {
@@ -88,6 +93,7 @@ while [[ $# -gt 0 ]]; do
         --boot)      BOOT="$2";      shift 2 ;;
         --refine)    REFINE="$2";    shift 2 ;;
         --runs)      RUNS="$2";      shift 2 ;;
+        --grid-mult) GRID_MULT="$2"; shift 2 ;;
         --container) CONTAINER="$2"; shift 2 ;;
         --case)      CASE_FILTER="$2"; shift 2 ;;
         --gpu)       FORCE_GPU="$2";   shift 2 ;;
@@ -182,33 +188,69 @@ TOTAL=${#ALL_CASES[@]}
 
 # ── Grid por caso (desde validate.py) ─────────────────────────────────────────
 declare -A CASE_GRID
+declare -A CASE_GRID_BASE
+declare -A CASE_TOPOLOGY
 build_case_grid_map() {
     local cases=("$@")
     local out
-    out=$(SIM_DIR="$SIM_DIR" python3 - <<'PY' "${cases[@]}"
-import os, re, sys, pathlib
+    out=$(SIM_DIR="$SIM_DIR" GRID_MULT="$GRID_MULT" python3 - <<'PY' "${cases[@]}"
+import os, re, sys, pathlib, json
 sim_dir = pathlib.Path(os.environ["SIM_DIR"])
+grid_mult = float(os.environ.get("GRID_MULT", "1.0"))
 cases = sys.argv[1:]
+
+def weight_for_grid(base):
+    if base <= 10:
+        return 0.0
+    return min(1.0, max(0.0, (base - 10) / 15.0))
+
 for c in cases:
-    grid = 1
-    path = sim_dir / c / "src" / "validate.py"
-    if path.exists():
+    base = 1
+    use_topo = False
+
+    # Primero: intentar leer case_config.json (fuente canónica)
+    cfg_path = sim_dir / c / "case_config.json"
+    if cfg_path.exists():
         try:
-            text = path.read_text(encoding="utf-8", errors="ignore")
-            m = re.search(r"grid_size\\s*=\\s*(\\d+)", text)
-            if m:
-                grid = int(m.group(1))
-        except Exception:
-            pass
-    print(f"{c} {grid}")
+            cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+            base = int(cfg.get("execution", {}).get("grid_size", base))
+        except (json.JSONDecodeError, KeyError, ValueError):
+            pass  # fallback al scraping
+
+    # Fallback: leer validate.py si case_config.json no tenía grid_size
+    path = sim_dir / c / "src" / "validate.py"
+    if base <= 1 and path.exists():
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        m = re.search(r"grid_size\s*=\s*(\d+)", text)
+        if m:
+            base = int(m.group(1))
+
+    # Detectar topology desde validate.py
+    if path.exists():
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if re.search(r"use_topology\s*=\s*True", text):
+            use_topo = True
+
+    scaled = base
+    if grid_mult != 1.0:
+        w = weight_for_grid(base)
+        factor = 1.0 + (grid_mult - 1.0) * w
+        scaled = int(round(base * factor))
+        if scaled < base:
+            scaled = base
+    if use_topo and scaled > 50:
+        scaled = 50
+    print(f"{c} {base} {scaled} {1 if use_topo else 0}")
 PY
 )
     local max_g=1
-    while read -r c g; do
+    while read -r c base scaled topo; do
         [[ -z "$c" ]] && continue
-        CASE_GRID["$c"]="$g"
-        if [[ "$g" -gt "$max_g" ]]; then
-            max_g="$g"
+        CASE_GRID["$c"]="$scaled"
+        CASE_GRID_BASE["$c"]="$base"
+        CASE_TOPOLOGY["$c"]="$topo"
+        if [[ "$scaled" -gt "$max_g" ]]; then
+            max_g="$scaled"
         fi
     done <<< "$out"
     echo "$max_g"
@@ -498,6 +540,11 @@ run_batch() {
         local clist="${GPU_CASES[$gid]}"
         gpu_cases_decl+="CASES_GPU_${gid}=(${clist})"$'\n'
     done
+    local grid_map_decl="declare -A CASE_GRID_MAP"$'\n'
+    for c in "${cases[@]}"; do
+        local g="${CASE_GRID[$c]:-1}"
+        grid_map_decl+="CASE_GRID_MAP[\"${c}\"]=${g}"$'\n'
+    done
 
     local inner_script="
 export PYTHONIOENCODING=utf-8
@@ -515,6 +562,7 @@ RESULT_FILE=/tmp/_gpu_results_\${RUN_ID}
 touch \"\$RESULT_FILE\"
 
 ${gpu_cases_decl}
+${grid_map_decl}
 
 # Colas por GPU
 for gid in ${AVAILABLE_GPUS[*]}; do
@@ -561,7 +609,8 @@ gpu_worker() {
         
         # Timeout: matar procesos colgados (OOM, hang en CuPy, etc.)
         local TIMEOUT=${CASE_TIMEOUT}
-        timeout --signal=KILL \$TIMEOUT bash -c 'cd \"\$1\" && HYPER_GPU_DEVICE=\$2 python3 validate.py 2>&1' _ \"\$SRC\" \"\$gpu_id\" | \
+        local GRID_CASE=\${CASE_GRID_MAP[\$caso]:-}
+        timeout --signal=KILL \$TIMEOUT bash -c 'cd \"\$1\" && HYPER_GPU_DEVICE=\$2 HYPER_GRID_SIZE=\$3 python3 validate.py 2>&1' _ \"\$SRC\" \"\$gpu_id\" \"\$GRID_CASE\" | \
             tee \"\$LOG\" | \
             grep --line-buffered -E '(▶|[0-9]/6|FIN)' | \
             sed -u \"s/^/  [W\${worker_id}\\/GPU\${gpu_id}] /\"
@@ -649,6 +698,7 @@ echo "║  GPU 0:    ${GPU0_NAME} — ${GPU0_VRAM} MB"
 echo "║  GPU 1:    ${GPU1_NAME} — ${GPU1_VRAM} MB"
 echo "║  Distrib:  $( [[ $STEP_BY_STEP -eq 1 ]] && { [[ $FORCE_GPU -ge 0 || $N_GPUS -lt 2 ]] && echo "SECUENCIAL — 1 caso a la vez, 1 GPU" || echo "SECUENCIAL — cola compartida, ${N_GPUS} GPUs independientes"; } || echo "cola dinámica — N workers/GPU, overlap CPU+GPU" )"
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
+echo "║  GridMult: ${GRID_MULT} (ponderado)"
 echo "║  Timeout:  ${CASE_TIMEOUT}s por caso"
 echo "║  Contendr: ${CONTAINER}"
 echo "║  VRAM/proc: ~$(estimate_vram_per_process $MAX_GRID) MB"
@@ -755,6 +805,7 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
             
             local SRC="/workspace/repos/Simulaciones/${caso}/src"
             local LOG="${LOG_DIR}/${caso}.log"
+            local GRID_CASE=${CASE_GRID[$caso]:-1}
             
             echo "  [${tag}] ▶ ${caso}"
             if [[ $DRY_RUN -eq 1 ]]; then
@@ -765,6 +816,7 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
             
             local inner="
 export PYTHONIOENCODING=utf-8
+export HYPER_GRID_SIZE=${GRID_CASE}
 export HYPER_N_PERM=${PERM}
 export HYPER_N_BOOT=${BOOT}
 export HYPER_N_REFINE=${REFINE}
