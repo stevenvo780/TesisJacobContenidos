@@ -25,15 +25,12 @@ No requiere Docker ni GPU. Workers paralelos auto-ajustados a los cores disponib
 
 ```bash
 # ─── Básico ───────────────────────────────────────────────────
-./cpu_run.sh                           # 29 casos, grid=200, auto workers
+./cpu_run.sh                           # 29 casos, grid por caso, auto workers
 
 # ─── Caso específico (match parcial, case-insensitive) ────────
 ./cpu_run.sh --case clima              # 01_caso_clima
 ./cpu_run.sh --case deforest           # 16_caso_deforestacion
 ./cpu_run.sh --case falsacion          # 06, 07, 08 (matchea los 3)
-
-# ─── Grid personalizado ──────────────────────────────────────
-./cpu_run.sh --grid 100                # grid 100×100
 
 # ─── Tandas (dividir 29 casos en bloques) ────────────────────
 ./cpu_run.sh --parts 3                 # 3 tandas secuenciales
@@ -42,8 +39,8 @@ No requiere Docker ni GPU. Workers paralelos auto-ajustados a los cores disponib
 # ─── Control de paralelismo ──────────────────────────────────
 ./cpu_run.sh --workers 4               # máximo 4 procesos simultáneos
 
-# ─── Secuencial (grids enormes → toda la RAM para 1 caso) ────
-./cpu_run.sh --step-by-step --grid 2000
+# ─── Secuencial (1 caso a la vez) ───────────────────────────
+./cpu_run.sh --step-by-step
 
 # ─── Previsualizar sin ejecutar ──────────────────────────────
 ./cpu_run.sh --dry-run
@@ -54,7 +51,6 @@ No requiere Docker ni GPU. Workers paralelos auto-ajustados a los cores disponib
 
 | Flag | Default | Descripción |
 |------|---------|-------------|
-| `--grid SIZE` | 200 | Grid size del ABM (N×N celdas) |
 | `--parts N` | 1 | Dividir casos en N tandas |
 | `--part K` | todas | Ejecutar solo la tanda K de N |
 | `--case NOMBRE` | — | Filtrar por nombre (match parcial, case-insensitive) |
@@ -66,7 +62,7 @@ No requiere Docker ni GPU. Workers paralelos auto-ajustados a los cores disponib
 | `--runs N` | 50 | Simulaciones por configuración (C5) |
 | `--dry-run` | off | Solo muestra el plan, no ejecuta nada |
 
-**Logs:** `/tmp/cpu_run_g{GRID}_logs/{caso}.log`
+**Logs:** `/tmp/cpu_run_logs/{caso}.log`
 
 ---
 
@@ -76,29 +72,19 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 
 ```bash
 # ─── Básico ───────────────────────────────────────────────────
-./gpu_run.sh                           # 29 casos, grid=200, ambas GPUs
+./gpu_run.sh                           # 29 casos, grid por caso, ambas GPUs
 
 # ─── Caso específico ─────────────────────────────────────────
 ./gpu_run.sh --case deforest           # 16_caso_deforestacion
-./gpu_run.sh --case deforest --grid 500
-
-# ─── Auto-escalado de grid ───────────────────────────────────
-# Sin --grid explícito: grid = 200 × parts
-./gpu_run.sh --parts 2                 # grid=400, 2 tandas de ~15
-./gpu_run.sh --parts 5                 # grid=1000, 5 tandas de ~6
-./gpu_run.sh --parts 10                # grid=2000, 10 tandas de ~3
-
-# ─── Grid explícito (desactiva auto-escalado) ────────────────
-./gpu_run.sh --grid 1000 --parts 5
-./gpu_run.sh --grid 2000 --case deforest
+./gpu_run.sh --case deforest
 
 # ─── Forzar una GPU específica ───────────────────────────────
 ./gpu_run.sh --gpu 0                   # solo RTX 5070 Ti (16 GB)
 ./gpu_run.sh --gpu 1 --case clima      # solo RTX 2060 (6 GB)
 
-# ─── Secuencial (grids enormes → toda la VRAM para 1 caso/GPU) ──
-./gpu_run.sh --step-by-step --grid 5000           # 2 GPUs: 2 casos simultáneos (1/GPU)
-./gpu_run.sh --step-by-step --gpu 0 --grid 3000   # 1 GPU: puramente secuencial
+# ─── Secuencial (1 caso/GPU a la vez) ─────────────────────────
+./gpu_run.sh --step-by-step                        # 2 GPUs: 2 casos simultáneos (1/GPU)
+./gpu_run.sh --step-by-step --gpu 0                # 1 GPU: puramente secuencial
 
 # ─── Previsualizar sin ejecutar ──────────────────────────────
 ./gpu_run.sh --dry-run
@@ -109,8 +95,7 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 
 | Flag | Default | Descripción |
 |------|---------|-------------|
-| `--grid SIZE` | auto (200×parts) | Grid size del ABM. Sin `--grid`: auto-escala con `--parts` |
-| `--parts N` | 1 | Dividir en N tandas (1–10). Sin `--grid`: auto grid=200×N |
+| `--parts N` | 1 | Dividir en N tandas (1–10) |
 | `--part K` | todas | Ejecutar solo la tanda K de N |
 | `--case NOMBRE` | — | Filtrar por nombre (match parcial, case-insensitive) |
 | `--gpu N` | auto | Forzar GPU N (0 o 1). Auto = ambas GPUs |
@@ -122,7 +107,7 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 | `--container C` | tesis-gpu | Nombre del contenedor Docker |
 | `--dry-run` | off | Solo muestra el plan, no ejecuta nada |
 
-**Logs:** `docker exec tesis-gpu ls /tmp/gpu_run_g{GRID}_logs/`
+**Logs:** `docker exec tesis-gpu ls /tmp/gpu_run_logs/`
 
 ---
 
@@ -130,11 +115,11 @@ Ejecuta dentro del contenedor Docker `tesis-gpu`. Distribución multi-GPU dinám
 
 | Situación | Comando recomendado |
 |-----------|---------------------|
-| Desarrollo rápido / debug de un caso | `cpu_run.sh --case NOMBRE --grid 50` |
+| Desarrollo rápido / debug de un caso | `cpu_run.sh --case NOMBRE` |
 | Validación completa de los 29 casos | `gpu_run.sh` |
-| Auditoría con grid grande (500-1000) | `gpu_run.sh --parts 5` |
-| Grid enorme (2000+) para un caso | `gpu_run.sh --step-by-step --case NOMBRE --grid 2000` |
-| Sin GPU disponible | `cpu_run.sh --grid 200` |
+| Sensibilidad de grid en un caso | Editar `grid_size` en `validate.py` del caso |
+| Secuencial (1 caso por GPU) | `gpu_run.sh --step-by-step --case NOMBRE` |
+| Sin GPU disponible | `cpu_run.sh` |
 | Prueba rápida (params mínimos) | `--runs 5 --perm 99 --boot 100 --refine 100` |
 | Verificar plan sin ejecutar | `--dry-run` (disponible en ambos) |
 

@@ -129,6 +129,10 @@ def simulate_abm_core(
         # Fallback transparente a CPU
         from abm_core import simulate_abm_core as _cpu_version
         return _cpu_version(params, steps, seed, series_key, init_range)
+    if params.get("adjacency_matrix") is not None:
+        # Topología no soportada en GPU: fallback a CPU
+        from abm_core import simulate_abm_core as _cpu_version
+        return _cpu_version(params, steps, seed, series_key, init_range)
     
     _xp = xp
     rng = get_rng(seed)
@@ -356,6 +360,18 @@ def simulate_abm_batch(
         Series principales de todas las B simulaciones. Ya en CPU (NumPy).
     """
     if not using_gpu():
+        results = []
+        for pv in param_variants:
+            p = dict(base_params)
+            p.update(pv)
+            p["assimilation_strength"] = 0.0
+            p["assimilation_series"] = None
+            p["_store_grid"] = False
+            from abm_core import simulate_abm_core as _cpu_fn
+            sim = _cpu_fn(p, steps, seed=seed, series_key=series_key, init_range=init_range)
+            results.append(sim[series_key][:steps])
+        return np.array(results, dtype=np.float64)
+    if base_params.get("adjacency_matrix") is not None:
         results = []
         for pv in param_variants:
             p = dict(base_params)

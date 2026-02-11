@@ -1,8 +1,8 @@
 {
   "case": "Contaminaci\u00f3n PM2.5",
-  "generated_at": "2026-02-11T00:56:29.646012Z",
+  "generated_at": "2026-02-11T01:38:37.657665Z",
   "git": {
-    "commit": "bed9da48e38d20b7cee4d5623171370b0e562395",
+    "commit": "262d3fea5bbdb1aaf187aa7d89dc0c2b2fdccf30",
     "dirty": true
   },
   "phases": {
@@ -48,15 +48,15 @@
         "ode_obs": -0.5420677020020942
       },
       "edi": {
-        "value": 0.180628340164958,
-        "bootstrap_mean": 0.18270664767439124,
-        "ci_lo": 0.16667618416803576,
-        "ci_hi": 0.20485960566823638,
+        "value": -1.0,
+        "bootstrap_mean": -2.0997814852304924,
+        "ci_lo": -2.8755699807000683,
+        "ci_hi": -1.5547500737588864,
         "valid": false,
-        "weighted_value": 0.0361256680329916,
+        "weighted_value": -0.2,
         "loe_factor": 0.2,
-        "permutation_pvalue": 0.994994994994995,
-        "permutation_null_95": 0.18591026783749695,
+        "permutation_pvalue": 1.0,
+        "permutation_null_95": -1.0,
         "permutation_significant": false,
         "trend_bias": {
           "detrended_edi": null,
@@ -103,10 +103,11 @@
         "pass": true
       },
       "emergence": {
-        "err_reduced": 3.0254932802018604,
+        "err_reduced": 0.8190406615645036,
+        "err_abm_no_ode": 3.0254932802018604,
         "err_abm": 2.479003450818764,
         "threshold": 0.15998515033725796,
-        "pass": true,
+        "pass": false,
         "significance": "computed"
       },
       "coupling_check": true,
@@ -165,18 +166,18 @@
         "symploke_pass": true,
         "non_locality_pass": true,
         "persistence_pass": true,
-        "emergence_pass": true,
+        "emergence_pass": false,
         "coupling_ok": true,
         "rmse_fraud_check": true,
         "edi_valid": false,
         "cr_valid": false
       },
       "emergence_taxonomy": {
-        "category": "trend",
-        "nivel": 1,
+        "category": "null",
+        "nivel": 0,
         "ode_quality": "moderate",
         "ode_obs_corr": -0.5420677020020942,
-        "interpretation": "Tendencia no confirmada (Nivel 1): EDI positivo pero sin significancia estad\u00edstica"
+        "interpretation": "Sin cierre operativo (Nivel 0): sin evidencia de constricci\u00f3n macro efectiva"
       },
       "synthetic_meta": {
         "ode_true": {
@@ -229,16 +230,16 @@
         "ode_obs": 0.4875018508884185
       },
       "edi": {
-        "value": 0.05500080594768001,
-        "bootstrap_mean": 0.054349757351962485,
-        "ci_lo": 0.02866198815650549,
-        "ci_hi": 0.07377205770136497,
+        "value": -0.08922249155492158,
+        "bootstrap_mean": -0.13393889370585152,
+        "ci_lo": -0.6034250895095887,
+        "ci_hi": 0.2369378701338372,
         "valid": false,
-        "weighted_value": 0.011000161189536003,
+        "weighted_value": -0.01784449831098432,
         "loe_factor": 0.2,
-        "permutation_pvalue": 0.031031031031031032,
-        "permutation_null_95": 0.05257021140537407,
-        "permutation_significant": true,
+        "permutation_pvalue": 0.07307307307307308,
+        "permutation_null_95": -0.08206646688590427,
+        "permutation_significant": false,
         "trend_bias": {
           "detrended_edi": null,
           "trend_ratio": null,
@@ -284,7 +285,8 @@
         "pass": true
       },
       "emergence": {
-        "err_reduced": 3.79732780206538,
+        "err_reduced": 3.2945259029507574,
+        "err_abm_no_ode": 3.79732780206538,
         "err_abm": 3.588471712504252,
         "threshold": 0.6566790865366412,
         "pass": false,
@@ -353,11 +355,11 @@
         "cr_valid": false
       },
       "emergence_taxonomy": {
-        "category": "suggestive",
-        "nivel": 2,
+        "category": "null",
+        "nivel": 0,
         "ode_quality": "moderate",
         "ode_obs_corr": 0.4875018508884185,
-        "interpretation": "Cierre sugestivo (Nivel 2): EDI positivo y significativo pero muy bajo"
+        "interpretation": "Sin cierre operativo (Nivel 0): sin evidencia de constricci\u00f3n macro efectiva"
       }
     }
   }

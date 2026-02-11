@@ -25,7 +25,7 @@ def main():
         case_name="Políticas Estratégicas (Bass Diffusion + Inertia)",
         value_col="value",
         series_key="s",
-        grid_size=50,             # 50×50 = 2500 agentes (antes 7×7=49!)
+        grid_size=7,              # 7×7 = 49 agentes (Bass diffusion en red pequeña)
         persistence_window=24,
         synthetic_start="1990-01-01",
         synthetic_end="2020-01-01", # 30 years monthly
@@ -36,7 +36,7 @@ def main():
         corr_threshold=0.5,
         n_runs=15,                # 15 réplicas (antes 5 default)
         extra_base_params={
-            "n_agents": 2500,     # Consistente con grid 50×50
+            "n_agents": 49,       # Consistente con grid 7×7
             "abm_p": 0.01,
             "abm_q": 0.3,
             "ode_alpha": 0.05,

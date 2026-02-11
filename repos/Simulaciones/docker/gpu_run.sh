@@ -4,7 +4,7 @@
 # Uso:
 #   bash repos/Simulaciones/docker/gpu_run.sh 16_caso_deforestacion
 #   bash repos/Simulaciones/docker/gpu_run.sh all    # Ejecutar los 6 escalables
-#   bash repos/Simulaciones/docker/gpu_run.sh 16_caso_deforestacion "HYPER_GRID_SIZE=500"
+#   bash repos/Simulaciones/docker/gpu_run.sh 16_caso_deforestacion "HYPER_N_RUNS=25"
 
 set -euo pipefail
 
@@ -35,11 +35,10 @@ run_case() {
     local src="/workspace/repos/Simulaciones/${case}/src"
     echo ""
     echo "▶ $case"
-    echo "  $(date +%H:%M:%S) — Iniciando (GPU batch, grid=${HYPER_GRID_SIZE:-500})..."
+    echo "  $(date +%H:%M:%S) — Iniciando (GPU batch)..."
     
     local START_T=$SECONDS
     docker exec -w "$src" \
-        -e "HYPER_GRID_SIZE=${HYPER_GRID_SIZE:-500}" \
         -e "HYPER_N_PERM=${HYPER_N_PERM:-9999}" \
         -e "HYPER_N_BOOT=${HYPER_N_BOOT:-5000}" \
         -e "HYPER_N_REFINE=${HYPER_N_REFINE:-50000}" \

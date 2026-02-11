@@ -1,6 +1,6 @@
 {
   "case": "Acidificaci\u00f3n Oce\u00e1nica (CO2SYS + Revelle Factor)",
-  "generated_at": "2026-02-11T01:03:28.516057Z",
+  "generated_at": "2026-02-11T01:41:32.168993Z",
   "git": {
     "commit": null,
     "dirty": null
@@ -48,15 +48,15 @@
         "ode_obs": 0.09834530713318698
       },
       "edi": {
-        "value": -0.26987331976158957,
-        "bootstrap_mean": -0.2704980482430789,
-        "ci_lo": -0.2951583727276254,
-        "ci_hi": -0.248377176363364,
+        "value": 0.1124455603482909,
+        "bootstrap_mean": 0.11264935377550384,
+        "ci_lo": 0.09183399880202882,
+        "ci_hi": 0.1349900719754731,
         "valid": false,
-        "weighted_value": -0.05397466395231792,
+        "weighted_value": 0.02248911206965818,
         "loe_factor": 0.2,
-        "permutation_pvalue": 0.8620086200862008,
-        "permutation_null_95": -0.2495244972002358,
+        "permutation_pvalue": 0.07501075010750108,
+        "permutation_null_95": 0.11377918516559359,
         "permutation_significant": false,
         "trend_bias": {
           "detrended_edi": null,
@@ -101,10 +101,11 @@
         "pass": true
       },
       "emergence": {
-        "err_reduced": 1.413523395736175,
+        "err_reduced": 2.0224062512813945,
+        "err_abm_no_ode": 1.413523395736175,
         "err_abm": 1.7949956471041717,
         "threshold": 0.20213960319389712,
-        "pass": false,
+        "pass": true,
         "significance": "computed"
       },
       "coupling_check": true,
@@ -163,18 +164,18 @@
         "symploke_pass": true,
         "non_locality_pass": true,
         "persistence_pass": true,
-        "emergence_pass": false,
+        "emergence_pass": true,
         "coupling_ok": true,
         "rmse_fraud_check": true,
         "edi_valid": false,
         "cr_valid": true
       },
       "emergence_taxonomy": {
-        "category": "null",
-        "nivel": 0,
+        "category": "trend",
+        "nivel": 1,
         "ode_quality": "poor",
         "ode_obs_corr": 0.09834530713318698,
-        "interpretation": "Sin cierre operativo (Nivel 0): sin evidencia de constricci\u00f3n macro efectiva"
+        "interpretation": "Tendencia no confirmada (Nivel 1): EDI positivo pero sin significancia estad\u00edstica"
       },
       "synthetic_meta": {
         "model": "CO2SYS-simplified (Zeebe & Wolf-Gladrow)",
@@ -225,18 +226,18 @@
         "ode_obs": -0.39687584708581874
       },
       "edi": {
-        "value": -2.3681202012108954e-05,
-        "bootstrap_mean": -3.396517735956068e-05,
-        "ci_lo": -0.0001196266998808652,
-        "ci_hi": -3.4102742379913523e-06,
+        "value": -0.021075058641575887,
+        "bootstrap_mean": -0.02440310247340711,
+        "ci_lo": -0.044527546231606006,
+        "ci_hi": -0.014878252543803505,
         "valid": false,
-        "weighted_value": -4.736240402421791e-06,
+        "weighted_value": -0.0042150117283151775,
         "loe_factor": 0.2,
-        "permutation_pvalue": 0.0,
-        "permutation_null_95": -4.745402851911376e-05,
+        "permutation_pvalue": 0.999029990299903,
+        "permutation_null_95": -0.006967884017538261,
         "permutation_significant": false,
         "trend_bias": {
-          "detrended_edi": -0.0,
+          "detrended_edi": -0.0211,
           "trend_ratio": 1.0,
           "trend_r2": 0.861,
           "warning": false
@@ -278,7 +279,8 @@
         "pass": true
       },
       "emergence": {
-        "err_reduced": 3.3431422613193953,
+        "err_reduced": 3.274217113279034,
+        "err_abm_no_ode": 3.3431422613193953,
         "err_abm": 3.343221430946641,
         "threshold": 0.46511087001096496,
         "pass": false,

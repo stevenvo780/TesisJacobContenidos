@@ -57,7 +57,7 @@ def main():
         value_col="value",
         driver_cols=[],  # Dataset univariado (WorldBank AG.CON.FERT.ZS)
         series_key="ph",
-        grid_size=25,
+        grid_size=20,
         persistence_window=5,
         synthetic_start="1960-01-01",
         synthetic_end="2022-01-01",

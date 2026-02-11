@@ -56,7 +56,7 @@ def main():
         case_name="Salinización de Suelos (Richards-Solute)",
         value_col="value",
         series_key="sl",
-        grid_size=50,             # 50×50 = 2500 agentes (antes 25×25=625)
+        grid_size=25,             # 25×25 = 625 parcelas (consistente con README)
         persistence_window=5,
         synthetic_start="1961-01-01",
         synthetic_end="2022-01-01",

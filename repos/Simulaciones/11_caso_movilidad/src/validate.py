@@ -33,6 +33,7 @@ def main():
         real_end="2023-01-01",
         real_split="2005-01-01",
         corr_threshold=0.6,
+        ode_calibration=True,
         extra_base_params={"n_nodes": 50, "n_agents": 200},
         driver_cols=["gdp_per_capita", "air_departures"],  # WB: GDP + tráfico aéreo
     )

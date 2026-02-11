@@ -63,7 +63,7 @@ def main():
         value_col="value",
         driver_cols=[],  # Dataset univariado (WorldBank AG.LND.FRST.ZS)
         series_key="d",
-        grid_size=50,             # 50×50 = 2500 agentes (antes 25×25=625)
+        grid_size=25,             # 25×25 = 625 parcelas (consistente con README)
         persistence_window=5,
         synthetic_start="1990-01-01",
         synthetic_end="2022-01-01",

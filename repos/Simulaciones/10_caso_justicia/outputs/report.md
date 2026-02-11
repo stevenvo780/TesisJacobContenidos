@@ -1,38 +1,38 @@
 # Reporte de Validación — Justicia Algorítmica
 
-- generated_at: 2026-02-11T00:45:08.323888Z
+- generated_at: 2026-02-11T01:18:31.894576Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.4366
-- bootstrap_mean: -0.4378
-- CI 95%: [-0.4880, -0.3938]
-- weighted_value (LoE factor 0.20): -0.0873
+- valor: 0.0139
+- bootstrap_mean: 0.0138
+- CI 95%: [0.0121, 0.0154]
+- weighted_value (LoE factor 0.20): 0.0028
 - válido (0.30-0.90): False
-- detrended_edi: -0.4366
+- detrended_edi: 0.0139
 - trend_ratio: 1.000
 - trend_r2: 0.938
 
 ### Symploké y CR
-- internal: 0.9984
-- external: 0.9596
-- CR: 1.0404
+- internal: 0.9999
+- external: 0.9998
+- CR: 1.0001
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: False
-- c2_robustness: False
+- c1_convergence: True
+- c2_robustness: True
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.3765
-- rmse_abm_no_ode: 0.9582
-- rmse_ode: 1.5376
-- rmse_reduced: 0.9582
+- rmse_abm: 0.5519
+- rmse_abm_no_ode: 0.5597
+- rmse_ode: 1.4309
+- rmse_reduced: 1.9358
 - threshold: 0.2854
 
 ### Calibración
@@ -48,35 +48,35 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
+**Nivel 2 — Cierre operativo suggestive.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0000
-- bootstrap_mean: 0.0000
-- CI 95%: [0.0000, 0.0000]
-- weighted_value (LoE factor 0.20): 0.0000
+- valor: 0.1687
+- bootstrap_mean: 0.1729
+- CI 95%: [0.0615, 0.3044]
+- weighted_value (LoE factor 0.20): 0.0337
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9742
-- external: 0.9244
-- CR: 1.0540
+- internal: 0.9999
+- external: 0.9969
+- CR: 1.0030
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
-- c1_convergence: False
-- c2_robustness: False
+- c1_convergence: True
+- c2_robustness: True
 - c3_replication: True
-- c4_validity: False
+- c4_validity: True
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.8889
-- rmse_abm_no_ode: 1.8889
-- rmse_ode: 1.5943
+- rmse_abm: 0.4288
+- rmse_abm_no_ode: 0.5159
+- rmse_ode: 1.3926
 - rmse_reduced: 1.8889
 - threshold: 0.3262
 
@@ -93,5 +93,5 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
+**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 

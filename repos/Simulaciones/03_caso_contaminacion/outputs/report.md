@@ -1,15 +1,15 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-11T00:56:29.646012Z
+- generated_at: 2026-02-11T01:38:37.657665Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.1806
-- bootstrap_mean: 0.1827
-- CI 95%: [0.1667, 0.2049]
-- weighted_value (LoE factor 0.20): 0.0361
+- valor: -1.0000
+- bootstrap_mean: -2.0998
+- CI 95%: [-2.8756, -1.5548]
+- weighted_value (LoE factor 0.20): -0.2000
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -45,16 +45,16 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0550
-- bootstrap_mean: 0.0543
-- CI 95%: [0.0287, 0.0738]
-- weighted_value (LoE factor 0.20): 0.0110
+- valor: -0.0892
+- bootstrap_mean: -0.1339
+- CI 95%: [-0.6034, 0.2369]
+- weighted_value (LoE factor 0.20): -0.0178
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -90,5 +90,5 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 2 — Cierre operativo suggestive.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
+**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
 

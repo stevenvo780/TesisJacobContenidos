@@ -1,15 +1,15 @@
 # Reporte de Validación — Acidificación Oceánica (CO2SYS + Revelle Factor)
 
-- generated_at: 2026-02-11T01:03:28.516057Z
+- generated_at: 2026-02-11T01:41:32.168993Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.2699
-- bootstrap_mean: -0.2705
-- CI 95%: [-0.2952, -0.2484]
-- weighted_value (LoE factor 0.20): -0.0540
+- valor: 0.1124
+- bootstrap_mean: 0.1126
+- CI 95%: [0.0918, 0.1350]
+- weighted_value (LoE factor 0.20): 0.0225
 - válido (0.30-0.90): False
 
 ### Symploké y CR
@@ -45,18 +45,18 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 0 — Sin cierre operativo.** No se detecta constricción macro→micro significativa con los datos y parámetros actuales.
+**Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 
 ## Fase real
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0000
-- bootstrap_mean: -0.0000
-- CI 95%: [-0.0001, -0.0000]
-- weighted_value (LoE factor 0.20): -0.0000
+- valor: -0.0211
+- bootstrap_mean: -0.0244
+- CI 95%: [-0.0445, -0.0149]
+- weighted_value (LoE factor 0.20): -0.0042
 - válido (0.30-0.90): False
-- detrended_edi: -0.0000
+- detrended_edi: -0.0211
 - trend_ratio: 1.000
 - trend_r2: 0.861
 

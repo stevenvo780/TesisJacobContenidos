@@ -10,30 +10,25 @@
 #   # Todos los 29 casos en paralelo (workers = min(nproc, casos))
 #   ./cpu_run.sh
 #
-#   # Con grid personalizado
-#   ./cpu_run.sh --grid 100
-#
 #   # Dividir en tandas
 #   ./cpu_run.sh --parts 3
 #   ./cpu_run.sh --parts 5 --part 2   # solo tanda 2 de 5
 #
 #   # Caso específico (match parcial, case-insensitive)
 #   ./cpu_run.sh --case clima
-#   ./cpu_run.sh --case deforest --grid 300
 #   ./cpu_run.sh --case falsacion      # matchea los 3 falsación
 #
 #   # Limitar workers paralelos
 #   ./cpu_run.sh --workers 4
 #
 #   # Secuencial: un caso a la vez (para grids enormes que usan toda la RAM)
-#   ./cpu_run.sh --step-by-step --grid 2000
+#   ./cpu_run.sh --step-by-step
 #
 #   # Dry-run
 #   ./cpu_run.sh --dry-run
 #
 # ── FLAGS ─────────────────────────────────────────────────────────────────────
 #
-#   --grid SIZE     Grid size del ABM (default: 200)
 #   --parts N       Dividir en N tandas (default: 1 = todos de golpe)
 #   --part K        Ejecutar solo tanda K de N (default: todas)
 #   --case NOMBRE   Filtrar casos por nombre (match parcial, case-insensitive)
@@ -54,7 +49,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SIM_DIR="$(cd "$SCRIPT_DIR/../Simulaciones" && pwd)"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
-GRID=200
 PARTS=1
 PART=0
 PERM=9999
@@ -81,7 +75,6 @@ trap cleanup INT TERM
 # ── Parse args ────────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --grid)      GRID="$2";        shift 2 ;;
         --parts)     PARTS="$2";       shift 2 ;;
         --part)      PART="$2";        shift 2 ;;
         --perm)      PERM="$2";        shift 2 ;;
@@ -196,7 +189,7 @@ run_batch() {
 
     echo "  Workers: ${nw} (CPU: ${NCORES} cores)"
     echo "  Modo: cola dinámica — ${nw} procesos paralelos"
-    echo "  Logs: /tmp/cpu_run_g${GRID}_logs/  (tail -f para detalle)"
+    echo "  Logs: /tmp/cpu_run_logs/  (tail -f para detalle)"
 
     if [[ $DRY_RUN -eq 1 ]]; then
         echo "  [DRY-RUN] ${ncases} casos → ${nw} workers"
@@ -204,7 +197,7 @@ run_batch() {
         return 0
     fi
 
-    local LOG_DIR="/tmp/cpu_run_g${GRID}_logs"
+    local LOG_DIR="/tmp/cpu_run_logs"
     mkdir -p "$LOG_DIR"
 
     local QUEUE_FILE=$(mktemp /tmp/_cpu_queue_XXXXXX)
@@ -242,7 +235,6 @@ run_batch() {
             (
                 cd "$SRC"
                 export PYTHONIOENCODING=utf-8
-                export HYPER_GRID_SIZE=$GRID
                 export HYPER_N_PERM=$PERM
                 export HYPER_N_BOOT=$BOOT
                 export HYPER_N_REFINE=$REFINE
@@ -308,7 +300,7 @@ run_batch() {
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  cpu_run.sh — Ejecución paralela CPU (sin GPU/Docker)      ║"
 echo "╠══════════════════════════════════════════════════════════════╣"
-echo "║  Grid:     ${GRID}×${GRID}"
+echo "║  Grid:     por caso (validate.py)"
 echo "║  Parts:    ${PARTS}  $([ $PART -gt 0 ] && echo "(solo parte ${PART})" || echo "(todas)")"
 echo "║  Casos:    ${TOTAL}$( [[ -n "$CASE_FILTER" ]] && echo " (filtro: ${CASE_FILTER})" )"
 echo "║  Workers:  ${WORKERS} (cores: ${NCORES})$( [[ $STEP_BY_STEP -eq 1 ]] && echo " ⇢ SECUENCIAL" )"
@@ -325,7 +317,7 @@ START_GLOBAL=$SECONDS
 if [[ $STEP_BY_STEP -eq 1 ]]; then
     # ── Modo secuencial: un caso a la vez, toda la RAM disponible ──
     echo "═══ Modo SECUENCIAL — ${TOTAL} casos, 1 a la vez ═══"
-    LOG_DIR="/tmp/cpu_run_g${GRID}_logs"
+    LOG_DIR="/tmp/cpu_run_logs"
     mkdir -p "$LOG_DIR"
     TOTAL_OK=0; TOTAL_FAIL=0; TOTAL_SKIP=0
     for ((i=0; i<TOTAL; i++)); do
@@ -347,7 +339,6 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
         (
             cd "$SRC"
             export PYTHONIOENCODING=utf-8
-            export HYPER_GRID_SIZE=$GRID
             export HYPER_N_PERM=$PERM
             export HYPER_N_BOOT=$BOOT
             export HYPER_N_REFINE=$REFINE
@@ -391,5 +382,5 @@ ELAPSED_GLOBAL=$(( SECONDS - START_GLOBAL ))
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  COMPLETADO en ${ELAPSED_GLOBAL}s                          "
-echo "║  Logs: ls /tmp/cpu_run_g${GRID}_logs/"
+echo "║  Logs: ls /tmp/cpu_run_logs/"
 echo "╚══════════════════════════════════════════════════════════════╝"

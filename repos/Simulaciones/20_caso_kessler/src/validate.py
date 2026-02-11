@@ -39,6 +39,7 @@ def main():
         real_end="2023-01-01",
         real_split="2005-01-01",
         corr_threshold=0.5,
+        ode_calibration=True,
         extra_base_params={
             # n_shells=10: bandas de altitud 200-2000km en 10 segmentos (NASA ORDEM 3.2)
             "n_shells": 10,

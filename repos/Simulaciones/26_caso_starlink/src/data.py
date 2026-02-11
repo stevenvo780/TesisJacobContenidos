@@ -13,8 +13,8 @@ from enhanced_data_fetchers import fetch_celestrak_satcat_timeseries, fetch_cele
 
 
 def fetch_data(cache_path=None, start_date=None, end_date=None, refresh=False):
-    start_date = start_date or "2018-01-01"
-    end_date = end_date or "2023-12-31"
+    start_date = start_date or "2019-01-01"
+    end_date = end_date or "2024-06-01"
 
     if cache_path and not refresh and os.path.exists(cache_path):
         df = pd.read_csv(cache_path, parse_dates=["date"])

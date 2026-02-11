@@ -61,7 +61,7 @@ def main():
         case_name="Microplásticos Oceánicos (Jambeck Persistent Accumulation)",
         value_col="value",
         series_key="mp",
-        grid_size=50,             # 50×50 = 2500 agentes (antes 25×25=625)
+        grid_size=20,             # 20×20 = 400 celdas (consistente con README)
         persistence_window=12,
         synthetic_start="1980-01-01",
         synthetic_end="2020-12-01",

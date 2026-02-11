@@ -62,7 +62,7 @@ def main():
         case_name="Erosión Dialéctica (Abrams-Strogatz)",
         value_col="value",
         series_key="ed",
-        grid_size=25,
+        grid_size=20,
         persistence_window=12,
         synthetic_start="2005-01-01",
         synthetic_end="2023-12-01",

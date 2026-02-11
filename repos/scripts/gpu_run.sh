@@ -8,38 +8,26 @@
 #
 # ── USO ───────────────────────────────────────────────────────────────────────
 #
-#   # Todo de golpe (29 en paralelo, grid=200 — ambas GPUs auto)
+#   # Todo de golpe (29 en paralelo, grid por caso)
 #   ./gpu_run.sh
-#
-#   # AUTO-ESCALADO: grid = 200 × parts (si no se pasa --grid)
-#   ./gpu_run.sh --parts 2          # grid=400 auto, 2 tandas de ~15
-#   ./gpu_run.sh --parts 3          # grid=600 auto, 3 tandas de ~10
-#   ./gpu_run.sh --parts 5          # grid=1000 auto, 5 tandas de ~6
-#
-#   # Forzar grid explícito (desactiva auto-escalado)
-#   ./gpu_run.sh --grid 500 --parts 2
-#   ./gpu_run.sh --grid 1000 --parts 5 --part 3
 #
 #   # Dry-run (muestra plan sin ejecutar)
 #   ./gpu_run.sh --parts 5 --dry-run
 #
 #   # Ejecutar solo un caso específico (match parcial, case-insensitive)
 #   ./gpu_run.sh --case clima
-#   ./gpu_run.sh --case deforestacion --grid 500
 #
 #   # Forzar uso de una sola GPU
 #   ./gpu_run.sh --gpu 0              # solo RTX 5070 Ti
 #   ./gpu_run.sh --gpu 1 --case clima  # solo RTX 2060, caso clima
 #
 #   # Secuencial: un caso a la vez (para grids enormes que necesitan toda la VRAM)
-#   ./gpu_run.sh --step-by-step --grid 5000
-#   ./gpu_run.sh --step-by-step --gpu 0 --grid 3000
+#   ./gpu_run.sh --step-by-step
+#   ./gpu_run.sh --step-by-step --gpu 0
 #
 # ── FLAGS ─────────────────────────────────────────────────────────────────────
 #
-#   --grid SIZE     Grid size del ABM (default: auto = 200 × parts)
 #   --parts N       Dividir en N tandas (1-10, default: 1 = todos de golpe)
-#                   Sin --grid: auto-escala grid = 200 × N
 #   --part K        Ejecutar solo tanda K de N (default: todas)
 #   --case NOMBRE   Filtrar casos por nombre (match parcial, case-insensitive)
 #                   Ej: --case clima → 01_caso_clima
@@ -56,9 +44,11 @@
 # ══════════════════════════════════════════════════════════════════════════════
 set -euo pipefail
 
+# ── Rutas ─────────────────────────────────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SIM_DIR="$(cd "$SCRIPT_DIR/../Simulaciones" && pwd)"
+
 # ── Defaults ──────────────────────────────────────────────────────────────────
-GRID=200
-GRID_EXPLICIT=0
 PARTS=1
 PART=0          # 0 = todas las partes
 PERM=9999
@@ -70,7 +60,7 @@ DRY_RUN=0
 STEP_BY_STEP=0
 CASE_FILTER=""
 FORCE_GPU=-1
-CASE_TIMEOUT=0       # 0 = auto (grid²/300, min 600s, max 14400s)
+CASE_TIMEOUT=0       # 0 = auto (según grid máximo del lote)
 
 # ── Cleanup trap: al cancelar, matar todos los validate.py dentro del contenedor
 cleanup() {
@@ -92,7 +82,6 @@ GPU1_VRAM=6144
 # ── Parse args ────────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --grid)      GRID="$2"; GRID_EXPLICIT=1; shift 2 ;;
         --parts)     PARTS="$2";     shift 2 ;;
         --part)      PART="$2";      shift 2 ;;
         --perm)      PERM="$2";      shift 2 ;;
@@ -112,20 +101,8 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# ── Auto timeout por grid ─────────────────────────────────────────────────────
-# Si no se especificó --timeout, calcular auto: grid²/300, clamped [600, 14400]
-if [[ $CASE_TIMEOUT -eq 0 ]]; then
-    CASE_TIMEOUT=$(( GRID * GRID / 300 ))
-    [[ $CASE_TIMEOUT -lt 600 ]] && CASE_TIMEOUT=600
-    [[ $CASE_TIMEOUT -gt 14400 ]] && CASE_TIMEOUT=14400
-fi
-
-# ── Auto-escalado de grid ─────────────────────────────────────────────────────
-BASE_GRID=200
-if [[ $GRID_EXPLICIT -eq 0 && $PARTS -gt 1 ]]; then
-    GRID=$(( BASE_GRID * PARTS ))
-    echo "[auto-grid] grid = ${BASE_GRID} × ${PARTS} partes = ${GRID}"
-fi
+# ── Auto timeout por lote ────────────────────────────────────────────────────
+# Si no se especificó --timeout, se calcula tras resolver grids por caso.
 
 # ── Detectar GPUs ─────────────────────────────────────────────────────────────
 detect_gpus() {
@@ -203,6 +180,53 @@ fi
 
 TOTAL=${#ALL_CASES[@]}
 
+# ── Grid por caso (desde validate.py) ─────────────────────────────────────────
+declare -A CASE_GRID
+build_case_grid_map() {
+    local cases=("$@")
+    local out
+    out=$(SIM_DIR="$SIM_DIR" python3 - <<'PY' "${cases[@]}"
+import os, re, sys, pathlib
+sim_dir = pathlib.Path(os.environ["SIM_DIR"])
+cases = sys.argv[1:]
+for c in cases:
+    grid = 1
+    path = sim_dir / c / "src" / "validate.py"
+    if path.exists():
+        try:
+            text = path.read_text(encoding="utf-8", errors="ignore")
+            m = re.search(r"grid_size\\s*=\\s*(\\d+)", text)
+            if m:
+                grid = int(m.group(1))
+        except Exception:
+            pass
+    print(f"{c} {grid}")
+PY
+)
+    local max_g=1
+    while read -r c g; do
+        [[ -z "$c" ]] && continue
+        CASE_GRID["$c"]="$g"
+        if [[ "$g" -gt "$max_g" ]]; then
+            max_g="$g"
+        fi
+    done <<< "$out"
+    echo "$max_g"
+}
+
+grid_timeout() {
+    local g=$1
+    local t=$(( g * g / 300 ))
+    [[ $t -lt 600 ]] && t=600
+    [[ $t -gt 14400 ]] && t=14400
+    echo "$t"
+}
+
+MAX_GRID=$(build_case_grid_map "${ALL_CASES[@]}")
+if [[ $CASE_TIMEOUT -eq 0 ]]; then
+    CASE_TIMEOUT=$(grid_timeout "$MAX_GRID")
+fi
+
 # ── VRAM estimada por proceso (MB) ───────────────────────────────────────────
 # Replica la lógica de abm_core_gpu.py con márgenes más conservadores:
 #   1) Contexto CuPy+CUDA: ~900 MB (medido empíricamente, incluye runtime,
@@ -246,58 +270,59 @@ get_partition() {
     echo "${_arr[@]:$start:$((end - start))}"
 }
 
-# ── Pre-asignar GPUs proporcionalmente a VRAM libre ──────────────────────────
-# Evita race condition: si 29 procesos arrancan juntos, todos verían la misma
-# VRAM libre y elegirían la misma GPU. Asignamos desde bash ANTES de lanzar.
-compute_gpu_assignments() {
-    local ncases=$1
-    # Obtener VRAM libre de cada GPU
-    local gpu_free
-    gpu_free=$(nvidia-smi --query-gpu=index,memory.free --format=csv,noheader,nounits 2>/dev/null)
-    
-    if [[ -z "$gpu_free" ]]; then
-        # Sin nvidia-smi, todo a GPU 0
-        for ((i=0; i<ncases; i++)); do echo 0; done
-        return
-    fi
-    
-    local -a gpu_ids=()
-    local -a gpu_mbs=()
-    local total_free=0
-    while IFS=', ' read -r gid gmb; do
-        gid=$(echo "$gid" | tr -d ' ')
-        gmb=$(echo "$gmb" | tr -d ' ')
-        gpu_ids+=("$gid")
-        gpu_mbs+=("$gmb")
-        total_free=$((total_free + gmb))
-    done <<< "$gpu_free"
-    
-    local ngpus=${#gpu_ids[@]}
-    if [[ $ngpus -le 1 || $total_free -eq 0 ]]; then
-        for ((i=0; i<ncases; i++)); do echo "${gpu_ids[0]:-0}"; done
-        return
-    fi
-    
-    # Asignar proporcionalmente: GPU con 15GB libre y GPU con 3GB libre
-    # → 83% y 17% de los procesos respectivamente
-    local -a gpu_count=()
-    local assigned=0
-    for ((g=0; g<ngpus; g++)); do
-        if [[ $g -eq $((ngpus-1)) ]]; then
-            gpu_count+=($((ncases - assigned)))
-        else
-            local cnt=$(( ncases * gpu_mbs[g] / total_free ))
-            [[ $cnt -lt 1 && ${gpu_mbs[g]} -gt 500 ]] && cnt=1
-            gpu_count+=("$cnt")
-            assigned=$((assigned + cnt))
+# ── Asignación de casos a GPUs por tamaño de grid ────────────────────────────
+# Usa carga relativa (grid²) y VRAM libre para enviar casos grandes a GPU grande.
+declare -a AVAILABLE_GPUS=()
+declare -a GPU_FREE_MB=()
+declare -A GPU_CASES=()
+declare -A GPU_MAX_GRID=()
+
+assign_cases_to_gpus() {
+    local cases=("$@")
+    local -A gpu_load=()
+    GPU_CASES=()
+    GPU_MAX_GRID=()
+    for i in "${!AVAILABLE_GPUS[@]}"; do
+        local gid="${AVAILABLE_GPUS[$i]}"
+        gpu_load["$gid"]=0
+        GPU_CASES["$gid"]=""
+        GPU_MAX_GRID["$gid"]=0
+    done
+
+    local sorted
+    sorted=$(for c in "${cases[@]}"; do
+        local g="${CASE_GRID[$c]:-1}"
+        echo "$g $c"
+    done | sort -nr | awk '{print $2}')
+
+    for c in $sorted; do
+        local g="${CASE_GRID[$c]:-1}"
+        local w=$(( g * g ))
+        local best_gid=""
+        local best_ratio=0
+        local best_cap=0
+        for i in "${!AVAILABLE_GPUS[@]}"; do
+            local gid="${AVAILABLE_GPUS[$i]}"
+            local cap="${GPU_FREE_MB[$i]}"
+            local load="${gpu_load[$gid]:-0}"
+            [[ $cap -le 0 ]] && cap=1
+            local ratio=$(( load * 1000 / cap ))
+            if [[ -z "$best_gid" || $ratio -lt $best_ratio || ( $ratio -eq $best_ratio && $cap -gt $best_cap ) ]]; then
+                best_gid="$gid"
+                best_ratio="$ratio"
+                best_cap="$cap"
+            fi
+        done
+        GPU_CASES["$best_gid"]+="${c} "
+        gpu_load["$best_gid"]=$(( gpu_load["$best_gid"] + w ))
+        if [[ $g -gt ${GPU_MAX_GRID[$best_gid]:-0} ]]; then
+            GPU_MAX_GRID["$best_gid"]="$g"
         fi
     done
-    
-    # Emitir asignaciones
-    for ((g=0; g<ngpus; g++)); do
-        for ((c=0; c<${gpu_count[g]}; c++)); do
-            echo "${gpu_ids[g]}"
-        done
+
+    for i in "${!AVAILABLE_GPUS[@]}"; do
+        local gid="${AVAILABLE_GPUS[$i]}"
+        GPU_CASES["$gid"]=$(echo "${GPU_CASES[$gid]}" | xargs)
     done
 }
 
@@ -315,8 +340,8 @@ run_batch() {
     fi
     
     # Detectar GPUs disponibles desde el host
-    local -a available_gpus=()
-    local -a gpu_free_mb=()
+    AVAILABLE_GPUS=()
+    GPU_FREE_MB=()
     local gpu_csv
     gpu_csv=$(nvidia-smi --query-gpu=index,memory.free --format=csv,noheader,nounits 2>/dev/null)
     if [[ -n "$gpu_csv" ]]; then
@@ -326,25 +351,28 @@ run_batch() {
             # Si --gpu N está activo, solo incluir esa GPU
             if [[ $FORCE_GPU -ge 0 ]]; then
                 if [[ "$gid" == "$FORCE_GPU" ]]; then
-                    available_gpus+=("$gid")
-                    gpu_free_mb+=("$gmb")
+                    AVAILABLE_GPUS+=("$gid")
+                    GPU_FREE_MB+=("$gmb")
                 fi
             else
                 # Sin threshold fijo: incluir TODA GPU detectada.
                 # El cálculo de vram_max_workers descartará las insuficientes.
-                available_gpus+=("$gid")
-                gpu_free_mb+=("$gmb")
+                AVAILABLE_GPUS+=("$gid")
+                GPU_FREE_MB+=("$gmb")
             fi
         done <<< "$gpu_csv"
     fi
     # Fallback si no hay GPUs detectadas
-    if [[ ${#available_gpus[@]} -eq 0 ]]; then
+    if [[ ${#AVAILABLE_GPUS[@]} -eq 0 ]]; then
         if [[ $FORCE_GPU -ge 0 ]]; then
             echo "  WARN: GPU ${FORCE_GPU} no encontrada, usando GPU 0"
         fi
-        available_gpus=(0)
-        gpu_free_mb=(8000)
+        AVAILABLE_GPUS=(0)
+        GPU_FREE_MB=(8000)
     fi
+
+    # Asignar casos a GPUs según tamaño de grid
+    assign_cases_to_gpus "${cases[@]}"
     
     # Calcular workers por GPU: suficientes para mantener CPU y GPU ocupadas
     # Mientras un proceso hace ABM en GPU, otros hacen calibración/datos en CPU.
@@ -362,18 +390,20 @@ run_batch() {
     # Detectar cores CPU disponibles
     local ncores
     ncores=$(nproc 2>/dev/null || echo 8)
-    local ngpus=${#available_gpus[@]}
+    local ngpus=${#AVAILABLE_GPUS[@]}
     # Workers mínimos por GPU: balancear CPU entre GPUs, mínimo 4
     local min_per_gpu=$(( ncores / ngpus ))
     [[ $min_per_gpu -lt 4 ]] && min_per_gpu=4
     [[ $min_per_gpu -gt 15 ]] && min_per_gpu=15  # cap razonable
     
-    for i in "${!available_gpus[@]}"; do
-        local free=${gpu_free_mb[$i]}
+    for i in "${!AVAILABLE_GPUS[@]}"; do
+        local gid="${AVAILABLE_GPUS[$i]}"
+        local free=${GPU_FREE_MB[$i]}
+        local max_grid="${GPU_MAX_GRID[$gid]:-1}"
         
         # VRAM por proceso: contexto CuPy+CUDA (~900MB) + arrays de trabajo
         local vram_per_process
-        vram_per_process=$(estimate_vram_per_process "$GRID" "$free")
+        vram_per_process=$(estimate_vram_per_process "$max_grid" "$free")
         
         # Cuántos procesos CuPy caben en esta GPU (65% VRAM — conservador)
         # 65% (no 80%) → margen para fragmentación, memory pool, driver overhead
@@ -382,14 +412,14 @@ run_batch() {
         # Guard: si la GPU no tiene al menos 1.5× lo que necesita 1 proceso, saltarla
         local min_vram_for_one=$(( vram_per_process * 3 / 2 ))
         if [[ $free -lt $min_vram_for_one ]]; then
-            echo "    GPU ${available_gpus[$i]}: ${free}MB libre < ${min_vram_for_one}MB mínimo (1.5×${vram_per_process}MB), SALTADA"
+            echo "    GPU ${gid}: ${free}MB libre < ${min_vram_for_one}MB mínimo (1.5×${vram_per_process}MB), SALTADA"
             workers_per_gpu+=(0)
             continue
         fi
         
         # Si la GPU no puede ni con 1 proceso por VRAM, saltarla
         if [[ $vram_max_workers -lt 1 ]]; then
-            echo "    GPU ${available_gpus[$i]}: ${free}MB libre → insuficiente (~${vram_per_process}MB/proceso), SALTADA"
+            echo "    GPU ${gid}: ${free}MB libre → insuficiente (~${vram_per_process}MB/proceso), SALTADA"
             workers_per_gpu+=(0)
             continue
         fi
@@ -400,7 +430,7 @@ run_batch() {
         # Cap por VRAM: nunca más workers de lo que la GPU soporta
         [[ $nw -gt $vram_max_workers ]] && nw=$vram_max_workers
         
-        echo "    GPU ${available_gpus[$i]}: ${free}MB libre, ~${vram_per_process}MB/proceso → max ${vram_max_workers} por VRAM, candidatos: ${nw}"
+        echo "    GPU ${gid}: ${free}MB libre, grid_max=${max_grid}, ~${vram_per_process}MB/proceso → max ${vram_max_workers} por VRAM, candidatos: ${nw}"
         
         workers_per_gpu+=("$nw")
         total_workers=$((total_workers + nw))
@@ -442,30 +472,35 @@ run_batch() {
     fi
     
     # Construir mapa de workers → GPUs
-    for i in "${!available_gpus[@]}"; do
+    for i in "${!AVAILABLE_GPUS[@]}"; do
         local nw=${workers_per_gpu[$i]}
         for ((w=0; w<nw; w++)); do
-            worker_gpu_map+="${available_gpus[$i]} "
+            worker_gpu_map+="${AVAILABLE_GPUS[$i]} "
         done
     done
     
     # No más workers que casos
     [[ $total_workers -gt $ncases ]] && total_workers=$ncases
     
-    echo "  Workers: ${total_workers} (${#available_gpus[@]} GPUs: ${available_gpus[*]})"
-    for i in "${!available_gpus[@]}"; do
-        echo "    GPU ${available_gpus[$i]}: ${workers_per_gpu[$i]} workers (${gpu_free_mb[$i]}MB libre)"
+    echo "  Workers: ${total_workers} (${#AVAILABLE_GPUS[@]} GPUs: ${AVAILABLE_GPUS[*]})"
+    for i in "${!AVAILABLE_GPUS[@]}"; do
+        local gid="${AVAILABLE_GPUS[$i]}"
+        echo "    GPU ${gid}: ${workers_per_gpu[$i]} workers (${GPU_FREE_MB[$i]}MB libre, grid_max=${GPU_MAX_GRID[$gid]:-1})"
     done
     echo "  Modo: cola dinámica — ${total_workers} workers, la GPU rápida toma más"
     
-    local log_dir="/tmp/gpu_run_g${GRID}_logs"
+    local log_dir="/tmp/gpu_run_logs"
     local cases_str="${cases[*]}"
     # Trim trailing space
     worker_gpu_map=$(echo "$worker_gpu_map" | xargs)
-    
+    local gpu_cases_decl=""
+    for gid in "${AVAILABLE_GPUS[@]}"; do
+        local clist="${GPU_CASES[$gid]}"
+        gpu_cases_decl+="CASES_GPU_${gid}=(${clist})"$'\n'
+    done
+
     local inner_script="
 export PYTHONIOENCODING=utf-8
-export HYPER_GRID_SIZE=${GRID}
 export HYPER_N_PERM=${PERM}
 export HYPER_N_BOOT=${BOOT}
 export HYPER_N_REFINE=${REFINE}
@@ -475,19 +510,23 @@ trap 'kill \$(jobs -p) 2>/dev/null; wait; exit 130' INT TERM
 
 mkdir -p ${log_dir}
 
-# Cola de casos
-QUEUE_FILE=/tmp/_gpu_queue_\$\$
-LOCK_FILE=/tmp/_gpu_queue_\$\$.lock
-RESULT_FILE=/tmp/_gpu_results_\$\$
-
-CASES_ALL=(${cases_str})
-printf '%s\n' \"\${CASES_ALL[@]}\" > \"\$QUEUE_FILE\"
+RUN_ID=\$\$
+RESULT_FILE=/tmp/_gpu_results_\${RUN_ID}
 touch \"\$RESULT_FILE\"
+
+${gpu_cases_decl}
+
+# Colas por GPU
+for gid in ${AVAILABLE_GPUS[*]}; do
+    q=\"/tmp/_gpu_queue_\${RUN_ID}_gpu\${gid}\"
+    eval \"printf '%s\\n' \\\"\\\${CASES_GPU_\${gid}[@]}\\\" > \\\"\\\$q\\\"\"
+    touch \"\${q}.lock\"
+done
 
 WORKER_GPUS=(${worker_gpu_map})
 N_WORKERS=\${#WORKER_GPUS[@]}
 
-echo \"[\${#CASES_ALL[@]} casos, grid=${GRID}, \${N_WORKERS} workers en ${#available_gpus[@]} GPUs]\"
+echo \"[\${#WORKER_GPUS[@]} workers, ${#AVAILABLE_GPUS[@]} GPUs] Casos: ${cases_str}\"
 echo \"  Logs: ${log_dir}/  (tail -f ${log_dir}/<caso>.log para detalle)\"
 
 # ── Worker: toma casos de la cola hasta vaciarla ──
@@ -497,8 +536,10 @@ gpu_worker() {
     local count=0
     
     while true; do
-        # Pop atómico del primer caso de la cola
+        # Pop atómico del primer caso de la cola de su GPU
         local caso
+        local QUEUE_FILE=\"/tmp/_gpu_queue_\${RUN_ID}_gpu\${gpu_id}\"
+        local LOCK_FILE=\"\${QUEUE_FILE}.lock\"
         caso=\$(flock \"\$LOCK_FILE\" bash -c '
             head -1 \"\$1\" 2>/dev/null
             sed -i \"1d\" \"\$1\" 2>/dev/null
@@ -571,13 +612,13 @@ while read -r line; do
     esac
 done < \"\$RESULT_FILE\"
 
-for gpu in ${available_gpus[*]}; do
+for gpu in ${AVAILABLE_GPUS[*]}; do
     cnt=\$(grep -c \"GPU\${gpu}\" \"\$RESULT_FILE\" 2>/dev/null || echo 0)
     echo \"  GPU \${gpu}: \${cnt} casos\"
 done
 echo \"  OK: \${TOTAL_OK}  FAIL: \${TOTAL_FAIL}  TIMEOUT: \${TOTAL_TIMEOUT}  SKIP: \${TOTAL_SKIP}\"
 
-rm -f \"\$QUEUE_FILE\" \"\$LOCK_FILE\" \"\$RESULT_FILE\"
+rm -f /tmp/_gpu_queue_\${RUN_ID}_gpu* /tmp/_gpu_queue_\${RUN_ID}_gpu*.lock \"\$RESULT_FILE\"
 "
 
     if [[ $DRY_RUN -eq 1 ]]; then
@@ -599,7 +640,7 @@ rm -f \"\$QUEUE_FILE\" \"\$LOCK_FILE\" \"\$RESULT_FILE\"
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  gpu_run.sh — Ejecución escalable multi-GPU                ║"
 echo "╠══════════════════════════════════════════════════════════════╣"
-echo "║  Grid:     ${GRID}×${GRID}"
+echo "║  Grid:     por caso (max=${MAX_GRID})"
 echo "║  Parts:    ${PARTS}  $([ $PART -gt 0 ] && echo "(solo parte ${PART})" || echo "(todas)")"
 echo "║  Casos:    ${TOTAL}$( [[ -n "$CASE_FILTER" ]] && echo " (filtro: ${CASE_FILTER})" )"
 echo "║  GPUs:     ${N_GPUS} detectadas$( [[ $FORCE_GPU -ge 0 ]] && echo " → forzada GPU ${FORCE_GPU}" )"
@@ -610,7 +651,7 @@ echo "║  Distrib:  $( [[ $STEP_BY_STEP -eq 1 ]] && { [[ $FORCE_GPU -ge 0 || $N
 echo "║  Params:   perm=${PERM} boot=${BOOT} refine=${REFINE} runs=${RUNS}"
 echo "║  Timeout:  ${CASE_TIMEOUT}s por caso"
 echo "║  Contendr: ${CONTAINER}"
-echo "║  VRAM/proc: ~$(estimate_vram_per_process $GRID) MB"
+echo "║  VRAM/proc: ~$(estimate_vram_per_process $MAX_GRID) MB"
 [[ $DRY_RUN -eq 1 ]] && \
 echo "║  *** DRY RUN — no se ejecuta nada ***"
 echo "╚══════════════════════════════════════════════════════════════╝"
@@ -659,14 +700,39 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
     
     TOTAL_OK=0; TOTAL_FAIL=0; TOTAL_SKIP=0
     
-    LOG_DIR="/tmp/gpu_run_g${GRID}_logs"
+    LOG_DIR="/tmp/gpu_run_logs"
     mkdir -p "$LOG_DIR"   # crear dir localmente para tee
-    QUEUE_FILE=$(mktemp /tmp/_sbs_queue_XXXXXX)
-    LOCK_FILE="${QUEUE_FILE}.lock"
+    QUEUE_DIR=$(mktemp -d /tmp/_sbs_queue_XXXXXX)
     RESULT_FILE=$(mktemp /tmp/_sbs_results_XXXXXX)
-    
-    printf '%s\n' "${ALL_CASES[@]}" > "$QUEUE_FILE"
     touch "$RESULT_FILE"
+
+    # VRAM libre por GPU (solo las usadas en step-by-step)
+    AVAILABLE_GPUS=()
+    GPU_FREE_MB=()
+    gpu_csv=$(nvidia-smi --query-gpu=index,memory.free --format=csv,noheader,nounits 2>/dev/null)
+    if [[ -n "$gpu_csv" ]]; then
+        while IFS=', ' read -r gid gmb; do
+            gid=$(echo "$gid" | tr -d ' ')
+            gmb=$(echo "$gmb" | tr -d ' ')
+            if [[ " ${sbs_gpus[*]} " == *" ${gid} "* ]]; then
+                AVAILABLE_GPUS+=("$gid")
+                GPU_FREE_MB+=("$gmb")
+            fi
+        done <<< "$gpu_csv"
+    fi
+    if [[ ${#AVAILABLE_GPUS[@]} -eq 0 ]]; then
+        AVAILABLE_GPUS=("${sbs_gpus[@]}")
+        for _ in "${sbs_gpus[@]}"; do GPU_FREE_MB+=(8000); done
+    fi
+
+    # Asignar casos a GPUs por tamaño de grid
+    assign_cases_to_gpus "${ALL_CASES[@]}"
+
+    for gid in "${sbs_gpus[@]}"; do
+        q="${QUEUE_DIR}/gpu${gid}"
+        printf '%s\n' ${GPU_CASES[$gid]:-} > "$q"
+        touch "${q}.lock"
+    done
     
     # Función: loop de GPU independiente — toma casos de cola compartida
     _gpu_loop() {
@@ -677,6 +743,8 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
         while true; do
             # Pop atómico de la cola compartida
             local caso
+            local QUEUE_FILE="${QUEUE_DIR}/gpu${gpu}"
+            local LOCK_FILE="${QUEUE_FILE}.lock"
             caso=$(flock "$LOCK_FILE" bash -c '
                 head -1 "$1" 2>/dev/null
                 sed -i "1d" "$1" 2>/dev/null
@@ -697,7 +765,6 @@ if [[ $STEP_BY_STEP -eq 1 ]]; then
             
             local inner="
 export PYTHONIOENCODING=utf-8
-export HYPER_GRID_SIZE=${GRID}
 export HYPER_N_PERM=${PERM}
 export HYPER_N_BOOT=${BOOT}
 export HYPER_N_REFINE=${REFINE}
@@ -755,7 +822,7 @@ cd \"\${SRC}\" && timeout --signal=KILL ${CASE_TIMEOUT} bash -c 'HYPER_GPU_DEVIC
         echo "  GPU ${g}: ${cnt} casos"
     done
     echo "  OK: ${TOTAL_OK}  FAIL: ${TOTAL_FAIL}  SKIP: ${TOTAL_SKIP}"
-    rm -f "$QUEUE_FILE" "$LOCK_FILE" "$RESULT_FILE"
+    rm -rf "$QUEUE_DIR" "$RESULT_FILE"
 else
     # ── Modo paralelo por tandas (comportamiento normal) ──
     for p in $(seq 1 "$PARTS"); do
@@ -779,5 +846,5 @@ ELAPSED_GLOBAL=$(( SECONDS - START_GLOBAL ))
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  COMPLETADO en ${ELAPSED_GLOBAL}s                          "
-echo "║  Logs: docker exec ${CONTAINER} ls /tmp/gpu_run_g${GRID}_logs/"
+echo "║  Logs: docker exec ${CONTAINER} ls /tmp/gpu_run_logs/"
 echo "╚══════════════════════════════════════════════════════════════╝"

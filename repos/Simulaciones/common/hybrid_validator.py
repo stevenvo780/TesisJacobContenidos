@@ -512,6 +512,9 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
                 pass
     except ImportError:
         pass
+    # Si hay topología (adjacency_matrix), forzar CPU para respetar la red
+    if base_params.get("adjacency_matrix") is not None:
+        _batch_fn = None
 
     # Serie key para extraer resultados — usar la que viene en base_params
     series_key = base_params.get("series_key", base_params.get("_series_key", "tbar"))
@@ -1217,20 +1220,26 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
 
     # Topología opcional (para grids pequeños)
     adjacency_matrix = None
-    if config.use_topology and config.grid_size <= 50:
-        try:
-            from topology_generator import generate_small_world, generate_scale_free
-            n_agents = config.grid_size * config.grid_size
-            if config.topology_type == "scale_free":
-                m = int(config.topology_params.get("m", 3))
-                adj = generate_scale_free(n_agents=n_agents, m=m, seed=42)
-            else:
-                k = int(config.topology_params.get("k", 4))
-                p = float(config.topology_params.get("p", 0.1))
-                adj = generate_small_world(n_agents=n_agents, k=k, p=p, seed=42)
-            adjacency_matrix = adj.to_dense().cpu().numpy()
-        except Exception:
+    if config.use_topology:
+        if config.grid_size > 50:
             adjacency_matrix = None
+        else:
+            try:
+                from topology_generator import generate_small_world, generate_scale_free
+                n_agents = config.grid_size * config.grid_size
+                if config.topology_type == "scale_free":
+                    m = int(config.topology_params.get("m", 3))
+                    adj = generate_scale_free(n_agents=n_agents, m=m, seed=42)
+                else:
+                    k = int(config.topology_params.get("k", 4))
+                    p = float(config.topology_params.get("p", 0.1))
+                    adj = generate_small_world(n_agents=n_agents, k=k, p=p, seed=42)
+                if hasattr(adj, "to_dense"):
+                    adjacency_matrix = adj.to_dense().cpu().numpy()
+                else:
+                    adjacency_matrix = adj
+            except Exception:
+                adjacency_matrix = None
 
     # Parámetros base
     base_params = {
@@ -1491,15 +1500,15 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             bc_mode = "reverted"
             raw_scale = None
 
-    # EDI con bootstrap (ABM+ODE vs ABM sin ODE)
-    edi_val = compute_edi(err_abm, err_abm_no_ode)
-    edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, abm_no_ode_val,
+    # EDI con bootstrap (ABM+ODE vs ABM reducido sin coupling ni forcing)
+    edi_val = compute_edi(err_abm, err_reduced)
+    edi_mean, edi_lo, edi_hi = bootstrap_edi(obs_val, abm_val, reduced_val,
                                               n_boot=config.n_boot)
     
     # Fix C12: Permutation test para significancia del EDI
     # n_perm=999: estándar en literatura (Phipson & Smyth 2010), resolución p=0.001
     _, edi_pvalue, edi_null_95 = permutation_test_edi(
-        obs_val, abm_val, abm_no_ode_val, n_perm=config.n_perm, seed=42
+        obs_val, abm_val, reduced_val, n_perm=config.n_perm, seed=42
     )
     # Significancia requiere AMBOS: p < 0.05 Y EDI > 0.01 (mínimo efecto).
     # Sin el gate de magnitud, series con autocorrelación fuerte pueden producir
@@ -1528,7 +1537,7 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
                 # Remover tendencia de las 3 series
                 obs_dt = np.asarray(obs_val) - trend_line
                 abm_dt = np.asarray(abm_val) - trend_line
-                red_dt = np.asarray(abm_no_ode_val) - trend_line
+                red_dt = np.asarray(reduced_val) - trend_line
                 err_abm_dt = float(np.sqrt(np.mean(obs_dt ** 2 - 2 * obs_dt * abm_dt + abm_dt ** 2)))
                 err_red_dt = float(np.sqrt(np.mean(obs_dt ** 2 - 2 * obs_dt * red_dt + red_dt ** 2)))
                 # Corrección: usar RMSE estándar sobre residuos
@@ -1620,9 +1629,9 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     obs_std_persist = np.sqrt(max(obs_persistence, 0.001))
     persist_ok = model_std < 5.0 * obs_std_persist
 
-    # Emergencia
+    # Emergencia (modelo reducido sin coupling/forcing vs modelo completo)
     emergence_threshold = 0.2 * max(obs_std, 0.01)
-    emergence_ok = (err_abm_no_ode - err_abm) > emergence_threshold
+    emergence_ok = (err_reduced - err_abm) > emergence_threshold
 
     # Coupling check
     coupling_ok = base_params.get("macro_coupling", 0) >= 0.1
@@ -1637,7 +1646,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
     # difusas (Symploké). sym_ok (internal >= external) ya verifica cohesión.
     # cr_valid > 2.0 es demasiado restrictivo (3/29) para emergencia no-fuerte.
     overall = all([c1, c2, c3, c4, c5, sym_ok, non_local_ok, persist_ok,
-                   emergence_ok, coupling_ok, not rmse_fraud, edi_valid])
+                   emergence_ok, coupling_ok, not rmse_fraud, edi_valid,
+                   edi_significant])
 
     # Fix P5: Breakdown explícito de los 13 criterios para overall_pass
     criteria_breakdown = {
@@ -1787,7 +1797,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
             "pass": persist_ok,
         },
         "emergence": {
-            "err_reduced": err_abm_no_ode,
+            "err_reduced": err_reduced,
+            "err_abm_no_ode": err_abm_no_ode,
             "err_abm": err_abm,
             "threshold": emergence_threshold,
             "pass": emergence_ok,

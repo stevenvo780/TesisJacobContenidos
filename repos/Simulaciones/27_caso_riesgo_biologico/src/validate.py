@@ -65,7 +65,7 @@ def main():
         case_name="Riesgo Biológico Global (TB Incidence — Woolhouse)",
         value_col="value",
         series_key="b",
-        grid_size=50,             # 50×50 = 2500 agentes (antes 25×25=625)
+        grid_size=25,             # 25×25 = 625 celdas (consistente con README)
         persistence_window=5,
         synthetic_start="2000-01-01",
         synthetic_end="2024-01-01",

@@ -34,7 +34,7 @@ def main():
         case_name="Falsación: Exogeneidad",
         value_col="value",
         series_key="incidence",
-        grid_size=30,             # 30×30 = 900 agentes (antes 20×20=400). No excesivo para control
+        grid_size=20,             # 20×20 = 400 agentes (control negativo, consistencia con README)
         persistence_window=6,
         synthetic_start="2020-01-01",
         synthetic_end="2024-01-01",

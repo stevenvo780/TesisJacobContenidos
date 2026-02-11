@@ -1,6 +1,6 @@
 # Reporte de Validación — Conciencia Colectiva
 
-- generated_at: 2026-02-11T00:35:55.165344Z
+- generated_at: 2026-02-11T01:21:00.598839Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -51,16 +51,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.1037
-- bootstrap_mean: 0.1166
-- CI 95%: [0.0784, 0.2203]
-- weighted_value (LoE factor 0.20): 0.0207
+- valor: 0.1038
+- bootstrap_mean: 0.1167
+- CI 95%: [0.0784, 0.2205]
+- weighted_value (LoE factor 0.20): 0.0208
 - válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 0.9110
 - external: 0.8833
-- CR: 1.0314
+- CR: 1.0313
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -71,7 +71,7 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.8337
+- rmse_abm: 0.8336
 - rmse_abm_no_ode: 0.9302
 - rmse_ode: 1.5653
 - rmse_reduced: 1.3440
@@ -79,10 +79,10 @@
 
 ### Calibración
 - forcing_scale: 0.9900
-- macro_coupling: 0.4780
+- macro_coupling: 0.4786
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.7087
+- damping: 0.7091
 - ode_alpha: 0.5000
 - ode_beta: 0.8000
 - assimilation_strength: 0.0000

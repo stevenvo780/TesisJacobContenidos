@@ -69,6 +69,7 @@ def main():
         real_end="2023-12-31",
         real_split="2022-01-01",
         corr_threshold=0.7,
+        ode_calibration=True,
         extra_base_params={
             # Parámetros ABM epidemiológicos:
             # abm_beta=0.3: SAR ~0.3 para COVID (Bi et al. 2020)
