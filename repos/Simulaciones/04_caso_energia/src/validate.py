@@ -56,6 +56,9 @@ def make_synthetic(start_date, end_date, seed=101):
         "ode_beta": 0.80,    # τ ≈ 1.25 años → tracking rápido, evita desfase
         "ode_noise": 0.01,
         "forcing_series": forcing,
+        "forcing_scale": 1.0,  # Escala unitaria: α controla sensibilidad.
+                               # Sin esto, default 0.05 → SNR ≈ 2.5 y OLS
+                               # no recupera pesos correctos de drivers.
     }
     sim = simulate_ode(true_params, steps, seed=seed + 1)
     obs = np.array(sim["e"]) + rng.normal(0.0, 0.01, size=steps)
