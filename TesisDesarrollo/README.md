@@ -14,27 +14,29 @@ pip install -r repos/Simulaciones/requirements.txt
 
 | Nivel | Categoría | Conteo | Porcentaje |
 |:-----:|:----------|:------:|:----------:|
-| 4 | Cierre Operativo Fuerte (strong) | 11 | 37.9% |
+| 4 | Cierre Operativo Fuerte (strong) | 10 | 34.5% |
+| 3 | Componente Funcional (weak) | 2 | 6.9% |
 | 2 | Señal Sugestiva (suggestive) | 2 | 6.9% |
-| 1 | Tendencia (trend) | 6 | 20.7% |
-| 0 | Sin Señal (null) | 7 | 24.1% |
+| 1 | Tendencia (trend) | 4 | 13.8% |
+| 0 | Sin Señal (null) | 8 | 27.6% |
 | — | Falsificación (controles) | 3 | 10.3% |
 
-- **overall_pass=True:** 9/29 (Epidemiología, Movilidad, Políticas, Postverdad, Wikipedia, Urbanización, Kessler, Fósforo, Riesgo Biológico)
-- **Significancia** (p<0.05 + EDI>0.01): 11/29
+- **overall_pass=True:** 5/29 (Energía, Deforestación, Urbanización, Fósforo, Microplásticos)
+- **Significancia** (p<0.05 + EDI>0.01): 14/29
 - **Falsaciones:** 3/3 correctamente rechazadas
 - **Reproducibilidad:** seed=42, 999 permutaciones
 
 ### Casos con Mayor EDI
 | Caso | EDI | overall_pass | Nota |
 |:-----|----:|:---:|:---|
-| Microplásticos | 0.656 | No | Falla C2 |
-| Deforestación | 0.579 | No | Falla C2 |
-| Kessler | 0.381 | Sí | |
-| Fósforo | 0.376 | Sí | |
-| Postverdad | 0.325 | Sí | |
-| Políticas | 0.288 | Sí | |
-| Riesgo Bio. | 0.257 | Sí | |
+| Microplásticos | 0.806 | Sí | BC=bias_only |
+| Energía | 0.650 | Sí | BC=bias_only |
+| Deforestación | 0.580 | Sí | BC=full |
+| Urbanización | 0.337 | Sí | BC=full |
+| Fósforo | 0.322 | Sí | BC=full |
+| Kessler | 0.299 | No | Weak (sub-umbral 0.30) |
+| Riesgo Bio. | 0.294 | No | Weak |
+| Políticas | 0.289 | No | Weak |
 
 ## Estructura de la Tesis (Lectura recomendada)
 

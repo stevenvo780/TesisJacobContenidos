@@ -1,6 +1,6 @@
 # Reporte de Validación — Movilidad Urbana (Vehículos)
 
-- generated_at: 2026-02-12T02:02:54.676506Z
+- generated_at: 2026-02-12T03:58:55.869202Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -48,14 +48,14 @@
 **Nivel 1 — Tendencia no confirmada.** Se detecta EDI positivo pero sin significancia estadística. El fenómeno no muestra cierre operativo verificable.
 
 ## Fase real
-- **overall_pass**: True
+- **overall_pass**: False
 
 ### EDI
 - valor: 0.1283
 - bootstrap_mean: 0.1177
 - CI 95%: [-0.0729, 0.2521]
 - weighted_value (LoE factor 1.00): 0.1283
-- válido (0.30-0.90): True
+- válido (0.30-0.90): False
 
 ### Symploké y CR
 - internal: 0.9995
@@ -90,5 +90,5 @@
 - ode_rolling: None
 
 ### Interpretación
-**Nivel 4 — Cierre operativo fuerte.** El EDI se encuentra en el rango válido y el test de permutación confirma significancia estadística, indicando constricción macro→micro robusta. No obstante, estos resultados no implican compromiso ontológico: el cierre es operativo, no sustancial.
+**Nivel 3 — Cierre operativo weak.** La constricción macro es detectable pero no alcanza robustez suficiente para cierre operativo fuerte. El fenómeno muestra grados parciales de organización macro→micro.
 

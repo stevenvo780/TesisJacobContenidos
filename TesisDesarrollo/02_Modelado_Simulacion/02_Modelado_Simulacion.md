@@ -1,5 +1,11 @@
 # 02 Modelado y Simulación
 
+## El Motor del Emergentómetro
+
+El Emergentómetro necesita un "motor" que simule fenómenos a dos escalas simultáneamente: la escala individual (micro) y la escala del fenómeno completo (macro). Ese motor es el **modelo híbrido ODE+ABM**.
+
+En términos accesibles: imagine una colonia de hormigas. Cada hormiga sigue reglas simples (modelo micro, ABM), pero la colonia como un todo parece tener "comportamiento propio" — rutas eficientes, arquitectura del hormiguero, defensa coordinada. La ODE captura ese patrón de conjunto. El Emergentómetro entonces pregunta: **¿si eliminamos la influencia del patrón de conjunto sobre las hormigas individuales, la predicción empeora?** Si la respuesta es "sí, y mucho", hay emergencia operativa.
+
 ## Arquitectura Detallada del Motor Híbrido
 El corazón de esta investigación es la clase `HybridModel`. Su función es mediar entre dos niveles descriptivos: el individuo (Agente) y la estructura (Ecuación). No presupone que la estructura "exista" ontológicamente — solo que su inclusión modifica las predicciones de forma medible.
 
@@ -77,7 +83,7 @@ flowchart LR
 ```
 
 ## Implementación de los 29 Casos
-La arquitectura actual integra **29 motores de simulación completamente funcionales**. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas. Se utilizan datos reales de fuentes como World Bank, Meteostat, Yahoo Finance, OWID, Wikimedia y CelesTrak.
+La arquitectura actual integra **29 motores de simulación completamente funcionales**. La lógica ABM sigue la tradición de modelos basados en agentes de Holland (1995) y Schelling (1978), donde reglas micro simples producen patrones macro complejos. La dinámica ODE se fundamenta en sistemas no lineales (Strogatz, 2014). Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas. Se utilizan datos reales de fuentes como World Bank, Meteostat, Yahoo Finance, OWID, Wikimedia y CelesTrak.
 
 ### Protocolo de Simulación
 - **Fase sintética:** calibración interna y verificación lógica.
@@ -89,7 +95,7 @@ La arquitectura actual integra **29 motores de simulación completamente funcion
 - **Permutation test (p<0.05):** significancia estadística (999 permutaciones).
 - **Bias Correction:** transformación afín condicional del target ODE para eliminar sesgo.
 - **CR > 2.0:** indicador complementario de frontera sistémica.
-- **overall_pass:** 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude).
+- **overall_pass:** 13 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude, EDI válido, EDI significativo).
 
 ## Trazabilidad y Resultados
 Los resultados detallados de la ejecución de estos 29 casos se consolidan exclusivamente en la sección **03 Validación y Praxis**. La arquitectura permite una trazabilidad total: cada simulación genera un archivo `metrics.json` con el timestamp y el hash del commit.

@@ -1,9 +1,9 @@
 {
   "case": "Movilidad Urbana (Veh\u00edculos)",
-  "generated_at": "2026-02-12T02:02:54.676506Z",
+  "generated_at": "2026-02-12T03:58:55.869202Z",
   "git": {
-    "commit": null,
-    "dirty": null
+    "commit": "d7b11bacafb068d67aa641f7133f25931072768c",
+    "dirty": true
   },
   "phases": {
     "synthetic": {
@@ -76,9 +76,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 7.60238011781063e-05,
-        "edi_mean": 0.39749053842207804,
-        "edi_std": 3.021874166317848e-05,
+        "cv": 0.00019988511578048892,
+        "edi_mean": 0.39750896806368197,
+        "edi_std": 7.945612610519174e-05,
         "monotonic_decrease": false
       },
       "effective_information": 0.0,
@@ -129,10 +129,10 @@
         "relative_improvement": 0.13055045321441927
       },
       "c2_detail": {
-        "mean_delta": 0.015236780730737249,
-        "var_delta": 0.00031766879248628505,
-        "relative_mean": 0.015236780730737249,
-        "relative_var": 0.00031766879248628505
+        "mean_delta": 0.01524428736397882,
+        "var_delta": 0.00031734814767511515,
+        "relative_mean": 0.01524428736397882,
+        "relative_var": 0.00031734814767511515
       },
       "c3_detail": {
         "persistence_1": 0.0008666773749419189,
@@ -142,10 +142,10 @@
         "diff": 0.00021530514516304722
       },
       "c5_detail": {
-        "sensitivity_min": -0.32953461164850206,
-        "sensitivity_max": -0.25112414843926284,
-        "range": 0.07841046320923922,
-        "relative_range": 0.0006549217182704947
+        "sensitivity_min": -0.32959453474594763,
+        "sensitivity_max": -0.25109594909917105,
+        "range": 0.07849858564677659,
+        "relative_range": 0.0006556577590467894
       },
       "bias_correction": {
         "applied": true,
@@ -188,7 +188,7 @@
     },
     "real": {
       "phase": "real",
-      "overall_pass": true,
+      "overall_pass": false,
       "data": {
         "start": "1970-01-01",
         "end": "2023-01-01",
@@ -242,7 +242,7 @@
         "bootstrap_mean": 0.11765400664922977,
         "ci_lo": -0.07292696330519564,
         "ci_hi": 0.2520634097602745,
-        "valid": true,
+        "valid": false,
         "weighted_value": 0.12828980793063793,
         "loe_factor": 1.0,
         "permutation_pvalue": 0.002002002002002002,
@@ -266,9 +266,9 @@
       },
       "noise_sensitivity": {
         "stable": true,
-        "cv": 3.8626869768940856e-05,
-        "edi_mean": 0.12830508021373985,
-        "edi_std": 4.95602362410964e-06,
+        "cv": 4.601474583181569e-05,
+        "edi_mean": 0.12829431803070243,
+        "edi_std": 5.903430435848901e-06,
         "monotonic_decrease": false
       },
       "effective_information": 0.034972818428208985,
@@ -319,10 +319,10 @@
         "relative_improvement": 0.16586409057568785
       },
       "c2_detail": {
-        "mean_delta": 0.13579470208233474,
-        "var_delta": 0.06377565960649696,
-        "relative_mean": 0.03256986484970148,
-        "relative_var": 0.062057060221814196
+        "mean_delta": 0.13579873290719272,
+        "var_delta": 0.0637658956707467,
+        "relative_mean": 0.03257083162836695,
+        "relative_var": 0.06204755940045704
       },
       "c3_detail": {
         "persistence_1": 0.4815204443073754,
@@ -332,10 +332,10 @@
         "diff": 0.32012009737618996
       },
       "c5_detail": {
-        "sensitivity_min": 3.7414660988165975,
-        "sensitivity_max": 4.260526063464862,
-        "range": 0.5190599646482648,
-        "relative_range": 3.0415018692712385e-10
+        "sensitivity_min": 3.741460026952655,
+        "sensitivity_max": 4.260519346838303,
+        "range": 0.5190593198856486,
+        "relative_range": 3.041498091197729e-10
       },
       "bias_correction": {
         "applied": true,
@@ -359,15 +359,15 @@
         "emergence_pass": true,
         "coupling_ok": true,
         "rmse_fraud_check": true,
-        "edi_valid": true,
+        "edi_valid": false,
         "cr_valid": false
       },
       "emergence_taxonomy": {
-        "category": "strong",
-        "nivel": 4,
+        "category": "weak",
+        "nivel": 3,
         "ode_quality": "moderate",
         "ode_obs_corr": 0.6743825689022176,
-        "interpretation": "Cierre operativo fuerte (Nivel 4): la macro constri\u00f1e significativamente la din\u00e1mica micro"
+        "interpretation": "Cierre operativo d\u00e9bil (Nivel 3): se\u00f1al macro significativa pero bajo umbral robusto"
       }
     }
   }

@@ -418,11 +418,11 @@ def _build_case_summary_table():
         "",
         "> Tabla generada automáticamente desde `metrics.json` de cada caso.",
         "",
-        "## Matriz de Clasificación Operativa (29 casos × 11 criterios + Nivel)",
+        "## Matriz de Clasificación Operativa (29 casos × 13 criterios + Nivel)",
         "",
         "Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). "
         "**Nivel** = grado de cierre operativo (0–4, control = —). "
-        "**Validado** = 11 condiciones se cumplen simultáneamente.",
+        "**Validado** = 13 condiciones se cumplen simultáneamente (incluye EDI válido y EDI significativo).",
         "",
         "| # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Nivel | Result |",
         "| :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |",

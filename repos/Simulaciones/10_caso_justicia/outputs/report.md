@@ -1,6 +1,6 @@
 # Reporte de Validación — Justicia Algorítmica
 
-- generated_at: 2026-02-12T02:02:54.044854Z
+- generated_at: 2026-02-12T03:58:34.660305Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -55,7 +55,7 @@
 - bootstrap_mean: 0.2320
 - CI 95%: [0.1712, 0.3296]
 - weighted_value (LoE factor 1.00): 0.2274
-- válido (0.30-0.90): True
+- válido (0.30-0.90): False
 - detrended_edi: 0.2274
 - trend_ratio: 1.000
 - trend_r2: 0.610
@@ -68,7 +68,7 @@
 
 ### Criterios C1-C5
 - c1_convergence: True
-- c2_robustness: True
+- c2_robustness: False
 - c3_replication: True
 - c4_validity: True
 - c5_uncertainty: True

@@ -3,6 +3,26 @@
 ## Propósito
 Esta tesis construye un marco computacional para evaluar fenómenos de gran escala — candidatos a "hiperobjetos" en terminología de Morton (2013) — según su grado de cierre operativo. El marco no afirma ni niega la existencia metafísica de tales entidades: mide, clasifica y ordena su comportamiento en un gradiente de emergencia operativa.
 
+### En lenguaje accesible
+
+Imagine que existe una pregunta fundamental en filosofía y ciencia: **¿los fenómenos de gran escala (el clima, la economía global, una pandemia) son "algo más" que la suma de sus partes, o basta con conocer las partes para predecirlo todo?** Esta tesis no intenta responderla con argumentos filosóficos — la responde con un *instrumento de medición*.
+
+Ese instrumento es el **Emergentómetro**: un sistema computacional que mide cuánta información predictiva se pierde si ignoramos el nivel macro de un fenómeno y solo miramos las partes individuales. Si la pérdida es grande y robusta, el fenómeno tiene *cierre operativo* — se comporta como una entidad funcional con reglas propias. Si no, los componentes individuales bastan para explicarlo.
+
+```mermaid
+flowchart LR
+    F["🌍 Fenómeno\n(clima, economía, pandemia)"] --> E["🔬 Emergentómetro\n(ODE + ABM + C1-C5)"]
+    E --> G["📊 Grado de Emergencia\n(EDI: 0 a 1)"]
+    G --> N4["Nivel 4: El todo ES más\nque las partes"]
+    G --> N0["Nivel 0: Las partes\nbastan"]
+    
+    style E fill:#e1f5fe,stroke:#01579b,stroke-width:3px
+    style N4 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style N0 fill:#ffebee,stroke:#c62828
+```
+
+Así como un termómetro mide temperatura sin que eso implique una teoría sobre "qué es el calor", el Emergentómetro mide emergencia operativa sin afirmar que los hiperobjetos "existan" como entidades metafísicas. Esta postura se llama **irrealismo operativo**: medir sin reificar.
+
 ## Postura Filosófica: Irrealismo Operativo
 
 ### El problema pre-ontológico
@@ -20,11 +40,14 @@ El irrealismo operativo ocupa una posición intermedia: nuestros constructos son
 3. **Objetos del entendimiento:** Los hiperobjetos de esta tesis son constructos operativos, análogos a lo que Kant (1781) llamó "objetos de la experiencia posible" — no cosas-en-sí, sino estructuras que el entendimiento impone y que los datos validan o rechazan.
 
 ### Consecuencia central
-La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, el fenómeno de deforestación global exhibe un grado de cierre operativo de 0.633 (EDI), estadísticamente significativo (p<0.001), que resiste ablación, falsación y perturbación. Esto lo clasifica como objeto operativo de alto grado de emergencia."
+La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, el fenómeno de deforestación global exhibe un grado de cierre operativo de 0.580 (EDI), estadísticamente significativo (p<0.001), que resiste ablación, falsación y perturbación. Esto lo clasifica como objeto operativo de alto grado de emergencia."
 
 ## Emergentismo Gradual con Niveles
 
-Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido:
+Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido.
+
+### Analogía: La escala Richter de la emergencia
+Así como la escala Richter no dice "este terremoto es real" — mide su magnitud —, los niveles del Emergentómetro miden *cuánta emergencia operativa* exhibe un fenómeno. Un terremoto de magnitud 2 no es un "fracaso": es un dato. Del mismo modo, un fenómeno clasificado en Nivel 0 no es un "hiperobjeto fallido" — es un fenómeno donde el instrumento no detecta cierre operativo con la sonda elegida.
 
 ```mermaid
 graph LR
@@ -53,7 +76,7 @@ graph LR
 
 ### Anclaje teórico
 - **Chalmers (2006):** Distingue emergencia débil (inesperada pero deducible) de emergencia fuerte (no deducible desde lo micro). Nuestro gradiente operacionaliza esta distinción: los Niveles 0-2 corresponden a ausencia o emergencia débil; los Niveles 3-4 muestran irreducibilidad funcional demostrada.
-- **Bedau (1997):** La emergencia débil es el "estado por defecto" de los sistemas complejos — computable pero no predecible en la práctica. Nuestros 13 casos null + 7 trend habitan este territorio.
+- **Bedau (1997):** La emergencia débil es el "estado por defecto" de los sistemas complejos — computable pero no predecible en la práctica. Nuestros 8 casos null + 4 trend habitan este territorio.
 - **Kim (1999):** La exclusión causal amenaza toda emergencia que afirme causalidad descendente fuerte. Bajo irrealismo operativo, esquivamos esta objeción: no afirmamos que lo macro *cause* — afirmamos que el constructo macro reduce incertidumbre de forma no eliminable. Es una constatación epistémica, no una afirmación causal metafísica.
 - **Humphreys (2016):** La "fusión emergente" produce propiedades nuevas no atribuibles a componentes. Nuestro Nivel 4 captura exactamente esto: la constricción macro genera información predictiva que desaparece al eliminarla y no es recuperable desde el nivel micro.
 - **O'Connor & Wong (2005):** Distinguen emergencia ontológica (propiedades genuinamente nuevas) de emergencia epistemológica (limitaciones del conocimiento). Nuestro marco se sitúa explícitamente en la emergencia epistemológica: medimos limitaciones del nivel micro para explicar el fenómeno, no afirmamos propiedades ontológicamente nuevas.
@@ -108,7 +131,7 @@ Para que un fenómeno merezca el título de "hiperobjeto con límites" (Nivel 5)
 Ningún caso del corpus actual alcanza el Nivel 5. Esto es consistente con el irrealismo operativo: afirmar "hiperobjeto fuerte" requiere más evidencia de la que un modelo ABM+ODE homogéneo puede proporcionar.
 
 ## Relación con Morton y la Tradición OOO
-Timothy Morton (2013) propuso el concepto de hiperobjeto con propiedades fenomenológicas (viscosidad, no-localidad, fase temporal, interobjetividad). La presente tesis:
+Timothy Morton (2013) propuso el concepto de hiperobjeto con propiedades fenomenológicas (viscosidad, no-localidad, fase temporal, interobjetividad). Dentro de la Ontología Orientada a Objetos (OOO), Harman (2018) sostiene que los objetos se retiran de todo acceso directo, mientras que Latour (2017) y Bennett (2010) enfatizan la agencia distribuida de los no-humanos. Luhmann (1995) aporta la noción de sistemas autopoiéticos con cierre operativo — una analogía directa con nuestro concepto de cierre medido por EDI. La presente tesis:
 
 1. **Acepta** la utilidad del concepto como heurística para identificar fenómenos candidatos.
 2. **Rechaza** la pretensión ontológica fuerte: no afirmamos que los hiperobjetos *existan* como entidades autónomas.
@@ -222,9 +245,10 @@ Para resolver la crítica de "homogeneidad espacial" (dom_share ≈ 1/N²), se i
 La topología Scale-Free produce heterogeneidad 10× mayor que la grilla regular. Alcanzar Nivel 5 (hiperobjeto con límites) requeriría esta heterogeneidad verificada.
 
 ## Glosario Operativo
+- **Emergentómetro:** Nombre operativo del instrumento de medición completo: motor híbrido (ODE+ABM), protocolo C1-C5, test de permutación (999 reps) y métrica EDI. Así como un termómetro mide temperatura, el Emergentómetro mide el grado de emergencia operativa de un fenómeno. No es una metáfora — es el nombre funcional del pipeline computacional.
 - **Hiperobjeto (operativo):** Constructo del entendimiento que designa un fenómeno de gran escala con cierre operativo alto (Nivel 4+). No implica existencia metafísica.
 - **Cierre operativo:** Propiedad de un fenómeno cuya constricción macro es irreducible, significativa y robusta bajo el protocolo C1-C5. Medido por EDI.
-- **EDI (Effective Dependence Index):** Grado de cierre operativo. Mide la degradación predictiva al eliminar la constricción macro. Cuantifica cuánta información estructurada aporta el nivel macro al modelo completo respecto al modelo reducido (ablación). EDI ∈ [-1, 1].
+- **EDI (Effective Dependence Index):** Grado de cierre operativo. Mide la degradación predictiva al eliminar la constricción macro. En términos pedagógicos: "si quito la visión de conjunto, ¿cuánto empeora mi predicción?". Rango: EDI ∈ [-1, 1]. Un EDI de 0.30 (Kessler) significa que ignorar el patrón macro degrada la predicción en 30%.
 - **CR (Cohesion Ratio):** Indicador complementario de frontera funcional. CR > 2.0 sugiere frontera espacial nítida. No es condición de H1.
 - **Nudging:** Acople macro-micro para asimilación de datos. Desactivado (=0) en evaluación.
 - **Componente funcional:** Fenómeno de Nivel 2-3 que exhibe constricción detectable pero insuficiente para cierre. Análogo a ribosomas en biología.
@@ -236,7 +260,7 @@ La topología Scale-Free produce heterogeneidad 10× mayor que la grilla regular
 
 ## Dialéctica y Límites
 - **Reduccionismo:** No se equipara el sistema a un vector; se mide el grado de cierre operativo del nivel macro.
-- **Tautología:** Los controles de falsación (3/3 correctamente rechazados) y la diversidad de resultados (13 null, 7 trend, 3 suggestive, 1 weak, 2 strong) refutan la circularidad.
+- **Tautología:** Los controles de falsación (3/3 correctamente rechazados) y la diversidad de resultados (8 null, 4 trend, 3 suggestive, 6 weak, 5 strong, 3 controles) refutan la circularidad.
 - **Instrumentalismo:** El irrealismo operativo va más allá del instrumentalismo puro: no reduce los constructos a "herramientas útiles" — les asigna un grado medible de cierre funcional que puede ser mayor o menor. Un instrumento puro no tiene grados.
 - **Reificación:** Bajo irrealismo, el riesgo de reificación se minimiza: nunca afirmamos que algo "es" un hiperobjeto; afirmamos que "exhibe cierre operativo de grado G".
 - **Edge cases:** Alta frecuencia y sistemas reflexivos requieren validación prospectiva.
@@ -244,6 +268,9 @@ La topología Scale-Free produce heterogeneidad 10× mayor que la grilla regular
 ## Riesgos y Mitigación
 - **Sobreajuste:** EDI > 0.90 es flag de tautología. Protocolo C1-C5 discrimina.
 - **Falta de datos:** Fase sintética antes de datos reales. LoE pondera la calidad.
+- **Fragilidad del modelo:** Siguiendo a Taleb (2012), los sistemas complejos son vulnerables a perturbaciones no anticipadas. C2 (robustez) prueba explícitamente esta vulnerabilidad.
+- **Patrones reales vs. aparentes:** Dennett (1991) argumenta que los "patrones reales" existen en la medida en que permiten compresión predictiva. Nuestro EDI operacionaliza esta noción: un patrón macro es "real" operativamente si su eliminación degrada la predicción.
+- **Asimetrías inter-nivel:** Batterman (2002) muestra que el razonamiento asintótico revela propiedades emergentes invisibles a la descripción micro. El gradiente EDI captura estas asimetrías.
 - **Homogeneidad espacial:** CR ≈ 1.0 es la predicción teórica para agentes acoplados en sistemas con simetría translacional y difusión isotrópica (Haken, 1983, §4.3). El CR > 2.0 (Nivel 5) requiere romper esta simetría mediante topologías heterogéneas.
 - **Circularidad BC:** Bias Correction aplica solo en fase de corrección. Evaluación usa assimilation_strength=0. Modo 'reverted' protege contra circularidad (verificado: 9 puntos de forzado en hybrid_validator.py).
 

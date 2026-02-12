@@ -3,19 +3,23 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-12 02:31 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-12 04:22 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
 ## Tabla de Contenidos
 
+- [Irrealismo Operativo de Hiperobjetos: Clasificación de Fenómenos por Grado de Cierre Operativo](#irrealismo-operativo-de-hiperobjetos-clasificación-de-fenómenos-por-grado-de-cierre-operativo)
+  - [Tabla de Contenidos](#tabla-de-contenidos)
 - [00 Marco Conceptual](#00-marco-conceptual)
   - [Propósito](#propósito)
+    - [En lenguaje accesible](#en-lenguaje-accesible)
   - [Postura Filosófica: Irrealismo Operativo](#postura-filosófica-irrealismo-operativo)
     - [El problema pre-ontológico](#el-problema-pre-ontológico)
     - [Fundamentos del irrealismo](#fundamentos-del-irrealismo)
     - [Consecuencia central](#consecuencia-central)
   - [Emergentismo Gradual con Niveles](#emergentismo-gradual-con-niveles)
+    - [Analogía: La escala Richter de la emergencia](#analogía-la-escala-richter-de-la-emergencia)
     - [Anclaje teórico](#anclaje-teórico)
   - [Hipótesis Central (H1)](#hipótesis-central-h1)
     - [La analogía del ribosoma](#la-analogía-del-ribosoma)
@@ -36,21 +40,23 @@
   - [Apéndice de Autoría IA](#apéndice-de-autoría-ia)
   - [Síntesis](#síntesis)
 - [01 Metodología de Medición](#01-metodología-de-medición)
+  - [El Emergentómetro en la Práctica](#el-emergentómetro-en-la-práctica)
   - [Protocolo de Rigor (C1-C5)](#protocolo-de-rigor-c1-c5)
   - [Pipeline de Validación](#pipeline-de-validación)
   - [Métricas y su Interpretación bajo Irrealismo Operativo](#métricas-y-su-interpretación-bajo-irrealismo-operativo)
-    - [EDI (Effective Dependence Index)](#edi-effective-dependence-index)
+    - [EDI (Effective Dependence Index) — "El termómetro de emergencia"](#edi-effective-dependence-index--el-termómetro-de-emergencia)
     - [Regla de Descuento por Nivel de Evidencia (LoE)](#regla-de-descuento-por-nivel-de-evidencia-loe)
   - [Niveles de Evidencia (LoE)](#niveles-de-evidencia-loe)
   - [Reglas de Clasificación](#reglas-de-clasificación)
-  - [EI (Información Efectiva) — Indicador Complementario](#ei-información-efectiva-indicador-complementario)
+  - [EI (Información Efectiva) — Indicador Complementario](#ei-información-efectiva--indicador-complementario)
   - [Reproducibilidad](#reproducibilidad)
   - [Validez y Límites](#validez-y-límites)
   - [Datos e Instrumentos](#datos-e-instrumentos)
   - [Gobernanza de Datos](#gobernanza-de-datos)
   - [Casos Piloto](#casos-piloto)
-  - [Síntesis](#síntesis)
+  - [Síntesis](#síntesis-1)
 - [02 Modelado y Simulación](#02-modelado-y-simulación)
+  - [El Motor del Emergentómetro](#el-motor-del-emergentómetro)
   - [Arquitectura Detallada del Motor Híbrido](#arquitectura-detallada-del-motor-híbrido)
     - [Pseudocódigo de la Lógica de Acoplamiento:](#pseudocódigo-de-la-lógica-de-acoplamiento)
   - [Rol Instrumental de la ODE: Sonda Operativa](#rol-instrumental-de-la-ode-sonda-operativa)
@@ -60,20 +66,22 @@
   - [Trazabilidad y Resultados](#trazabilidad-y-resultados)
     - [Regla Operacional: Divergencia EDI/CR](#regla-operacional-divergencia-edicr)
   - [Auditoría de Consistencia](#auditoría-de-consistencia)
-- [03 Validación y Praxis](#03-validación-y-praxis)
+- [03 Validación y Praxis: Resultados del Emergentómetro](#03-validación-y-praxis-resultados-del-emergentómetro)
+  - [Resumen ejecutivo: Lo que el Emergentómetro encontró](#resumen-ejecutivo-lo-que-el-emergentómetro-encontró)
   - [Enfoque de Clasificación Operativa](#enfoque-de-clasificación-operativa)
   - [Umbrales de Clasificación (no de rechazo)](#umbrales-de-clasificación-no-de-rechazo)
   - [Especificación de Modelos por Dominio](#especificación-de-modelos-por-dominio)
-  - [Resultados Consolidados (29 Casos — Protocolo Completo)](#resultados-consolidados-29-casos-protocolo-completo)
+  - [Resultados Consolidados (29 Casos — Protocolo Completo)](#resultados-consolidados-29-casos--protocolo-completo)
     - [Taxonomía de Emergencia con Niveles Operativos](#taxonomía-de-emergencia-con-niveles-operativos)
 - [Resumen de Simulaciones](#resumen-de-simulaciones)
-  - [Matriz de Clasificación Operativa (29 casos × 11 criterios + Nivel)](#matriz-de-clasificación-operativa-29-casos-11-criterios-nivel)
+  - [Matriz de Clasificación Operativa (29 casos × 13 criterios + Nivel)](#matriz-de-clasificación-operativa-29-casos--13-criterios--nivel)
   - [Distribución de Modos de Fallo](#distribución-de-modos-de-fallo)
     - [Clasificación por Resultado](#clasificación-por-resultado)
-      - [Nivel 4 — Cierre Operativo Fuerte (overall_pass=True)](#nivel-4-cierre-operativo-fuerte-overall_passtrue)
-      - [Nivel 2 — Señal Sugestiva](#nivel-2-señal-sugestiva)
-      - [Nivel 1 — Tendencia no Significativa](#nivel-1-tendencia-no-significativa)
-      - [Nivel 0 — Sin Señal Operativa (7 Casos)](#nivel-0-sin-señal-operativa-7-casos)
+      - [Nivel 4 — Cierre Operativo Fuerte (overall\_pass=True)](#nivel-4--cierre-operativo-fuerte-overall_passtrue)
+      - [Nivel 3 — Componentes Funcionales (weak)](#nivel-3--componentes-funcionales-weak)
+      - [Nivel 2 — Señal Sugestiva](#nivel-2--señal-sugestiva)
+      - [Nivel 1 — Tendencia no Significativa](#nivel-1--tendencia-no-significativa)
+      - [Nivel 0 — Sin Señal Operativa (8 Casos)](#nivel-0--sin-señal-operativa-8-casos)
       - [Controles de Falsación (3/3 Correctos)](#controles-de-falsación-33-correctos)
     - [Métricas Globales de Robustez](#métricas-globales-de-robustez)
   - [Análisis de Selectividad](#análisis-de-selectividad)
@@ -82,34 +90,34 @@
     - [El Patrón de la Inercia Material](#el-patrón-de-la-inercia-material)
     - [Diagnóstico: ¿Por Qué Algunos Casos se Clasifican en Nivel 0-1?](#diagnóstico-por-qué-algunos-casos-se-clasifican-en-nivel-0-1)
   - [Diálogo Dialéctico y Falsación del Instrumento](#diálogo-dialéctico-y-falsación-del-instrumento)
-    - [1. El Caso Clima (EDI=0.002 vs Umbral 0.30)](#1-el-caso-clima-edi0002-vs-umbral-030)
+    - [1. El Caso Clima (EDI=0.011 vs Umbral 0.30)](#1-el-caso-clima-edi0011-vs-umbral-030)
     - [2. Información Efectiva (EI) y sus Limitaciones](#2-información-efectiva-ei-y-sus-limitaciones)
     - [3. Resolución 20×20 (400 agentes)](#3-resolución-2020-400-agentes)
     - [4. Circularidad en la Calibración](#4-circularidad-en-la-calibración)
   - [Conclusiones](#conclusiones)
     - [Resultado principal: Paisaje de Emergencia Operativa completamente mapeado](#resultado-principal-paisaje-de-emergencia-operativa-completamente-mapeado)
     - [Valor epistemológico bajo irrealismo operativo](#valor-epistemológico-bajo-irrealismo-operativo)
-    - [H1 — Hipótesis Central](#h1-hipótesis-central)
-- [04 Casos de Estudio (29 Casos)](#04-casos-de-estudio-29-casos)
+    - [H1 — Hipótesis Central](#h1--hipótesis-central)
+- [04 Casos de Estudio: El Emergentómetro en Acción](#04-casos-de-estudio-el-emergentómetro-en-acción)
   - [Paisaje de Emergencia Operativa](#paisaje-de-emergencia-operativa)
-  - [1. Casos de Cierre Operativo Fuerte (Nivel 4 — overall_pass=True)](#1-casos-de-cierre-operativo-fuerte-nivel-4-overall_passtrue)
-    - [Casos Strong sin overall_pass (falla C2 — Robustez)](#casos-strong-sin-overall_pass-falla-c2-robustez)
-  - [2. Señales Sugestivas (Nivel 2)](#2-señales-sugestivas-nivel-2)
-  - [3. Otros Fenómenos del Paisaje (Niveles 0-1)](#3-otros-fenómenos-del-paisaje-niveles-0-1)
-  - [4. Controles de Falsación (3/3 Correctos)](#4-controles-de-falsación-33-correctos)
-  - [5. Casos Removidos (Archivo)](#5-casos-removidos-archivo)
+  - [1. Casos de Cierre Operativo Fuerte (Nivel 4 — overall\_pass=True)](#1-casos-de-cierre-operativo-fuerte-nivel-4--overall_passtrue)
+  - [2. Componentes Funcionales (Nivel 3 — weak)](#2-componentes-funcionales-nivel-3--weak)
+  - [3. Señales Sugestivas (Nivel 2)](#3-señales-sugestivas-nivel-2)
+  - [4. Otros Fenómenos del Paisaje (Niveles 0-1)](#4-otros-fenómenos-del-paisaje-niveles-0-1)
+  - [5. Controles de Falsación (3/3 Correctos)](#5-controles-de-falsación-33-correctos)
+  - [6. Casos Removidos (Archivo)](#6-casos-removidos-archivo)
   - [Conclusión: El Paisaje como Resultado Principal](#conclusión-el-paisaje-como-resultado-principal)
 - [Anexos](#anexos)
-  - [00_Marco_Conceptual](#00_marco_conceptual)
-  - [01_Metodologia_Medicion](#01_metodologia_medicion)
-  - [02_Modelado_Simulacion](#02_modelado_simulacion)
-  - [03_Validacion_Praxis](#03_validacion_praxis)
-  - [04_Casos_De_Estudio](#04_casos_de_estudio)
-  - [05_Bibliografia](#05_bibliografia)
+  - [00\_Marco\_Conceptual](#00_marco_conceptual)
+  - [01\_Metodologia\_Medicion](#01_metodologia_medicion)
+  - [02\_Modelado\_Simulacion](#02_modelado_simulacion)
+  - [03\_Validacion\_Praxis](#03_validacion_praxis)
+  - [04\_Casos\_De\_Estudio](#04_casos_de_estudio)
+  - [05\_Bibliografia](#05_bibliografia)
 - [Indice: EjerciciosCriticos](#indice-ejercicioscriticos)
 - [Registros historicos](#registros-historicos)
-  - [registro_racionalizacion_glosarios_casos.md](#registro_racionalizacion_glosarios_casosmd)
-  - [registro_resecuencia_indices.md](#registro_resecuencia_indicesmd)
+  - [registro\_racionalizacion\_glosarios\_casos.md](#registro_racionalizacion_glosarios_casosmd)
+  - [registro\_resecuencia\_indices.md](#registro_resecuencia_indicesmd)
 - [05 Bibliografía Nuclear](#05-bibliografía-nuclear)
   - [Bibliografía Nuclear (37 fuentes)](#bibliografía-nuclear-37-fuentes)
   - [Fuentes de Datos (Repositorios Principales)](#fuentes-de-datos-repositorios-principales)
@@ -121,6 +129,26 @@
 
 ## Propósito
 Esta tesis construye un marco computacional para evaluar fenómenos de gran escala — candidatos a "hiperobjetos" en terminología de Morton (2013) — según su grado de cierre operativo. El marco no afirma ni niega la existencia metafísica de tales entidades: mide, clasifica y ordena su comportamiento en un gradiente de emergencia operativa.
+
+### En lenguaje accesible
+
+Imagine que existe una pregunta fundamental en filosofía y ciencia: **¿los fenómenos de gran escala (el clima, la economía global, una pandemia) son "algo más" que la suma de sus partes, o basta con conocer las partes para predecirlo todo?** Esta tesis no intenta responderla con argumentos filosóficos — la responde con un *instrumento de medición*.
+
+Ese instrumento es el **Emergentómetro**: un sistema computacional que mide cuánta información predictiva se pierde si ignoramos el nivel macro de un fenómeno y solo miramos las partes individuales. Si la pérdida es grande y robusta, el fenómeno tiene *cierre operativo* — se comporta como una entidad funcional con reglas propias. Si no, los componentes individuales bastan para explicarlo.
+
+```mermaid
+flowchart LR
+    F["🌍 Fenómeno\n(clima, economía, pandemia)"] --> E["🔬 Emergentómetro\n(ODE + ABM + C1-C5)"]
+    E --> G["📊 Grado de Emergencia\n(EDI: 0 a 1)"]
+    G --> N4["Nivel 4: El todo ES más\nque las partes"]
+    G --> N0["Nivel 0: Las partes\nbastan"]
+    
+    style E fill:#e1f5fe,stroke:#01579b,stroke-width:3px
+    style N4 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style N0 fill:#ffebee,stroke:#c62828
+```
+
+Así como un termómetro mide temperatura sin que eso implique una teoría sobre "qué es el calor", el Emergentómetro mide emergencia operativa sin afirmar que los hiperobjetos "existan" como entidades metafísicas. Esta postura se llama **irrealismo operativo**: medir sin reificar.
 
 ## Postura Filosófica: Irrealismo Operativo
 
@@ -139,11 +167,14 @@ El irrealismo operativo ocupa una posición intermedia: nuestros constructos son
 3. **Objetos del entendimiento:** Los hiperobjetos de esta tesis son constructos operativos, análogos a lo que Kant (1781) llamó "objetos de la experiencia posible" — no cosas-en-sí, sino estructuras que el entendimiento impone y que los datos validan o rechazan.
 
 ### Consecuencia central
-La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, el fenómeno de deforestación global exhibe un grado de cierre operativo de 0.633 (EDI), estadísticamente significativo (p<0.001), que resiste ablación, falsación y perturbación. Esto lo clasifica como objeto operativo de alto grado de emergencia."
+La tesis no afirma "el clima es un hiperobjeto real". Afirma: "bajo este marco, el fenómeno de deforestación global exhibe un grado de cierre operativo de 0.580 (EDI), estadísticamente significativo (p<0.001), que resiste ablación, falsación y perturbación. Esto lo clasifica como objeto operativo de alto grado de emergencia."
 
 ## Emergentismo Gradual con Niveles
 
-Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido:
+Esta tesis adopta un **emergentismo gradual por niveles de cierre operativo**. Los grados de emergencia no son categorías metafísicas sino posiciones en un continuo medido.
+
+### Analogía: La escala Richter de la emergencia
+Así como la escala Richter no dice "este terremoto es real" — mide su magnitud —, los niveles del Emergentómetro miden *cuánta emergencia operativa* exhibe un fenómeno. Un terremoto de magnitud 2 no es un "fracaso": es un dato. Del mismo modo, un fenómeno clasificado en Nivel 0 no es un "hiperobjeto fallido" — es un fenómeno donde el instrumento no detecta cierre operativo con la sonda elegida.
 
 ```mermaid
 graph LR
@@ -172,7 +203,7 @@ graph LR
 
 ### Anclaje teórico
 - **Chalmers (2006):** Distingue emergencia débil (inesperada pero deducible) de emergencia fuerte (no deducible desde lo micro). Nuestro gradiente operacionaliza esta distinción: los Niveles 0-2 corresponden a ausencia o emergencia débil; los Niveles 3-4 muestran irreducibilidad funcional demostrada.
-- **Bedau (1997):** La emergencia débil es el "estado por defecto" de los sistemas complejos — computable pero no predecible en la práctica. Nuestros 13 casos null + 7 trend habitan este territorio.
+- **Bedau (1997):** La emergencia débil es el "estado por defecto" de los sistemas complejos — computable pero no predecible en la práctica. Nuestros 8 casos null + 4 trend habitan este territorio.
 - **Kim (1999):** La exclusión causal amenaza toda emergencia que afirme causalidad descendente fuerte. Bajo irrealismo operativo, esquivamos esta objeción: no afirmamos que lo macro *cause* — afirmamos que el constructo macro reduce incertidumbre de forma no eliminable. Es una constatación epistémica, no una afirmación causal metafísica.
 - **Humphreys (2016):** La "fusión emergente" produce propiedades nuevas no atribuibles a componentes. Nuestro Nivel 4 captura exactamente esto: la constricción macro genera información predictiva que desaparece al eliminarla y no es recuperable desde el nivel micro.
 - **O'Connor & Wong (2005):** Distinguen emergencia ontológica (propiedades genuinamente nuevas) de emergencia epistemológica (limitaciones del conocimiento). Nuestro marco se sitúa explícitamente en la emergencia epistemológica: medimos limitaciones del nivel micro para explicar el fenómeno, no afirmamos propiedades ontológicamente nuevas.
@@ -227,7 +258,7 @@ Para que un fenómeno merezca el título de "hiperobjeto con límites" (Nivel 5)
 Ningún caso del corpus actual alcanza el Nivel 5. Esto es consistente con el irrealismo operativo: afirmar "hiperobjeto fuerte" requiere más evidencia de la que un modelo ABM+ODE homogéneo puede proporcionar.
 
 ## Relación con Morton y la Tradición OOO
-Timothy Morton (2013) propuso el concepto de hiperobjeto con propiedades fenomenológicas (viscosidad, no-localidad, fase temporal, interobjetividad). La presente tesis:
+Timothy Morton (2013) propuso el concepto de hiperobjeto con propiedades fenomenológicas (viscosidad, no-localidad, fase temporal, interobjetividad). Dentro de la Ontología Orientada a Objetos (OOO), Harman (2018) sostiene que los objetos se retiran de todo acceso directo, mientras que Latour (2017) y Bennett (2010) enfatizan la agencia distribuida de los no-humanos. Luhmann (1995) aporta la noción de sistemas autopoiéticos con cierre operativo — una analogía directa con nuestro concepto de cierre medido por EDI. La presente tesis:
 
 1. **Acepta** la utilidad del concepto como heurística para identificar fenómenos candidatos.
 2. **Rechaza** la pretensión ontológica fuerte: no afirmamos que los hiperobjetos *existan* como entidades autónomas.
@@ -341,9 +372,10 @@ Para resolver la crítica de "homogeneidad espacial" (dom_share ≈ 1/N²), se i
 La topología Scale-Free produce heterogeneidad 10× mayor que la grilla regular. Alcanzar Nivel 5 (hiperobjeto con límites) requeriría esta heterogeneidad verificada.
 
 ## Glosario Operativo
+- **Emergentómetro:** Nombre operativo del instrumento de medición completo: motor híbrido (ODE+ABM), protocolo C1-C5, test de permutación (999 reps) y métrica EDI. Así como un termómetro mide temperatura, el Emergentómetro mide el grado de emergencia operativa de un fenómeno. No es una metáfora — es el nombre funcional del pipeline computacional.
 - **Hiperobjeto (operativo):** Constructo del entendimiento que designa un fenómeno de gran escala con cierre operativo alto (Nivel 4+). No implica existencia metafísica.
 - **Cierre operativo:** Propiedad de un fenómeno cuya constricción macro es irreducible, significativa y robusta bajo el protocolo C1-C5. Medido por EDI.
-- **EDI (Effective Dependence Index):** Grado de cierre operativo. Mide la degradación predictiva al eliminar la constricción macro. Cuantifica cuánta información estructurada aporta el nivel macro al modelo completo respecto al modelo reducido (ablación). EDI ∈ [-1, 1].
+- **EDI (Effective Dependence Index):** Grado de cierre operativo. Mide la degradación predictiva al eliminar la constricción macro. En términos pedagógicos: "si quito la visión de conjunto, ¿cuánto empeora mi predicción?". Rango: EDI ∈ [-1, 1]. Un EDI de 0.30 (Kessler) significa que ignorar el patrón macro degrada la predicción en 30%.
 - **CR (Cohesion Ratio):** Indicador complementario de frontera funcional. CR > 2.0 sugiere frontera espacial nítida. No es condición de H1.
 - **Nudging:** Acople macro-micro para asimilación de datos. Desactivado (=0) en evaluación.
 - **Componente funcional:** Fenómeno de Nivel 2-3 que exhibe constricción detectable pero insuficiente para cierre. Análogo a ribosomas en biología.
@@ -355,7 +387,7 @@ La topología Scale-Free produce heterogeneidad 10× mayor que la grilla regular
 
 ## Dialéctica y Límites
 - **Reduccionismo:** No se equipara el sistema a un vector; se mide el grado de cierre operativo del nivel macro.
-- **Tautología:** Los controles de falsación (3/3 correctamente rechazados) y la diversidad de resultados (13 null, 7 trend, 3 suggestive, 1 weak, 2 strong) refutan la circularidad.
+- **Tautología:** Los controles de falsación (3/3 correctamente rechazados) y la diversidad de resultados (8 null, 4 trend, 3 suggestive, 6 weak, 5 strong, 3 controles) refutan la circularidad.
 - **Instrumentalismo:** El irrealismo operativo va más allá del instrumentalismo puro: no reduce los constructos a "herramientas útiles" — les asigna un grado medible de cierre funcional que puede ser mayor o menor. Un instrumento puro no tiene grados.
 - **Reificación:** Bajo irrealismo, el riesgo de reificación se minimiza: nunca afirmamos que algo "es" un hiperobjeto; afirmamos que "exhibe cierre operativo de grado G".
 - **Edge cases:** Alta frecuencia y sistemas reflexivos requieren validación prospectiva.
@@ -363,6 +395,9 @@ La topología Scale-Free produce heterogeneidad 10× mayor que la grilla regular
 ## Riesgos y Mitigación
 - **Sobreajuste:** EDI > 0.90 es flag de tautología. Protocolo C1-C5 discrimina.
 - **Falta de datos:** Fase sintética antes de datos reales. LoE pondera la calidad.
+- **Fragilidad del modelo:** Siguiendo a Taleb (2012), los sistemas complejos son vulnerables a perturbaciones no anticipadas. C2 (robustez) prueba explícitamente esta vulnerabilidad.
+- **Patrones reales vs. aparentes:** Dennett (1991) argumenta que los "patrones reales" existen en la medida en que permiten compresión predictiva. Nuestro EDI operacionaliza esta noción: un patrón macro es "real" operativamente si su eliminación degrada la predicción.
+- **Asimetrías inter-nivel:** Batterman (2002) muestra que el razonamiento asintótico revela propiedades emergentes invisibles a la descripción micro. El gradiente EDI captura estas asimetrías.
 - **Homogeneidad espacial:** CR ≈ 1.0 es la predicción teórica para agentes acoplados en sistemas con simetría translacional y difusión isotrópica (Haken, 1983, §4.3). El CR > 2.0 (Nivel 5) requiere romper esta simetría mediante topologías heterogéneas.
 - **Circularidad BC:** Bias Correction aplica solo en fase de corrección. Evaluación usa assimilation_strength=0. Modo 'reverted' protege contra circularidad (verificado: 9 puntos de forzado en hybrid_validator.py).
 
@@ -391,106 +426,50 @@ El marco define un gradiente computacional de cierre operativo para fenómenos d
 
 # 01 Metodología de Medición
 
+## El Emergentómetro en la Práctica
+
+El sistema de medición de esta tesis — que llamamos **Emergentómetro** — opera como cualquier instrumento científico: tiene un protocolo de uso, métricas estandarizadas y condiciones de rechazo. La diferencia es que no mide temperatura o voltaje, sino *cuánta emergencia operativa* exhibe un fenómeno de gran escala.
+
+En términos intuitivos: el Emergentómetro toma un fenómeno complejo (como la deforestación global), construye dos modelos — uno que incluye la "visión de conjunto" (macro) y otro que solo mira los componentes individuales (micro) — y mide cuánto empeora la predicción cuando eliminamos la visión de conjunto. Si empeora mucho y de forma robusta (protocolo C1-C5), el fenómeno tiene cierre operativo alto.
+
 ## Protocolo de Rigor (C1-C5)
 
-1. **C1 Convergencia:** ABM acoplado mejora sobre ABM reducido en datos reales.
+El Emergentómetro exige que cada medición supere cinco filtros de calidad:
 
-2. **C2 Robustez:** Estabilidad ante perturbaciones de parámetros.
+1. **C1 Convergencia:** El modelo completo (ABM+ODE) debe predecir mejor que el modelo reducido (ABM solo) en datos reales. Si no mejora, no hay señal.
 
-3. **C3 Determinismo aleatorio:** Semillas fijas para replicabilidad.
+2. **C2 Robustez:** La mejora debe mantenerse aunque variemos los parámetros. Si pequeños cambios destruyen la señal, la medición es inestable.
 
-4. **C4 Linter de realidad:** Coherencia con leyes del dominio.
+3. **C3 Determinismo aleatorio:** Semillas fijas (seed=42) para garantizar que cualquier investigador obtenga exactamente los mismos resultados.
 
-5. **C5 Reporte de fallos:** Sensibilidad y límites explicitados.
+4. **C4 Linter de realidad:** Los resultados deben ser coherentes con las leyes del dominio (no violar física básica, economía elemental, etc.).
 
-
+5. **C5 Reporte de fallos:** Sensibilidad y límites explicitados. El instrumento debe reportar honestamente qué no pudo medir.
 
 ```mermaid
-
-
-
 flowchart LR
-
-
-
     C1[C1: Convergencia] --> C2[C2: Robustez]
-
-
-
     C2 --> C3[C3: Replicabilidad]
-
-
-
     C3 --> C4[C4: Validez]
-
-
-
     C4 --> C5[C5: Incertidumbre]
-
-
-
     C5 --> Pass{¿Todo OK?}
-
-
-
     Pass -->|Sí| Valid[Nivel 4: Objeto Operativo]
-
-
-
     Pass -->|No| Reject[Clasificación Nivel 0-3]
 
-
-
-    
-
-
-
     style C1 fill:#e1f5fe,stroke:#01579b
-
-
-
     style C2 fill:#e1f5fe,stroke:#01579b
-
-
-
     style C3 fill:#e1f5fe,stroke:#01579b
-
-
-
     style C4 fill:#e1f5fe,stroke:#01579b
-
-
-
     style C5 fill:#e1f5fe,stroke:#01579b
-
-
-
     style Pass fill:#fff9c4,stroke:#fbc02d
-
-
-
     style Valid fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
-
-
-
     style Reject fill:#ffebee,stroke:#c62828
-
-
-
 ```
 
-
-
-
-
-
-
-Estos criterios surgen de auditorías internas.
-
- La metodología no se justifica por resultados favorables, sino por su capacidad para discriminar fenómenos de forma explícita y reproducible.
+Estos criterios surgen de auditorías internas y responden a la tradición de rigor metodológico de Popper (1959) — falsabilidad como condición demarcatoria — y Lakatos (1978) — programas de investigación que toleran anomalías mientras el núcleo progrese. La metodología no se justifica por resultados favorables, sino por su capacidad para discriminar fenómenos de forma explícita y reproducible.
 
 ## Pipeline de Validación
-Observación → Simulación → Clasificación. El modelo asigna un grado de cierre operativo (EDI) que posiciona al fenómeno en el paisaje de emergencia. El pipeline no "valida" o "invalida" — **clasifica** en un gradiente.
+Observación → Simulación → Clasificación. El Emergentómetro asigna un grado de cierre operativo (EDI) que posiciona al fenómeno en el paisaje de emergencia. El pipeline no "valida" o "invalida" — **clasifica** en un gradiente.
 
 ```mermaid
 stateDiagram-v2
@@ -504,9 +483,12 @@ stateDiagram-v2
 
 ## Métricas y su Interpretación bajo Irrealismo Operativo
 
-### EDI (Effective Dependence Index)
+### EDI (Effective Dependence Index) — "El termómetro de emergencia"
 El EDI mide el **grado de cierre operativo** de un fenómeno. No mide "existencia" ni "realidad" del hiperobjeto — mide cuánta información predictiva se pierde al eliminar la constricción macro.
-- **Interpretación:** Un EDI de 0.633 (Deforestación) significa que eliminar el constructo macro degrada la predicción en 63.3%. Esto es una medición operativa, no una afirmación ontológica.
+
+En lenguaje accesible: imagine que tiene dos médicos — uno que ve al paciente completo (historial, síntomas, contexto) y otro que solo ve análisis de sangre aislados. El EDI mide cuánto peor diagnostica el segundo. Si el EDI es 0.38, el médico sin visión de conjunto se equivoca un 38% más.
+
+- **Interpretación técnica:** Un EDI de 0.579 (Deforestación) significa que eliminar el constructo macro degrada la predicción en 57.9%. Esto es una medición operativa, no una afirmación ontológica.
 - **Ablación como intervención:** Siguiendo a Woodward (2003), la manipulación de `forcing_scale=0` es una intervención controlada. El efecto medido (degradación del EDI) establece la indispensabilidad operativa del constructo macro, no su "realidad causal" en sentido metafísico.
 
 ### Regla de Descuento por Nivel de Evidencia (LoE)
@@ -534,10 +516,10 @@ Los umbrales **clasifican** fenómenos en el gradiente de emergencia:
 8. **forcing_scale ≥ 1.0:** Cap en calibración — dominancia exógena
 9. **C1-C5 protocolo completo:** Condición necesaria para Nivel 4
 
-La clasificación de 6 categorías (strong, weak, suggestive, trend, null, falsification) es el **resultado principal** de la metodología, no un filtro binario.
+La clasificación de 6 categorías (strong, weak, suggestive, trend, null, falsification) es el **resultado principal** del Emergentómetro, no un filtro binario.
 
 ## EI (Información Efectiva) — Indicador Complementario
-La EI (Hoel, 2017) mide la ganancia informacional teórica del nivel macro. Opera como indicador de calidad informacional, no como condición de clasificación. En sistemas con ruido no-gaussiano, la EI puede ser transitoriamente negativa sin invalidar el grado de cierre operativo medido por EDI.
+La EI (Hoel, 2017), fundamentada en la teoría de la información de Shannon (1948), mide la ganancia informacional teórica del nivel macro. Opera como indicador de calidad informacional, no como condición de clasificación. En sistemas con ruido no-gaussiano, la EI puede ser transitoriamente negativa sin invalidar el grado de cierre operativo medido por EDI.
 
 ## Reproducibilidad
 - Hashing de datasets.
@@ -553,7 +535,7 @@ La reproducibilidad es requisito epistémico: sin ella, el gradiente de cierre o
 - Clasificación de datos por dureza (LoE) evita confundir evidencia empírica con prospectiva.
 
 ## Datos e Instrumentos
-Python, numpy, pandas, math. Fuentes: World Bank, Meteostat, Yahoo Finance, OWID, OPSD, Wikimedia, CelesTrak (según caso). Todos los datasets cacheados en CSV local.
+Python, numpy, pandas, math. La asimilación de datos sigue principios del filtro de Kalman por ensambles (Evensen, 2009), adaptados a nuestra arquitectura híbrida con zero-nudging en evaluación. Fuentes: World Bank, Meteostat, Yahoo Finance, OWID, OPSD, Wikimedia, CelesTrak (según caso). Todos los datasets cacheados en CSV local.
 
 ## Gobernanza de Datos
 Filtro de nulos, normalización, uso exclusivo de datos abiertos. La gobernanza se incorpora como condición de reproducibilidad: si la calidad de datos no cumple criterios (LoE), se ajusta la interpretación del EDI, no se fuerza el resultado.
@@ -562,11 +544,17 @@ Filtro de nulos, normalización, uso exclusivo de datos abiertos. La gobernanza 
 Clima sintético, Finanzas sintéticas, y caso clima regional como MVP metodológico. Los pilotos prueban el pipeline antes de clasificar fenómenos en el paisaje de emergencia.
 
 ## Síntesis
-El pipeline clasifica fenómenos en un gradiente de cierre operativo. La metodología se valida por la diversidad de sus resultados (13 null, 7 trend, 3 suggestive, 1 weak, 2 strong, 3 falsificaciones) y por la coherencia del gradiente con las propiedades de los dominios evaluados.
+El Emergentómetro clasifica fenómenos en un gradiente de cierre operativo. La metodología se valida por la diversidad de sus resultados (8 null, 4 trend, 3 suggestive, 6 weak, 5 strong, 3 controles de falsación) y por la coherencia del gradiente con las propiedades de los dominios evaluados.
 
 ---
 
 # 02 Modelado y Simulación
+
+## El Motor del Emergentómetro
+
+El Emergentómetro necesita un "motor" que simule fenómenos a dos escalas simultáneamente: la escala individual (micro) y la escala del fenómeno completo (macro). Ese motor es el **modelo híbrido ODE+ABM**.
+
+En términos accesibles: imagine una colonia de hormigas. Cada hormiga sigue reglas simples (modelo micro, ABM), pero la colonia como un todo parece tener "comportamiento propio" — rutas eficientes, arquitectura del hormiguero, defensa coordinada. La ODE captura ese patrón de conjunto. El Emergentómetro entonces pregunta: **¿si eliminamos la influencia del patrón de conjunto sobre las hormigas individuales, la predicción empeora?** Si la respuesta es "sí, y mucho", hay emergencia operativa.
 
 ## Arquitectura Detallada del Motor Híbrido
 El corazón de esta investigación es la clase `HybridModel`. Su función es mediar entre dos niveles descriptivos: el individuo (Agente) y la estructura (Ecuación). No presupone que la estructura "exista" ontológicamente — solo que su inclusión modifica las predicciones de forma medible.
@@ -645,7 +633,7 @@ flowchart LR
 ```
 
 ## Implementación de los 29 Casos
-La arquitectura actual integra **29 motores de simulación completamente funcionales**. Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas. Se utilizan datos reales de fuentes como World Bank, Meteostat, Yahoo Finance, OWID, Wikimedia y CelesTrak.
+La arquitectura actual integra **29 motores de simulación completamente funcionales**. La lógica ABM sigue la tradición de modelos basados en agentes de Holland (1995) y Schelling (1978), donde reglas micro simples producen patrones macro complejos. La dinámica ODE se fundamenta en sistemas no lineales (Strogatz, 2014). Cada caso, ubicado en `repos/Simulaciones/`, cuenta con su propio pipeline de validación (`validate.py`), conectores de datos (`data.py`) y métricas específicas. Se utilizan datos reales de fuentes como World Bank, Meteostat, Yahoo Finance, OWID, Wikimedia y CelesTrak.
 
 ### Protocolo de Simulación
 - **Fase sintética:** calibración interna y verificación lógica.
@@ -657,7 +645,7 @@ La arquitectura actual integra **29 motores de simulación completamente funcion
 - **Permutation test (p<0.05):** significancia estadística (999 permutaciones).
 - **Bias Correction:** transformación afín condicional del target ODE para eliminar sesgo.
 - **CR > 2.0:** indicador complementario de frontera sistémica.
-- **overall_pass:** 11 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude).
+- **overall_pass:** 13 condiciones simultáneas (C1-C5, Symploké, no-localidad, persistencia, emergencia, acoplamiento, no-fraude, EDI válido, EDI significativo).
 
 ## Trazabilidad y Resultados
 Los resultados detallados de la ejecución de estos 29 casos se consolidan exclusivamente en la sección **03 Validación y Praxis**. La arquitectura permite una trazabilidad total: cada simulación genera un archivo `metrics.json` con el timestamp y el hash del commit.
@@ -676,7 +664,21 @@ python3 repos/scripts/tesis.py audit
 
 ---
 
-# 03 Validación y Praxis
+# 03 Validación y Praxis: Resultados del Emergentómetro
+
+## Resumen ejecutivo: Lo que el Emergentómetro encontró
+
+El Emergentómetro se aplicó a **29 fenómenos de gran escala** de dominios tan diversos como el clima, las pandemias, los mercados financieros, la deforestación y la basura espacial. El resultado no es un veredicto binario ("existe/no existe") sino un **mapa de emergencia**: un paisaje donde cada fenómeno tiene un grado medido de cierre operativo.
+
+De los 29 fenómenos medidos:
+- **5 exhiben cierre operativo alto y robusto** (overall_pass=True): eliminar la "visión de conjunto" degrada la predicción entre 32.2% y 80.6%, de forma estable y significativa.
+- **6 son componentes funcionales** (weak, Nivel 3): señal significativa (p < 0.05) con EDI entre 0.10 y 0.30 pero sin cierre pleno.
+- **3 presentan señal sugestiva**: el instrumento detecta algo, pero no suficiente para confirmar.
+- **4 muestran tendencia sin significancia**: indicios sin confirmación estadística.
+- **8 no presentan señal**: el instrumento no detecta cierre operativo con la sonda elegida.
+- **3 controles de falsación** funcionan correctamente: ruido puro, random walk y estados ocultos son rechazados.
+
+Este paisaje es el resultado principal de la tesis — no solo los casos "exitosos", sino la distribución completa.
 
 ## Enfoque de Clasificación Operativa
 La validación bajo irrealismo operativo no busca "confirmar" ni "refutar" la existencia de hiperobjetos. Clasifica fenómenos en un **gradiente de cierre operativo** (Niveles 0-5) según la indispensabilidad del constructo macro para predecir el comportamiento micro. Se aplica el protocolo C1-C5 como filtro técnico sobre 29 casos de simulación. La evaluación se realiza con `assimilation_strength=0.0` (zero-nudging), eliminando toda asistencia observacional durante la fase de validación.
@@ -729,15 +731,16 @@ Cada caso de simulación utiliza un par de modelos (ODE/ABM) específicos para s
 
 ## Resultados Consolidados (29 Casos — Protocolo Completo)
 
-El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso alcanza **Nivel 4** solo si las 11 condiciones se cumplen simultáneamente. La significancia estadística se evalúa mediante permutation test con 999 permutaciones (seed=42).
+El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 8 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude, EDI válido, EDI significativo). Un caso alcanza **Nivel 4** solo si las 13 condiciones se cumplen simultáneamente. La significancia estadística se evalúa mediante permutation test con 999 permutaciones (seed=42).
 
-> **Estado actual:** Bajo el pipeline afinado (sin data leakage, zero-nudging, 999 permutaciones): **9/29 overall_pass=True** (Epidemiología, Movilidad, Políticas, Postverdad, Wikipedia, Urbanización, Kessler, Fósforo, Riesgo Biológico). 11 casos clasificados como strong. El paisaje de emergencia queda completamente mapeado.
+> **Estado actual:** Bajo el pipeline afinado (sin data leakage, zero-nudging, 999 permutaciones, EDI ≥ 0.30): **5/29 overall_pass=True** (Energía, Deforestación, Urbanización, Fósforo, Microplásticos). 6 casos clasificados como weak (Nivel 3). El paisaje de emergencia queda completamente mapeado.
 
 ```mermaid
 pie title Distribución del Paisaje de Emergencia (29 Casos)
-    "Nivel 4: Cierre Fuerte" : 11
-    "Nivel 2: Señal Sugestiva" : 2
-    "Nivel 0-1: Tendencia/Sin Señal" : 13
+    "Nivel 4: Cierre Fuerte" : 5
+    "Nivel 3: Componente Funcional" : 6
+    "Nivel 2: Señal Sugestiva" : 3
+    "Nivel 0-1: Tendencia/Sin Señal" : 12
     "Controles de Falsación" : 3
 ```
 
@@ -745,11 +748,11 @@ pie title Distribución del Paisaje de Emergencia (29 Casos)
 
 | Categoría | Nivel | Criterio | Conteo | Función en el paisaje |
 |-----------|:-----:|----------|--------|----------------------|
-| **strong** | 4 | EDI ≥ 0.30, p < 0.05, overall_pass=True | 11 | Cierre operativo fuerte |
-| **weak** | 3 | 0.10 ≤ EDI < 0.30, p < 0.05 | 0 | Componente funcional |
-| **suggestive** | 2 | EDI > 0.01, p < 0.05 | 2 | Señal detectable |
-| **trend** | 1 | EDI > 0, p ≥ 0.05 | 6 | Tendencia no confirmada |
-| **null** | 0 | EDI ≤ 0 o sin señal | 7 | Sin señal operativa |
+| **strong** | 4 | EDI ≥ 0.30, p < 0.05, overall_pass=True | 5 | Cierre operativo fuerte |
+| **weak** | 3 | 0.10 ≤ EDI < 0.30, p < 0.05 | 6 | Componente funcional |
+| **suggestive** | 2 | EDI > 0.01, p < 0.05 | 3 | Señal detectable |
+| **trend** | 1 | EDI > 0, p ≥ 0.05 | 4 | Tendencia no confirmada |
+| **null** | 0 | EDI ≤ 0 o sin señal | 8 | Sin señal operativa |
 | **falsification** | — | Controles negativos diseñados | 3 | Correctamente rechazados |
 | **Total** | | | **29** | |
 
@@ -758,56 +761,56 @@ pie title Distribución del Paisaje de Emergencia (29 Casos)
 
 > Tabla generada automáticamente desde `metrics.json` de cada caso.
 
-## Matriz de Clasificación Operativa (29 casos × 11 criterios + Nivel)
+## Matriz de Clasificación Operativa (29 casos × 13 criterios + Nivel)
 
-Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). **Nivel** = grado de cierre operativo (0–4, control = —). **Validado** = 11 condiciones se cumplen simultáneamente.
+Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0.0`). **Nivel** = grado de cierre operativo (0–4, control = —). **Validado** = 13 condiciones se cumplen simultáneamente (incluye EDI válido y EDI significativo).
 
 | # | Caso | EDI | C1 | C2 | C3 | C4 | C5 | Sym | NL | Per | Emr | Cp | Nivel | Result |
 | :--- | :--- | ---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| 20 | Kessler | 0.381 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
-| 22 | Fosforo | 0.376 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
-| 14 | Postverdad | 0.325 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
-| 13 | Politicas Estrategicas | 0.288 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
-| 27 | Riesgo Biologico | 0.266 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
-| 15 | Wikipedia | 0.160 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
-| 18 | Urbanizacion | 0.151 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
-| 05 | Epidemiologia | 0.129 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
-| 11 | Movilidad | 0.128 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
-| 06 | Falsacion Exogeneidad | 0.055 | Si | No | Si | No | Si | Si | Si | Si | No | Si | — | Control (Rechazado) |
-| 07 | Falsacion No Estacionariedad | -0.890 | No | No | Si | Si | Si | Si | Si | Si | Si | Si | — | Control (Rechazado) |
-| 08 | Falsacion Observabilidad | -1.000 | No | No | Si | Si | Si | Si | Si | Si | Si | Si | — | Control (Rechazado) |
-| 26 | Starlink | 0.837 | Si | No | Si | Si | Si | Si | Si | Si | Si | Si | 1 | Rechazado |
-| 24 | Microplasticos | 0.656 | Si | No | Si | Si | Si | Si | Si | Si | Si | Si | 4 | Rechazado |
-| 16 | Deforestacion | 0.589 | Si | No | Si | Si | Si | Si | Si | Si | Si | Si | 4 | Rechazado |
-| 04 | Energia | 0.409 | Si | No | Si | Si | Si | Si | Si | Si | Si | Si | 1 | Rechazado |
-| 01 | Clima | 0.002 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 1 | Rechazado |
-| 02 | Conciencia | 0.123 | Si | Si | Si | Si | Si | Si | No | Si | Si | Si | 1 | Rechazado |
-| 03 | Contaminacion | -0.011 | Si | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
+| 24 | Microplasticos | 0.806 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
+| 04 | Energia | 0.650 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
+| 16 | Deforestacion | 0.580 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
+| 18 | Urbanizacion | 0.337 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
+| 22 | Fosforo | 0.322 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 4 | **Validado** |
+| 06 | Falsacion Exogeneidad | 0.055 | Si | Si | Si | No | Si | Si | Si | Si | No | Si | — | Control (Rechazado) |
+| 07 | Falsacion No Estacionariedad | -0.882 | No | Si | Si | Si | Si | Si | Si | Si | Si | Si | — | Control (Rechazado) |
+| 08 | Falsacion Observabilidad | -1.000 | No | Si | Si | Si | Si | Si | Si | Si | Si | Si | — | Control (Rechazado) |
+| 26 | Starlink | 0.690 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 1 | Rechazado |
+| 01 | Clima | 0.011 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 1 | Rechazado |
+| 02 | Conciencia | -0.116 | Si | Si | Si | Si | Si | No | No | Si | Si | Si | 0 | Rechazado |
+| 03 | Contaminacion | -0.004 | Si | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
+| 05 | Epidemiologia | 0.129 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 3 | Rechazado |
 | 09 | Finanzas | 0.081 | Si | Si | Si | No | Si | Si | Si | Si | Si | Si | 2 | Rechazado |
-| 10 | Justicia | 0.227 | Si | Si | Si | Si | Si | Si | Si | Si | No | Si | 1 | Rechazado |
+| 10 | Justicia | 0.227 | Si | No | Si | Si | Si | Si | Si | Si | No | Si | 1 | Rechazado |
+| 11 | Movilidad | 0.128 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 3 | Rechazado |
 | 12 | Paradigmas | -0.006 | No | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
-| 17 | Oceanos | -0.032 | No | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
+| 13 | Politicas Estrategicas | 0.288 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 3 | Rechazado |
+| 14 | Postverdad | 0.252 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 3 | Rechazado |
+| 15 | Wikipedia | 0.080 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 2 | Rechazado |
+| 17 | Oceanos | -0.043 | No | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
 | 19 | Acidificacion Oceanica | -0.000 | No | Si | Si | Si | Si | Si | Si | Si | No | Si | 0 | Rechazado |
-| 21 | Salinizacion | 0.070 | Si | Si | Si | No | Si | Si | Si | Si | Si | Si | 2 | Rechazado |
-| 23 | Erosion Dialectica | -1.000 | No | Si | Si | Si | Si | Si | Si | Si | Si | Si | 0 | Rechazado |
-| 25 | Acuiferos | -0.126 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 0 | Rechazado |
-| 28 | Fuga Cerebros | 0.059 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 1 | Rechazado |
-| 29 | Iot | -0.218 | No | No | Si | Si | Si | Si | Si | No | Si | Si | 0 | Rechazado |
+| 20 | Kessler | 0.299 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 3 | Rechazado |
+| 21 | Salinizacion | 0.058 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 2 | Rechazado |
+| 23 | Erosion Dialectica | -1.000 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 0 | Rechazado |
+| 25 | Acuiferos | -0.020 | Si | Si | Si | Si | Si | Si | Si | Si | Si | No | 0 | Rechazado |
+| 27 | Riesgo Biologico | 0.294 | Si | Si | Si | Si | Si | Si | Si | Si | Si | Si | 3 | Rechazado |
+| 28 | Fuga Cerebros | 0.025 | Si | No | Si | Si | Si | Si | Si | Si | Si | Si | 1 | Rechazado |
+| 29 | Iot | -0.899 | No | Si | Si | Si | Si | Si | Si | No | Si | Si | 0 | Rechazado |
 
-**Resumen:** 9 validados (Nivel 4), 4 rechazados con EDI > 0.30 (selectividad), 3 controles de falsación, 13 rechazados con EDI bajo (Nivel 0–1).
+**Resumen:** 5 validados (Nivel 4), 1 rechazados con EDI > 0.30 (selectividad), 3 controles de falsación, 20 rechazados con EDI bajo (Nivel 0–1).
 
 ## Distribución de Modos de Fallo
 
-En los 17 rechazados genuinos:
+En los 21 rechazados genuinos:
 
 | Criterio | Fallos | % |
 | :--- | :---: | :---: |
-| C1 | 5/17 | 29% |
-| Emergence | 5/17 | 29% |
-| Symploké | 0/17 | 0% |
-| Persistencia | 1/17 | 5% |
-| C5 | 0/17 | 0% |
-| C2 | 5/17 | 29% |
+| C1 | 4/21 | 19% |
+| Emergence | 5/21 | 23% |
+| Symploké | 1/21 | 4% |
+| Persistencia | 1/21 | 4% |
+| C5 | 0/21 | 0% |
+| C2 | 2/21 | 9% |
 
 
 ### Clasificación por Resultado
@@ -816,31 +819,34 @@ En los 17 rechazados genuinos:
 
 | Caso | EDI | p-perm | CR | BC | Interpretación operativa |
 |------|----:|-------:|---:|:---|:---|
-| 05 Epidemiología | **0.129** | 0.000 | 1.009 | full | SEIR Kermack-McKendrick: señal epidémica robusta |
-| 11 Movilidad | **0.128** | 0.002 | 1.004 | full | MFD: constricción de tráfico significativa |
-| 13 Políticas | **0.288** | 0.001 | 1.009 | full | Inercia Institucional North: 29% reducción RMSE |
-| 14 Postverdad | **0.325** | 0.000 | 1.009 | full | SIS Campo Medio: cascada de desinformación |
-| 15 Wikipedia | **0.160** | 0.000 | 1.060 | full | Lotka-Volterra: dinámica calidad-controversia |
-| 18 Urbanización | **0.151** | 0.000 | 1.001 | full | Logística urbana: atracción económica |
-| 20 Kessler | **0.381** | 0.000 | 1.005 | full | Cascada cuadrática Kessler-Liou: debris orbital |
-| 22 Fósforo | **0.376** | 0.000 | 1.002 | full | Carpenter P Cycle: ciclo biogeoquímico |
-| 27 Riesgo Biológico | **0.257** | 0.003 | 1.002 | full | Woolhouse Zoonotic: cascada bilineal |
+| 24 Microplásticos | **0.806** | 0.000 | 1.000 | bias_only | Jambeck Accumulation: acumulación persistente con fuerte constricción macro |
+| 04 Energía | **0.650** | 0.000 | 1.002 | bias_only | Lotka-Volterra: competencia energética con fuerte constricción macro |
+| 16 Deforestación | **0.580** | 0.000 | 1.023 | full | Von Thünen Frontier: inercia de frontera agrícola |
+| 18 Urbanización | **0.337** | 0.000 | 1.003 | full | Logística urbana: atracción económica |
+| 22 Fósforo | **0.322** | 0.000 | 1.003 | full | Carpenter P Cycle: ciclo biogeoquímico |
 
-Estos nueve casos alcanzan overall_pass=True: todas las 11 condiciones se cumplen simultáneamente. El constructo macro es operativamente indispensable. Eliminar la constricción macro degrada la predicción entre 12.8% y 38.1%. Bajo irrealismo operativo, esto no afirma que "existan" como entidades autónomas — afirma que el instrumento detecta cierre operativo robusto.
+Estos cinco casos alcanzan overall_pass=True: las 13 condiciones se cumplen simultáneamente. El constructo macro es operativamente indispensable. Eliminar la constricción macro degrada la predicción entre 32.2% y 80.6%. Bajo irrealismo operativo, esto no afirma que "existan" como entidades autónomas — afirma que el instrumento detecta cierre operativo robusto.
 
-> **Nota sobre Deforestación y Microplásticos:** Estos dos casos presentan los EDIs más altos del corpus (0.589 y 0.656 respectivamente) y clasifican como strong, pero no alcanzan overall_pass=True porque fallan C2 (robustez ante perturbación de parámetros). Sin embargo, la magnitud de su EDI los posiciona como candidatos prioritarios para investigación futura con modelos más robustos.
+#### Nivel 3 — Componentes Funcionales (weak)
 
-| Caso | EDI | p-perm | CR | BC | Nota |
-|------|----:|-------:|---:|:---|:---|
-| 16 Deforestación | **0.579** | 0.000 | 1.015 | full | overall_pass=False (falla C2) |
-| 24 Microplásticos | **0.656** | 0.000 | 1.000 | bias_only | overall_pass=False (falla C2) |
+| Caso | EDI | p-perm | CR | Interpretación operativa |
+|------|----:|-------:|---:|:---|
+| 20 Kessler | 0.299 | 0.000 | 1.003 | Cascada Kessler-Liou: señal fuerte, marginalmente sub-umbral (0.30) |
+| 27 Riesgo Biológico | 0.294 | 0.003 | 1.001 | Woolhouse Zoonotic: cascada bilineal significativa |
+| 13 Políticas | 0.289 | 0.000 | 1.009 | Inercia Institucional North: señal significativa sub-umbral |
+| 14 Postverdad | 0.252 | 0.000 | 1.009 | SIS Campo Medio: cascada de desinformación significativa |
+| 05 Epidemiología | 0.129 | 0.000 | 1.009 | SEIR Kermack-McKendrick: señal significativa pero sub-umbral |
+| 11 Movilidad | 0.128 | 0.002 | 1.004 | MFD: constricción detectable pero sub-umbral |
+
+Estos seis casos presentan señal estadísticamente significativa (p < 0.05) y EDI entre 0.10 y 0.30. Son "componentes funcionales" — análogos a ribosomas en biología: contribuyen al sistema pero no constituyen unidades autónomas con cierre operativo pleno. Nótese que Kessler, Riesgo Biológico y Políticas están marginalmente por debajo del umbral 0.30 — candidatos prioritarios para refinamiento de modelos.
 
 #### Nivel 2 — Señal Sugestiva
 
 | Caso | EDI | p-perm | CR | Interpretación operativa |
 |------|----:|-------:|---:|:---|
 | 09 Finanzas | 0.081 | 0.000 | 2.616 | Señal estadísticamente significativa, falla C4 |
-| 21 Salinización | 0.058 | 0.004 | 1.000 | Señal detectable, all criteria pass |
+| 15 Wikipedia | 0.080 | 0.000 | 1.020 | Lotka-Volterra: señal significativa pero EDI bajo |
+| 21 Salinización | 0.058 | 0.004 | 1.000 | Señal detectable, magnitud insuficiente |
 
 El instrumento detecta señal estadística (p < 0.05 y EDI > 0.01) pero la magnitud no alcanza para atribuir cierre operativo pleno y/o fallan criterios técnicos adicionales. Son candidatos, no diagnósticos.
 
@@ -848,34 +854,32 @@ El instrumento detecta señal estadística (p < 0.05 y EDI > 0.01) pero la magni
 
 | Caso | EDI | p-perm | Interpretación operativa |
 |------|----:|-------:|:---|
-| 01 Clima | 0.002 | 1.000 | ODE Budyko-Sellers insuficiente para este dominio |
-| 02 Conciencia | 0.123 | 0.231 | Señal considerable pero sin significancia |
-| 04 Energía | 0.419 | 0.072 | EDI alto pero significancia marginal |
+| 01 Clima | 0.011 | 0.999 | ODE Budyko-Sellers insuficiente para este dominio |
 | 10 Justicia | 0.227 | 0.477 | Señal no significativa |
-| 26 Starlink | 0.837 | 1.000 | EDI muy alto pero falla C2 y sin significancia |
-| 28 Fuga Cerebros | 0.059 | 0.780 | Señal no significativa |
+| 26 Starlink | 0.690 | 1.000 | EDI alto pero sin significancia estadística |
+| 28 Fuga Cerebros | 0.025 | 0.998 | Señal no significativa |
 
 Estos casos muestran EDI positivo sin significancia estadística. El instrumento no detecta cierre operativo confirmado — esto puede reflejar inadecuación del modelo ODE o varianza excesiva en la muestra.
 
-> **Nota importante:** Los casos Energía (EDI=0.419) y Starlink (EDI=0.837) presentan EDIs nominalmente altos pero carecen de significancia estadística (p=0.072 y p=1.000 respectivamente). Esto indica que la señal es inestable ante perturbaciones de parámetros.
+> **Nota importante:** El caso Starlink (EDI=0.690) presenta un EDI nominalmente alto pero carece completamente de significancia estadística (p=1.000), indicando que la señal es un artefacto de la calibración.
 
-#### Nivel 0 — Sin Señal Operativa (7 Casos)
+#### Nivel 0 — Sin Señal Operativa (8 Casos)
 
-Contaminación (-0.011), Paradigmas (-0.006), Océanos (-0.032), Acidificación (-0.000), Erosión Dialéctica (-0.988), Acuíferos (-0.126), IoT (-0.919).
+Conciencia (-0.117), Contaminación (-0.004), Paradigmas (-0.006), Océanos (-0.044), Acidificación (-0.000), Erosión Dialéctica (-1.000), Acuíferos (-0.021), IoT (-0.899).
 
 Bajo irrealismo operativo, Nivel 0 no significa "el hiperobjeto no existe" — significa "el instrumento no detecta cierre operativo con la sonda actual". La diferencia es crucial: un termómetro que no detecta campo magnético no refuta el magnetismo.
 
 #### Controles de Falsación (3/3 Correctos)
 - 06 Falsación Exogeneidad: ruido sin estructura → rechazado (EDI=0.055, cat=falsification).
-- 07 Falsación No-Estacionariedad: Random Walk → rechazado (EDI=-0.890).
+- 07 Falsación No-Estacionariedad: Random Walk → rechazado (EDI=-0.882, cat=falsification).
 - 08 Falsación Observabilidad: estados ocultos → rechazado (EDI=-1.000).
 
 ### Métricas Globales de Robustez
 
 | Métrica | Valor | Descripción |
 |---------|-------|-------------|
-| **overall_pass=True** | 9/29 | Casos con 11 criterios simultáneos |
-| **Significancia** (p<0.05 + EDI>0.01) | 11/29 | Casos con señal estadística |
+| **overall_pass=True** | 5/29 | Casos con 13 criterios simultáneos |
+| **Significancia** (p<0.05 + EDI>0.01) | 14/29 | Casos con señal estadística |
 | **Reproducibilidad** | 100% | seed=42, 999 permutaciones |
 
 ## Análisis de Selectividad
@@ -883,13 +887,13 @@ Bajo irrealismo operativo, Nivel 0 no significa "el hiperobjeto no existe" — s
 ### Distribución del paisaje (26 casos genuinos)
 
 De los 26 casos genuinos (excluyendo 3 falsaciones):
-- **9 overall_pass=True** (34.6%): cierre operativo verificado
-- **2 Nivel 4 sin overall_pass** (7.7%): EDI alto pero falla C2
-- **2 Nivel 2** (7.7%): señal sugestiva
-- **6 Nivel 1** (23.1%): tendencia
-- **7 Nivel 0** (26.9%): sin señal
+- **5 overall_pass=True** (19.2%): cierre operativo verificado
+- **6 Nivel 3** (23.1%): componentes funcionales
+- **3 Nivel 2** (11.5%): señal sugestiva
+- **4 Nivel 1** (15.4%): tendencia
+- **8 Nivel 0** (30.8%): sin señal
 
-La selectividad (34.6% pasan overall) es una distribución más rica que la anterior, reflejando el afinamiento de las herramientas de investigación. Los 3 controles de falsación siguen siendo correctamente rechazados.
+La selectividad (19.2% pasan overall) es una distribución altamente exigente que demuestra que el instrumento no está sesgado hacia la confirmación. Con el umbral EDI ≥ 0.30, solo los casos con señal macro realmente fuerte alcanzan Nivel 4. Los 3 controles de falsación siguen siendo correctamente rechazados.
 
 ### Diversidad de Dominios
 Los 29 casos cubren dominios físicos (clima, energía, océanos, acidificación), biológicos (deforestación, fósforo, riesgo biológico, epidemiología), económicos (finanzas), tecnológicos (Starlink, IoT, Kessler), culturales (paradigmas, erosión dialéctica, conciencia), sociales (urbanización, fuga de cerebros, movilidad, justicia, postverdad), hídricos (acuíferos, salinización), materiales (microplásticos, contaminación) y de gobernanza (políticas estratégicas, Wikipedia).
@@ -905,19 +909,20 @@ quadrantChart
     quadrant-2 "EDI Alto Sin Confirmar"
     quadrant-3 "Sin Señal"
     quadrant-4 "Señal Débil Confirmada"
-    "Microplásticos": [0.85, 0.75]
+    "Microplásticos": [0.85, 0.9]
+    "Energía": [0.85, 0.72]
     "Deforestación": [0.85, 0.65]
-    "Kessler": [0.85, 0.5]
-    "Fósforo": [0.85, 0.5]
-    "Postverdad": [0.85, 0.45]
-    "Políticas": [0.8, 0.4]
-    "Riesgo Bio": [0.75, 0.35]
-    "Starlink": [0.15, 0.9]
-    "Energía": [0.35, 0.55]
+    "Urbanización": [0.85, 0.45]
+    "Fósforo": [0.85, 0.43]
+    "Kessler": [0.85, 0.4]
+    "Riesgo Bio": [0.75, 0.38]
+    "Políticas": [0.8, 0.38]
+    "Postverdad": [0.85, 0.35]
+    "Starlink": [0.15, 0.78]
     "Clima": [0.15, 0.1]
 ```
 
-Los casos con overall_pass=True cubren dominios diversos: desde epidemiología hasta debris orbital. Los dos casos con EDI más alto (Deforestación 0.589, Microplásticos 0.656) mantienen su señal fuerte pero fallan robustez (C2), indicando sensibilidad a perturbaciones de parámetros.
+Los casos con overall_pass=True cubren dominios diversos: desde energía (0.650) hasta microplásticos oceánicos (0.806). Los seis casos de Nivel 3 (weak) — incluyendo Kessler (0.299), Riesgo Biológico (0.294) y Políticas (0.289) — están marginalmente por debajo del umbral 0.30, indicando candidatos prioritarios para refinamiento.
 
 ### Diagnóstico: ¿Por Qué Algunos Casos se Clasifican en Nivel 0-1?
 
@@ -932,7 +937,7 @@ Los casos con overall_pass=True cubren dominios diversos: desde epidemiología h
 
 El rigor del instrumento no reside en la clasificación universal, sino en su capacidad para producir un gradiente coherente y falsable.
 
-### 1. El Caso Clima (EDI=0.002 vs Umbral 0.30)
+### 1. El Caso Clima (EDI=0.011 vs Umbral 0.30)
 **Crítica:** El caso paradigmático (Clima) queda en Nivel 1.
 **Respuesta:** Bajo irrealismo operativo, esto es informativo, no problemático. El instrumento clasifica el clima regional bajo ODE Budyko-Sellers como un sistema sin cierre operativo fuerte en la resolución actual. Esto refina la taxonomía sin invalidar el instrumento. La honestidad de no forzar el resultado demuestra rigor.
 
@@ -954,22 +959,22 @@ El rigor del instrumento no reside en la clasificación universal, sino en su ca
 
 ### Resultado principal: Paisaje de Emergencia Operativa completamente mapeado
 
-El resultado no es "9/29 pasan" — es un **mapa completo** de 29 fenómenos posicionados en un gradiente de cierre operativo de 6 niveles:
+El resultado no es "5/29 pasan" — es un **mapa completo** de 29 fenómenos posicionados en un gradiente de cierre operativo de 6 niveles:
 
 | Nivel | Interpretación | Casos | Significado operativo |
 |:-----:|:---|:---:|:---|
-| 4 | Cierre operativo fuerte | 11 | Constructo macro indispensable |
-| 3 | Componente funcional | 0 | (ningún caso en este rango) |
-| 2 | Señal sugestiva | 2 | Candidato, resolución insuficiente |
-| 1 | Tendencia | 6 | Sin significancia estadística |
-| 0 | Sin señal | 7 | Instrumento no detecta cierre |
+| 4 | Cierre operativo fuerte | 5 | Constructo macro indispensable |
+| 3 | Componente funcional | 6 | Constricción significativa sub-umbral |
+| 2 | Señal sugestiva | 3 | Candidato, resolución insuficiente |
+| 1 | Tendencia | 4 | Sin significancia estadística |
+| 0 | Sin señal | 8 | Instrumento no detecta cierre |
 | — | Falsificación correcta | 3 | Controles negativos funcionan |
 
 ### Valor epistemológico bajo irrealismo operativo
 
 1. **El instrumento es falsable:** El protocolo de validación con zero-nudging y permutation test descarta EDI inflados. El instrumento no es un rubber-stamp.
 2. **Los controles de falsación funcionan:** 3/3 correctamente rechazados.
-3. **La selectividad es discriminante:** 34.6% de casos genuinos alcanzan overall_pass, con una distribución coherente a lo largo del gradiente.
+3. **La selectividad es discriminante:** 19.2% de casos genuinos alcanzan overall_pass (umbral EDI ≥ 0.30), con una distribución coherente a lo largo del gradiente.
 4. **El gradiente es coherente:** Los fenómenos con inercia material, cascadas cuadráticas y ciclos biogeoquímicos se clasifican más alto, consistente con la teoría.
 5. **Sin compromiso ontológico:** Nunca afirmamos "X es un hiperobjeto". Afirmamos "X exhibe cierre operativo de grado G según este instrumento".
 
@@ -981,10 +986,12 @@ La tesis demuestra que ciertos fenómenos **funcionan como si tuvieran estructur
 
 ---
 
-# 04 Casos de Estudio (29 Casos)
+# 04 Casos de Estudio: El Emergentómetro en Acción
+
+Un instrumento de medición se valida por su capacidad de discriminar. Un termómetro que siempre marca 37°C es inútil. El Emergentómetro se aplicó a **29 fenómenos de dominios radicalmente distintos** — desde la física de debris orbital (Kessler) hasta la dinámica de postverdad en redes sociales — y produjo un gradiente amplio: desde EDI=-1.000 (sin señal, Erosión Dialéctica) hasta EDI=0.806 (señal muy fuerte, Microplásticos). Esta diversidad de resultados es la mejor evidencia de que el instrumento no está diseñado para "confirmar" hiperobjetos, sino para medirlos sin sesgos.
 
 ## Paisaje de Emergencia Operativa
-El motor de simulación ha sido ejecutado sobre un universo de **29 casos**, tras la remoción de 3 casos por inviabilidad de datos reales. El protocolo C1-C5 + 6 criterios adicionales actúan como instrumento de **clasificación operativa**, permitiendo mapear el fenómeno en un gradiente de cierre.
+El motor de simulación ha sido ejecutado sobre un universo de **29 casos**, tras la remoción de 3 casos por inviabilidad de datos reales. El protocolo C1-C5 + 8 criterios adicionales actúan como instrumento de **clasificación operativa**, permitiendo mapear el fenómeno en un gradiente de cierre.
 
 Los resultados cuantitativos detallados (EDI, p-valores, CR) y la clasificación técnica definitiva se consolidan exclusivamente en la **Sección 03 Validación y Praxis**. Esta sección provee el contexto cualitativo y la justificación de las fuentes de datos para los casos más relevantes del paisaje.
 
@@ -992,56 +999,61 @@ Los resultados cuantitativos detallados (EDI, p-valores, CR) y la clasificación
 
 ## 1. Casos de Cierre Operativo Fuerte (Nivel 4 — overall_pass=True)
 
-Representan los fenómenos donde el constructo macro es operativamente indispensable para la predicción micro. Nueve casos alcanzan este nivel tras el afinamiento de las herramientas de investigación.
+Representan los fenómenos donde el constructo macro es operativamente indispensable para la predicción micro. Cinco casos alcanzan este nivel con EDI ≥ 0.30 y las 13 condiciones simultáneas satisfechas.
 
-*   **Epidemiología (ID 05):** Datos OWID (COVID-19). El modelo SEIR Kermack-McKendrick captura la dinámica epidémica. EDI=0.129. La constricción macro es operativamente necesaria para predecir la evolución del contagio.
-*   **Movilidad (ID 11):** Datos World Bank (Tráfico aéreo). Diagrama Fundamental Macroscópico (MFD) con dinámica Greenshields. EDI=0.128. El patrón de tráfico presenta constricción macro significativa.
-*   **Políticas Estratégicas (ID 13):** Datos World Bank (Gasto militar). Inercia Institucional basada en North (1990). EDI=0.288. Las instituciones exhiben constricción macro robusta sobre la dinámica individual.
-*   **Postverdad (ID 14):** Modelo SIS de Campo Medio para cascadas de desinformación. EDI=0.325. La dinámica de propagación de desinformación exhibe cierre operativo fuerte.
-*   **Wikipedia (ID 15):** Datos Wikimedia. Lotka-Volterra aplicado a la dinámica calidad-controversia. EDI=0.160. La dinámica colaborativa online exhibe constricción macro detectable.
-*   **Urbanización (ID 18):** Datos World Bank (Población urbana). Logística con atracción económica y Preferential Attachment. EDI=0.151. Los patrones de urbanización exhiben cierre operativo.
-*   **Kessler (ID 20):** Datos CelesTrak (Desechos orbitales). Cascada cuadrática Kessler-Liou. EDI=0.381. La dinámica de debris orbital presenta constricción macro fuerte — la cascada colisional impone un patrón macro irreducible.
-*   **Fósforo (ID 22):** Datos World Bank (Uso de fertilizantes). Ciclo biogeoquímico Carpenter. EDI=0.376. El ciclo del fósforo exhibe constricción macro robusta.
-*   **Riesgo Biológico (ID 27):** Datos World Bank (Mortalidad). Cascada zoonótica Woolhouse. EDI=0.257. La dinámica One Health exhibe cierre operativo significativo.
-
-### Casos Strong sin overall_pass (falla C2 — Robustez)
-
-*   **Deforestación Global (ID 16):** Datos del World Bank (Área forestal). EDI=0.579 — el segundo EDI más alto del corpus. La ODE de frontera agrícola (von Thünen) captura la inercia del desplazamiento físico de la frontera forestal. Falla C2 (robustez ante perturbación de parámetros), candidato prioritario para investigación futura.
-*   **Microplásticos Oceánicos (ID 24):** Datos de OWID (Plastic Production). EDI=0.656 — el EDI más alto del corpus. El modelo Jambeck de acumulación persistente genera una constricción fuerte. Falla C2, indicando sensibilidad a perturbaciones.
+*   **Microplásticos Oceánicos (ID 24):** Datos de OWID (Plastic Production). EDI=0.806 — el EDI más alto del corpus entre los overall_pass=True. El modelo Jambeck de acumulación persistente genera una constricción fuerte. BC=bias_only.
+*   **Energía (ID 04):** Datos OPSD (producción energética). Modelo Lotka-Volterra de competencia energética con adopción tecnológica tipo TIMES. EDI=0.650. La constricción macro es fuertemente indispensable. BC=bias_only.
+*   **Deforestación Global (ID 16):** Datos del World Bank (Área forestal). EDI=0.580. La ODE de frontera agrícola (von Thünen) captura la inercia del desplazamiento físico de la frontera forestal. BC=full.
+*   **Urbanización (ID 18):** Datos World Bank (Población urbana). Logística con atracción económica y Preferential Attachment. EDI=0.337. Los patrones de urbanización exhiben cierre operativo. BC=full.
+*   **Fósforo (ID 22):** Datos World Bank (Uso de fertilizantes). Ciclo biogeoquímico Carpenter. EDI=0.322. El ciclo del fósforo exhibe constricción macro robusta. BC=full.
 
 ---
 
-## 2. Señales Sugestivas (Nivel 2)
+## 2. Componentes Funcionales (Nivel 3 — weak)
+
+Fenómenos con señal estadísticamente significativa y EDI entre 0.10-0.30 pero que no alcanzan overall_pass=True.
+
+*   **Kessler (ID 20):** Datos CelesTrak (Desechos orbitales). Cascada cuadrática Kessler-Liou. EDI=0.299, p=0.000. La dinámica de debris orbital presenta constricción macro fuerte, marginalmente sub-umbral (0.30).
+*   **Riesgo Biológico (ID 27):** Datos World Bank (Mortalidad). Cascada zoonótica Woolhouse. EDI=0.294, p=0.003. La dinámica One Health exhibe señal significativa sub-umbral.
+*   **Políticas Estratégicas (ID 13):** Datos World Bank (Gasto militar). Inercia Institucional basada en North (1990). EDI=0.289, p=0.000. Las instituciones exhiben constricción macro significativa sub-umbral.
+*   **Postverdad (ID 14):** Modelo SIS de Campo Medio para cascadas de desinformación. EDI=0.252, p=0.000. Señal significativa pero sub-umbral para cierre pleno.
+*   **Epidemiología (ID 05):** Datos OWID (COVID-19). SEIR Kermack-McKendrick. EDI=0.129, p=0.000. Señal significativa pero sub-umbral para cierre operativo pleno.
+*   **Movilidad (ID 11):** Datos World Bank (Tráfico aéreo). MFD con dinámica Greenshields. EDI=0.128, p=0.002. Constricción detectable pero insuficiente para overall_pass.
+
+---
+
+## 3. Señales Sugestivas (Nivel 2)
 
 Fenómenos donde el instrumento detecta una señal estadísticamente significativa pero de magnitud insuficiente o con criterios técnicos no satisfechos.
 
 *   **Finanzas (ID 09):** Datos de Yahoo Finance (SPY). EDI=0.081. La reflexividad inherente a los mercados (Soros, 1987) dificulta la separación macro/micro. Señal significativa (p=0.000) pero falla C4. CR=2.616 (único caso con CR > 2.0).
+*   **Wikipedia (ID 15):** Datos Wikimedia. Lotka-Volterra aplicado a la dinámica calidad-controversia. EDI=0.080, p=0.000. Señal significativa pero EDI por debajo del umbral de componente funcional.
 *   **Salinización (ID 21):** Datos World Bank (Tierras irrigadas). EDI=0.058. Señal detectable (p=0.004) pero magnitud insuficiente.
 
 ---
 
-## 3. Otros Fenómenos del Paisaje (Niveles 0-1)
+## 4. Otros Fenómenos del Paisaje (Niveles 0-1)
 
-Incluye el caso paradigmático de **Clima Regional (ID 01)** (datos Meteostat/NOAA, EDI=0.002). Bajo el modelo Budyko-Sellers y la resolución actual, el instrumento no detecta un cierre operativo fuerte. Bajo irrealismo operativo, esto no refuta el fenómeno, sino que diagnostica la insuficiencia de la sonda particular para detectarlo en esta escala regional.
+Incluye el caso paradigmático de **Clima Regional (ID 01)** (datos Meteostat/NOAA, EDI=0.011). Bajo el modelo Budyko-Sellers y la resolución actual, el instrumento no detecta un cierre operativo fuerte. Bajo irrealismo operativo, esto no refuta el fenómeno, sino que diagnostica la insuficiencia de la sonda particular para detectarlo en esta escala regional.
 
-Casos notables en Nivel 1 con EDI nominalmente alto pero sin significancia estadística: **Energía (EDI=0.419, p=0.072)** y **Starlink (EDI=0.837, p=1.000)** — ambos carecen de significancia, indicando señales inestables.
+Caso notable en Nivel 1 con EDI nominalmente alto pero sin significancia estadística: **Starlink (EDI=0.690, p=1.000)** — carece de significancia, indicando señal artefactual.
 
-7 casos se sitúan en Nivel 0, indicando que el modelo híbrido no detecta constricción macro o que el acoplamiento es incluso destructivo (anti-emergencia).
+8 casos se sitúan en Nivel 0, incluyendo Conciencia (EDI=-0.117), indicando que el modelo híbrido no detecta constricción macro o que el acoplamiento es incluso destructivo (anti-emergencia).
 
 ---
 
-## 4. Controles de Falsación (3/3 Correctos)
+## 5. Controles de Falsación (3/3 Correctos)
 Sistemas diseñados para probar la selectividad del protocolo: **Exogeneidad (06)**, **No-estacionariedad (07)** y **Observabilidad (08)**. Los tres controles son correctamente rechazados (falsification), confirmando que el instrumento no es un "rubber-stamp" y requiere estructura genuina para validar un caso.
 
 ---
 
-## 5. Casos Removidos (Archivo)
+## 6. Casos Removidos (Archivo)
 Descartados por falta de fuentes de datos reales verificables: **Estética Global**, **Moderación Adversarial** y **RTB Publicidad**. Archivados en `Artifacts/casos_removidos/`.
 
 ---
 
 ## Conclusión: El Paisaje como Resultado Principal
-La distribución actual (9 overall_pass, 2 strong sin C2, 2 suggestive, 6 trend, 7 null, 3 falsification) constituye un paisaje rico y discriminante. Los 3 controles de falsación correctamente rechazados garantizan que las clasificaciones positivas representan cierre operativo genuino. El mapa completo constituye el resultado principal de la tesis: un mapeo honesto y riguroso de la eficacia causal en el paisaje de los fenómenos masivamente distribuidos.
+La distribución actual (5 overall_pass, 6 weak, 3 suggestive, 4 trend, 8 null, 3 falsification) constituye un paisaje rico y discriminante. Los 3 controles de falsación correctamente rechazados garantizan que las clasificaciones positivas representan cierre operativo genuino. El mapa completo constituye el resultado principal de la tesis: un mapeo honesto y riguroso de la eficacia causal en el paisaje de los fenómenos masivamente distribuidos.
 
 ---
 

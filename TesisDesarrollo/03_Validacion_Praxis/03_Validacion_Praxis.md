@@ -1,4 +1,18 @@
-# 03 Validación y Praxis
+# 03 Validación y Praxis: Resultados del Emergentómetro
+
+## Resumen ejecutivo: Lo que el Emergentómetro encontró
+
+El Emergentómetro se aplicó a **29 fenómenos de gran escala** de dominios tan diversos como el clima, las pandemias, los mercados financieros, la deforestación y la basura espacial. El resultado no es un veredicto binario ("existe/no existe") sino un **mapa de emergencia**: un paisaje donde cada fenómeno tiene un grado medido de cierre operativo.
+
+De los 29 fenómenos medidos:
+- **5 exhiben cierre operativo alto y robusto** (overall_pass=True): eliminar la "visión de conjunto" degrada la predicción entre 32.2% y 80.6%, de forma estable y significativa.
+- **6 son componentes funcionales** (weak, Nivel 3): señal significativa (p < 0.05) con EDI entre 0.10 y 0.30 pero sin cierre pleno.
+- **3 presentan señal sugestiva**: el instrumento detecta algo, pero no suficiente para confirmar.
+- **4 muestran tendencia sin significancia**: indicios sin confirmación estadística.
+- **8 no presentan señal**: el instrumento no detecta cierre operativo con la sonda elegida.
+- **3 controles de falsación** funcionan correctamente: ruido puro, random walk y estados ocultos son rechazados.
+
+Este paisaje es el resultado principal de la tesis — no solo los casos "exitosos", sino la distribución completa.
 
 ## Enfoque de Clasificación Operativa
 La validación bajo irrealismo operativo no busca "confirmar" ni "refutar" la existencia de hiperobjetos. Clasifica fenómenos en un **gradiente de cierre operativo** (Niveles 0-5) según la indispensabilidad del constructo macro para predecir el comportamiento micro. Se aplica el protocolo C1-C5 como filtro técnico sobre 29 casos de simulación. La evaluación se realiza con `assimilation_strength=0.0` (zero-nudging), eliminando toda asistencia observacional durante la fase de validación.
@@ -51,15 +65,16 @@ Cada caso de simulación utiliza un par de modelos (ODE/ABM) específicos para s
 
 ## Resultados Consolidados (29 Casos — Protocolo Completo)
 
-El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 6 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude). Un caso alcanza **Nivel 4** solo si las 11 condiciones se cumplen simultáneamente. La significancia estadística se evalúa mediante permutation test con 999 permutaciones (seed=42).
+El pipeline se ejecutó sobre 29 casos con el protocolo completo C1-C5 y 8 criterios adicionales (Symploké, no-localidad, persistencia, emergencia, coupling, no-fraude, EDI válido, EDI significativo). Un caso alcanza **Nivel 4** solo si las 13 condiciones se cumplen simultáneamente. La significancia estadística se evalúa mediante permutation test con 999 permutaciones (seed=42).
 
-> **Estado actual:** Bajo el pipeline afinado (sin data leakage, zero-nudging, 999 permutaciones): **9/29 overall_pass=True** (Epidemiología, Movilidad, Políticas, Postverdad, Wikipedia, Urbanización, Kessler, Fósforo, Riesgo Biológico). 11 casos clasificados como strong. El paisaje de emergencia queda completamente mapeado.
+> **Estado actual:** Bajo el pipeline afinado (sin data leakage, zero-nudging, 999 permutaciones, EDI ≥ 0.30): **5/29 overall_pass=True** (Energía, Deforestación, Urbanización, Fósforo, Microplásticos). 6 casos clasificados como weak (Nivel 3). El paisaje de emergencia queda completamente mapeado.
 
 ```mermaid
 pie title Distribución del Paisaje de Emergencia (29 Casos)
-    "Nivel 4: Cierre Fuerte" : 11
-    "Nivel 2: Señal Sugestiva" : 2
-    "Nivel 0-1: Tendencia/Sin Señal" : 13
+    "Nivel 4: Cierre Fuerte" : 5
+    "Nivel 3: Componente Funcional" : 6
+    "Nivel 2: Señal Sugestiva" : 3
+    "Nivel 0-1: Tendencia/Sin Señal" : 12
     "Controles de Falsación" : 3
 ```
 
@@ -67,11 +82,11 @@ pie title Distribución del Paisaje de Emergencia (29 Casos)
 
 | Categoría | Nivel | Criterio | Conteo | Función en el paisaje |
 |-----------|:-----:|----------|--------|----------------------|
-| **strong** | 4 | EDI ≥ 0.30, p < 0.05, overall_pass=True | 11 | Cierre operativo fuerte |
-| **weak** | 3 | 0.10 ≤ EDI < 0.30, p < 0.05 | 0 | Componente funcional |
-| **suggestive** | 2 | EDI > 0.01, p < 0.05 | 2 | Señal detectable |
-| **trend** | 1 | EDI > 0, p ≥ 0.05 | 6 | Tendencia no confirmada |
-| **null** | 0 | EDI ≤ 0 o sin señal | 7 | Sin señal operativa |
+| **strong** | 4 | EDI ≥ 0.30, p < 0.05, overall_pass=True | 5 | Cierre operativo fuerte |
+| **weak** | 3 | 0.10 ≤ EDI < 0.30, p < 0.05 | 6 | Componente funcional |
+| **suggestive** | 2 | EDI > 0.01, p < 0.05 | 3 | Señal detectable |
+| **trend** | 1 | EDI > 0, p ≥ 0.05 | 4 | Tendencia no confirmada |
+| **null** | 0 | EDI ≤ 0 o sin señal | 8 | Sin señal operativa |
 | **falsification** | — | Controles negativos diseñados | 3 | Correctamente rechazados |
 | **Total** | | | **29** | |
 
@@ -83,31 +98,34 @@ pie title Distribución del Paisaje de Emergencia (29 Casos)
 
 | Caso | EDI | p-perm | CR | BC | Interpretación operativa |
 |------|----:|-------:|---:|:---|:---|
-| 05 Epidemiología | **0.129** | 0.000 | 1.009 | full | SEIR Kermack-McKendrick: señal epidémica robusta |
-| 11 Movilidad | **0.128** | 0.002 | 1.004 | full | MFD: constricción de tráfico significativa |
-| 13 Políticas | **0.288** | 0.001 | 1.009 | full | Inercia Institucional North: 29% reducción RMSE |
-| 14 Postverdad | **0.325** | 0.000 | 1.009 | full | SIS Campo Medio: cascada de desinformación |
-| 15 Wikipedia | **0.160** | 0.000 | 1.060 | full | Lotka-Volterra: dinámica calidad-controversia |
-| 18 Urbanización | **0.151** | 0.000 | 1.001 | full | Logística urbana: atracción económica |
-| 20 Kessler | **0.381** | 0.000 | 1.005 | full | Cascada cuadrática Kessler-Liou: debris orbital |
-| 22 Fósforo | **0.376** | 0.000 | 1.002 | full | Carpenter P Cycle: ciclo biogeoquímico |
-| 27 Riesgo Biológico | **0.257** | 0.003 | 1.002 | full | Woolhouse Zoonotic: cascada bilineal |
+| 24 Microplásticos | **0.806** | 0.000 | 1.000 | bias_only | Jambeck Accumulation: acumulación persistente con fuerte constricción macro |
+| 04 Energía | **0.650** | 0.000 | 1.002 | bias_only | Lotka-Volterra: competencia energética con fuerte constricción macro |
+| 16 Deforestación | **0.580** | 0.000 | 1.023 | full | Von Thünen Frontier: inercia de frontera agrícola |
+| 18 Urbanización | **0.337** | 0.000 | 1.003 | full | Logística urbana: atracción económica |
+| 22 Fósforo | **0.322** | 0.000 | 1.003 | full | Carpenter P Cycle: ciclo biogeoquímico |
 
-Estos nueve casos alcanzan overall_pass=True: todas las 11 condiciones se cumplen simultáneamente. El constructo macro es operativamente indispensable. Eliminar la constricción macro degrada la predicción entre 12.8% y 38.1%. Bajo irrealismo operativo, esto no afirma que "existan" como entidades autónomas — afirma que el instrumento detecta cierre operativo robusto.
+Estos cinco casos alcanzan overall_pass=True: las 13 condiciones se cumplen simultáneamente. El constructo macro es operativamente indispensable. Eliminar la constricción macro degrada la predicción entre 32.2% y 80.6%. Bajo irrealismo operativo, esto no afirma que "existan" como entidades autónomas — afirma que el instrumento detecta cierre operativo robusto.
 
-> **Nota sobre Deforestación y Microplásticos:** Estos dos casos presentan los EDIs más altos del corpus (0.589 y 0.656 respectivamente) y clasifican como strong, pero no alcanzan overall_pass=True porque fallan C2 (robustez ante perturbación de parámetros). Sin embargo, la magnitud de su EDI los posiciona como candidatos prioritarios para investigación futura con modelos más robustos.
+#### Nivel 3 — Componentes Funcionales (weak)
 
-| Caso | EDI | p-perm | CR | BC | Nota |
-|------|----:|-------:|---:|:---|:---|
-| 16 Deforestación | **0.579** | 0.000 | 1.015 | full | overall_pass=False (falla C2) |
-| 24 Microplásticos | **0.656** | 0.000 | 1.000 | bias_only | overall_pass=False (falla C2) |
+| Caso | EDI | p-perm | CR | Interpretación operativa |
+|------|----:|-------:|---:|:---|
+| 20 Kessler | 0.299 | 0.000 | 1.003 | Cascada Kessler-Liou: señal fuerte, marginalmente sub-umbral (0.30) |
+| 27 Riesgo Biológico | 0.294 | 0.003 | 1.001 | Woolhouse Zoonotic: cascada bilineal significativa |
+| 13 Políticas | 0.289 | 0.000 | 1.009 | Inercia Institucional North: señal significativa sub-umbral |
+| 14 Postverdad | 0.252 | 0.000 | 1.009 | SIS Campo Medio: cascada de desinformación significativa |
+| 05 Epidemiología | 0.129 | 0.000 | 1.009 | SEIR Kermack-McKendrick: señal significativa pero sub-umbral |
+| 11 Movilidad | 0.128 | 0.002 | 1.004 | MFD: constricción detectable pero sub-umbral |
+
+Estos seis casos presentan señal estadísticamente significativa (p < 0.05) y EDI entre 0.10 y 0.30. Son "componentes funcionales" — análogos a ribosomas en biología: contribuyen al sistema pero no constituyen unidades autónomas con cierre operativo pleno. Nótese que Kessler, Riesgo Biológico y Políticas están marginalmente por debajo del umbral 0.30 — candidatos prioritarios para refinamiento de modelos.
 
 #### Nivel 2 — Señal Sugestiva
 
 | Caso | EDI | p-perm | CR | Interpretación operativa |
 |------|----:|-------:|---:|:---|
 | 09 Finanzas | 0.081 | 0.000 | 2.616 | Señal estadísticamente significativa, falla C4 |
-| 21 Salinización | 0.058 | 0.004 | 1.000 | Señal detectable, all criteria pass |
+| 15 Wikipedia | 0.080 | 0.000 | 1.020 | Lotka-Volterra: señal significativa pero EDI bajo |
+| 21 Salinización | 0.058 | 0.004 | 1.000 | Señal detectable, magnitud insuficiente |
 
 El instrumento detecta señal estadística (p < 0.05 y EDI > 0.01) pero la magnitud no alcanza para atribuir cierre operativo pleno y/o fallan criterios técnicos adicionales. Son candidatos, no diagnósticos.
 
@@ -115,34 +133,32 @@ El instrumento detecta señal estadística (p < 0.05 y EDI > 0.01) pero la magni
 
 | Caso | EDI | p-perm | Interpretación operativa |
 |------|----:|-------:|:---|
-| 01 Clima | 0.002 | 1.000 | ODE Budyko-Sellers insuficiente para este dominio |
-| 02 Conciencia | 0.123 | 0.231 | Señal considerable pero sin significancia |
-| 04 Energía | 0.419 | 0.072 | EDI alto pero significancia marginal |
+| 01 Clima | 0.011 | 0.999 | ODE Budyko-Sellers insuficiente para este dominio |
 | 10 Justicia | 0.227 | 0.477 | Señal no significativa |
-| 26 Starlink | 0.837 | 1.000 | EDI muy alto pero falla C2 y sin significancia |
-| 28 Fuga Cerebros | 0.059 | 0.780 | Señal no significativa |
+| 26 Starlink | 0.690 | 1.000 | EDI alto pero sin significancia estadística |
+| 28 Fuga Cerebros | 0.025 | 0.998 | Señal no significativa |
 
 Estos casos muestran EDI positivo sin significancia estadística. El instrumento no detecta cierre operativo confirmado — esto puede reflejar inadecuación del modelo ODE o varianza excesiva en la muestra.
 
-> **Nota importante:** Los casos Energía (EDI=0.419) y Starlink (EDI=0.837) presentan EDIs nominalmente altos pero carecen de significancia estadística (p=0.072 y p=1.000 respectivamente). Esto indica que la señal es inestable ante perturbaciones de parámetros.
+> **Nota importante:** El caso Starlink (EDI=0.690) presenta un EDI nominalmente alto pero carece completamente de significancia estadística (p=1.000), indicando que la señal es un artefacto de la calibración.
 
-#### Nivel 0 — Sin Señal Operativa (7 Casos)
+#### Nivel 0 — Sin Señal Operativa (8 Casos)
 
-Contaminación (-0.011), Paradigmas (-0.006), Océanos (-0.032), Acidificación (-0.000), Erosión Dialéctica (-0.988), Acuíferos (-0.126), IoT (-0.919).
+Conciencia (-0.117), Contaminación (-0.004), Paradigmas (-0.006), Océanos (-0.044), Acidificación (-0.000), Erosión Dialéctica (-1.000), Acuíferos (-0.021), IoT (-0.899).
 
 Bajo irrealismo operativo, Nivel 0 no significa "el hiperobjeto no existe" — significa "el instrumento no detecta cierre operativo con la sonda actual". La diferencia es crucial: un termómetro que no detecta campo magnético no refuta el magnetismo.
 
 #### Controles de Falsación (3/3 Correctos)
 - 06 Falsación Exogeneidad: ruido sin estructura → rechazado (EDI=0.055, cat=falsification).
-- 07 Falsación No-Estacionariedad: Random Walk → rechazado (EDI=-0.890).
+- 07 Falsación No-Estacionariedad: Random Walk → rechazado (EDI=-0.882, cat=falsification).
 - 08 Falsación Observabilidad: estados ocultos → rechazado (EDI=-1.000).
 
 ### Métricas Globales de Robustez
 
 | Métrica | Valor | Descripción |
 |---------|-------|-------------|
-| **overall_pass=True** | 9/29 | Casos con 11 criterios simultáneos |
-| **Significancia** (p<0.05 + EDI>0.01) | 11/29 | Casos con señal estadística |
+| **overall_pass=True** | 5/29 | Casos con 13 criterios simultáneos |
+| **Significancia** (p<0.05 + EDI>0.01) | 14/29 | Casos con señal estadística |
 | **Reproducibilidad** | 100% | seed=42, 999 permutaciones |
 
 ## Análisis de Selectividad
@@ -150,13 +166,13 @@ Bajo irrealismo operativo, Nivel 0 no significa "el hiperobjeto no existe" — s
 ### Distribución del paisaje (26 casos genuinos)
 
 De los 26 casos genuinos (excluyendo 3 falsaciones):
-- **9 overall_pass=True** (34.6%): cierre operativo verificado
-- **2 Nivel 4 sin overall_pass** (7.7%): EDI alto pero falla C2
-- **2 Nivel 2** (7.7%): señal sugestiva
-- **6 Nivel 1** (23.1%): tendencia
-- **7 Nivel 0** (26.9%): sin señal
+- **5 overall_pass=True** (19.2%): cierre operativo verificado
+- **6 Nivel 3** (23.1%): componentes funcionales
+- **3 Nivel 2** (11.5%): señal sugestiva
+- **4 Nivel 1** (15.4%): tendencia
+- **8 Nivel 0** (30.8%): sin señal
 
-La selectividad (34.6% pasan overall) es una distribución más rica que la anterior, reflejando el afinamiento de las herramientas de investigación. Los 3 controles de falsación siguen siendo correctamente rechazados.
+La selectividad (19.2% pasan overall) es una distribución altamente exigente que demuestra que el instrumento no está sesgado hacia la confirmación. Con el umbral EDI ≥ 0.30, solo los casos con señal macro realmente fuerte alcanzan Nivel 4. Los 3 controles de falsación siguen siendo correctamente rechazados.
 
 ### Diversidad de Dominios
 Los 29 casos cubren dominios físicos (clima, energía, océanos, acidificación), biológicos (deforestación, fósforo, riesgo biológico, epidemiología), económicos (finanzas), tecnológicos (Starlink, IoT, Kessler), culturales (paradigmas, erosión dialéctica, conciencia), sociales (urbanización, fuga de cerebros, movilidad, justicia, postverdad), hídricos (acuíferos, salinización), materiales (microplásticos, contaminación) y de gobernanza (políticas estratégicas, Wikipedia).
@@ -172,19 +188,20 @@ quadrantChart
     quadrant-2 "EDI Alto Sin Confirmar"
     quadrant-3 "Sin Señal"
     quadrant-4 "Señal Débil Confirmada"
-    "Microplásticos": [0.85, 0.75]
+    "Microplásticos": [0.85, 0.9]
+    "Energía": [0.85, 0.72]
     "Deforestación": [0.85, 0.65]
-    "Kessler": [0.85, 0.5]
-    "Fósforo": [0.85, 0.5]
-    "Postverdad": [0.85, 0.45]
-    "Políticas": [0.8, 0.4]
-    "Riesgo Bio": [0.75, 0.35]
-    "Starlink": [0.15, 0.9]
-    "Energía": [0.35, 0.55]
+    "Urbanización": [0.85, 0.45]
+    "Fósforo": [0.85, 0.43]
+    "Kessler": [0.85, 0.4]
+    "Riesgo Bio": [0.75, 0.38]
+    "Políticas": [0.8, 0.38]
+    "Postverdad": [0.85, 0.35]
+    "Starlink": [0.15, 0.78]
     "Clima": [0.15, 0.1]
 ```
 
-Los casos con overall_pass=True cubren dominios diversos: desde epidemiología hasta debris orbital. Los dos casos con EDI más alto (Deforestación 0.589, Microplásticos 0.656) mantienen su señal fuerte pero fallan robustez (C2), indicando sensibilidad a perturbaciones de parámetros.
+Los casos con overall_pass=True cubren dominios diversos: desde energía (0.650) hasta microplásticos oceánicos (0.806). Los seis casos de Nivel 3 (weak) — incluyendo Kessler (0.299), Riesgo Biológico (0.294) y Políticas (0.289) — están marginalmente por debajo del umbral 0.30, indicando candidatos prioritarios para refinamiento.
 
 ### Diagnóstico: ¿Por Qué Algunos Casos se Clasifican en Nivel 0-1?
 
@@ -199,7 +216,7 @@ Los casos con overall_pass=True cubren dominios diversos: desde epidemiología h
 
 El rigor del instrumento no reside en la clasificación universal, sino en su capacidad para producir un gradiente coherente y falsable.
 
-### 1. El Caso Clima (EDI=0.002 vs Umbral 0.30)
+### 1. El Caso Clima (EDI=0.011 vs Umbral 0.30)
 **Crítica:** El caso paradigmático (Clima) queda en Nivel 1.
 **Respuesta:** Bajo irrealismo operativo, esto es informativo, no problemático. El instrumento clasifica el clima regional bajo ODE Budyko-Sellers como un sistema sin cierre operativo fuerte en la resolución actual. Esto refina la taxonomía sin invalidar el instrumento. La honestidad de no forzar el resultado demuestra rigor.
 
@@ -221,22 +238,22 @@ El rigor del instrumento no reside en la clasificación universal, sino en su ca
 
 ### Resultado principal: Paisaje de Emergencia Operativa completamente mapeado
 
-El resultado no es "9/29 pasan" — es un **mapa completo** de 29 fenómenos posicionados en un gradiente de cierre operativo de 6 niveles:
+El resultado no es "5/29 pasan" — es un **mapa completo** de 29 fenómenos posicionados en un gradiente de cierre operativo de 6 niveles:
 
 | Nivel | Interpretación | Casos | Significado operativo |
 |:-----:|:---|:---:|:---|
-| 4 | Cierre operativo fuerte | 11 | Constructo macro indispensable |
-| 3 | Componente funcional | 0 | (ningún caso en este rango) |
-| 2 | Señal sugestiva | 2 | Candidato, resolución insuficiente |
-| 1 | Tendencia | 6 | Sin significancia estadística |
-| 0 | Sin señal | 7 | Instrumento no detecta cierre |
+| 4 | Cierre operativo fuerte | 5 | Constructo macro indispensable |
+| 3 | Componente funcional | 6 | Constricción significativa sub-umbral |
+| 2 | Señal sugestiva | 3 | Candidato, resolución insuficiente |
+| 1 | Tendencia | 4 | Sin significancia estadística |
+| 0 | Sin señal | 8 | Instrumento no detecta cierre |
 | — | Falsificación correcta | 3 | Controles negativos funcionan |
 
 ### Valor epistemológico bajo irrealismo operativo
 
 1. **El instrumento es falsable:** El protocolo de validación con zero-nudging y permutation test descarta EDI inflados. El instrumento no es un rubber-stamp.
 2. **Los controles de falsación funcionan:** 3/3 correctamente rechazados.
-3. **La selectividad es discriminante:** 34.6% de casos genuinos alcanzan overall_pass, con una distribución coherente a lo largo del gradiente.
+3. **La selectividad es discriminante:** 19.2% de casos genuinos alcanzan overall_pass (umbral EDI ≥ 0.30), con una distribución coherente a lo largo del gradiente.
 4. **El gradiente es coherente:** Los fenómenos con inercia material, cascadas cuadráticas y ciclos biogeoquímicos se clasifican más alto, consistente con la teoría.
 5. **Sin compromiso ontológico:** Nunca afirmamos "X es un hiperobjeto". Afirmamos "X exhibe cierre operativo de grado G según este instrumento".
 

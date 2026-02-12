@@ -1046,7 +1046,7 @@ class CaseConfig:
                  ode_noise=0.001, base_noise=0.001,
                  corr_threshold=0.7, threshold_factor=1.0,
                  extra_base_params=None, loe=1, n_runs=5,
-                 driver_cols=None, edi_min=0.10,
+                 driver_cols=None, edi_min=0.30,
                  use_topology=False, topology_type="small_world",
                  topology_params=None, feedback_strength=0.0,
                  ode_calibration=True, abm_calibration=True,
