@@ -20,9 +20,9 @@ El corpus consta de **29 casos oficiales**:
     *   `18_caso_urbanizacion` (EDI=0.151)
     *   `20_caso_kessler` (EDI=0.381)
     *   `22_caso_fosforo` (EDI=0.376)
-    *   `27_caso_riesgo_biologico` (EDI=0.266)
+    *   `27_caso_riesgo_biologico` (EDI=0.257)
 *   **Nivel 4 (Strong — overall_pass=False, falla C2):** **2 Casos**
-    *   `16_caso_deforestacion` (EDI=0.589)
+    *   `16_caso_deforestacion` (EDI=0.579)
     *   `24_caso_microplasticos` (EDI=0.656)
 *   **Nivel 2 (Suggestive):** 2 Casos (`09_finanzas`, `21_salinizacion`)
 *   **Nivel 1 (Trend):** 6 Casos (`01_clima`, `02_conciencia`, `04_energia`, `10_justicia`, `26_starlink`, `28_fuga_cerebros`)

@@ -29,12 +29,12 @@ pip install -r repos/Simulaciones/requirements.txt
 | Caso | EDI | overall_pass | Nota |
 |:-----|----:|:---:|:---|
 | Microplásticos | 0.656 | No | Falla C2 |
-| Deforestación | 0.589 | No | Falla C2 |
+| Deforestación | 0.579 | No | Falla C2 |
 | Kessler | 0.381 | Sí | |
 | Fósforo | 0.376 | Sí | |
 | Postverdad | 0.325 | Sí | |
 | Políticas | 0.288 | Sí | |
-| Riesgo Bio. | 0.266 | Sí | |
+| Riesgo Bio. | 0.257 | Sí | |
 
 ## Estructura de la Tesis (Lectura recomendada)
 

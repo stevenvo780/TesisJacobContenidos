@@ -19,11 +19,11 @@ Representan los fenómenos donde el constructo macro es operativamente indispens
 *   **Urbanización (ID 18):** Datos World Bank (Población urbana). Logística con atracción económica y Preferential Attachment. EDI=0.151. Los patrones de urbanización exhiben cierre operativo.
 *   **Kessler (ID 20):** Datos CelesTrak (Desechos orbitales). Cascada cuadrática Kessler-Liou. EDI=0.381. La dinámica de debris orbital presenta constricción macro fuerte — la cascada colisional impone un patrón macro irreducible.
 *   **Fósforo (ID 22):** Datos World Bank (Uso de fertilizantes). Ciclo biogeoquímico Carpenter. EDI=0.376. El ciclo del fósforo exhibe constricción macro robusta.
-*   **Riesgo Biológico (ID 27):** Datos World Bank (Mortalidad). Cascada zoonótica Woolhouse. EDI=0.266. La dinámica One Health exhibe cierre operativo significativo.
+*   **Riesgo Biológico (ID 27):** Datos World Bank (Mortalidad). Cascada zoonótica Woolhouse. EDI=0.257. La dinámica One Health exhibe cierre operativo significativo.
 
 ### Casos Strong sin overall_pass (falla C2 — Robustez)
 
-*   **Deforestación Global (ID 16):** Datos del World Bank (Área forestal). EDI=0.589 — el segundo EDI más alto del corpus. La ODE de frontera agrícola (von Thünen) captura la inercia del desplazamiento físico de la frontera forestal. Falla C2 (robustez ante perturbación de parámetros), candidato prioritario para investigación futura.
+*   **Deforestación Global (ID 16):** Datos del World Bank (Área forestal). EDI=0.579 — el segundo EDI más alto del corpus. La ODE de frontera agrícola (von Thünen) captura la inercia del desplazamiento físico de la frontera forestal. Falla C2 (robustez ante perturbación de parámetros), candidato prioritario para investigación futura.
 *   **Microplásticos Oceánicos (ID 24):** Datos de OWID (Plastic Production). EDI=0.656 — el EDI más alto del corpus. El modelo Jambeck de acumulación persistente genera una constricción fuerte. Falla C2, indicando sensibilidad a perturbaciones.
 
 ---
@@ -33,7 +33,7 @@ Representan los fenómenos donde el constructo macro es operativamente indispens
 Fenómenos donde el instrumento detecta una señal estadísticamente significativa pero de magnitud insuficiente o con criterios técnicos no satisfechos.
 
 *   **Finanzas (ID 09):** Datos de Yahoo Finance (SPY). EDI=0.081. La reflexividad inherente a los mercados (Soros, 1987) dificulta la separación macro/micro. Señal significativa (p=0.000) pero falla C4. CR=2.616 (único caso con CR > 2.0).
-*   **Salinización (ID 21):** Datos World Bank (Tierras irrigadas). EDI=0.070. Señal detectable (p=0.005) pero falla C4.
+*   **Salinización (ID 21):** Datos World Bank (Tierras irrigadas). EDI=0.058. Señal detectable (p=0.004) pero magnitud insuficiente.
 
 ---
 
@@ -41,7 +41,7 @@ Fenómenos donde el instrumento detecta una señal estadísticamente significati
 
 Incluye el caso paradigmático de **Clima Regional (ID 01)** (datos Meteostat/NOAA, EDI=0.002). Bajo el modelo Budyko-Sellers y la resolución actual, el instrumento no detecta un cierre operativo fuerte. Bajo irrealismo operativo, esto no refuta el fenómeno, sino que diagnostica la insuficiencia de la sonda particular para detectarlo en esta escala regional.
 
-Casos notables en Nivel 1 con EDI nominalmente alto pero sin significancia estadística: **Energía (EDI=0.409, p=0.070)** y **Starlink (EDI=0.837, p=1.000)** — ambos fallan C2 y no alcanzan significancia, indicando señales inestables.
+Casos notables en Nivel 1 con EDI nominalmente alto pero sin significancia estadística: **Energía (EDI=0.419, p=0.072)** y **Starlink (EDI=0.837, p=1.000)** — ambos carecen de significancia, indicando señales inestables.
 
 7 casos se sitúan en Nivel 0, indicando que el modelo híbrido no detecta constricción macro o que el acoplamiento es incluso destructivo (anti-emergencia).
 

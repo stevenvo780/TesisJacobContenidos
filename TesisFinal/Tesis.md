@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-12 00:42 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-12 02:18 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -824,7 +824,7 @@ En los 17 rechazados genuinos:
 | 18 Urbanización | **0.151** | 0.000 | 1.001 | full | Logística urbana: atracción económica |
 | 20 Kessler | **0.381** | 0.000 | 1.005 | full | Cascada cuadrática Kessler-Liou: debris orbital |
 | 22 Fósforo | **0.376** | 0.000 | 1.002 | full | Carpenter P Cycle: ciclo biogeoquímico |
-| 27 Riesgo Biológico | **0.266** | 0.003 | 1.066 | full | Woolhouse Zoonotic: cascada bilineal |
+| 27 Riesgo Biológico | **0.257** | 0.003 | 1.002 | full | Woolhouse Zoonotic: cascada bilineal |
 
 Estos nueve casos alcanzan overall_pass=True: todas las 11 condiciones se cumplen simultáneamente. El constructo macro es operativamente indispensable. Eliminar la constricción macro degrada la predicción entre 12.8% y 38.1%. Bajo irrealismo operativo, esto no afirma que "existan" como entidades autónomas — afirma que el instrumento detecta cierre operativo robusto.
 
@@ -832,7 +832,7 @@ Estos nueve casos alcanzan overall_pass=True: todas las 11 condiciones se cumple
 
 | Caso | EDI | p-perm | CR | BC | Nota |
 |------|----:|-------:|---:|:---|:---|
-| 16 Deforestación | **0.589** | 0.000 | 1.016 | full | overall_pass=False (falla C2) |
+| 16 Deforestación | **0.579** | 0.000 | 1.015 | full | overall_pass=False (falla C2) |
 | 24 Microplásticos | **0.656** | 0.000 | 1.000 | bias_only | overall_pass=False (falla C2) |
 
 #### Nivel 2 — Señal Sugestiva
@@ -840,7 +840,7 @@ Estos nueve casos alcanzan overall_pass=True: todas las 11 condiciones se cumple
 | Caso | EDI | p-perm | CR | Interpretación operativa |
 |------|----:|-------:|---:|:---|
 | 09 Finanzas | 0.081 | 0.000 | 2.616 | Señal estadísticamente significativa, falla C4 |
-| 21 Salinización | 0.070 | 0.005 | ∞ | Señal detectable, falla C4 |
+| 21 Salinización | 0.058 | 0.004 | 1.000 | Señal detectable, all criteria pass |
 
 El instrumento detecta señal estadística (p < 0.05 y EDI > 0.01) pero la magnitud no alcanza para atribuir cierre operativo pleno y/o fallan criterios técnicos adicionales. Son candidatos, no diagnósticos.
 
@@ -850,18 +850,18 @@ El instrumento detecta señal estadística (p < 0.05 y EDI > 0.01) pero la magni
 |------|----:|-------:|:---|
 | 01 Clima | 0.002 | 1.000 | ODE Budyko-Sellers insuficiente para este dominio |
 | 02 Conciencia | 0.123 | 0.231 | Señal considerable pero sin significancia |
-| 04 Energía | 0.409 | 0.070 | EDI alto pero falla C2 y significancia marginal |
+| 04 Energía | 0.419 | 0.072 | EDI alto pero significancia marginal |
 | 10 Justicia | 0.227 | 0.477 | Señal no significativa |
 | 26 Starlink | 0.837 | 1.000 | EDI muy alto pero falla C2 y sin significancia |
 | 28 Fuga Cerebros | 0.059 | 0.780 | Señal no significativa |
 
 Estos casos muestran EDI positivo sin significancia estadística. El instrumento no detecta cierre operativo confirmado — esto puede reflejar inadecuación del modelo ODE o varianza excesiva en la muestra.
 
-> **Nota importante:** Los casos Energía (EDI=0.409) y Starlink (EDI=0.837) presentan EDIs nominalmente altos pero carecen de significancia estadística (p=0.070 y p=1.000 respectivamente), y fallan C2 (robustez). Esto indica que la señal es inestable ante perturbaciones de parámetros.
+> **Nota importante:** Los casos Energía (EDI=0.419) y Starlink (EDI=0.837) presentan EDIs nominalmente altos pero carecen de significancia estadística (p=0.072 y p=1.000 respectivamente). Esto indica que la señal es inestable ante perturbaciones de parámetros.
 
 #### Nivel 0 — Sin Señal Operativa (7 Casos)
 
-Contaminación (-0.011), Paradigmas (-0.006), Océanos (-0.032), Acidificación (-0.000), Erosión Dialéctica (-1.000), Acuíferos (-0.126), IoT (-0.218).
+Contaminación (-0.011), Paradigmas (-0.006), Océanos (-0.032), Acidificación (-0.000), Erosión Dialéctica (-0.988), Acuíferos (-0.126), IoT (-0.919).
 
 Bajo irrealismo operativo, Nivel 0 no significa "el hiperobjeto no existe" — significa "el instrumento no detecta cierre operativo con la sonda actual". La diferencia es crucial: un termómetro que no detecta campo magnético no refuta el magnetismo.
 
@@ -1002,11 +1002,11 @@ Representan los fenómenos donde el constructo macro es operativamente indispens
 *   **Urbanización (ID 18):** Datos World Bank (Población urbana). Logística con atracción económica y Preferential Attachment. EDI=0.151. Los patrones de urbanización exhiben cierre operativo.
 *   **Kessler (ID 20):** Datos CelesTrak (Desechos orbitales). Cascada cuadrática Kessler-Liou. EDI=0.381. La dinámica de debris orbital presenta constricción macro fuerte — la cascada colisional impone un patrón macro irreducible.
 *   **Fósforo (ID 22):** Datos World Bank (Uso de fertilizantes). Ciclo biogeoquímico Carpenter. EDI=0.376. El ciclo del fósforo exhibe constricción macro robusta.
-*   **Riesgo Biológico (ID 27):** Datos World Bank (Mortalidad). Cascada zoonótica Woolhouse. EDI=0.266. La dinámica One Health exhibe cierre operativo significativo.
+*   **Riesgo Biológico (ID 27):** Datos World Bank (Mortalidad). Cascada zoonótica Woolhouse. EDI=0.257. La dinámica One Health exhibe cierre operativo significativo.
 
 ### Casos Strong sin overall_pass (falla C2 — Robustez)
 
-*   **Deforestación Global (ID 16):** Datos del World Bank (Área forestal). EDI=0.589 — el segundo EDI más alto del corpus. La ODE de frontera agrícola (von Thünen) captura la inercia del desplazamiento físico de la frontera forestal. Falla C2 (robustez ante perturbación de parámetros), candidato prioritario para investigación futura.
+*   **Deforestación Global (ID 16):** Datos del World Bank (Área forestal). EDI=0.579 — el segundo EDI más alto del corpus. La ODE de frontera agrícola (von Thünen) captura la inercia del desplazamiento físico de la frontera forestal. Falla C2 (robustez ante perturbación de parámetros), candidato prioritario para investigación futura.
 *   **Microplásticos Oceánicos (ID 24):** Datos de OWID (Plastic Production). EDI=0.656 — el EDI más alto del corpus. El modelo Jambeck de acumulación persistente genera una constricción fuerte. Falla C2, indicando sensibilidad a perturbaciones.
 
 ---
@@ -1016,7 +1016,7 @@ Representan los fenómenos donde el constructo macro es operativamente indispens
 Fenómenos donde el instrumento detecta una señal estadísticamente significativa pero de magnitud insuficiente o con criterios técnicos no satisfechos.
 
 *   **Finanzas (ID 09):** Datos de Yahoo Finance (SPY). EDI=0.081. La reflexividad inherente a los mercados (Soros, 1987) dificulta la separación macro/micro. Señal significativa (p=0.000) pero falla C4. CR=2.616 (único caso con CR > 2.0).
-*   **Salinización (ID 21):** Datos World Bank (Tierras irrigadas). EDI=0.070. Señal detectable (p=0.005) pero falla C4.
+*   **Salinización (ID 21):** Datos World Bank (Tierras irrigadas). EDI=0.058. Señal detectable (p=0.004) pero magnitud insuficiente.
 
 ---
 
@@ -1024,7 +1024,7 @@ Fenómenos donde el instrumento detecta una señal estadísticamente significati
 
 Incluye el caso paradigmático de **Clima Regional (ID 01)** (datos Meteostat/NOAA, EDI=0.002). Bajo el modelo Budyko-Sellers y la resolución actual, el instrumento no detecta un cierre operativo fuerte. Bajo irrealismo operativo, esto no refuta el fenómeno, sino que diagnostica la insuficiencia de la sonda particular para detectarlo en esta escala regional.
 
-Casos notables en Nivel 1 con EDI nominalmente alto pero sin significancia estadística: **Energía (EDI=0.409, p=0.070)** y **Starlink (EDI=0.837, p=1.000)** — ambos fallan C2 y no alcanzan significancia, indicando señales inestables.
+Casos notables en Nivel 1 con EDI nominalmente alto pero sin significancia estadística: **Energía (EDI=0.419, p=0.072)** y **Starlink (EDI=0.837, p=1.000)** — ambos carecen de significancia, indicando señales inestables.
 
 7 casos se sitúan en Nivel 0, indicando que el modelo híbrido no detecta constricción macro o que el acoplamiento es incluso destructivo (anti-emergencia).
 

@@ -32,20 +32,20 @@ Documentos de referencia:
 18. `18_caso_urbanizacion/` — Población urbana (World Bank) — EDI=0.151 — **Validado**
 20. `20_caso_kessler/` — Desechos orbitales (CelesTrak) — EDI=0.381 — **Validado**
 22. `22_caso_fosforo/` — Uso de fertilizantes (World Bank) — EDI=0.376 — **Validado**
-27. `27_caso_riesgo_biologico/` — Mortalidad (World Bank) — EDI=0.266 — **Validado**
+27. `27_caso_riesgo_biologico/` — Mortalidad (World Bank) — EDI=0.257 — **Validado**
 
 ### Bloque II: Emergencia fuerte (strong) — overall_pass=False (falla C2)
-16. `16_caso_deforestacion/` — Área forestal (World Bank) — EDI=0.589 — Strong sin C2
+16. `16_caso_deforestacion/` — Área forestal (World Bank) — EDI=0.579 — Strong sin C2
 24. `24_caso_microplasticos/` — Producción plástica (OWID) — EDI=0.656 — Strong sin C2
 
 ### Bloque III: Señal sugestiva (suggestive) — p<0.05, EDI>0.01
 09. `09_caso_finanzas/` — Finanzas globales (Yahoo Finance) — EDI=0.081
-21. `21_caso_salinizacion/` — Tierras irrigadas (World Bank) — EDI=0.070
+21. `21_caso_salinizacion/` — Tierras irrigadas (World Bank) — EDI=0.058
 
 ### Bloque IV: Tendencia no significativa (trend)
 01. `01_caso_clima/` — Clima regional (Meteostat) — EDI=0.002
 02. `02_caso_conciencia/` — Conciencia global (Fallback) — EDI=0.123
-04. `04_caso_energia/` — Energía eléctrica (OPSD) — EDI=0.409
+04. `04_caso_energia/` — Energía eléctrica (OPSD) — EDI=0.419
 10. `10_caso_justicia/` — Estado de Derecho (World Bank) — EDI=0.227
 26. `26_caso_starlink/` — Mega-constelaciones (CelesTrak) — EDI=0.837
 28. `28_caso_fuga_cerebros/` — I+D (World Bank) — EDI=0.059
@@ -55,9 +55,9 @@ Documentos de referencia:
 12. `12_caso_paradigmas/` — Ciencia (OpenAlex) — EDI=-0.006
 17. `17_caso_oceanos/` — Temperatura oceánica (WMO proxy) — EDI=-0.032
 19. `19_caso_acidificacion_oceanica/` — CO2 y Océanos (PMEL proxy) — EDI=-0.000
-23. `23_caso_erosion_dialectica/` — Alfabetización (World Bank) — EDI=-1.000
+23. `23_caso_erosion_dialectica/` — Alfabetización (World Bank) — EDI=-0.988
 25. `25_caso_acuiferos/` — Acceso al agua (GRAVIS+USGS) — EDI=-0.126
-29. `29_caso_iot/` — Suscripciones móviles (World Bank) — EDI=-0.218
+29. `29_caso_iot/` — Suscripciones móviles (World Bank) — EDI=-0.919
 
 ### Bloque VI: Controles de Falsación (Correctamente rechazados)
 06. `06_caso_falsacion_exogeneidad/` — Ruido puro — EDI=0.055

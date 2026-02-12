@@ -91,7 +91,7 @@ pie title Distribución del Paisaje de Emergencia (29 Casos)
 | 18 Urbanización | **0.151** | 0.000 | 1.001 | full | Logística urbana: atracción económica |
 | 20 Kessler | **0.381** | 0.000 | 1.005 | full | Cascada cuadrática Kessler-Liou: debris orbital |
 | 22 Fósforo | **0.376** | 0.000 | 1.002 | full | Carpenter P Cycle: ciclo biogeoquímico |
-| 27 Riesgo Biológico | **0.266** | 0.003 | 1.066 | full | Woolhouse Zoonotic: cascada bilineal |
+| 27 Riesgo Biológico | **0.257** | 0.003 | 1.002 | full | Woolhouse Zoonotic: cascada bilineal |
 
 Estos nueve casos alcanzan overall_pass=True: todas las 11 condiciones se cumplen simultáneamente. El constructo macro es operativamente indispensable. Eliminar la constricción macro degrada la predicción entre 12.8% y 38.1%. Bajo irrealismo operativo, esto no afirma que "existan" como entidades autónomas — afirma que el instrumento detecta cierre operativo robusto.
 
@@ -99,7 +99,7 @@ Estos nueve casos alcanzan overall_pass=True: todas las 11 condiciones se cumple
 
 | Caso | EDI | p-perm | CR | BC | Nota |
 |------|----:|-------:|---:|:---|:---|
-| 16 Deforestación | **0.589** | 0.000 | 1.016 | full | overall_pass=False (falla C2) |
+| 16 Deforestación | **0.579** | 0.000 | 1.015 | full | overall_pass=False (falla C2) |
 | 24 Microplásticos | **0.656** | 0.000 | 1.000 | bias_only | overall_pass=False (falla C2) |
 
 #### Nivel 2 — Señal Sugestiva
@@ -107,7 +107,7 @@ Estos nueve casos alcanzan overall_pass=True: todas las 11 condiciones se cumple
 | Caso | EDI | p-perm | CR | Interpretación operativa |
 |------|----:|-------:|---:|:---|
 | 09 Finanzas | 0.081 | 0.000 | 2.616 | Señal estadísticamente significativa, falla C4 |
-| 21 Salinización | 0.070 | 0.005 | ∞ | Señal detectable, falla C4 |
+| 21 Salinización | 0.058 | 0.004 | 1.000 | Señal detectable, all criteria pass |
 
 El instrumento detecta señal estadística (p < 0.05 y EDI > 0.01) pero la magnitud no alcanza para atribuir cierre operativo pleno y/o fallan criterios técnicos adicionales. Son candidatos, no diagnósticos.
 
@@ -117,18 +117,18 @@ El instrumento detecta señal estadística (p < 0.05 y EDI > 0.01) pero la magni
 |------|----:|-------:|:---|
 | 01 Clima | 0.002 | 1.000 | ODE Budyko-Sellers insuficiente para este dominio |
 | 02 Conciencia | 0.123 | 0.231 | Señal considerable pero sin significancia |
-| 04 Energía | 0.409 | 0.070 | EDI alto pero falla C2 y significancia marginal |
+| 04 Energía | 0.419 | 0.072 | EDI alto pero significancia marginal |
 | 10 Justicia | 0.227 | 0.477 | Señal no significativa |
 | 26 Starlink | 0.837 | 1.000 | EDI muy alto pero falla C2 y sin significancia |
 | 28 Fuga Cerebros | 0.059 | 0.780 | Señal no significativa |
 
 Estos casos muestran EDI positivo sin significancia estadística. El instrumento no detecta cierre operativo confirmado — esto puede reflejar inadecuación del modelo ODE o varianza excesiva en la muestra.
 
-> **Nota importante:** Los casos Energía (EDI=0.409) y Starlink (EDI=0.837) presentan EDIs nominalmente altos pero carecen de significancia estadística (p=0.070 y p=1.000 respectivamente), y fallan C2 (robustez). Esto indica que la señal es inestable ante perturbaciones de parámetros.
+> **Nota importante:** Los casos Energía (EDI=0.419) y Starlink (EDI=0.837) presentan EDIs nominalmente altos pero carecen de significancia estadística (p=0.072 y p=1.000 respectivamente). Esto indica que la señal es inestable ante perturbaciones de parámetros.
 
 #### Nivel 0 — Sin Señal Operativa (7 Casos)
 
-Contaminación (-0.011), Paradigmas (-0.006), Océanos (-0.032), Acidificación (-0.000), Erosión Dialéctica (-1.000), Acuíferos (-0.126), IoT (-0.218).
+Contaminación (-0.011), Paradigmas (-0.006), Océanos (-0.032), Acidificación (-0.000), Erosión Dialéctica (-0.988), Acuíferos (-0.126), IoT (-0.919).
 
 Bajo irrealismo operativo, Nivel 0 no significa "el hiperobjeto no existe" — significa "el instrumento no detecta cierre operativo con la sonda actual". La diferencia es crucial: un termómetro que no detecta campo magnético no refuta el magnetismo.
 
