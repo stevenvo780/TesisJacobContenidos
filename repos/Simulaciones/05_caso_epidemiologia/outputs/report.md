@@ -1,6 +1,6 @@
 # Reporte de Validación — Epidemiología (COVID-19 Global)
 
-- generated_at: 2026-02-12T01:20:00.194665Z
+- generated_at: 2026-02-12T02:03:29.129844Z
 
 ## Fase synthetic
 - **overall_pass**: False

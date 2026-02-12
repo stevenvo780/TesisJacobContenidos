@@ -1,6 +1,6 @@
 # Reporte de Validación — Postverdad (SIS Infodemic)
 
-- generated_at: 2026-02-12T01:19:45.130823Z
+- generated_at: 2026-02-12T02:03:04.102877Z
 
 ## Fase synthetic
 - **overall_pass**: False

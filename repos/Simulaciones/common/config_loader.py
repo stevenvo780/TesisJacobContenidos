@@ -142,6 +142,15 @@ def apply_config_to_case(config: dict, case_config_obj) -> None:
     # Calibration overrides
     if "param_grid" in calibration:
         case_config_obj.param_grid = calibration["param_grid"]
+    
+    # Refinement clamps per-case: permite ampliar el espacio de refinamiento
+    # solo para casos cuyos parámetros calibrados tocan los límites globales.
+    # Formato: {"forcing_scale": [0.001, 1.20], "macro_coupling": [0.05, 0.60], ...}
+    if "refinement_clamps" in calibration:
+        rc_raw = calibration["refinement_clamps"]
+        case_config_obj.refinement_clamps = {
+            k: tuple(v) for k, v in rc_raw.items()
+        }
 
 
 def get_grid_size_for_case(case_dir: str) -> Optional[int]:

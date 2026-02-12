@@ -440,7 +440,8 @@ def calibrate_ode_rolling(obs_train, forcing_train, window_size=None,
 
 
 def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
-                   param_grid=None, seed=2, n_refine=5000):
+                   param_grid=None, seed=2, n_refine=5000,
+                   refinement_clamps=None):
     """
     Grid search masivo + refinamiento local con early stopping — GPU BATCH o CPU PARALELO.
     
@@ -627,10 +628,14 @@ def calibrate_abm(obs_train, base_params, steps, simulate_abm_fn,
             for b in range(this_batch):
                 step_idx = i + b
                 decay = 1.0 / (1.0 + step_idx * 0.003)
+                _rc = refinement_clamps or {}
+                fs_lo, fs_hi = _rc.get("forcing_scale", (0.001, 0.99))
+                mc_lo, mc_hi = _rc.get("macro_coupling", (0.10, 0.50))
+                dmp_lo, dmp_hi = _rc.get("damping", (0.0, 0.95))
                 cand = {
-                    "forcing_scale": max(0.001, min(0.99, center_p["forcing_scale"] + rng.uniform(-radius_fs, radius_fs) * decay)),
-                    "macro_coupling": max(0.10, min(0.50, center_p["macro_coupling"] + rng.uniform(-radius_mc, radius_mc) * decay)),
-                    "damping": max(0.0, min(0.95, center_p["damping"] + rng.uniform(-radius_dmp, radius_dmp) * decay)),
+                    "forcing_scale": max(fs_lo, min(fs_hi, center_p["forcing_scale"] + rng.uniform(-radius_fs, radius_fs) * decay)),
+                    "macro_coupling": max(mc_lo, min(mc_hi, center_p["macro_coupling"] + rng.uniform(-radius_mc, radius_mc) * decay)),
+                    "damping": max(dmp_lo, min(dmp_hi, center_p["damping"] + rng.uniform(-radius_dmp, radius_dmp) * decay)),
                 }
                 batch_candidates.append(cand)
             
@@ -706,17 +711,18 @@ def _get_series_key(sim_result):
 
 # ─── Perturbación ─────────────────────────────────────────────────────────────
 
-def perturb_params(params, pct, seed, keys=None):
+def perturb_params(params, pct, seed, keys=None, refinement_clamps=None):
     rng = random.Random(seed)
     p = dict(params)
     if keys is None:
         keys = ["diffusion", "macro_coupling", "forcing_scale", "damping"]
     # Restricciones físicas — consistentes con calibrate_abm refinement clamps
     # para que C2/C5 perturbaciones no excedan el espacio de calibración.
+    _rc = refinement_clamps or {}
     _clamp = {
-        "damping": (0.0, 0.95),           # =refinement cap; ≥1.0 → divergencia
-        "macro_coupling": (0.0, 0.50),     # =refinement cap
-        "forcing_scale": (0.001, 0.99),    # =refinement cap
+        "damping": _rc.get("damping", (0.0, 0.95)),           # =refinement cap; ≥1.0 → divergencia
+        "macro_coupling": _rc.get("macro_coupling", (0.0, 0.50)),     # =refinement cap
+        "forcing_scale": _rc.get("forcing_scale", (0.001, 0.99)),    # =refinement cap
         "diffusion": (0.0, 0.5),           # estabilidad numérica
     }
     for k in keys:
@@ -724,9 +730,19 @@ def perturb_params(params, pct, seed, keys=None):
             delta = abs(p[k]) * pct
             if delta < 1e-10:
                 delta = 0.01
-            p[k] = p[k] + rng.uniform(-delta, delta)
+            new_val = p[k] + rng.uniform(-delta, delta)
             lo, hi = _clamp.get(k, (0.0, float("inf")))
-            p[k] = max(lo, min(hi, p[k]))
+            # Reflexión en límites: cuando el parámetro calibrado está
+            # cerca de un clamp (e.g. fs=0.99, hi=0.99), la perturbación
+            # solo puede ir en una dirección → sesgo asimétrico que infla
+            # mean_delta/var_delta de C2 artificialmente.
+            # La reflexión mantiene la distribución simétrica.
+            if new_val > hi:
+                new_val = hi - (new_val - hi)
+            elif new_val < lo:
+                new_val = lo + (lo - new_val)
+            # Clamp de seguridad para deltas extremos
+            p[k] = max(lo, min(hi, new_val))
     return p
 
 
@@ -780,7 +796,8 @@ def evaluate_c1(abm_val, ode_val, obs_val, obs_std,
 
 
 def evaluate_c2(base_params, eval_params, steps, val_start,
-                simulate_abm_fn, series_key, n_pert=20, pct=0.1, seed_base=10):
+                simulate_abm_fn, series_key, n_pert=20, pct=0.1, seed_base=10,
+                refinement_clamps=None):
     sim_base = simulate_abm_fn(eval_params, steps, seed=2)
     base_mean = mean(sim_base[series_key][val_start:])
     base_var = variance(sim_base[series_key][val_start:])
@@ -802,7 +819,7 @@ def evaluate_c2(base_params, eval_params, steps, val_start,
         # ── GPU BATCH: n_pert simulaciones perturbadas de una pasada ──
         param_variants = []
         for i in range(n_pert):
-            p = perturb_params(base_params, pct, seed=seed_base + i)
+            p = perturb_params(base_params, pct, seed=seed_base + i, refinement_clamps=refinement_clamps)
             variant = {
                 "forcing_scale": p.get("forcing_scale", eval_params.get("forcing_scale", 0.05)),
                 "macro_coupling": p.get("macro_coupling", eval_params.get("macro_coupling", 0.2)),
@@ -831,7 +848,7 @@ def evaluate_c2(base_params, eval_params, steps, val_start,
     else:
         # ── CPU PARALELO ──
         def _eval_one_c2(i):
-            p = perturb_params(base_params, pct, seed=seed_base + i)
+            p = perturb_params(base_params, pct, seed=seed_base + i, refinement_clamps=refinement_clamps)
             p["assimilation_series"] = None
             p["assimilation_strength"] = 0.0
             if "forcing_series" in eval_params:
@@ -883,7 +900,8 @@ def evaluate_c4(eval_params, base_params, steps, val_start,
 
 def evaluate_c5(base_params, eval_params, steps, val_start,
                 simulate_abm_fn, series_key, n_runs=5, pct=0.1,
-                obs_std=None, obs_mean_raw=None, obs_std_raw=None):
+                obs_std=None, obs_mean_raw=None, obs_std_raw=None,
+                refinement_clamps=None):
     
     # Detectar GPU batch
     _batch_fn = None
@@ -901,7 +919,7 @@ def evaluate_c5(base_params, eval_params, steps, val_start,
         # ── GPU BATCH: n_runs simulaciones perturbadas de una pasada ──
         param_variants = []
         for i in range(n_runs):
-            p = perturb_params(base_params, pct, seed=20 + i)
+            p = perturb_params(base_params, pct, seed=20 + i, refinement_clamps=refinement_clamps)
             variant = {
                 "forcing_scale": p.get("forcing_scale", eval_params.get("forcing_scale", 0.05)),
                 "macro_coupling": p.get("macro_coupling", eval_params.get("macro_coupling", 0.2)),
@@ -924,7 +942,7 @@ def evaluate_c5(base_params, eval_params, steps, val_start,
     else:
         # ── CPU PARALELO ──
         def _eval_one_c5(i):
-            p = perturb_params(base_params, pct, seed=20 + i)
+            p = perturb_params(base_params, pct, seed=20 + i, refinement_clamps=refinement_clamps)
             p["assimilation_series"] = None
             p["assimilation_strength"] = 0.0
             if "forcing_series" in eval_params:
@@ -1070,6 +1088,7 @@ class CaseConfig:
         self.n_boot = 500      # Bootstrap CI para EDI
         self.n_refine = 5000   # Iteraciones de refinamiento en calibrate_abm
         self.param_grid = None # None = usar grid default de calibrate_abm
+        self.refinement_clamps = None  # None = usar defaults de calibrate_abm/perturb_params
 
         # ── Overrides desde case_config.json ──────────────────────────────
         # Prioridad: defaults → case_config.json → HYPER_* env vars
@@ -1322,7 +1341,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
         best_abm, best_err, top_5 = calibrate_abm(
             obs[:val_start], base_params, val_start, simulate_abm_fn,
             param_grid=param_grid or config.param_grid, seed=2,
-            n_refine=config.n_refine
+            n_refine=config.n_refine,
+            refinement_clamps=getattr(config, 'refinement_clamps', None)
         )
     else:
         best_abm = {}
@@ -1595,7 +1615,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
                                  config.threshold_factor, config.corr_threshold,
                                  reduced_val=abm_no_ode_val)
     c2, c2_detail = evaluate_c2(base_params_ode, eval_params_ode, steps, val_start,
-                                 simulate_abm_fn, sk)
+                                 simulate_abm_fn, sk,
+                                 refinement_clamps=getattr(config, 'refinement_clamps', None))
     c3, c3_detail = evaluate_c3(eval_params_ode, steps, val_start, simulate_abm_fn,
                                  sk, window=config.persistence_window)
     c4, c4_detail = evaluate_c4(eval_params_ode, base_params_ode, steps, val_start,
@@ -1604,7 +1625,8 @@ def evaluate_phase(config, df, start_date, end_date, split_date,
                                  simulate_abm_fn, sk, n_runs=config.n_runs,
                                  obs_std=obs_std,
                                  obs_mean_raw=obs_mean_raw,
-                                 obs_std_raw=obs_std_raw)
+                                 obs_std_raw=obs_std_raw,
+                                 refinement_clamps=getattr(config, 'refinement_clamps', None))
                                  
     # Viscosity Test (Variables faltantes Fase 3)
     _progress(phase_name, "6/6 Tests adicionales", "viscosidad + ruido + Symploké")

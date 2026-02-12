@@ -1,6 +1,6 @@
 # Reporte de Validación — Wikipedia (Conocimiento Colectivo)
 
-- generated_at: 2026-02-12T00:19:47.597847Z
+- generated_at: 2026-02-12T02:03:33.051591Z
 
 ## Fase synthetic
 - **overall_pass**: False

@@ -1,6 +1,6 @@
 # Reporte de Validación — Riesgo Biológico Global (Woolhouse Bilineal)
 
-- generated_at: 2026-02-12T01:19:53.278974Z
+- generated_at: 2026-02-12T02:02:33.319538Z
 
 ## Fase synthetic
 - **overall_pass**: False

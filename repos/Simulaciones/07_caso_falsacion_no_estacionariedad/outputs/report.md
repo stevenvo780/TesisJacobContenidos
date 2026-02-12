@@ -1,6 +1,6 @@
 # Reporte de Validación — Falsación: No-Estacionariedad
 
-- generated_at: 2026-02-12T00:19:52.805313Z
+- generated_at: 2026-02-12T02:03:37.005381Z
 
 ## Fase real
 - **overall_pass**: False
