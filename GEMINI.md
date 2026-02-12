@@ -10,27 +10,34 @@ El proyecto clasifica fenómenos de gran escala mediante **Cierre Operativo** co
 *   **Instrumento:** El **Emergentómetro** (motor híbrido ODE+ABM + protocolo C1-C5 + test de permutación + EDI).
 
 ## 2. Estado de los Casos (VERDAD CIENTÍFICA — Febrero 2026)
-El corpus consta de **29 casos oficiales**:
+El corpus consta de **29 casos oficiales**. Datos sincronizados desde `repos/Simulaciones/*/outputs/metrics.json`:
 
-*   **Nivel 4 (Strong — overall_pass=True):** **8 Casos**
-    *   `04_caso_energia` (EDI=0.650)
-    *   `13_caso_politicas_estrategicas` (EDI=0.288)
-    *   `14_caso_postverdad` (EDI=0.325)
-    *   `15_caso_wikipedia` (EDI=0.160)
-    *   `18_caso_urbanizacion` (EDI=0.151)
-    *   `20_caso_kessler` (EDI=0.381)
-    *   `22_caso_fosforo` (EDI=0.376)
-    *   `27_caso_riesgo_biologico` (EDI=0.257)
-*   **Nivel 4 (Strong — overall_pass=False, falla C2):** **2 Casos**
-    *   `16_caso_deforestacion` (EDI=0.580)
-    *   `24_caso_microplasticos` (EDI=0.656)
-*   **Nivel 3 (Weak):** 2 Casos (`05_epidemiologia` EDI=0.129, `11_movilidad` EDI=0.128)
-*   **Nivel 2 (Suggestive):** 2 Casos (`09_finanzas`, `21_salinizacion`)
-*   **Nivel 1 (Trend):** 4 Casos (`01_clima`, `10_justicia`, `26_starlink`, `28_fuga_cerebros`)
-*   **Nivel 0 (Null):** 8 Casos (sin señal operativa)
-*   **Controles:** 3 Casos (Falsación Exogeneidad/Estacionariedad/Observabilidad) correctamente rechazados.
+*   **Nivel 4 (Strong — overall_pass=True):** **5 Casos**
+    *   `24_caso_microplasticos` (EDI=0.806, p=0.000)
+    *   `04_caso_energia` (EDI=0.650, p=0.000)
+    *   `16_caso_deforestacion` (EDI=0.580, p=0.000)
+    *   `18_caso_urbanizacion` (EDI=0.337, p=0.000)
+    *   `22_caso_fosforo` (EDI=0.322, p=0.000)
+*   **Nivel 3 (Weak — p<0.05, 0.10≤EDI<0.30):** **6 Casos**
+    *   `20_caso_kessler` (EDI=0.299, p=0.000)
+    *   `27_caso_riesgo_biologico` (EDI=0.294, p=0.003)
+    *   `13_caso_politicas_estrategicas` (EDI=0.288, p=0.000)
+    *   `14_caso_postverdad` (EDI=0.252, p=0.000)
+    *   `05_caso_epidemiologia` (EDI=0.129, p=0.000)
+    *   `11_caso_movilidad` (EDI=0.128, p=0.002)
+*   **Nivel 2 (Suggestive — p<0.05, EDI>0.01):** **3 Casos**
+    *   `09_caso_finanzas` (EDI=0.081, p=0.000)
+    *   `15_caso_wikipedia` (EDI=0.080, p=0.000)
+    *   `21_caso_salinizacion` (EDI=0.058, p=0.004)
+*   **Nivel 1 (Trend — EDI>0, p≥0.05):** **4 Casos**
+    *   `26_caso_starlink` (EDI=0.690, p=1.000 — artefacto de calibración)
+    *   `10_caso_justicia` (EDI=0.227, p=0.478)
+    *   `28_caso_fuga_cerebros` (EDI=0.025, p=0.998)
+    *   `01_caso_clima` (EDI=0.011, p=0.999)
+*   **Nivel 0 (Null):** **8 Casos** (Conciencia, Contaminación, Paradigmas, Océanos, Acidificación, Erosión Dialéctica, Acuíferos, IoT)
+*   **Controles:** 3 Casos (Falsación Exogeneidad/No-Estacionariedad/Observabilidad) correctamente rechazados.
 
-> **NOTA CRÍTICA:** Febrero 2026: métricas sincronizadas desde repos/Simulaciones (última ejecución). Energía subió a Nivel 4 (EDI=0.650). Epidemiología y Movilidad bajaron a Nivel 3 (weak). Conciencia bajó a Nivel 0.
+> **Distribución:** 5 strong (pass) + 6 weak + 3 suggestive + 4 trend + 8 null + 3 falsification = 29 total.
 
 ## 3. Estructura del Workspace
 Fuente de verdad es `/datos/repos/Personal/TesisJacobContenidos/`.
@@ -38,12 +45,12 @@ Fuente de verdad es `/datos/repos/Personal/TesisJacobContenidos/`.
 *   **/TesisDesarrollo/**: Componentes modulares de la tesis.
     *   `00_Marco_Conceptual/`: Ontología, Axiomas.
     *   `01_Metodologia_Medicion/`: Protocolo C1-C5.
-    *   `02_Modelado_Simulacion/`: Documentación técnica ODE+ABM.
+    *   `02_Modelado_Simulacion/`: Documentación técnica ODE+ABM + copias espejo de metrics.json.
     *   `03_Validacion_Praxis/`: Resultados consolidados y Paisaje de Emergencia.
     *   `04_Casos_De_Estudio/`: Fichas detalladas.
     *   `05_Bibliografia/`: Referencias nucleares (37 fuentes).
 *   **/TesisFinal/Tesis.md**: Documento compilado (Artifact de salida).
-*   **/Artifacts/**: Registros históricos y auditorías (redundancia permitida).
+*   **/Artifacts/**: Registros históricos y auditorías (⚠️ pueden estar desactualizados).
 
 ## 4. Guía de Ejecución
 *   **Validar Caso:** `python3 repos/Simulaciones/{NN}_caso_*/src/validate.py`
@@ -57,3 +64,4 @@ Fuente de verdad es `/datos/repos/Personal/TesisJacobContenidos/`.
 2.  **Terminología:** Usar "Cierre Operativo", "Irrealismo Operativo", "Emergentómetro", "Navaja de Ockham".
 3.  **Bibliografía:** Debe estar al final del documento consolidado, no en el marco conceptual.
 4.  **Sync primero:** Siempre sincronizar metrics.json desde repos/Simulaciones antes de actualizar tablas.
+5.  **Verificar antes de afirmar:** Consultar `repos/Simulaciones/*/outputs/metrics.json` para valores exactos de EDI, p-value y overall_pass.

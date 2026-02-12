@@ -40,10 +40,10 @@ python3 repos/scripts/tesis.py build
 
 ### Estructura del Repositorio
 
-- **TesisDesarrollo/** — Contenido de la tesis en 5 módulos (00-04): Marco Conceptual, Metodología, Modelado y Simulación, Validación, Casos de Estudio
+- **TesisDesarrollo/** — Contenido de la tesis en 6 módulos (00-05): Marco Conceptual, Metodología, Modelado y Simulación, Validación, Casos de Estudio, Bibliografía
 - **TesisFinal/Tesis.md** — Documento final compilado de la tesis
 - **repos/Simulaciones/** — Código fuente Python de las simulaciones (modelos híbridos ABM+ODE), 29 casos
-- **Artifacts/** — Documentos de auditoría y artefactos de trabajo (fase 1 y fase 2)
+- **Artifacts/** — Documentos de auditoría y artefactos de trabajo (⚠️ pueden estar desactualizados)
 - **repos/scripts/** — Scripts utilitarios para auditoría, evaluación y actualización de datos de simulación
 
 ### Estructura del Código de Simulación (por caso)
@@ -53,13 +53,13 @@ Cada caso en `repos/Simulaciones/{NN}_caso_*/` sigue:
 src/
   validate.py   # Orquestador: calibración → simulación → métricas → reporte
   abm.py        # Modelo basado en agentes (difusión en retícula con acoplamiento)
-  ode.py        # Solver ODE macro (balance energético con asimilación de datos)
+  ode.py        # Solver ODE macro (domain-specific)
   metrics.py    # Cómputo de EDI, CR, RMSE, correlación
   data.py       # Obtención y preprocesamiento de datos
 outputs/
-  metrics.json  # Métricas de validación computadas
+  metrics.json  # Métricas de validación computadas (FUENTE DE VERDAD)
   report.md     # Resultados narrativos
-docs/           # Documentación específica del caso (arquitectura, protocolos, reproducibilidad)
+docs/           # Documentación específica del caso
 ```
 
 ### Lógica de Acoplamiento del Modelo Híbrido
@@ -90,17 +90,29 @@ docs/           # Documentación específica del caso (arquitectura, protocolos,
 | 0 | null | ≤0 o no sig | Sin señal |
 | — | falsification | — | Control negativo correcto |
 
-## 29 Casos de Simulación
+## 29 Casos de Simulación (Estado Febrero 2026)
 
-Ubicados en `repos/Simulaciones/{NN}_caso_*/src/`. **overall_pass = 2/29** (Deforestación EDI=0.633, Microplásticos EDI=0.427). Significancia: 6/29. Niveles: {0: 13, 1: 7, 2: 3, 3: 1, 4: 2}. 3 controles de falsación correctos. El paisaje completo de 29 puntos en el gradiente de emergencia es el resultado principal.
+Ubicados en `repos/Simulaciones/{NN}_caso_*/src/`. **overall_pass = 5/29**. Distribución: {4: 5, 3: 6, 2: 3, 1: 4, 0: 8, falsification: 3}.
 
-### Casos con Cierre Operativo (Nivel 4)
-- **Deforestación** (16): EDI=0.633, p=0.000, overall_pass=True. Modelo von Thünen + BC full.
-- **Microplásticos** (24): EDI=0.427, p=0.000, overall_pass=True. Modelo Jambeck. Sin BC.
+### Casos con Cierre Operativo (Nivel 4 — overall_pass=True)
+- **Microplásticos** (24): EDI=0.806, p=0.000. Modelo Jambeck Accumulation.
+- **Energía** (04): EDI=0.650, p=0.000. Modelo Lotka-Volterra.
+- **Deforestación** (16): EDI=0.580, p=0.000. Modelo von Thünen.
+- **Urbanización** (18): EDI=0.337, p=0.000. Modelo Logística + Atracción.
+- **Fósforo** (22): EDI=0.322, p=0.000. Modelo Carpenter P Cycle.
 
-### Caso Notable
-- **Clima** (01): EDI=0.010, Nivel 1. Sonda insuficiente, no refutación del fenómeno.
-- **Finanzas** (09): EDI=0.040, Nivel 2. Reflexividad y aliasing temporal.
+### Componentes Funcionales (Nivel 3 — weak)
+- **Kessler** (20): EDI=0.299, p=0.000. Marginalmente sub-umbral (0.30).
+- **Riesgo Biológico** (27): EDI=0.294, p=0.003.
+- **Políticas** (13): EDI=0.288, p=0.000.
+- **Postverdad** (14): EDI=0.252, p=0.000.
+- **Epidemiología** (05): EDI=0.129, p=0.000.
+- **Movilidad** (11): EDI=0.128, p=0.002.
+
+### Casos Notables
+- **Starlink** (26): EDI=0.690, p=1.000 — EDI alto pero artefacto sin significancia.
+- **Clima** (01): EDI=0.011, Nivel 1. Sonda insuficiente, no refutación del fenómeno.
+- **Finanzas** (09): EDI=0.081, Nivel 2. Reflexividad y aliasing temporal.
 
 ## Notas sobre Lenguaje y Contenido
 
@@ -109,3 +121,4 @@ Ubicados en `repos/Simulaciones/{NN}_caso_*/src/`. **overall_pass = 2/29** (Defo
 - **Analogía del ribosoma**: los niveles 2-3 son como ribosomas — componentes funcionales que no constituyen un nivel autónomo
 - Zero-nudging: assimilation_strength=0 en todas las evaluaciones (verificado en 9 puntos del código)
 - Dependencias: numpy, pandas, scipy, meteostat (datos climáticos), yfinance (datos financieros)
+- **SIEMPRE verificar datos contra `repos/Simulaciones/*/outputs/metrics.json`** — los Artifacts/ pueden estar desactualizados

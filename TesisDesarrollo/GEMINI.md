@@ -1,45 +1,67 @@
-# GEMINI.md - Contexto Maestro: Proyecto Hiperobjetos (Realismo Operativo)
+# GEMINI.md - Contexto Maestro: Proyecto Hiperobjetos (Irrealismo Operativo)
 
-Este archivo es la FUENTE DE VERDAD para la IA. Refleja el estado científico real de la tesis "Validación de Hiperobjetos mediante Eficacia Causal".
+Este archivo es la FUENTE DE VERDAD para la IA. Refleja el estado científico real de la tesis "Irrealismo Operativo de Hiperobjetos".
 
 ## 1. Visión General del Proyecto
 El proyecto clasifica fenómenos de gran escala mediante **Cierre Operativo** computable. No afirma existencia metafísica (Irrealismo Operativo), sino que mide la utilidad predictiva de asumir un nivel macro.
 
 *   **Hipótesis Central (H1):** Un hiperobjeto tiene "cierre operativo" si su modelo macroscópico (ODE) reduce la entropía del microscópico (ABM) en >30% (EDI > 0.30) de forma robusta.
 *   **Resultado Principal:** El valor no está en "validar todo", sino en el **Paisaje de Emergencia** resultante (29 casos clasificados en 5 niveles).
+*   **Instrumento:** El **Emergentómetro** (motor híbrido ODE+ABM + protocolo C1-C5 + test de permutación + EDI).
 
-## 2. Estado de los Casos (VERDAD CIENTÍFICA)
-El corpus consta de **29 casos oficiales**. La auditoría técnica confirma:
+## 2. Estado de los Casos (VERDAD CIENTÍFICA — Febrero 2026)
+El corpus consta de **29 casos oficiales**. Datos sincronizados desde `repos/Simulaciones/*/outputs/metrics.json`:
 
-*   **Nivel 4 (Validados - Strong):** **2 Casos**
-    *   `16_caso_deforestacion` (EDI=0.633)
-    *   `24_caso_microplasticos` (EDI=0.427)
-*   **Nivel 3 (Weak):** 1 Caso (`28_fuga_cerebros`)
-*   **Nivel 2 (Suggestive):** 3 Casos (incl. `09_finanzas`, `17_oceanos`)
-*   **Nivel 1 (Trend):** 7 Casos (incl. `01_clima`, `14_postverdad`)
-*   **Nivel 0 (Null):** 13 Casos (sin señal operativa)
-*   **Controles:** 3 Casos (Falsación Exogeneidad/Estacionariedad/Observabilidad) correctamente rechazados.
+*   **Nivel 4 (Strong — overall_pass=True):** **5 Casos**
+    *   `24_caso_microplasticos` (EDI=0.806, p=0.000)
+    *   `04_caso_energia` (EDI=0.650, p=0.000)
+    *   `16_caso_deforestacion` (EDI=0.580, p=0.000)
+    *   `18_caso_urbanizacion` (EDI=0.337, p=0.000)
+    *   `22_caso_fosforo` (EDI=0.322, p=0.000)
+*   **Nivel 3 (Weak — p<0.05, 0.10≤EDI<0.30):** **6 Casos**
+    *   `20_caso_kessler` (EDI=0.299, p=0.000)
+    *   `27_caso_riesgo_biologico` (EDI=0.294, p=0.003)
+    *   `13_caso_politicas_estrategicas` (EDI=0.288, p=0.000)
+    *   `14_caso_postverdad` (EDI=0.252, p=0.000)
+    *   `05_caso_epidemiologia` (EDI=0.129, p=0.000)
+    *   `11_caso_movilidad` (EDI=0.128, p=0.002)
+*   **Nivel 2 (Suggestive — p<0.05, EDI>0.01):** **3 Casos**
+    *   `09_caso_finanzas` (EDI=0.081, p=0.000)
+    *   `15_caso_wikipedia` (EDI=0.080, p=0.000)
+    *   `21_caso_salinizacion` (EDI=0.058, p=0.004)
+*   **Nivel 1 (Trend — EDI>0, p≥0.05):** **4 Casos**
+    *   `26_caso_starlink` (EDI=0.690, p=1.000 — artefacto de calibración)
+    *   `10_caso_justicia` (EDI=0.227, p=0.478)
+    *   `28_caso_fuga_cerebros` (EDI=0.025, p=0.998)
+    *   `01_caso_clima` (EDI=0.011, p=0.999)
+*   **Nivel 0 (Null):** **8 Casos** (Conciencia, Contaminación, Paradigmas, Océanos, Acidificación, Erosión Dialéctica, Acuíferos, IoT)
+*   **Controles:** 3 Casos (Falsación Exogeneidad/No-Estacionariedad/Observabilidad) correctamente rechazados.
 
-> **NOTA CRÍTICA:** Clima y Finanzas antiguos NO están validados como "Strong". Son Trend y Suggestive respectivamente. No alucinar validación.
+> **Distribución:** 5 strong (pass) + 6 weak + 3 suggestive + 4 trend + 8 null + 3 falsification = 29 total.
 
 ## 3. Estructura del Workspace
 Fuente de verdad es `/datos/repos/Personal/TesisJacobContenidos/`.
 
 *   **/TesisDesarrollo/**: Componentes modulares de la tesis.
-    *   `00_Marco_Conceptual/`: Ontología, Axiomas. **(Bibliografía movida al final)**.
+    *   `00_Marco_Conceptual/`: Ontología, Axiomas.
     *   `01_Metodologia_Medicion/`: Protocolo C1-C5.
-    *   `02_Modelado_Simulacion/`: Documentación técnica ODE+ABM.
+    *   `02_Modelado_Simulacion/`: Documentación técnica ODE+ABM + copias espejo de metrics.json.
     *   `03_Validacion_Praxis/`: Resultados consolidados y Paisaje de Emergencia.
     *   `04_Casos_De_Estudio/`: Fichas detalladas.
-    *   `05_Bibliografia/`: Referencias nucleares.
+    *   `05_Bibliografia/`: Referencias nucleares (37 fuentes).
 *   **/TesisFinal/Tesis.md**: Documento compilado (Artifact de salida).
-*   **/Artifacts/**: Registros históricos y auditorías (redundancia permitida).
+*   **/Artifacts/**: Registros históricos y auditorías (⚠️ pueden estar desactualizados).
 
 ## 4. Guía de Ejecución
 *   **Validar Caso:** `python3 repos/Simulaciones/{NN}_caso_*/src/validate.py`
 *   **Pipeline:** Sintético -> Real (Zero-Nudging) -> Clasificación.
+*   **Compilar Tesis:** `python3 repos/scripts/tesis.py build`
+*   **Actualizar Tablas:** `python3 repos/scripts/actualizar_tablas_002.py`
+*   **Sincronizar Métricas:** Copiar `repos/Simulaciones/*/outputs/metrics.json` → `TesisDesarrollo/02_Modelado_Simulacion/*/metrics.json` antes de actualizar tablas.
 
 ## 5. Reglas de Oro
-1.  **No Inventar:** Si el EDI es 0.01, el caso es Nivel 1 (Trend), no "validado parcial".
-2.  **Terminología:** Usar "Cierre Operativo", "Irrealismo Operativo", "Navaja de Ockham".
+1.  **No Inventar:** Si el EDI es 0.011, el caso es Nivel 1 (Trend), no "validado parcial".
+2.  **Terminología:** Usar "Cierre Operativo", "Irrealismo Operativo", "Emergentómetro", "Navaja de Ockham".
 3.  **Bibliografía:** Debe estar al final del documento consolidado, no en el marco conceptual.
+4.  **Sync primero:** Siempre sincronizar metrics.json desde repos/Simulaciones antes de actualizar tablas.
+5.  **Verificar antes de afirmar:** Consultar `repos/Simulaciones/*/outputs/metrics.json` para valores exactos de EDI, p-value y overall_pass.
