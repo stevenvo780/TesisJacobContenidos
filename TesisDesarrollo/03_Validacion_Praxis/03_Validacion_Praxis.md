@@ -112,7 +112,7 @@ Estos cinco casos alcanzan overall_pass=True: las 13 condiciones se cumplen simu
 |------|----:|-------:|---:|:---|
 | 20 Kessler | 0.299 | 0.000 | 1.003 | Cascada Kessler-Liou: señal fuerte, marginalmente sub-umbral (0.30) |
 | 27 Riesgo Biológico | 0.294 | 0.003 | 1.001 | Woolhouse Zoonotic: cascada bilineal significativa |
-| 13 Políticas | 0.289 | 0.000 | 1.009 | Inercia Institucional North: señal significativa sub-umbral |
+| 13 Políticas | 0.288 | 0.000 | 1.009 | Inercia Institucional North: señal significativa sub-umbral |
 | 14 Postverdad | 0.252 | 0.000 | 1.009 | SIS Campo Medio: cascada de desinformación significativa |
 | 05 Epidemiología | 0.129 | 0.000 | 1.009 | SEIR Kermack-McKendrick: señal significativa pero sub-umbral |
 | 11 Movilidad | 0.128 | 0.002 | 1.004 | MFD: constricción detectable pero sub-umbral |
@@ -144,7 +144,7 @@ Estos casos muestran EDI positivo sin significancia estadística. El instrumento
 
 #### Nivel 0 — Sin Señal Operativa (8 Casos)
 
-Conciencia (-0.117), Contaminación (-0.004), Paradigmas (-0.006), Océanos (-0.044), Acidificación (-0.000), Erosión Dialéctica (-1.000), Acuíferos (-0.021), IoT (-0.899).
+Conciencia (-0.116), Contaminación (-0.004), Paradigmas (-0.006), Océanos (-0.043), Acidificación (-0.000), Erosión Dialéctica (-1.000), Acuíferos (-0.020), IoT (-0.899).
 
 Bajo irrealismo operativo, Nivel 0 no significa "el hiperobjeto no existe" — significa "el instrumento no detecta cierre operativo con la sonda actual". La diferencia es crucial: un termómetro que no detecta campo magnético no refuta el magnetismo.
 
@@ -191,8 +191,8 @@ quadrantChart
     "Microplásticos": [0.85, 0.9]
     "Energía": [0.85, 0.72]
     "Deforestación": [0.85, 0.65]
-    "Urbanización": [0.85, 0.45]
-    "Fósforo": [0.85, 0.43]
+    "Urbanización": [0.85, 0.53]
+    "Fósforo": [0.85, 0.51]
     "Kessler": [0.85, 0.4]
     "Riesgo Bio": [0.75, 0.38]
     "Políticas": [0.8, 0.38]
@@ -201,7 +201,7 @@ quadrantChart
     "Clima": [0.15, 0.1]
 ```
 
-Los casos con overall_pass=True cubren dominios diversos: desde energía (0.650) hasta microplásticos oceánicos (0.806). Los seis casos de Nivel 3 (weak) — incluyendo Kessler (0.299), Riesgo Biológico (0.294) y Políticas (0.289) — están marginalmente por debajo del umbral 0.30, indicando candidatos prioritarios para refinamiento.
+Los casos con overall_pass=True cubren dominios diversos: desde energía (0.650) hasta microplásticos oceánicos (0.806). Los seis casos de Nivel 3 (weak) — incluyendo Kessler (0.299), Riesgo Biológico (0.294) y Políticas (0.288) — están marginalmente por debajo del umbral 0.30, indicando candidatos prioritarios para refinamiento.
 
 ### Diagnóstico: ¿Por Qué Algunos Casos se Clasifican en Nivel 0-1?
 

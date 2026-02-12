@@ -62,7 +62,7 @@ El EDI mide el **grado de cierre operativo** de un fenómeno. No mide "existenci
 
 En lenguaje accesible: imagine que tiene dos médicos — uno que ve al paciente completo (historial, síntomas, contexto) y otro que solo ve análisis de sangre aislados. El EDI mide cuánto peor diagnostica el segundo. Si el EDI es 0.38, el médico sin visión de conjunto se equivoca un 38% más.
 
-- **Interpretación técnica:** Un EDI de 0.579 (Deforestación) significa que eliminar el constructo macro degrada la predicción en 57.9%. Esto es una medición operativa, no una afirmación ontológica.
+- **Interpretación técnica:** Un EDI de 0.580 (Deforestación) significa que eliminar el constructo macro degrada la predicción en 58.0%. Esto es una medición operativa, no una afirmación ontológica.
 - **Ablación como intervención:** Siguiendo a Woodward (2003), la manipulación de `forcing_scale=0` es una intervención controlada. El efecto medido (degradación del EDI) establece la indispensabilidad operativa del constructo macro, no su "realidad causal" en sentido metafísico.
 
 ### Regla de Descuento por Nivel de Evidencia (LoE)
@@ -117,5 +117,5 @@ Filtro de nulos, normalización, uso exclusivo de datos abiertos. La gobernanza 
 ## Casos Piloto
 Clima sintético, Finanzas sintéticas, y caso clima regional como MVP metodológico. Los pilotos prueban el pipeline antes de clasificar fenómenos en el paisaje de emergencia.
 
-## Síntesis
+## Síntesis Metodológica
 El Emergentómetro clasifica fenómenos en un gradiente de cierre operativo. La metodología se valida por la diversidad de sus resultados (8 null, 4 trend, 3 suggestive, 6 weak, 5 strong, 3 controles de falsación) y por la coherencia del gradiente con las propiedades de los dominios evaluados.

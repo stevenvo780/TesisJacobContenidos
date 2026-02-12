@@ -22,7 +22,7 @@ El corpus consta de **29 casos oficiales**:
     *   `22_caso_fosforo` (EDI=0.376)
     *   `27_caso_riesgo_biologico` (EDI=0.257)
 *   **Nivel 4 (Strong — overall_pass=False, falla C2):** **2 Casos**
-    *   `16_caso_deforestacion` (EDI=0.579)
+    *   `16_caso_deforestacion` (EDI=0.580)
     *   `24_caso_microplasticos` (EDI=0.656)
 *   **Nivel 3 (Weak):** 2 Casos (`05_epidemiologia` EDI=0.129, `11_movilidad` EDI=0.128)
 *   **Nivel 2 (Suggestive):** 2 Casos (`09_finanzas`, `21_salinizacion`)

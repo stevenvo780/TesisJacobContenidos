@@ -17,7 +17,7 @@
 | 13_caso_politicas_estrategicas | 0.288 | 0.001 | ✅ | 1.009 | strong | 4 | `13_caso_politicas_estrategicas/report.md` |
 | 14_caso_postverdad | 0.325 | 0.000 | ✅ | 1.009 | strong | 4 | `14_caso_postverdad/report.md` |
 | 15_caso_wikipedia | 0.160 | 0.000 | ✅ | 1.060 | strong | 4 | `15_caso_wikipedia/report.md` |
-| 16_caso_deforestacion | 0.579 | 0.000 | ✅ | 1.015 | strong | 4 | `16_caso_deforestacion/report.md` |
+| 16_caso_deforestacion | 0.580 | 0.000 | ✅ | 1.023 | strong | 4 | `16_caso_deforestacion/report.md` |
 | 17_caso_oceanos | -0.032 | 1.000 | ❌ | 1.002 | null | 0 | `17_caso_oceanos/report.md` |
 | 18_caso_urbanizacion | 0.151 | 0.000 | ✅ | 1.001 | strong | 4 | `18_caso_urbanizacion/report.md` |
 | 19_caso_acidificacion_oceanica | -0.000 | 0.000 | ❌ | 1.214 | null | 0 | `19_caso_acidificacion_oceanica/report.md` |

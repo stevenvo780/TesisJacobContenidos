@@ -27,7 +27,7 @@ Fenómenos con señal estadísticamente significativa y EDI entre 0.10-0.30 pero
 
 *   **Kessler (ID 20):** Datos CelesTrak (Desechos orbitales). Cascada cuadrática Kessler-Liou. EDI=0.299, p=0.000. La dinámica de debris orbital presenta constricción macro fuerte, marginalmente sub-umbral (0.30).
 *   **Riesgo Biológico (ID 27):** Datos World Bank (Mortalidad). Cascada zoonótica Woolhouse. EDI=0.294, p=0.003. La dinámica One Health exhibe señal significativa sub-umbral.
-*   **Políticas Estratégicas (ID 13):** Datos World Bank (Gasto militar). Inercia Institucional basada en North (1990). EDI=0.289, p=0.000. Las instituciones exhiben constricción macro significativa sub-umbral.
+*   **Políticas Estratégicas (ID 13):** Datos World Bank (Gasto militar). Inercia Institucional basada en North (1990). EDI=0.288, p=0.000. Las instituciones exhiben constricción macro significativa sub-umbral.
 *   **Postverdad (ID 14):** Modelo SIS de Campo Medio para cascadas de desinformación. EDI=0.252, p=0.000. Señal significativa pero sub-umbral para cierre pleno.
 *   **Epidemiología (ID 05):** Datos OWID (COVID-19). SEIR Kermack-McKendrick. EDI=0.129, p=0.000. Señal significativa pero sub-umbral para cierre operativo pleno.
 *   **Movilidad (ID 11):** Datos World Bank (Tráfico aéreo). MFD con dinámica Greenshields. EDI=0.128, p=0.002. Constricción detectable pero insuficiente para overall_pass.
@@ -50,7 +50,7 @@ Incluye el caso paradigmático de **Clima Regional (ID 01)** (datos Meteostat/NO
 
 Caso notable en Nivel 1 con EDI nominalmente alto pero sin significancia estadística: **Starlink (EDI=0.690, p=1.000)** — carece de significancia, indicando señal artefactual.
 
-8 casos se sitúan en Nivel 0, incluyendo Conciencia (EDI=-0.117), indicando que el modelo híbrido no detecta constricción macro o que el acoplamiento es incluso destructivo (anti-emergencia).
+8 casos se sitúan en Nivel 0, incluyendo Conciencia (EDI=-0.116), indicando que el modelo híbrido no detecta constricción macro o que el acoplamiento es incluso destructivo (anti-emergencia).
 
 ---
 

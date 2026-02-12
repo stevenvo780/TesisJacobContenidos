@@ -3,7 +3,7 @@
 **Autor:** Steven Villanueva Osorio  
 **Fecha:** 2026  
 
-> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-12 04:22 UTC  
+> Documento ensamblado automáticamente por `tesis.py build` el 2026-02-12 04:41 UTC  
 > Fuente de verdad: `TesisDesarrollo/`
 
 
@@ -38,7 +38,7 @@
   - [Mapa de la Tesis](#mapa-de-la-tesis)
   - [Dependencias Teóricas (Resumen)](#dependencias-teóricas-resumen)
   - [Apéndice de Autoría IA](#apéndice-de-autoría-ia)
-  - [Síntesis](#síntesis)
+  - [Síntesis del Marco Conceptual](#síntesis-del-marco-conceptual)
 - [01 Metodología de Medición](#01-metodología-de-medición)
   - [El Emergentómetro en la Práctica](#el-emergentómetro-en-la-práctica)
   - [Protocolo de Rigor (C1-C5)](#protocolo-de-rigor-c1-c5)
@@ -54,7 +54,7 @@
   - [Datos e Instrumentos](#datos-e-instrumentos)
   - [Gobernanza de Datos](#gobernanza-de-datos)
   - [Casos Piloto](#casos-piloto)
-  - [Síntesis](#síntesis-1)
+  - [Síntesis Metodológica](#síntesis-metodológica)
 - [02 Modelado y Simulación](#02-modelado-y-simulación)
   - [El Motor del Emergentómetro](#el-motor-del-emergentómetro)
   - [Arquitectura Detallada del Motor Híbrido](#arquitectura-detallada-del-motor-híbrido)
@@ -73,7 +73,7 @@
   - [Especificación de Modelos por Dominio](#especificación-de-modelos-por-dominio)
   - [Resultados Consolidados (29 Casos — Protocolo Completo)](#resultados-consolidados-29-casos--protocolo-completo)
     - [Taxonomía de Emergencia con Niveles Operativos](#taxonomía-de-emergencia-con-niveles-operativos)
-- [Resumen de Simulaciones](#resumen-de-simulaciones)
+  - [Resumen de Simulaciones](#resumen-de-simulaciones)
   - [Matriz de Clasificación Operativa (29 casos × 13 criterios + Nivel)](#matriz-de-clasificación-operativa-29-casos--13-criterios--nivel)
   - [Distribución de Modos de Fallo](#distribución-de-modos-de-fallo)
     - [Clasificación por Resultado](#clasificación-por-resultado)
@@ -114,8 +114,8 @@
   - [03\_Validacion\_Praxis](#03_validacion_praxis)
   - [04\_Casos\_De\_Estudio](#04_casos_de_estudio)
   - [05\_Bibliografia](#05_bibliografia)
-- [Indice: EjerciciosCriticos](#indice-ejercicioscriticos)
-- [Registros historicos](#registros-historicos)
+  - [Indice: Ejercicios Críticos](#indice-ejercicios-críticos)
+  - [Registros históricos](#registros-históricos)
   - [registro\_racionalizacion\_glosarios\_casos.md](#registro_racionalizacion_glosarios_casosmd)
   - [registro\_resecuencia\_indices.md](#registro_resecuencia_indicesmd)
 - [05 Bibliografía Nuclear](#05-bibliografía-nuclear)
@@ -419,7 +419,7 @@ Irrealismo operativo, emergentismo gradual, teoría de sistemas, termodinámica 
 ## Apéndice de Autoría IA
 Trabajo en co-autoría humano-IA: el humano define objetivos y valida empíricamente; la IA apoya implementación y documentación.
 
-## Síntesis
+## Síntesis del Marco Conceptual
 El marco define un gradiente computacional de cierre operativo para fenómenos de gran escala. Su valor está en el paisaje completo que produce: no solo en los casos que alcanzan Nivel 4, sino en los 29 puntos que mapean el continuo de emergencia. Este paisaje es el resultado principal de la tesis. La frontera entre "objeto operativo" (Nivel 4) y "componente funcional" (Nivel 3) o "agregación sin cierre" (Nivel 0) es la contribución que protege a la tesis de la especulación ontológica.
 
 ---
@@ -488,7 +488,7 @@ El EDI mide el **grado de cierre operativo** de un fenómeno. No mide "existenci
 
 En lenguaje accesible: imagine que tiene dos médicos — uno que ve al paciente completo (historial, síntomas, contexto) y otro que solo ve análisis de sangre aislados. El EDI mide cuánto peor diagnostica el segundo. Si el EDI es 0.38, el médico sin visión de conjunto se equivoca un 38% más.
 
-- **Interpretación técnica:** Un EDI de 0.579 (Deforestación) significa que eliminar el constructo macro degrada la predicción en 57.9%. Esto es una medición operativa, no una afirmación ontológica.
+- **Interpretación técnica:** Un EDI de 0.580 (Deforestación) significa que eliminar el constructo macro degrada la predicción en 58.0%. Esto es una medición operativa, no una afirmación ontológica.
 - **Ablación como intervención:** Siguiendo a Woodward (2003), la manipulación de `forcing_scale=0` es una intervención controlada. El efecto medido (degradación del EDI) establece la indispensabilidad operativa del constructo macro, no su "realidad causal" en sentido metafísico.
 
 ### Regla de Descuento por Nivel de Evidencia (LoE)
@@ -543,7 +543,7 @@ Filtro de nulos, normalización, uso exclusivo de datos abiertos. La gobernanza 
 ## Casos Piloto
 Clima sintético, Finanzas sintéticas, y caso clima regional como MVP metodológico. Los pilotos prueban el pipeline antes de clasificar fenómenos en el paisaje de emergencia.
 
-## Síntesis
+## Síntesis Metodológica
 El Emergentómetro clasifica fenómenos en un gradiente de cierre operativo. La metodología se valida por la diversidad de sus resultados (8 null, 4 trend, 3 suggestive, 6 weak, 5 strong, 3 controles de falsación) y por la coherencia del gradiente con las propiedades de los dominios evaluados.
 
 ---
@@ -757,7 +757,7 @@ pie title Distribución del Paisaje de Emergencia (29 Casos)
 | **Total** | | | **29** | |
 
 
-# Resumen de Simulaciones
+## Resumen de Simulaciones
 
 > Tabla generada automáticamente desde `metrics.json` de cada caso.
 
@@ -797,7 +797,7 @@ Cada celda = resultado del criterio en **Fase Real** (`assimilation_strength = 0
 | 28 | Fuga Cerebros | 0.025 | Si | No | Si | Si | Si | Si | Si | Si | Si | Si | 1 | Rechazado |
 | 29 | Iot | -0.899 | No | Si | Si | Si | Si | Si | Si | No | Si | Si | 0 | Rechazado |
 
-**Resumen:** 5 validados (Nivel 4), 1 rechazados con EDI > 0.30 (selectividad), 3 controles de falsación, 20 rechazados con EDI bajo (Nivel 0–1).
+**Resumen:** 5 validados (Nivel 4), 1 rechazado con EDI > 0.30 (selectividad), 3 controles de falsación, 20 rechazados con EDI ≤ 0.30 (Nivel 0–3).
 
 ## Distribución de Modos de Fallo
 
@@ -833,7 +833,7 @@ Estos cinco casos alcanzan overall_pass=True: las 13 condiciones se cumplen simu
 |------|----:|-------:|---:|:---|
 | 20 Kessler | 0.299 | 0.000 | 1.003 | Cascada Kessler-Liou: señal fuerte, marginalmente sub-umbral (0.30) |
 | 27 Riesgo Biológico | 0.294 | 0.003 | 1.001 | Woolhouse Zoonotic: cascada bilineal significativa |
-| 13 Políticas | 0.289 | 0.000 | 1.009 | Inercia Institucional North: señal significativa sub-umbral |
+| 13 Políticas | 0.288 | 0.000 | 1.009 | Inercia Institucional North: señal significativa sub-umbral |
 | 14 Postverdad | 0.252 | 0.000 | 1.009 | SIS Campo Medio: cascada de desinformación significativa |
 | 05 Epidemiología | 0.129 | 0.000 | 1.009 | SEIR Kermack-McKendrick: señal significativa pero sub-umbral |
 | 11 Movilidad | 0.128 | 0.002 | 1.004 | MFD: constricción detectable pero sub-umbral |
@@ -865,7 +865,7 @@ Estos casos muestran EDI positivo sin significancia estadística. El instrumento
 
 #### Nivel 0 — Sin Señal Operativa (8 Casos)
 
-Conciencia (-0.117), Contaminación (-0.004), Paradigmas (-0.006), Océanos (-0.044), Acidificación (-0.000), Erosión Dialéctica (-1.000), Acuíferos (-0.021), IoT (-0.899).
+Conciencia (-0.116), Contaminación (-0.004), Paradigmas (-0.006), Océanos (-0.043), Acidificación (-0.000), Erosión Dialéctica (-1.000), Acuíferos (-0.020), IoT (-0.899).
 
 Bajo irrealismo operativo, Nivel 0 no significa "el hiperobjeto no existe" — significa "el instrumento no detecta cierre operativo con la sonda actual". La diferencia es crucial: un termómetro que no detecta campo magnético no refuta el magnetismo.
 
@@ -912,8 +912,8 @@ quadrantChart
     "Microplásticos": [0.85, 0.9]
     "Energía": [0.85, 0.72]
     "Deforestación": [0.85, 0.65]
-    "Urbanización": [0.85, 0.45]
-    "Fósforo": [0.85, 0.43]
+    "Urbanización": [0.85, 0.53]
+    "Fósforo": [0.85, 0.51]
     "Kessler": [0.85, 0.4]
     "Riesgo Bio": [0.75, 0.38]
     "Políticas": [0.8, 0.38]
@@ -922,7 +922,7 @@ quadrantChart
     "Clima": [0.15, 0.1]
 ```
 
-Los casos con overall_pass=True cubren dominios diversos: desde energía (0.650) hasta microplásticos oceánicos (0.806). Los seis casos de Nivel 3 (weak) — incluyendo Kessler (0.299), Riesgo Biológico (0.294) y Políticas (0.289) — están marginalmente por debajo del umbral 0.30, indicando candidatos prioritarios para refinamiento.
+Los casos con overall_pass=True cubren dominios diversos: desde energía (0.650) hasta microplásticos oceánicos (0.806). Los seis casos de Nivel 3 (weak) — incluyendo Kessler (0.299), Riesgo Biológico (0.294) y Políticas (0.288) — están marginalmente por debajo del umbral 0.30, indicando candidatos prioritarios para refinamiento.
 
 ### Diagnóstico: ¿Por Qué Algunos Casos se Clasifican en Nivel 0-1?
 
@@ -1015,7 +1015,7 @@ Fenómenos con señal estadísticamente significativa y EDI entre 0.10-0.30 pero
 
 *   **Kessler (ID 20):** Datos CelesTrak (Desechos orbitales). Cascada cuadrática Kessler-Liou. EDI=0.299, p=0.000. La dinámica de debris orbital presenta constricción macro fuerte, marginalmente sub-umbral (0.30).
 *   **Riesgo Biológico (ID 27):** Datos World Bank (Mortalidad). Cascada zoonótica Woolhouse. EDI=0.294, p=0.003. La dinámica One Health exhibe señal significativa sub-umbral.
-*   **Políticas Estratégicas (ID 13):** Datos World Bank (Gasto militar). Inercia Institucional basada en North (1990). EDI=0.289, p=0.000. Las instituciones exhiben constricción macro significativa sub-umbral.
+*   **Políticas Estratégicas (ID 13):** Datos World Bank (Gasto militar). Inercia Institucional basada en North (1990). EDI=0.288, p=0.000. Las instituciones exhiben constricción macro significativa sub-umbral.
 *   **Postverdad (ID 14):** Modelo SIS de Campo Medio para cascadas de desinformación. EDI=0.252, p=0.000. Señal significativa pero sub-umbral para cierre pleno.
 *   **Epidemiología (ID 05):** Datos OWID (COVID-19). SEIR Kermack-McKendrick. EDI=0.129, p=0.000. Señal significativa pero sub-umbral para cierre operativo pleno.
 *   **Movilidad (ID 11):** Datos World Bank (Tráfico aéreo). MFD con dinámica Greenshields. EDI=0.128, p=0.002. Constricción detectable pero insuficiente para overall_pass.
@@ -1038,7 +1038,7 @@ Incluye el caso paradigmático de **Clima Regional (ID 01)** (datos Meteostat/NO
 
 Caso notable en Nivel 1 con EDI nominalmente alto pero sin significancia estadística: **Starlink (EDI=0.690, p=1.000)** — carece de significancia, indicando señal artefactual.
 
-8 casos se sitúan en Nivel 0, incluyendo Conciencia (EDI=-0.117), indicando que el modelo híbrido no detecta constricción macro o que el acoplamiento es incluso destructivo (anti-emergencia).
+8 casos se sitúan en Nivel 0, incluyendo Conciencia (EDI=-0.116), indicando que el modelo híbrido no detecta constricción macro o que el acoplamiento es incluso destructivo (anti-emergencia).
 
 ---
 
@@ -1083,7 +1083,7 @@ Este archivo consolida indices, registros y auditorias complementarias.
 
 ---
 
-# Indice: EjerciciosCriticos
+## Indice: Ejercicios Críticos
 
 - Ejercicio Gladiadores Partida 1:
   - `EjerciciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`
@@ -1092,7 +1092,7 @@ Este archivo consolida indices, registros y auditorias complementarias.
 
 ---
 
-# Registros historicos
+## Registros históricos
 
 ## registro_racionalizacion_glosarios_casos.md
 

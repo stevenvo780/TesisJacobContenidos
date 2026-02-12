@@ -33,7 +33,7 @@ Documentos de referencia:
 ### Bloque II: Componente funcional (weak) — p<0.05, 0.10≤EDI<0.30
 05. `05_caso_epidemiologia/` — COVID-19 (OWID) — EDI=0.129 — Weak
 11. `11_caso_movilidad/` — Tráfico aéreo (World Bank) — EDI=0.128 — Weak
-13. `13_caso_politicas_estrategicas/` — Gasto militar (World Bank) — EDI=0.289 — Weak
+13. `13_caso_politicas_estrategicas/` — Gasto militar (World Bank) — EDI=0.288 — Weak
 14. `14_caso_postverdad/` — SIS Desinformación — EDI=0.252 — Weak
 20. `20_caso_kessler/` — Desechos orbitales (CelesTrak) — EDI=0.299 — Weak
 27. `27_caso_riesgo_biologico/` — Mortalidad (World Bank) — EDI=0.294 — Weak
@@ -50,13 +50,13 @@ Documentos de referencia:
 28. `28_caso_fuga_cerebros/` — I+D (World Bank) — EDI=0.025
 
 ### Bloque V: Sin evidencia (null)
-02. `02_caso_conciencia/` — Conciencia global (Fallback) — EDI=-0.117
+02. `02_caso_conciencia/` — Conciencia global (Fallback) — EDI=-0.116
 03. `03_caso_contaminacion/` — PM2.5 (AQICN) — EDI=-0.004
 12. `12_caso_paradigmas/` — Ciencia (OpenAlex) — EDI=-0.006
-17. `17_caso_oceanos/` — Temperatura oceánica (WMO proxy) — EDI=-0.044
+17. `17_caso_oceanos/` — Temperatura oceánica (WMO proxy) — EDI=-0.043
 19. `19_caso_acidificacion_oceanica/` — CO2 y Océanos (PMEL proxy) — EDI=-0.000
 23. `23_caso_erosion_dialectica/` — Alfabetización (World Bank) — EDI=-1.000
-25. `25_caso_acuiferos/` — Acceso al agua (GRAVIS+USGS) — EDI=-0.021
+25. `25_caso_acuiferos/` — Acceso al agua (GRAVIS+USGS) — EDI=-0.020
 29. `29_caso_iot/` — Suscripciones móviles (World Bank) — EDI=-0.899
 
 ### Bloque VI: Controles de Falsación (Correctamente rechazados)

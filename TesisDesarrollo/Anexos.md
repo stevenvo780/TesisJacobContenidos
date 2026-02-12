@@ -24,7 +24,7 @@ Este archivo consolida indices, registros y auditorias complementarias.
 
 ---
 
-# Indice: EjerciciosCriticos
+## Indice: Ejercicios Críticos
 
 - Ejercicio Gladiadores Partida 1:
   - `EjerciciosCriticos/Ejercicio_Critico_Gladiadores_Partida1.md`
@@ -33,7 +33,7 @@ Este archivo consolida indices, registros y auditorias complementarias.
 
 ---
 
-# Registros historicos
+## Registros históricos
 
 ## registro_racionalizacion_glosarios_casos.md
 

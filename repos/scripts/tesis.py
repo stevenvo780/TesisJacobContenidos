@@ -414,7 +414,7 @@ def _build_case_summary_table():
 
     # Build output
     lines = [
-        "\n# Resumen de Simulaciones",
+        "\n## Resumen de Simulaciones",
         "",
         "> Tabla generada automáticamente desde `metrics.json` de cada caso.",
         "",
@@ -438,11 +438,13 @@ def _build_case_summary_table():
     for _, row in rows_rejected_low:
         lines.append(row)
 
+    n_rh = len(rows_rejected_high)
+    rh_label = "rechazado" if n_rh == 1 else "rechazados"
     lines.append("")
     lines.append(f"**Resumen:** {len(rows_validated)} validados (Nivel 4), "
-                 f"{len(rows_rejected_high)} rechazados con EDI > 0.30 (selectividad), "
+                 f"{n_rh} {rh_label} con EDI > 0.30 (selectividad), "
                  f"{len(rows_falsacion)} controles de falsación, "
-                 f"{len(rows_rejected_low)} rechazados con EDI bajo (Nivel 0–1).")
+                 f"{len(rows_rejected_low)} rechazados con EDI \u2264 0.30 (Nivel 0\u20133).")
     lines.append("")
 
     # Failure mode table
