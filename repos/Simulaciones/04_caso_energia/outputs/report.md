@@ -1,6 +1,6 @@
 # Reporte de Validación — Energía (Consumo Per Cápita)
 
-- generated_at: 2026-02-11T23:29:29.928233Z
+- generated_at: 2026-02-12T00:19:28.724670Z
 
 ## Fase synthetic
 - **overall_pass**: True

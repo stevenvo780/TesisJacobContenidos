@@ -1,56 +1,56 @@
-# GEMINI.md - Contexto Maestro: Proyecto Hiperobjetos (Titanio)
+# GEMINI.md - Contexto Maestro: Proyecto Hiperobjetos (Irrealismo Operativo)
 
-Este archivo proporciona el contexto necesario para operar en el repositorio de la tesis "Validación de Hiperobjetos mediante Eficacia Causal".
+Este archivo es la FUENTE DE VERDAD para la IA. Refleja el estado científico real de la tesis "Irrealismo Operativo de Hiperobjetos".
 
 ## 1. Visión General del Proyecto
-El proyecto busca validar la realidad ontológica de los **Hiperobjetos** (ej. Clima, Economía, Pandemias) utilizando modelos computacionales híbridos. 
+El proyecto clasifica fenómenos de gran escala mediante **Cierre Operativo** computable. No afirma existencia metafísica (Irrealismo Operativo), sino que mide la utilidad predictiva de asumir un nivel macro.
 
-*   **Hipótesis Central (H1):** Un hiperobjeto es real si su modelo macroscópico (ODE) reduce la entropía de sus componentes microscópicos (ABM) en más del 30% (Índice de Dependencia Efectiva, EDI > 0.30).
-*   **Marco Filosófico:** Realismo Especulativo (Morton), Sinergética (Haken), y Teoría de la Información (Shannon).
+*   **Hipótesis Central (H1):** Un hiperobjeto tiene "cierre operativo" si su modelo macroscópico (ODE) reduce la entropía del microscópico (ABM) en >30% (EDI > 0.30) de forma robusta.
+*   **Resultado Principal:** El valor no está en "validar todo", sino en el **Paisaje de Emergencia** resultante (29 casos clasificados en 5 niveles).
 
-## 2. Estructura del Workspace
-El repositorio se divide en cuatro áreas críticas:
+## 2. Estado de los Casos (VERDAD CIENTÍFICA — Febrero 2026)
+El corpus consta de **29 casos oficiales**:
 
-*   **/TesisDesarrollo/**: Contiene la fundamentación teórica, metodología y narrativa consolidada de la tesis.
-    *   `00_Marco_Conceptual/`: Ontología y Axiomas.
-    *   `01_Metodologia_Medicion/`: Protocolo C1-C5 y métricas (EDI, CR).
-    *   `02_Modelado_Simulacion/`: Documentación del motor `HybridModel`.
-*   **/repos/Simulaciones/**: Motor de simulación en Python — 32 casos con pipeline completo.
-    *   `01_caso_clima/`: Validado (EDI 0.434).
-    *   `10_caso_finanzas/`: Validado (EDI 0.882).
-    *   24 casos validados en total, 3 controles de falsación, 5 rechazados genuinos.
-*   **/Artifacts/**: Historial de debates, auditorías y ciclos de validación (C1-C5).
-*   **/TesisFinal/**: El documento de tesis consolidado (`Tesis.md`).
+*   **Nivel 4 (Strong — overall_pass=True):** **9 Casos**
+    *   `05_caso_epidemiologia` (EDI=0.129)
+    *   `11_caso_movilidad` (EDI=0.128)
+    *   `13_caso_politicas_estrategicas` (EDI=0.288)
+    *   `14_caso_postverdad` (EDI=0.325)
+    *   `15_caso_wikipedia` (EDI=0.160)
+    *   `18_caso_urbanizacion` (EDI=0.151)
+    *   `20_caso_kessler` (EDI=0.381)
+    *   `22_caso_fosforo` (EDI=0.376)
+    *   `27_caso_riesgo_biologico` (EDI=0.266)
+*   **Nivel 4 (Strong — overall_pass=False, falla C2):** **2 Casos**
+    *   `16_caso_deforestacion` (EDI=0.589)
+    *   `24_caso_microplasticos` (EDI=0.656)
+*   **Nivel 2 (Suggestive):** 2 Casos (`09_finanzas`, `21_salinizacion`)
+*   **Nivel 1 (Trend):** 6 Casos (`01_clima`, `02_conciencia`, `04_energia`, `10_justicia`, `26_starlink`, `28_fuga_cerebros`)
+*   **Nivel 0 (Null):** 7 Casos (sin señal operativa)
+*   **Controles:** 3 Casos (Falsación Exogeneidad/Estacionariedad/Observabilidad) correctamente rechazados.
 
-## 3. Guía de Ejecución (Building & Running)
-El motor de simulación requiere Python 3.10+ y las dependencias listadas en `repos/Simulaciones/requirements.txt`.
+> **NOTA CRÍTICA:** Revisión de febrero 2026: herramientas de investigación afinadas. Muchos casos actualizados.
 
-### Comandos Clave:
-*   **Instalar Dependencias:**
-    ```bash
-    pip install -r repos/Simulaciones/requirements.txt
-    ```
-*   **Validar Caso Clima:**
-    ```bash
-    python3 repos/Simulaciones/01_caso_clima/src/validate.py
-    ```
-*   **Validar Caso Finanzas:**
-    ```bash
-    python3 repos/Simulaciones/10_caso_finanzas/src/validate.py
-    ```
+## 3. Estructura del Workspace
+Fuente de verdad es `/datos/repos/Personal/TesisJacobContenidos/`.
 
-## 4. Convenciones y Rigor
-Al interactuar con este proyecto, se deben seguir estas reglas:
+*   **/TesisDesarrollo/**: Componentes modulares de la tesis.
+    *   `00_Marco_Conceptual/`: Ontología, Axiomas.
+    *   `01_Metodologia_Medicion/`: Protocolo C1-C5.
+    *   `02_Modelado_Simulacion/`: Documentación técnica ODE+ABM.
+    *   `03_Validacion_Praxis/`: Resultados consolidados y Paisaje de Emergencia.
+    *   `04_Casos_De_Estudio/`: Fichas detalladas.
+    *   `05_Bibliografia/`: Referencias nucleares (37 fuentes).
+*   **/TesisFinal/Tesis.md**: Documento compilado (Artifact de salida).
+*   **/Artifacts/**: Registros históricos y auditorías (redundancia permitida).
 
-1.  **Navaja de Ockham:** No postular una capa macro (Hiperobjeto) si los datos se explican mediante interacciones micro (ABM) o ruido.
-2.  **Rigor Académico:** Las afirmaciones sobre emergencia deben estar respaldadas por el cálculo de EDI. Citar a Haken (Sinergética) o Shannon (Entropía) cuando se hable de métricas de información.
-3.  **Estado de los Casos:**
-    *   `Clima`: Validado (EDI=0.434, Emergencia Fuerte).
-    *   `Finanzas`: Validado (EDI=0.882, Emergencia Muy Fuerte).
-    *   24/29 genuinos validados (83%), 3 controles falsación correctos.
-4.  **Terminología:** Consultar `TesisDesarrollo/00_Marco_Conceptual/00_00_Marco_Conceptual.md` para términos como "Symploké", "Causalidad Descendente" o "Nudging".
+## 4. Guía de Ejecución
+*   **Validar Caso:** `python3 repos/Simulaciones/{NN}_caso_*/src/validate.py`
+*   **Pipeline:** Sintético -> Real (Zero-Nudging) -> Clasificación.
+*   **Compilar Tesis:** `python3 repos/scripts/tesis.py build`
+*   **Actualizar Tablas:** `python3 repos/scripts/actualizar_tablas_002.py`
 
-## 5. Documentos de Referencia Rápida
-*   **Indice Maestro:** `TesisDesarrollo/Indice_Maestro.md`
-*   **Resumen Ultra:** `TesisDesarrollo/README.md`
-*   **Métricas Específicas:** `TesisDesarrollo/01_Metodologia_Medicion/01_00_Metodologia_Medicion.md`
+## 5. Reglas de Oro
+1.  **No Inventar:** Si el EDI es 0.002, el caso es Nivel 1 (Trend), no "validado parcial".
+2.  **Terminología:** Usar "Cierre Operativo", "Irrealismo Operativo", "Navaja de Ockham".
+3.  **Bibliografía:** Debe estar al final del documento consolidado, no en el marco conceptual.

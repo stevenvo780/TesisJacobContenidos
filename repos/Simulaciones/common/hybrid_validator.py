@@ -780,7 +780,7 @@ def evaluate_c1(abm_val, ode_val, obs_val, obs_std,
 
 
 def evaluate_c2(base_params, eval_params, steps, val_start,
-                simulate_abm_fn, series_key, n_pert=15, pct=0.1, seed_base=10):
+                simulate_abm_fn, series_key, n_pert=20, pct=0.1, seed_base=10):
     sim_base = simulate_abm_fn(eval_params, steps, seed=2)
     base_mean = mean(sim_base[series_key][val_start:])
     base_var = variance(sim_base[series_key][val_start:])

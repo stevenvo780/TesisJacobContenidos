@@ -1,6 +1,6 @@
 # Reporte de Validación — Kessler (Debris Orbital)
 
-- generated_at: 2026-02-11T23:26:46.148866Z
+- generated_at: 2026-02-12T00:18:48.108143Z
 
 ## Fase synthetic
 - **overall_pass**: True

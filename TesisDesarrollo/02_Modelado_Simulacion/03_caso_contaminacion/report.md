@@ -1,21 +1,24 @@
 # Reporte de Validación — Contaminación PM2.5
 
-- generated_at: 2026-02-11T17:29:30.237593Z
+- generated_at: 2026-02-12T00:19:29.400982Z
 
 ## Fase synthetic
 - **overall_pass**: True
 
 ### EDI
-- valor: 0.2396
-- bootstrap_mean: 0.2530
-- CI 95%: [0.1710, 0.3558]
-- weighted_value (LoE factor 0.20): 0.0479
+- valor: 0.2043
+- bootstrap_mean: 0.2057
+- CI 95%: [0.1755, 0.2364]
+- weighted_value (LoE factor 0.60): 0.1226
 - válido (0.30-0.90): True
+- detrended_edi: 0.2043
+- trend_ratio: 1.000
+- trend_r2: 0.805
 
 ### Symploké y CR
-- internal: 0.9975
+- internal: 0.9999
 - external: 0.9950
-- CR: 1.0025
+- CR: 1.0048
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,22 +29,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.1827
-- rmse_abm_no_ode: 1.5554
-- rmse_ode: 0.8067
-- rmse_reduced: 1.4290
-- threshold: 1.0126
+- rmse_abm: 2.1956
+- rmse_abm_no_ode: 2.7593
+- rmse_ode: 5.5403
+- rmse_reduced: 5.3314
+- threshold: 1.4385
 
 ### Calibración
-- forcing_scale: 0.9900
-- macro_coupling: 0.5000
+- forcing_scale: 0.9780
+- macro_coupling: 0.4418
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.6833
-- ode_alpha: 0.5000
-- ode_beta: 1.0000
+- damping: 0.9500
+- ode_alpha: 0.0010
+- ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.5674
+- calibration_rmse: 0.3499
 - ode_rolling: None
 
 ### Interpretación
@@ -51,16 +54,16 @@
 - **overall_pass**: False
 
 ### EDI
-- valor: -0.0039
-- bootstrap_mean: -0.0030
-- CI 95%: [-0.0275, 0.0244]
-- weighted_value (LoE factor 0.20): -0.0008
+- valor: -0.0111
+- bootstrap_mean: -0.0096
+- CI 95%: [-0.0656, 0.0448]
+- weighted_value (LoE factor 0.60): -0.0066
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9965
-- external: 0.9971
-- CR: 0.9995
+- internal: 0.9939
+- external: 0.9723
+- CR: 1.0222
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -71,16 +74,16 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 2.9510
-- rmse_abm_no_ode: 2.9396
-- rmse_ode: 3.3656
-- rmse_reduced: 3.2946
+- rmse_abm: 3.1376
+- rmse_abm_no_ode: 3.1032
+- rmse_ode: 3.2905
+- rmse_reduced: 3.2945
 - threshold: 3.2834
 
 ### Calibración
 - forcing_scale: 0.9900
-- macro_coupling: 0.1000
-- ode_coupling_strength: 0.0800
+- macro_coupling: 0.5000
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
 - damping: 0.9500
 - ode_alpha: 0.0010

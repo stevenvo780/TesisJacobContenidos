@@ -37,7 +37,7 @@
 34. Psillos, S. (1999). *Scientific Realism: How Science Tracks Truth*. Routledge.
 35. Kant, I. (1781). *Kritik der reinen Vernunft*.
 36. Kermack, W. O. & McKendrick, A. G. (1927). "A Contribution to the Mathematical Theory of Epidemics". *Proceedings of the Royal Society A*.
-37. Soros, G. (1987). *The Alchemy of Finance*. Simon & Schuster.
+37. North, D. C. (1990). *Institutions, Institutional Change and Economic Performance*. Cambridge University Press.
 
 ## Fuentes de Datos (Repositorios Principales)
 - **World Bank Open Data:** Indicadores de desarrollo, deforestación, movilidad y urbanización.

@@ -1,24 +1,24 @@
 # Reporte de Validación — Conciencia Colectiva
 
-- generated_at: 2026-02-11T23:29:33.397083Z
+- generated_at: 2026-02-12T00:19:28.701373Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0817
-- bootstrap_mean: 0.0828
-- CI 95%: [0.0690, 0.1036]
-- weighted_value (LoE factor 0.60): 0.0490
+- valor: 0.0849
+- bootstrap_mean: 0.0860
+- CI 95%: [0.0713, 0.1084]
+- weighted_value (LoE factor 0.60): 0.0509
 - válido (0.30-0.90): False
-- detrended_edi: 0.0817
+- detrended_edi: 0.0849
 - trend_ratio: 1.000
 - trend_r2: 0.606
 
 ### Symploké y CR
-- internal: 0.9136
-- external: 0.8807
-- CR: 1.0374
+- internal: 0.9126
+- external: 0.8817
+- CR: 1.0350
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -29,22 +29,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.8782
-- rmse_abm_no_ode: 2.0452
-- rmse_ode: 1.1597
+- rmse_abm: 1.8121
+- rmse_abm_no_ode: 1.9801
+- rmse_ode: 1.1633
 - rmse_reduced: 0.4364
 - threshold: 0.1933
 
 ### Calibración
-- forcing_scale: 0.9461
-- macro_coupling: 0.3166
-- ode_coupling_strength: 0.2533
+- forcing_scale: 0.9195
+- macro_coupling: 0.5000
+- ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
 - damping: 0.9500
 - ode_alpha: 0.0010
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.2764
+- calibration_rmse: 0.2763
 - ode_rolling: None
 
 ### Interpretación
@@ -61,8 +61,8 @@
 - válido (0.30-0.90): True
 
 ### Symploké y CR
-- internal: 0.8881
-- external: 0.8830
+- internal: 0.8871
+- external: 0.8820
 - CR: 1.0058
 - CR indicador (>2.0 = frontera nítida): False
 
@@ -82,14 +82,14 @@
 
 ### Calibración
 - forcing_scale: 0.9900
-- macro_coupling: 0.4761
+- macro_coupling: 0.3833
 - ode_coupling_strength: 0.3000
 - abm_feedback_gamma: 0.0500
-- damping: 0.6822
+- damping: 0.6876
 - ode_alpha: 0.0010
 - ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.1682
+- calibration_rmse: 0.1574
 - ode_rolling: None
 
 ### Interpretación

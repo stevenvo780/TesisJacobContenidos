@@ -1,6 +1,6 @@
 # Reporte de Validación — Constelaciones Satelitales Starlink (Saturation Growth)
 
-- generated_at: 2026-02-11T23:26:29.222378Z
+- generated_at: 2026-02-12T00:19:07.660163Z
 
 ## Fase synthetic
 - **overall_pass**: False
