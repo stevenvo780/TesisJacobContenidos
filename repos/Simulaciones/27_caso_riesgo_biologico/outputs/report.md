@@ -1,6 +1,6 @@
 # Reporte de Validación — Riesgo Biológico Global (Woolhouse Bilineal)
 
-- generated_at: 2026-02-12T00:18:44.207504Z
+- generated_at: 2026-02-12T01:19:53.278974Z
 
 ## Fase synthetic
 - **overall_pass**: False
@@ -51,19 +51,19 @@
 - **overall_pass**: True
 
 ### EDI
-- valor: 0.2662
-- bootstrap_mean: 0.2664
-- CI 95%: [0.2546, 0.2816]
-- weighted_value (LoE factor 0.60): 0.1597
+- valor: 0.2575
+- bootstrap_mean: 0.2617
+- CI 95%: [0.2122, 0.3328]
+- weighted_value (LoE factor 0.60): 0.1545
 - válido (0.30-0.90): True
-- detrended_edi: 0.2662
+- detrended_edi: 0.2575
 - trend_ratio: 1.000
 - trend_r2: 0.661
 
 ### Symploké y CR
 - internal: 0.9999
-- external: 0.9376
-- CR: 1.0665
+- external: 0.9981
+- CR: 1.0018
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -74,22 +74,22 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 1.4091
-- rmse_abm_no_ode: 1.9202
-- rmse_ode: 1.9816
-- rmse_reduced: 2.9798
+- rmse_abm: 0.4751
+- rmse_abm_no_ode: 0.6398
+- rmse_ode: 2.8422
+- rmse_reduced: 2.9797
 - threshold: 0.3368
 
 ### Calibración
-- forcing_scale: 0.7950
-- macro_coupling: 0.3920
-- ode_coupling_strength: 0.3000
+- forcing_scale: 0.9900
+- macro_coupling: 0.1000
+- ode_coupling_strength: 0.0800
 - abm_feedback_gamma: 0.0500
-- damping: 0.4201
-- ode_alpha: 0.1959
-- ode_beta: 0.5954
+- damping: 0.8649
+- ode_alpha: 0.0010
+- ode_beta: 0.0010
 - assimilation_strength: 0.0000
-- calibration_rmse: 0.3313
+- calibration_rmse: 0.1525
 - ode_rolling: None
 
 ### Interpretación

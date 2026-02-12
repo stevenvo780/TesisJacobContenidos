@@ -1,21 +1,21 @@
 # Reporte de Validación — Deforestación Global (von Thünen Frontier)
 
-- generated_at: 2026-02-12T00:19:18.606708Z
+- generated_at: 2026-02-12T01:19:26.222803Z
 
 ## Fase synthetic
 - **overall_pass**: False
 
 ### EDI
-- valor: 0.0367
-- bootstrap_mean: 0.0382
-- CI 95%: [0.0186, 0.0648]
-- weighted_value (LoE factor 0.60): 0.0220
+- valor: 0.0389
+- bootstrap_mean: 0.0405
+- CI 95%: [0.0189, 0.0695]
+- weighted_value (LoE factor 0.60): 0.0234
 - válido (0.30-0.90): False
 
 ### Symploké y CR
-- internal: 0.9937
-- external: 0.9902
-- CR: 1.0035
+- internal: 0.9931
+- external: 0.9885
+- CR: 1.0046
 - CR indicador (>2.0 = frontera nítida): False
 
 ### Criterios C1-C5
@@ -26,16 +26,16 @@
 - c5_uncertainty: True
 
 ### Errores
-- rmse_abm: 0.9444
-- rmse_abm_no_ode: 0.9804
-- rmse_ode: 0.8580
+- rmse_abm: 0.9302
+- rmse_abm_no_ode: 0.9679
+- rmse_ode: 0.8512
 - rmse_reduced: 0.5841
 - threshold: 0.5110
 
 ### Calibración
-- forcing_scale: 0.9348
-- macro_coupling: 0.2137
-- ode_coupling_strength: 0.1710
+- forcing_scale: 0.9109
+- macro_coupling: 0.2384
+- ode_coupling_strength: 0.1907
 - abm_feedback_gamma: 0.0500
 - damping: 0.9500
 - ode_alpha: 0.0964

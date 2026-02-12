@@ -1,6 +1,6 @@
 # Reporte de Validación — Energía (Consumo Per Cápita)
 
-- generated_at: 2026-02-12T00:19:28.724670Z
+- generated_at: 2026-02-12T01:19:31.507194Z
 
 ## Fase synthetic
 - **overall_pass**: True
@@ -30,7 +30,7 @@
 
 ### Errores
 - rmse_abm: 1.7767
-- rmse_abm_no_ode: 2.1647
+- rmse_abm_no_ode: 2.1648
 - rmse_ode: 4.8413
 - rmse_reduced: 4.9588
 - threshold: 1.1854
@@ -75,7 +75,7 @@
 
 ### Errores
 - rmse_abm: 0.6640
-- rmse_abm_no_ode: 1.1229
+- rmse_abm_no_ode: 1.1228
 - rmse_ode: 2.1499
 - rmse_reduced: 2.6082
 - threshold: 0.3586
